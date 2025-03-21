@@ -2,8 +2,10 @@ import App from './root/index'; // Your main App component
 import * as Font from 'expo-font';
 import React, { useState, useEffect } from 'react';
 import { LogBox, StyleSheet, View } from 'react-native';
-
+import configureStore from './Common/Store/configureStore'
+import {Provider} from 'react-redux';
 // Define all your custom fonts
+const store=configureStore()
 const customFonts = {
 
   'Poppins-Regular': require('./assets/fonts/Poppins/PoppinsRegular.ttf'),
@@ -25,6 +27,7 @@ const customFonts = {
 
 // FontLoader component
 const FontLoader = ({ children }) => {
+
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {
@@ -53,7 +56,10 @@ export default function Page() {
   return (
 
     <FontLoader >
+      <Provider store={store}>
       <App />
+      </Provider>
+  
     </FontLoader>
   );
 }

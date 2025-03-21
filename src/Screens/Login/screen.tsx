@@ -7,35 +7,58 @@ import {
   OTPmodal,
 } from "../../Components";
 import styles from "./style";
+import {loginApi} from '../../Common/Store/Actions/General/loginApi';
+
+import { useDispatch, useSelector } from "react-redux";
 import { PoppinsRegular } from "../../Resources/fonts";
 import { useNavigation } from "@react-navigation/native";
 import helpers from "../../utils/helpers";
-import useAuthStore from '../../../Common/Store/store'
-
+import { useAuthStore } from "../../../Common/Store/store";
+import {
+  GET_LOGIN_API,
+  POST_LOGIN_API,
+} from "@/src/Common/Store/Actions/General/ActionTypes/ApiActionTypes";
 const LoginScreen: React.FC = () => {
-  const { login, loading, error, twoFactorRequired } = useAuthStore();
-
+  const { signIn, loading } = useAuthStore();
+  const dispatch = useDispatch();
+  // console.log(useAuthStore())
+  // const { login, loading, error, twoFactorRequired } = useAuthStore();
 
   const [email, setEmail] = useState("test@example.com");
   const [password, setPassword] = useState("Test123");
-  const navigation=useNavigation()
+  const [token_2fa, settoken_2fa] = useState("");
+
+  const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   function set0penfunction() {
-    handleLogin()
+    setModalVisible(true)
+    // dispatch(loginApi(email, password,token_2fa,handleOtpSuccess, handleOtpFailure));
   }
   function onSubmitFunction() {
     navigation.navigate("Portal");
     setModalVisible(false);
   }
+  
 
-  const handleLogin = async () => {
-    const response = await login(email, password);
-    if (response) {
-      console.log("Login Successful:", response);
-    } else {
-      console.error("Login Failed",response);
-    }
+  const handleOtpFailure = (error) => {
+    console.log("OTP sending failed:", error);
   };
+  const handleOtpSuccess = (response) => {
+    console.log("OTP sending failed:", respose);
+  };
+
+  // const handleLogin = async () => {
+  //   const response = await login(email, password);
+  //   if (response) {
+  //     console.log("Login Successful:", response);
+  //   } else {
+  //     console.error("Login Failed",response);
+  //   }
+  // };
+  const handleLogin = async () => {
+    await signIn(email, password);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.login_desc1}>
@@ -69,22 +92,35 @@ const LoginScreen: React.FC = () => {
               placeholder="Enter your email"
               title="Email"
               value={email}
-              onChangeText={(text)=>{setEmail(text)}}
-              titleStyle={{marginBottom:10}}
-
+              onChangeText={(text) => {
+                setEmail(text);
+              }}
+              titleStyle={{ marginBottom: 10 }}
             ></InputField>
           </View>
           <View style={{ marginTop: 15 }}>
             <InputField
               placeholder="Enter your Password"
               value={password}
-              onChangeText={(text)=>{setPassword(text)}}
-              titleStyle={{marginBottom:10}}
+              onChangeText={(text) => {
+                setPassword(text);
+              }}
+              titleStyle={{ marginBottom: 10 }}
               title="Password"
             ></InputField>
           </View>
           <View style={styles.section}>
-            <CheckBox style={{borderColor:'black',width:15,height:15,marginHorizontal:0,marginRight:8,borderRadius:3}} text={"Remember Me"}></CheckBox>
+            <CheckBox
+              style={{
+                borderColor: "black",
+                width: 15,
+                height: 15,
+                marginHorizontal: 0,
+                marginRight: 8,
+                borderRadius: 3,
+              }}
+              text={"Remember Me"}
+            ></CheckBox>
             <TouchableOpacity>
               <Text
                 style={{
@@ -97,9 +133,9 @@ const LoginScreen: React.FC = () => {
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={{ marginTop: 10, }}>
+          <View style={{ marginTop: 10 }}>
             <TouchableOpacity
-              onPress={()=>handleLogin()}
+              onPress={() => set0penfunction()}
               style={styles.loginButton}
             >
               <Text style={styles.loginText}>Login</Text>
@@ -237,4 +273,3 @@ export default LoginScreen;
 // };
 
 // export default LoginScreen;
-
