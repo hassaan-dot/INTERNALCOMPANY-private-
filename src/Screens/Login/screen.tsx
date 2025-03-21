@@ -10,17 +10,32 @@ import styles from "./style";
 import { PoppinsRegular } from "../../Resources/fonts";
 import { useNavigation } from "@react-navigation/native";
 import helpers from "../../utils/helpers";
+import useAuthStore from '../../../Common/Store/store'
 
 const LoginScreen: React.FC = () => {
+  const { login, loading, error, twoFactorRequired } = useAuthStore();
+
+
+  const [email, setEmail] = useState("test@example.com");
+  const [password, setPassword] = useState("Test123");
   const navigation=useNavigation()
   const [modalVisible, setModalVisible] = useState(false);
   function set0penfunction() {
-    setModalVisible(true);
+    handleLogin()
   }
   function onSubmitFunction() {
     navigation.navigate("Portal");
     setModalVisible(false);
   }
+
+  const handleLogin = async () => {
+    const response = await login(email, password);
+    if (response) {
+      console.log("Login Successful:", response);
+    } else {
+      console.error("Login Failed",response);
+    }
+  };
   return (
     <View style={styles.container}>
       <View style={styles.login_desc1}>
@@ -53,6 +68,8 @@ const LoginScreen: React.FC = () => {
             <InputField
               placeholder="Enter your email"
               title="Email"
+              value={email}
+              onChangeText={(text)=>{setEmail(text)}}
               titleStyle={{marginBottom:10}}
 
             ></InputField>
@@ -60,6 +77,8 @@ const LoginScreen: React.FC = () => {
           <View style={{ marginTop: 15 }}>
             <InputField
               placeholder="Enter your Password"
+              value={password}
+              onChangeText={(text)=>{setPassword(text)}}
               titleStyle={{marginBottom:10}}
               title="Password"
             ></InputField>
@@ -80,7 +99,7 @@ const LoginScreen: React.FC = () => {
           </View>
           <View style={{ marginTop: 10, }}>
             <TouchableOpacity
-              onPress={set0penfunction}
+              onPress={()=>handleLogin()}
               style={styles.loginButton}
             >
               <Text style={styles.loginText}>Login</Text>
