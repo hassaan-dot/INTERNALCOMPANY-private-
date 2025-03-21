@@ -57,12 +57,14 @@ export const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   inputField: {
-    height: helpers.hp(15),
+    // height: helpers.hp(0),
     padding: 15,
+    paddingBottom:helpers.normalize(70),
     backgroundColor: "#f4f4f3",
     borderRadius: 8,
     fontFamily: PoppinsRegular,
     fontWeight: "600",
+    textAlignVertical:'top'
   },
   sectionTitle: {
     fontSize: 20,
@@ -99,12 +101,9 @@ export const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#fff",
     width: helpers.wp(22),
-    // shadowColor: "#000000", // Shadow color
-    // shadowOffset: { width: 2, height: 4 }, // Shadow position
-    // shadowOpacity: 0.25, // Shadow transparency
-    // shadowRadius: 3.84, // Shadow blur
-    // elevation: 5,
-    height: helpers.hp(35),
+
+    boxShadow: "0px 0px 5px 5px rgba(0, 0, 0, 0.1)", 
+        height: helpers.hp(35),
   },
   custom6:{ margin: 5, marginTop: 20 },
   custom7:{ marginHorizontal: 30, margin: 10 },

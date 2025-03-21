@@ -395,7 +395,9 @@ const Stack = createStackNavigator();
 
 const UserManagementfunction = () => {
   return (
-    <Stack.Navigator initialRouteName="User Management">
+    <Stack.Navigator 
+    // initialRouteName="User Management"
+    >
       <Stack.Screen
         name="User Management"
         component={UserManagement}
@@ -411,7 +413,7 @@ const UserManagementfunction = () => {
 };
 const ClientManagementfunction = () => {
   return (
-    <Stack.Navigator initialRouteName="Client Management">
+    <Stack.Navigator >
       <Stack.Screen
         name="Client Management"
         component={ClientManagement}
@@ -571,10 +573,10 @@ const drawerTabs = [
     },
   },
   {
-    name: "User Management",
+    name: "user-management",
     component: UserManagementfunction,
     options: {
-      drawerLabel: "User Management",
+      drawerLabel: "User anagement",
       title: "User Management",
       drawerIcon: ( color, size, focused ) => (
         <Image
@@ -585,7 +587,7 @@ const drawerTabs = [
     },
   },
   {
-    name: "Client Management",
+    name: "client-management",
     component: ClientManagementfunction,
     options: {
       drawerLabel: "Client Management",
@@ -599,7 +601,7 @@ const drawerTabs = [
     },
   },
   {
-    name: "PO Management",
+    name: "po-management",
     component: POManagementfunction,
     options: {
       drawerLabel: "PO Management",
@@ -755,7 +757,7 @@ const CustomDrawerContent = (props) => {
 const Drawer_Tabs = () => {
   return (
     <Drawer.Navigator
-      initialRouteName="Dashboard" // Set the default screen to Dashboard
+      initialRouteName="Dashboard"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
         header: (props) => <ProfileHeader {...props} />,

@@ -19,7 +19,7 @@ import {
   POST_LOGIN_API,
 } from "@/src/Common/Store/Actions/General/ActionTypes/ApiActionTypes";
 const LoginScreen: React.FC = () => {
-  const { signIn, loading } = useAuthStore();
+  // const { signIn, loading } = useAuthStore();
   const dispatch = useDispatch();
   // console.log(useAuthStore())
   // const { login, loading, error, twoFactorRequired } = useAuthStore();

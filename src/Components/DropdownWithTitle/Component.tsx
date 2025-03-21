@@ -29,7 +29,7 @@ interface DropDownTitleViewProps {
 
 const DropDownTitleView: React.FC<DropDownTitleViewProps> = ({
   title = false,
-  iconleft = true,
+  iconleft = false,
   containerStyle,
   placeholder,
 }) => {

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, FlatList, Image } from "react-native";
-// import { Card, Avatar } from "react-native-paper";
+import { Card, Avatar } from "react-native-paper";
 import {
   CustomDropdownIndicator,
   InputField,
@@ -16,6 +16,8 @@ interface User {
 const users: User[] = [
   { id: "1", name: "Amir" },
   { id: "2", name: "Hamid M." },
+  { id: "3", name: "Daniel Koffman" },
+  { id: "3", name: "Daniel Koffman" },
   { id: "3", name: "Daniel Koffman" },
 ];
 
@@ -43,7 +45,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 <View style={styles.dateContainer}>
                   <Text style={styles.dateText}>{date}</Text>
                 </View>
-                <CustomDropdownIndicator />
+                <CustomDropdownIndicator placeholder="Priority" />
               </View>
               <View style={styles.descriptionContainer}>
                 <InputField
@@ -55,14 +57,14 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
             </View>
             <View style={{}}>
               <View style={styles.custom5}>
-                <Text style={styles.sectionTitle}>3 Users</Text>
+                <Text style={styles.sectionTitle}>{`${users?.length} Users`}</Text>
                 <FlatList
                   data={users}
                   keyExtractor={(item) => item.id}
                   contentContainerStyle={styles.custom6}
                   renderItem={({ item }) => (
                     <View style={styles.userRow}>
-                      {/* <Avatar.Text size={40} style={styles.avatar} /> */}
+                      <Avatar.Text size={40} style={styles.avatar} />
                       <Text style={styles.customText}>{item.name}</Text>
                     </View>
                   )}
