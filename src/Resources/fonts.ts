@@ -13,9 +13,9 @@ export const MontserratRegular = "Montserrat-Regular";
 export const MontserratLight = "Montserrat-Light";
 export const MontserratMedium = "Montserrat-Medium";
 
-export const RobotoMedium= "Roboto-Medium";
-export const RobotoRegular= "Roboto-Regular";
-export const RochesterRegular= "Rochster-Regular";
-export const StyleScriptRegular= "StyleScript-Regular";
+export const RobotoMedium = "Roboto-Medium";
+export const RobotoRegular = "Roboto-Regular";
+export const RochesterRegular = "Rochster-Regular";
+export const StyleScriptRegular = "StyleScript-Regular";
 
-export const OpenSansSemiCondensedMedium= "OpenSans-SemiCondensedMedium";
+export const OpenSansSemiCondensedMedium = "OpenSans-SemiCondensedMedium";

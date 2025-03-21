@@ -190,15 +190,12 @@
 // export default MainNavigator;
 import React from "react";
 import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
-import {
-  NavigationContainer,
-  useNavigation,
-} from "@react-navigation/native";
+import { NavigationContainer, useNavigation } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import LoginScreen from "../Screens/Login/screen";
-import drawerTabs from './DrawerTabs/index'
-import FontLoader from "../assets/fonts/font";
+import drawerTabs from "./DrawerTabs/index";
+import FontLoader from "../../assets/fonts/font";
 // Dummy Screens (Replace with your actual screens)
 const LoginScreen1 = ({ navigation }) => (
   <View style={styles.screen}>
@@ -207,17 +204,17 @@ const LoginScreen1 = ({ navigation }) => (
   </View>
 );
 
-    const DashboardScreen = () => (
-    <View style={styles.screen}>
-        <Text>Dashboard Screen</Text>
-    </View>
-    );
+const DashboardScreen = () => (
+  <View style={styles.screen}>
+    <Text>Dashboard Screen</Text>
+  </View>
+);
 
-    const UserManagementScreen = () => (
-    <View style={styles.screen}>
-        <Text>User Management Screen</Text>
-    </View>
-    );
+const UserManagementScreen = () => (
+  <View style={styles.screen}>
+    <Text>User Management Screen</Text>
+  </View>
+);
 
 const ClientManagementScreen = () => (
   <View style={styles.screen}>
@@ -261,7 +258,9 @@ const Sidebar = () => {
       <TouchableOpacity onPress={() => navigation.navigate("User Management")}>
         <Text style={styles.item}>User Management</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Client Management")}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Client Management")}
+      >
         <Text style={styles.item}>Client Management</Text>
       </TouchableOpacity>
       <TouchableOpacity onPress={() => navigation.navigate("PO Management")}>
@@ -283,28 +282,24 @@ const Sidebar = () => {
 // Drawer Navigator
 const Drawer = createDrawerNavigator();
 
-
 // Stack Navigator
 const Stack = createStackNavigator();
 
 const MainNavigator = () => {
   return (
-    
     // <NavigationContainer>
-      <Stack.Navigator initialRouteName="Login">
-
-
-        <Stack.Screen
-          name="Login"
-          component={LoginScreen}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="Portal"
-          component={drawerTabs} // Drawer Navigator after Login
-          options={{ headerShown: false }}
-        />
-      </Stack.Navigator>
+    <Stack.Navigator initialRouteName="Login">
+      <Stack.Screen
+        name="Login"
+        component={LoginScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Portal"
+        component={drawerTabs} // Drawer Navigator after Login
+        options={{ headerShown: false }}
+      />
+    </Stack.Navigator>
     //  </NavigationContainer>
   );
 };
@@ -325,7 +320,7 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 18,
     paddingVertical: 10,
-    color:'red',
+    color: "red",
   },
 });
 

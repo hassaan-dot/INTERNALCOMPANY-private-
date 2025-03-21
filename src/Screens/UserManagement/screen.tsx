@@ -1,11 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { ScreenHeader, CompanyTable, AttendenceModal } from "../../Components";
+import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
-import { useNavigation } from "@react-navigation/native";
-import {generateData} from '../../utils/Props/TableDataUserManagemenr/props'
-import {styles} from './styles'
-const UserManagement: React.FC<{ route: any }> = ({ route }) => {
+import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
+import { styles } from "./styles";
+
+const UserManagement = () => {
   const navigation = useNavigation();
   const [ModalOpen, setModalOpen] = useState(false);
   const [AttendenceModalOpen, setAttendenceModalOpen] = useState(false);
@@ -20,13 +21,13 @@ const UserManagement: React.FC<{ route: any }> = ({ route }) => {
     setAttendenceModalOpen(false);
     navigation.navigate("User Details");
   }
-  const DATA= generateData();
+  const DATA = generateData();
   return (
     <>
       <View style={styles.container1}>
         <ScreenHeader
           create={true}
-          title={route.name}
+          title={"User Management"}
           onPress={CreatClient}
         ></ScreenHeader>
 

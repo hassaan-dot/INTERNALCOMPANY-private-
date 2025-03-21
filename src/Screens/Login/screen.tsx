@@ -1,62 +1,40 @@
 import React, { useState } from "react";
-import { Button, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import {
   CheckBox,
   InputField,
-  TitleAndDescription,
   OTPmodal,
+  TitleAndDescription,
 } from "../../Components";
 import styles from "./style";
-import {loginApi} from '../../Common/Store/Actions/General/loginApi';
 
-import { useDispatch, useSelector } from "react-redux";
-import { PoppinsRegular } from "../../Resources/fonts";
 import { useNavigation } from "@react-navigation/native";
-import helpers from "../../utils/helpers";
-import { useAuthStore } from "../../../Common/Store/store";
-import {
-  GET_LOGIN_API,
-  POST_LOGIN_API,
-} from "@/src/Common/Store/Actions/General/ActionTypes/ApiActionTypes";
-const LoginScreen: React.FC = () => {
-  // const { signIn, loading } = useAuthStore();
-  const dispatch = useDispatch();
-  // console.log(useAuthStore())
-  // const { login, loading, error, twoFactorRequired } = useAuthStore();
+import { PoppinsRegular } from "../../Resources/fonts";
+import { useLogin } from "@/hooks/useLogin";
 
-  const [email, setEmail] = useState("test@example.com");
-  const [password, setPassword] = useState("Test123");
-  const [token_2fa, settoken_2fa] = useState("");
+const LoginScreen: React.FC = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const navigation = useNavigation();
   const [modalVisible, setModalVisible] = useState(false);
   function set0penfunction() {
-    setModalVisible(true)
+    setModalVisible(true);
     // dispatch(loginApi(email, password,token_2fa,handleOtpSuccess, handleOtpFailure));
   }
   function onSubmitFunction() {
     navigation.navigate("Portal");
     setModalVisible(false);
   }
-  
 
-  const handleOtpFailure = (error) => {
-    console.log("OTP sending failed:", error);
-  };
-  const handleOtpSuccess = (response) => {
-    console.log("OTP sending failed:", respose);
-  };
+  const { mutate, data, isError, error } = useLogin();
 
-  // const handleLogin = async () => {
-  //   const response = await login(email, password);
-  //   if (response) {
-  //     console.log("Login Successful:", response);
-  //   } else {
-  //     console.error("Login Failed",response);
-  //   }
-  // };
-  const handleLogin = async () => {
-    await signIn(email, password);
+  const handlePressLogin = () => {
+    const data = {
+      email,
+      password,
+    };
+    mutate(data);
   };
 
   return (
@@ -135,7 +113,7 @@ const LoginScreen: React.FC = () => {
           </View>
           <View style={{ marginTop: 10 }}>
             <TouchableOpacity
-              onPress={() => set0penfunction()}
+              onPress={handlePressLogin}
               style={styles.loginButton}
             >
               <Text style={styles.loginText}>Login</Text>

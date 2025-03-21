@@ -1,27 +1,11 @@
-import { StyleSheet, Text, View } from "react-native";
-import Index from '../src/web'
-export default function Page() {
-  return (<Index></Index>);
-}
+import { useAuthStore } from "@/store/useAuthStore";
+import { Redirect } from "expo-router";
+import React from "react";
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    padding: 24,
-  },
-  main: {
-    flex: 1,
-    justifyContent: "center",
-    maxWidth: 960,
-    marginHorizontal: "auto",
-  },
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-  },
-  subtitle: {
-    fontSize: 36,
-    color: "#38434D",
-  },
-});
+const Home = () => {
+  const { token } = useAuthStore();
+  if (!token) return <Redirect href={"/(auth)/login"} />;
+  return <Redirect href={"/(app)/dashboard"} />;
+};
+
+export default Home;

@@ -1,0 +1,122 @@
+import { PoppinsRegular } from "@/constants/fonts";
+import { drawer_items } from "@/constants/sidebar";
+import helpers from "@/src/utils/helpers";
+import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import { usePathname, useRouter } from "expo-router";
+import { useCallback } from "react";
+import { StyleSheet, View } from "react-native";
+// import styles from "./styles";
+
+const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  drawerContent: {
+    flex: 1,
+    backgroundColor: "white",
+    borderWidth: 0,
+  },
+  logoContainer: {
+    alignItems: "center",
+    paddingVertical: 20,
+  },
+  logo: {
+    width: 100,
+    height: 100,
+  },
+  drawerItems: {
+    flex: 1,
+    backgroundColor: "white",
+    marginTop: helpers.normalize(20),
+  },
+  drawerItem: {
+    marginVertical: 0,
+    borderRadius: 10,
+    padding: 0,
+    // paddingVertical:20,
+
+    marginBottom: 12,
+    // marginV:10,
+    justifyContent: "center",
+    height: helpers.hp(5.5),
+  },
+  drawerItemLabel: {
+    fontSize: 14,
+    fontWeight: "500",
+    color: "#A47C60",
+    fontFamily: PoppinsRegular,
+  },
+  submenuContainer: {
+    marginLeft: 20,
+  },
+  submenuItem: {
+    paddingVertical: 10,
+  },
+  submenuDots: {
+    fontSize: 24,
+    color: "#000",
+  },
+  submenuTextname: {
+    fontSize: 14,
+    marginLeft: 10,
+  },
+  signOutContainer: {
+    padding: 20,
+    borderTopWidth: 1,
+    borderTopColor: "#ccc",
+  },
+  signOutButton: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  signOutIcon: {
+    marginRight: 10,
+  },
+  signOutText: {
+    fontSize: 16,
+    fontWeight: "600",
+  },
+});
+
+const CustomDrawerItem = () => {
+  const router = useRouter();
+  const pathname = usePathname();
+
+  console.log("path", pathname);
+
+  const handleTabPress = useCallback((tabName: any) => {
+    return router.push(tabName);
+  }, []);
+
+  return (
+    <DrawerContentScrollView contentContainerStyle={styles.drawerContent}>
+      <View style={styles.logoContainer}></View>
+      <View style={styles.drawerItems}>
+        {drawer_items?.map((item, index) => (
+          <View key={index}>
+            <DrawerItem
+              focused={pathname.includes(item.name)}
+              label={item.label}
+              icon={item.drawerIcon}
+              onPress={() => handleTabPress(item.name)}
+              style={styles.drawerItem}
+              labelStyle={[
+                styles.drawerItemLabel,
+                pathname.includes(item.name) && {
+                  color: "#FFF",
+                  fontWeight: "600",
+                },
+              ]}
+              activeTintColor="#2F317E"
+              activeBackgroundColor="#07504B"
+            />
+          </View>
+        ))}
+      </View>
+    </DrawerContentScrollView>
+  );
+};
+
+export default CustomDrawerItem;

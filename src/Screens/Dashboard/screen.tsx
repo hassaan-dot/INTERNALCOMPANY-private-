@@ -7,7 +7,8 @@ import {
   ScreenHeader,
 } from "../../Components";
 import { styles } from "./styles";
-const Dashboard: React.FC<{ route: any }> = ({ route }) => {
+
+const Dashboard = () => {
   const [isVisisble, setIsVisible] = useState(false);
   function Activate() {
     setIsVisible(true);
@@ -17,9 +18,8 @@ const Dashboard: React.FC<{ route: any }> = ({ route }) => {
   }
   return (
     <>
-    
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
-      <ScreenHeader title={route.name}></ScreenHeader>
+        <ScreenHeader title={"Dashboard"}></ScreenHeader>
         <View></View>
         <View style={styles.container2}>
           <PredictorCard color={"#38CB89"}></PredictorCard>
