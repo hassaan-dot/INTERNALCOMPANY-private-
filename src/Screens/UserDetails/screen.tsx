@@ -10,8 +10,14 @@ import {
 import CreateModal from "../../Components/Modals/createModal/component";
 // import TabSelector from "../../Components";
 import { styles } from "./styles";
-const UserDetails: React.FC<{ route: any }> = ({ route }) => {
+
+import {useLocalSearchParams} from "expo-router"
+
+const UserDetails = () => {
+  const {username, id} = useLocalSearchParams()
+  
   const [ModalOpen, setModalOpen] = useState(false);
+  
   function CreatClient() {
     setModalOpen(true);
   }
@@ -24,11 +30,13 @@ const UserDetails: React.FC<{ route: any }> = ({ route }) => {
   let showStatus = useState<boolean>(
     selectedTab !== "Purchasing Order List" ? true : false
   );
+
   console.log("showActions", showActions, "showStatus", showStatus);
   return (
     <>
       <ScrollView style={styles.container1}>
-        <ScreenHeader title={route?.name} onPress={CreatClient}></ScreenHeader>
+        <Text>{username} {id}</Text>
+        <ScreenHeader title={"User Detail"} onPress={CreatClient}></ScreenHeader>
 
         <UserProfile profile={true}></UserProfile>
         <View style={styles.container2}>

@@ -5,7 +5,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import { Stack } from "expo-router/stack";
 import React, { useEffect } from "react";
-
+import { ThemeProvider } from "../src/utils/theme/theme";
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
@@ -28,27 +28,28 @@ const RootLayout = () => {
 
   return (
     <QueryProvider>
-      <Stack screenOptions={{}}>
-        {/* Optionally configure static options outside the route.*/}
-        <Stack.Screen
-          name="index"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="(auth)"
-          options={{
-            headerShown: false,
-          }}
-        />
-        <Stack.Screen
-          name="(app)"
-          options={{
-            headerShown: false,
-          }}
-        />
-      </Stack>
+      <ThemeProvider>
+        <Stack screenOptions={{}}>
+          <Stack.Screen
+            name="index"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(auth)"
+            options={{
+              headerShown: false,
+            }}
+          />
+          <Stack.Screen
+            name="(app)"
+            options={{
+              headerShown: false,
+            }}
+          />
+        </Stack>
+      </ThemeProvider>
     </QueryProvider>
   );
 };

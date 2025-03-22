@@ -10,7 +10,7 @@ import CreateModal from "../../Components/Modals/createModal/component";
 // import TabSelector from "../../Components";
 import { styles } from "./styles";
 import { generateData } from "@/src/utils/Props/TableDataUserManagemenr/props";
-const ClientDetails: React.FC<{ route: any }> = ({ route }) => {
+const ClientDetails = () => {
   const [ModalOpen, setModalOpen] = useState(false);
   function CreatClient() {
     setModalOpen(true);
@@ -31,7 +31,7 @@ const ClientDetails: React.FC<{ route: any }> = ({ route }) => {
       <ScrollView style={styles.container}>
         <View style={styles.container2}>
           <ScreenHeader
-            title={"Client Details" || route?.name}
+            title={"Client Details"}
             onPress={CreatClient}
           ></ScreenHeader>
         </View>

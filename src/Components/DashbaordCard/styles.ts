@@ -1,24 +1,39 @@
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 import helpers from "../../utils/helpers";
 import { RobotoMedium, RobotoRegular } from "../../Resources/fonts";
-
+const { width, height } = Dimensions.get("window");
 export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
     // padding: 10,
-    
+    // flex:1,
     height: helpers.hp(65),
   },
   card: {
     backgroundColor: "#fff",  
     padding: 15,
+    // marginRight:15,
     paddingHorizontal:0,
     borderRadius: 16,
     // shadowColor: "#000",
     // shadowOpacity: 0.1,
     // shadowRadius: 4,
-    width: helpers.wp(37),
+    // width: helpers.wp(37),
+    flex:1,
+    elevation: 3,
+  },
+  card2: {
+    backgroundColor: "#fff",  
+    padding: 15,
+    marginHorizontal:20,
+    paddingHorizontal:0,
+    borderRadius: 16,
+    // shadowColor: "#000",
+    // shadowOpacity: 0.1,
+    // shadowRadius: 4,
+    // width: helpers.wp(37),
+    flex:1,
     elevation: 3,
   },
   cardTitle: {

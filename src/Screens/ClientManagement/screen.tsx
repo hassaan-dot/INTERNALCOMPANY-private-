@@ -5,8 +5,11 @@ import CreateModal from "../../Components/Modals/createModal/component";
 import { useNavigation } from "@react-navigation/native";
 import {generateData} from '../../utils/Props/TableDataUserManagemenr/props'
 import {styles} from './styles'
+import { useRouter } from "expo-router";
+
 const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   const DATA= generateData();
+
 
   const [AddModalOpen, setAddModalOpen] = useState(false);
   const [ReminderModalOpen, setReminderModalOpen] = useState(false);
@@ -26,10 +29,14 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     setReminderModalOpen(false);
     // setReminderModalOpen(true)
   }
+    const router = useRouter()
+  const onClickEye = (username:string, id: number) => {
+    router.push(`/(app)/client-management/client-details?username=${username}&id=${id}`)
+  }
   function onPressfunction2() {
     setReminderModalOpen(false);
     // setReminderModalOpen(true)
-    navigation.navigate("Client Details");
+    navigation.navigate("clientt-details");
   }
 
   return (
@@ -37,7 +44,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
       <View style={styles.container}>
         <ScreenHeader
           create={true}
-          title={route.name}
+          title={'Client Management'}
           onPress={CreatClient}
         ></ScreenHeader>
 
@@ -50,8 +57,12 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
             col5={"Action"}
             checkbox={true}
             showActions={true}
+            showEye={true}
+            onClickEye={onClickEye}
             pagination={true}
             DATA={DATA}
+
+            
           ></CompanyTable>
         </View>
       </View>

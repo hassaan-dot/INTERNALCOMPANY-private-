@@ -5,11 +5,15 @@ import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import { styles } from "./styles";
+import {useRouter} from "expo-router"
 
 const UserManagement = () => {
   const navigation = useNavigation();
   const [ModalOpen, setModalOpen] = useState(false);
   const [AttendenceModalOpen, setAttendenceModalOpen] = useState(false);
+
+  const router = useRouter()
+
   function CreatClient() {
     setModalOpen(true);
   }
@@ -17,10 +21,16 @@ const UserManagement = () => {
     setModalOpen(false);
     setAttendenceModalOpen(true);
   }
+  
   function onSubmitFunc() {
     setAttendenceModalOpen(false);
-    navigation.navigate("User Details");
+    // router.push("/(app)/user-management/user-details")
   }
+
+  const onClickEye = (username:string, id: number) => {
+    router.push(`/(app)/user-management/user-details?username=${username}&id=${id}`)
+  }
+
   const DATA = generateData();
   return (
     <>
@@ -42,7 +52,9 @@ const UserManagement = () => {
             checkbox={true}
             pagination={true}
             DATA={DATA}
-          ></CompanyTable>
+            showEye={true}
+            onClickEye={onClickEye}
+          />
         </View>
       </View>
 
@@ -51,7 +63,7 @@ const UserManagement = () => {
         clockIn={true}
         title={"Attendence"}
         isVisible={AttendenceModalOpen}
-      ></AttendenceModal>
+      />
 
       <CreateModal
         onSubmit={onPressfunction}
@@ -73,7 +85,7 @@ const UserManagement = () => {
         title={"Create User"}
         user={true}
         ninth={"Departmment"}
-      ></CreateModal>
+      />
     </>
   );
 };

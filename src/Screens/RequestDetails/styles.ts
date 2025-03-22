@@ -7,6 +7,7 @@ export const styles = StyleSheet.create({
     //   margin: ,
     //   padding: 15,
     padding: 10,
+    backgroundColor:"#F5F6FA",
     width: helpers.wp(47),
     left: helpers.normalize(-14),
     //  flexDirection:"row",
@@ -96,7 +97,7 @@ export const styles = StyleSheet.create({
   custom1: { backgroundColor: "#fff", flex: 1, margin: 25, marginTop: 15 },
   custom2: { flexDirection: "row", justifyContent: "space-around" },
   custom3:{ marginHorizontal: 25 },
-  custom4:{ flex: 1 },
+  custom4:{ flex: 1 ,backgroundColor:"#F5F6FA"},
   custom5:{
     padding: 20,
     backgroundColor: "#fff",

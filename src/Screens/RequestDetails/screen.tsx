@@ -32,7 +32,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
     <>
       <View style={styles.custom4}>
         <View style={styles.custom3}>
-          <ScreenHeader title={route?.name} />
+          <ScreenHeader title={'Request Details'} />
         </View>
         <View style={styles.custom1}>
           <View style={styles.custom2}>

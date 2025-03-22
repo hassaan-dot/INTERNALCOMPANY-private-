@@ -11,7 +11,7 @@ type useAuthStore = {
 };
 
 export const useAuthStore = create<useAuthStore>((set) => ({
-  token: "12345",
+  token: "123",
   user: null,
   setToken: (token) => set({ token }),
   setUser: (user) => set({ user }),

@@ -19,7 +19,10 @@ const Dashboard = () => {
   return (
     <>
       <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+        <View style={styles.container4}>
         <ScreenHeader title={"Dashboard"}></ScreenHeader>
+
+        </View>
         <View></View>
         <View style={styles.container2}>
           <PredictorCard color={"#38CB89"}></PredictorCard>

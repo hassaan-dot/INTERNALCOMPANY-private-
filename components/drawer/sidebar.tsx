@@ -39,7 +39,7 @@ const Sidebar = () => {
         <Drawer.Screen
           name={item.name}
           options={{
-            headerShown: false,
+            // headerShown: false,
             drawerLabel: item.label,
             title: item.label,
             drawerIcon: item.drawerIcon,

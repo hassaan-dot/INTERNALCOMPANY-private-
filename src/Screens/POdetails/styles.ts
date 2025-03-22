@@ -3,7 +3,7 @@ import { PoppinsRegular } from "../../Resources/fonts";
 import helpers from "../../utils/helpers";
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1,backgroundColor:"#F5F6FA" },
   container2: {
     backgroundColor: "white",
     flex: 1,

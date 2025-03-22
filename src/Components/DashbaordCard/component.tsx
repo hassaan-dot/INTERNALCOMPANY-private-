@@ -88,7 +88,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress,OnCancel }) => {
         />
       </View>
 
-      <View style={styles.card}>
+      <View style={styles.card2}>
         <View style={styles.newsHeader}>
           <Text style={styles.cardTitle}>News Panel</Text>
           <TouchableOpacity style={styles.addButton} onPress={onPress}>

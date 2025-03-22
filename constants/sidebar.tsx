@@ -30,48 +30,48 @@ export const drawer_items = [
       />
     ),
   },
-  // {
-  //   name: "dashboard",
-  //   label: "Client Management",
-  //   href: "/(app)/dashboard",
-  //   drawerIcon: (color, size, focused) => (
-  //     <Image
-  //       source={icons.drawertabUsersIcon}
-  //       style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-  //     />
-  //   ),
-  // },
-  // {
-  //   name: "dashboard",
-  //   label: "PO Management",
-  //   href: "/(app)/dashboard",
-  //   drawerIcon: (color, size, focused) => (
-  //     <Image
-  //       source={icons.drawertabLawIcon}
-  //       style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-  //     />
-  //   ),
-  // },
-  // {
-  //   name: "dashboard",
-  //   label: "Payment",
-  //   href: "/(app)/dashboard",
-  //   drawerIcon: (color, size, focused) => (
-  //     <Image
-  //       source={icons.drawertabnoteIcon}
-  //       style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-  //     />
-  //   ),
-  // },
-  // {
-  //   name: "dashboard",
-  //   label: "Requests",
-  //   href: "/(app)/dashboard",
-  //   drawerIcon: (color, size, focused) => (
-  //     <Image
-  //       source={icons.drawertabstarsupIcon}
-  //       style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-  //     />
-  //   ),
-  // },
+  {
+    name: "client-management",
+    label: "Client Management",
+    href: "/(app)/client-management",
+    drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+      <Image
+        source={icons.drawertabUsersIcon}
+        style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+      />
+    ),
+  },
+  {
+    name: "payment",
+    label: "Payment",
+    href: "/(app)/payment",
+    drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+      <Image
+        source={icons.drawertabnoteIcon}
+        style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+      />
+    ),
+  },
+  {
+    name: "po-management",
+    label: "PO Management",
+    href: "/(app)/po-management",
+    drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+      <Image
+        source={icons.drawertabstarsupIcon}
+        style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+      />
+    ),
+  },
+  {
+    name: "request",
+    label: "Request",
+    href: "/(app)/request",
+    drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+      <Image
+        source={icons.drawertabstarsupIcon}
+        style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+      />
+    ),
+  },
 ];

@@ -5,8 +5,8 @@ import CreateModal from "../../Components/Modals/createModal/component";
 import { useNavigation } from "@react-navigation/native";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import Styles from "./styles";
+import { useRouter } from "expo-router";
 const PO_Management: React.FC<{ route: any }> = ({ route }) => {
-
   const navigation = useNavigation();
 
   const DATA = generateData();
@@ -16,17 +16,19 @@ const PO_Management: React.FC<{ route: any }> = ({ route }) => {
   function onPressfunc() {
     return navigation.navigate("Add New PO");
   }
-
-  function Create() {
+  const router = useRouter()
+  const Handlenavigation = (username:string, id: number) => {
+    router.push(`/(app)/po-management/po-add?username=${username}&id=${id}`)
   }
+  function Create() {}
   return (
     <>
       <View style={Styles.container}>
         <ScreenHeader
           create={true}
           filter={true}
-          onPress={onPressfunc}
-          title={route.name}
+          onPress={Handlenavigation}
+          title={"Purchasing Orders"}
         ></ScreenHeader>
 
         <View>
@@ -42,7 +44,10 @@ const PO_Management: React.FC<{ route: any }> = ({ route }) => {
           ></CompanyTable>
         </View>
       </View>
-      <CreateModal create={true} visible={ModalOpen}></CreateModal>
+      <CreateModal
+       create={true} 
+       visible={ModalOpen}
+       ></CreateModal>
     </>
   );
 };

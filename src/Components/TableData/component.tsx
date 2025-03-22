@@ -25,7 +25,9 @@ interface CompanyTableProps {
   headerTextStyle?: any;
   rowTextStyle?: any;
   pagination?: boolean;
-  DATA:any
+  DATA:any;
+  showEye?: boolean
+  onClickEye?: (username:string, id:number) => void
 }
 //Our Prop Structure
 // const DATA: Company[] = Array.from({ length: 50 }, (_, i) => ({
@@ -93,7 +95,9 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   headerRowStyle,
   headerTextStyle,
   rowTextStyle,
-  pagination,DATA
+  pagination,DATA,
+  showEye = false,
+  onClickEye
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -116,6 +120,12 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         <View
           style={[styles.cell, rowTextStyle, { flex: 2 }, styles.actionIcons]}
         >
+          {showEye && <TouchableOpacity onPress={() => onClickEye &&  onClickEye(item.email, item.id)}>
+            <Image
+              source={icons.tableReadIcon}
+              style={{ width: 20, height: 20, marginRight: 6 }}
+            ></Image>
+          </TouchableOpacity>}
           <TouchableOpacity>
             <Image
               source={icons.tableDeleteIcon}

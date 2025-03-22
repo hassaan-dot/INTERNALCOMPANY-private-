@@ -2,7 +2,7 @@ import { StyleSheet } from "react-native";
 import { PoppinsRegular } from "../../Resources/fonts";
 
 const styles = StyleSheet.create({
-  container: { flex: 1 },
+  container: { flex: 1,backgroundColor:"#F5F6FA" },
   container2: { marginLeft: 25 },
   container3: {
     backgroundColor: "white",

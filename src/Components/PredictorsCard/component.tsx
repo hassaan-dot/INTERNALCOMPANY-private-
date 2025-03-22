@@ -150,14 +150,17 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 16,
     borderRadius: 10,
+    marginRight:20,
+    flex:1,
     // shadowColor: "#000",
     // shadowOpacity: 0.1,
     // shadowRadius: 4,
     flexDirection: "row",
     // alignItems:'center',
     justifyContent: "space-between",
+
     // elevation: 3,
-    width: helpers.wp(18),
+    // width: helpers.wp(18),
   },
   title: {
     color: "#999",

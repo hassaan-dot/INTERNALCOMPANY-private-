@@ -6,6 +6,7 @@ import CreateModal from "../../Components/Modals/createModal/component";
 import { useNavigation } from "@react-navigation/native";
 import {generateData} from '../../utils/Props/TableDataUserManagemenr/props'
 import {styles} from './styles'
+import { useRouter } from "expo-router";
 const Request: React.FC<{ route: any }> = ({ route }) => {
   
   const DATA= generateData();
@@ -15,7 +16,10 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
   function Create() {
     return navigation.navigate('Request Details')
   }
-
+  const router = useRouter()
+  const onClickEye = (username:string, id: number) => {
+    router.push(`/(app)/request/request-details?username=${username}&id=${id}`)
+  }
   return (
     <>
       
@@ -23,7 +27,7 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
       <ScreenHeader
         create={true}
         // filter={true}
-        title={route.name}
+        title={'Request List'}
         onPress={Create}
       ></ScreenHeader>
 
@@ -39,6 +43,9 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
             DATA={DATA}
             showActions={true}
             pagination={true}
+            showEye={true}
+            onClickEye={onClickEye}
+
             
           ></CompanyTable>
         </View>

@@ -4,8 +4,9 @@ const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 35,
     flex: 1,
+    backgroundColor:"#F5F6FA"
   },
-  container2: { marginLeft: 25 } ,
+  container2: { marginTop: 10 } ,
    
 });
 export default styles;

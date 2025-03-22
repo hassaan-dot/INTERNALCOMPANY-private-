@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  container1: { flex: 1, marginHorizontal: 30 },
+  container1: { flex: 1, paddingHorizontal: 30,backgroundColor:"#F5F6FA" },
   container3: {
     flexDirection: "row",
     alignItems: "center",

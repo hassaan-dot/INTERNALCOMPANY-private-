@@ -4,18 +4,23 @@ import { ScreenHeader, CompanyTable } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import Styles from "./styles";
-const PaymentHis: React.FC<{ route: any }> = ({ route }) => {
+import { useRouter } from "expo-router";
+const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   const DATA = generateData();
   const [ModalOpen, setModalOpen] = useState(false);
   function CreatClient() {
     setModalOpen(true);
+  }
+  const router = useRouter()
+  const onClickEye = (username:string, id: number) => {
+    router.push(`/(app)/payment/payment-details?username=${username}&id=${id}`)
   }
   return (
     <>
       <View style={Styles.container}>
         <ScreenHeader
           create={true}
-          title={route.name}
+          title={'Payment History'}
           onPress={CreatClient}
         ></ScreenHeader>
 
@@ -30,6 +35,8 @@ const PaymentHis: React.FC<{ route: any }> = ({ route }) => {
             checkbox={true}
             pagination={true}
             DATA={DATA}
+            showEye={true}
+            onClickEye={onClickEye}
           ></CompanyTable>
         </View>
       </View>
@@ -38,4 +45,4 @@ const PaymentHis: React.FC<{ route: any }> = ({ route }) => {
   );
 };
 
-export default PaymentHis;
+export default PaymentHistoryScreen;

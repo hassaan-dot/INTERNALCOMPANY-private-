@@ -51,7 +51,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
     <>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={{ marginLeft: 25 }}>
-          <ScreenHeader buttonView={true} title={route.name}></ScreenHeader>
+          <ScreenHeader buttonView={true} title={'PO Details'}></ScreenHeader>
         </View>
         <View style={styles.container2}>
           <View style={styles.section}>

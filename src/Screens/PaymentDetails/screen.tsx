@@ -18,7 +18,7 @@ const PaymentDetails: React.FC<{ route: any }> = ({ route }) => {
     <>
       <ScrollView style={styles.container}>
         <View style={styles.container2}>
-          <ScreenHeader title={route.name} onPress={Create}></ScreenHeader>
+          <ScreenHeader title={'Payment Details'} onPress={Create}></ScreenHeader>
         </View>
         <View style={styles.container3}>
           <View style={styles.LoginBox}>
