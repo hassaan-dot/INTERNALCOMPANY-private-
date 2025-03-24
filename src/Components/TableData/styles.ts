@@ -19,9 +19,9 @@ export const styles = StyleSheet.create({
   headerText: {
     color: "#A9A9A9",
     flexDirection: "column",
-    alignItems: "center",
-    alignSelf: "center",
+    alignItems: "flex-start",
     fontFamily: PoppinsRegular,
+    paddingRight: 20,
   },
   row: {
     flexDirection: "row",
@@ -35,6 +35,7 @@ export const styles = StyleSheet.create({
   cell: {
     flex: 1,
     fontFamily: PoppinsRegular,
+    paddingRight: 20,
   },
   activePageButton: {
     backgroundColor: "#07504B",
@@ -67,10 +68,10 @@ export const styles = StyleSheet.create({
     fontFamily: PoppinsRegular,
   },
   customDesign: {
-    flex: 2,
+    flex: 1,
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
   },
-  customHeader: { flexDirection: "row", alignItems: "center", flex: 2 },
+  customHeader: { flexDirection: "row", alignItems: "center", flex: 1 },
 });

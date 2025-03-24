@@ -3,14 +3,13 @@ import { Text, TouchableOpacity, View } from "react-native";
 import { ScreenHeader, CompanyTable } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { useNavigation } from "@react-navigation/native";
-import {generateData} from '../../utils/Props/TableDataUserManagemenr/props'
-import {styles} from './styles'
+import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
+import { styles } from "./styles";
 import { useRouter } from "expo-router";
+import { useGetClient } from "@/hooks/useClient";
+import { columns_schema } from "./_schema";
 
 const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
-  const DATA= generateData();
-
-
   const [AddModalOpen, setAddModalOpen] = useState(false);
   const [ReminderModalOpen, setReminderModalOpen] = useState(false);
   const navigation = useNavigation();
@@ -29,40 +28,38 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     setReminderModalOpen(false);
     // setReminderModalOpen(true)
   }
-    const router = useRouter()
-  const onClickEye = (username:string, id: number) => {
-    router.push(`/(app)/client-management/client-details?username=${username}&id=${id}`)
-  }
+  const router = useRouter();
+  const onClickEye = (username: string, id: number) => {
+    router.push(
+      `/(app)/client-management/client-details?username=${username}&id=${id}`
+    );
+  };
   function onPressfunction2() {
     setReminderModalOpen(false);
     // setReminderModalOpen(true)
-    navigation.navigate("clientt-details");
+    navigation.navigate("client-details");
   }
+
+  const { data, isPending, error } = useGetClient();
 
   return (
     <>
       <View style={styles.container}>
         <ScreenHeader
           create={true}
-          title={'Client Management'}
+          title={"Client Management"}
           onPress={CreatClient}
         ></ScreenHeader>
 
         <View>
           <CompanyTable
-            col1={"Company no"}
-            col2={"Email"}
-            col3={"Phone number"}
-            col4={"Person Contact"}
-            col5={"Action"}
+            columns_schema={columns_schema}
             checkbox={true}
             showActions={true}
             showEye={true}
             onClickEye={onClickEye}
             pagination={true}
-            DATA={DATA}
-
-            
+            DATA={data}
           ></CompanyTable>
         </View>
       </View>

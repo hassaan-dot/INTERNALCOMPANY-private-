@@ -3,6 +3,7 @@ import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { styles } from "./styles";
 import { icons } from "../../Resources";
 import { CheckBox } from "..";
+import { columns_schema } from "@/src/Screens/ClientManagement/_schema";
 // interface Company {
 //   id: number;
 //   email: string;
@@ -13,11 +14,10 @@ import { CheckBox } from "..";
 // }
 
 interface CompanyTableProps {
-  col1: string;
-  col2: string;
-  col3: string;
-  col4: string;
-  col5: string;
+  columns_schema: {
+    key: string;
+    header: string;
+  }[];
   showActions?: boolean;
   showStatus?: boolean;
   checkbox?: boolean;
@@ -25,9 +25,9 @@ interface CompanyTableProps {
   headerTextStyle?: any;
   rowTextStyle?: any;
   pagination?: boolean;
-  DATA:any;
-  showEye?: boolean
-  onClickEye?: (username:string, id:number) => void
+  DATA: any;
+  showEye?: boolean;
+  onClickEye?: (username: string, id: number) => void;
 }
 //Our Prop Structure
 // const DATA: Company[] = Array.from({ length: 50 }, (_, i) => ({
@@ -41,7 +41,6 @@ interface CompanyTableProps {
 
 // const DATA= generateData();
 
-const ITEMS_PER_PAGE = 10;
 const TableHeader: React.FC<CompanyTableProps & { isSelectable?: boolean }> = ({
   col1,
   col2,
@@ -59,21 +58,16 @@ const TableHeader: React.FC<CompanyTableProps & { isSelectable?: boolean }> = ({
   // items
 }) => (
   <View style={[styles.headerRow, headerRowStyle]}>
-    <View style={styles.customHeader}>
-      {checkbox && <CheckBox></CheckBox>}
-      <Text style={[styles.headerText, headerTextStyle, { flex: 2 }]}>
-        {col1}
+    <View style={styles.customHeader}>{checkbox && <CheckBox></CheckBox>}</View>
+    {columns_schema?.map((c, index) => (
+      <Text
+        key={index}
+        style={[styles.headerText, headerTextStyle, { flex: 2 }]}
+      >
+        {c?.header}
       </Text>
-    </View>
-    <Text style={[styles.headerText, headerTextStyle, { flex: 2 }]}>
-      {col2}
-    </Text>
-    <Text style={[styles.headerText, headerTextStyle, { flex: 2 }]}>
-      {col3}
-    </Text>
-    <Text style={[styles.headerText, headerTextStyle, { flex: 2 }]}>
-      {col4}
-    </Text>
+    ))}
+
     {showActions && (
       <Text style={[styles.headerText, headerTextStyle, { flex: 2 }]}>
         Actions
@@ -84,48 +78,54 @@ const TableHeader: React.FC<CompanyTableProps & { isSelectable?: boolean }> = ({
 );
 
 const CompanyTable: React.FC<CompanyTableProps> = ({
-  col1,
-  col2,
-  col3,
-  col4,
-  col5,
+  columns_schema,
   showActions,
   showStatus,
   checkbox = false,
   headerRowStyle,
   headerTextStyle,
   rowTextStyle,
-  pagination,DATA,
+  pagination,
+  DATA,
   showEye = false,
-  onClickEye
+  onClickEye,
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedData = DATA.slice(startIndex, startIndex + ITEMS_PER_PAGE);
-  const totalPages = Math.ceil(DATA.length / ITEMS_PER_PAGE);
+  const ITEMS_PER_PAGE = DATA?.meta?.pagination?.pageSize;
 
-  const renderItem = ({ item }: { item: Company }) => (
+  const startIndex = (DATA?.meta?.pagination?.page - 1) * ITEMS_PER_PAGE;
+  const paginatedData = DATA?.data?.slice(
+    startIndex,
+    startIndex + ITEMS_PER_PAGE
+  );
+  const totalPages = DATA?.meta?.pagination?.pageCount;
+
+  const renderItem = ({ item }: { item: any }) => (
     <View style={styles.row}>
-      <View style={[styles.customDesign,rowTextStyle]}>
-        {checkbox && <CheckBox></CheckBox>}
-        <Text style={styles.cell}>{item?.id}</Text>
+      <View style={[styles.customDesign, rowTextStyle]}>
+        {checkbox && <CheckBox />}
       </View>
-      <Text style={[styles.cell, rowTextStyle, { flex: 2 }]}>{item?.email}</Text>
-      <Text style={[styles.cell, rowTextStyle, { flex: 2 }]}>{item?.phone}</Text>
-      <Text style={[styles.cell, rowTextStyle, { flex: 2 }]}>
-        {item?.contactPerson}
-      </Text>
+      {columns_schema?.map((c, index) => (
+        <Text key={index} style={[styles.cell, rowTextStyle, { flex: 2 }]}>
+          {item?.[c.key]}
+        </Text>
+      ))}
+
       {showActions && (
         <View
           style={[styles.cell, rowTextStyle, { flex: 2 }, styles.actionIcons]}
         >
-          {showEye && <TouchableOpacity onPress={() => onClickEye &&  onClickEye(item.email, item.id)}>
-            <Image
-              source={icons.tableEyeIcon}
-              style={{ width: 20, height: 20, marginRight: 6 }}
-            ></Image>
-          </TouchableOpacity>}
+          {showEye && (
+            <TouchableOpacity
+              onPress={() => onClickEye && onClickEye(item.email, item.id)}
+            >
+              <Image
+                source={icons.tableEyeIcon}
+                style={{ width: 20, height: 20, marginRight: 6 }}
+              ></Image>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity>
             <Image
               source={icons.tableDeleteIcon}
@@ -179,11 +179,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         renderItem={renderItem}
         ListHeaderComponent={() => (
           <TableHeader
-            col1={col1}
-            col2={col2}
-            col3={col3}
-            col4={col4}
-            col5={col5}
+            columns_schema={columns_schema}
             checkbox={checkbox}
             showActions={showActions}
             headerTextStyle={headerTextStyle}

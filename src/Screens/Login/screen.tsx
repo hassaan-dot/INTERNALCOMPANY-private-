@@ -15,7 +15,6 @@ import { string } from "@/src/Resources/strings";
 import ActionSheet from "@/src/Components/ActionSheet/DropdownItems/ActionSheet";
 import ConfirmDelievery from "@/src/Components/ActionSheet/ConfirmDelievery/ActionSheet";
 
-
 const LoginScreen: React.FC = () => {
   const isMobileView = Platform.OS == "ios";
   const [email, setEmail] = useState("");
@@ -33,19 +32,19 @@ const LoginScreen: React.FC = () => {
   }
   const [isVisible, setIsVisible] = useState(false);
 
-  const { mutate, data, isError, error } = useLogin();
+  const { mutate } = useLogin();
 
   const handlePressLogin = () => {
-    setIsVisible(true)
+    setIsVisible(true);
     const data = {
       identifier: email,
       password: password,
     };
     mutate(data);
   };
-  const onButtonPress=()=>{
-    return setIsVisible(false)
-  }
+  const onButtonPress = () => {
+    return setIsVisible(false);
+  };
 
   return (
     <View style={[styles.container, isMobileView && styles.container2]}>
@@ -67,9 +66,19 @@ const LoginScreen: React.FC = () => {
         <View style={{}}>
           <View>
             <TitleAndDescription
-              titleTextStyle={[styles.titleTextStyle,isMobileView && styles.titleTextStyle2]}
-              textStyle={[styles.textStyle,,isMobileView && styles.titleTextStyle2]}
-              subtitleContainer={[styles.subtitle,isMobileView && styles.subtitle2]}
+              titleTextStyle={[
+                styles.titleTextStyle,
+                isMobileView && styles.titleTextStyle2,
+              ]}
+              textStyle={[
+                styles.textStyle,
+                ,
+                isMobileView && styles.titleTextStyle2,
+              ]}
+              subtitleContainer={[
+                styles.subtitle,
+                isMobileView && styles.subtitle2,
+              ]}
               title={isMobileView ? string.loginEmail : string.login}
               desc={isMobileView ? "email" : string.logindesc}
             ></TitleAndDescription>
@@ -101,7 +110,7 @@ const LoginScreen: React.FC = () => {
               title="Password"
             ></InputField>
           </View>
-          <View style={[styles.section,isMobileView && styles.section2]}>
+          <View style={[styles.section, isMobileView && styles.section2]}>
             {!isMobileView && (
               <CheckBox
                 style={styles.checkbox}
@@ -117,24 +126,25 @@ const LoginScreen: React.FC = () => {
           <View style={{ marginTop: 10 }}>
             <TouchableOpacity
               onPress={handlePressLogin}
-              style={[styles.loginButton,isMobileView && styles.loginButton2]}
+              style={[styles.loginButton, isMobileView && styles.loginButton2]}
             >
-              <Text style={[styles.loginText,isMobileView && styles.loginText2]}>{string.Login}</Text>
+              <Text
+                style={[styles.loginText, isMobileView && styles.loginText2]}
+              >
+                {string.Login}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>
         <OTPmodal visible={modalVisible} onSubmit={onSubmitFunction}></OTPmodal>
-        <ActionSheet 
-        Visible={isVisible}
-        onButtonPress={onButtonPress}
-        >
-        
-        </ActionSheet>
+        <ActionSheet
+          Visible={isVisible}
+          onButtonPress={onButtonPress}
+        ></ActionSheet>
         {/* <ConfirmDelievery
                Visible={isVisible}
                onButtonPress={onButtonPress}
           ></ConfirmDelievery> */}
-
       </View>
     </View>
   );
