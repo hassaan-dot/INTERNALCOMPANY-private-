@@ -38,8 +38,8 @@ const LoginScreen: React.FC = () => {
   const handlePressLogin = () => {
     setIsVisible(true)
     const data = {
-      email,
-      password,
+      identifier: email,
+      password: password,
     };
     mutate(data);
   };

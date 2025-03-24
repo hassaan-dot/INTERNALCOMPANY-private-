@@ -3,17 +3,17 @@ import { create } from "zustand";
 
 type useAuthStore = {
   token: string | null;
-  user: string | null;
+  user: any | null;
   setToken: (token: string | null) => void;
-  setUser: (user: string | null) => void;
+  setUser: (user: any | null) => void;
   isLoadingData: boolean;
   loadData: () => void;
 };
 
 export const useAuthStore = create<useAuthStore>((set) => ({
-  token: "123",
-  user: null,
+  token: null,
   setToken: (token) => set({ token }),
+  user: null,
   setUser: (user) => set({ user }),
   isLoadingData: true,
   loadData: async () => {
