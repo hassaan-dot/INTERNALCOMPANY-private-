@@ -113,6 +113,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
         <FlatList
           data={newsData}
           keyExtractor={(item) => item.id}
+          nestedScrollEnabled={false} 
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
           renderItem={({ item }) => (
             <View style={styles.row}>

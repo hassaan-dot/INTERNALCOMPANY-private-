@@ -1,4 +1,4 @@
-import { PoppinsRegular } from "@/constants/fonts";
+import { MulishRegular, PoppinsRegular } from "@/constants/fonts";
 import helpers from "@/src/utils/helpers";
 import { StyleSheet } from "react-native";
 
@@ -10,13 +10,13 @@ export const styles = StyleSheet.create({
     header: { fontSize: 24, fontWeight: "bold", textAlign: "center", marginBottom: 20, color: "#a7a7f4" },
     profileCard: { flexDirection: "row", alignItems: "center", backgroundColor: "#F3F6FF", padding: 15, borderRadius: 12, marginBottom: 20,paddingVertical:20 },
     avatar: { width: 50, height: 50, borderRadius: 25, marginRight: 15 },
-    name: { fontSize: 16, fontWeight: "700", color: "#CCD9FF",marginBottom:5 },
-    phone: { fontSize: 14, color: "#666",marginBottom:5 },
-    email: { fontSize: 14, color: "#888" },
-    settingsHeader: { fontSize: 16, fontWeight: "700", color: "#CCD9FF", marginBottom: 22,marginTop:8 },
+    name: { fontSize: 16, fontWeight: "700", color: "#CCD9FF",marginBottom:5,fontFamily:MulishRegular },
+    phone: { fontSize: 12,fontWeight: "400", color: "#666",marginBottom:5,fontFamily:MulishRegular },
+    email: { fontSize: 12, color: "#666", fontWeight: "400",  },
+    settingsHeader: { fontSize: 16, fontWeight: "700", color: "#CCD9FF", marginBottom: 22,marginTop:8,fontFamily:MulishRegular },
     settingsItem: { flexDirection: "row", alignItems: "center",justifyContent:'space-between', padding: 15,paddingHorizontal:4 },
     icon: { fontSize: 18, marginRight: 10 },
-    label: { fontSize: 14,fontWeight:'500',fontFamily:PoppinsRegular },
+    label: { fontSize: 14,fontWeight:'500',fontFamily:MulishRegular },
     arrow: { fontSize: 16, color: "#bbb" },
     image:{width:20,height:20,marginRight:18}
   });

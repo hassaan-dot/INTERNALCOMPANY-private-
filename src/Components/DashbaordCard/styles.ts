@@ -8,7 +8,7 @@ export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    height: isMobileView ? helpers.hp(50) : helpers.hp(65),
+    height: isMobileView ? helpers.hp(41) : helpers.hp(65),
   },
   newsHeader2: { justifyContent: "center" },
   card3: { borderWidth: 5, borderColor: "#CCD9FF" },
@@ -56,6 +56,7 @@ export const styles = StyleSheet.create({
   actionText: {
     color: "#8D6E63",
     fontFamily: RobotoRegular,
+    flex:1
   },
 
   code: {

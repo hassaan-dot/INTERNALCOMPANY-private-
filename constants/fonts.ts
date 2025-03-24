@@ -10,6 +10,7 @@ export const Fonts = {
   //   'Montserrat-Light': require('@/src/assets/fonts/Montserrat-Light.ttf'),
   //   'Montserrat-Medium': require('@/src/assets/fonts/Montserrat-Medium.ttf'),
   "Roboto-Medium": require("../assets/fonts/Roboto/RobotoMedium.ttf"),
+  "Mulish-Regular": require("../assets/fonts/mulish/Mulish-Regular.ttf"),
   "Roboto-Regular": require("../assets/fonts/Roboto/RobotoRegular.ttf"),
   "Rochester-Regular": require("../assets/fonts/Rochester/RochesterRegular.ttf"),
   //   'StyleScript-Regular': require('@/src/assets/fonts/StyleScriptRegular.ttf'),
@@ -18,7 +19,7 @@ export const Fonts = {
 
 export const TangerineBold = "Tangerine-Bold";
 export const TangerineRegular = "Tangerine-Regular";
-
+export const MulishRegular='Mulish-Regular'
 export const PoppinsRegular = "Poppins-Regular";
 export const PoppinsSemiBold = "Poppins-SemiBold";
 export const PoppinsBold = "Poppins-Bold";

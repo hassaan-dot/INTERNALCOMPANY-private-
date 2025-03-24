@@ -8,7 +8,7 @@ import {
   FlatList,
 } from "react-native";
 import { styles } from "./styles";
-import { Header } from "@/src/Components";
+import { Avatar, Header } from "@/src/Components";
 import { icons } from "@/assets/icons/icons";
 import { Feather } from '@expo/vector-icons';
 
@@ -20,10 +20,7 @@ type ProfileCardProps = {
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ name, phone, email }) => (
   <View style={styles.profileCard}>
-    <Image
-      source={{ uri: "https://via.placeholder.com/50" }}
-      style={styles.avatar}
-    />
+    <Avatar></Avatar>
     <View>
       <Text style={styles.name}>{name}</Text>
       <Text style={styles.phone}>{phone}</Text>

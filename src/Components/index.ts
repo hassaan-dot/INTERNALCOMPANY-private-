@@ -33,6 +33,9 @@ import ConfirmRecieving from "./Modals/confirmRecieving/component";
 import AttendenceModal from "./Modals/Attendence/component";
 import StatusBadge from "./StatusIcon/component";
 import Header from './MobileScreenHeader/component'
+import Avatar from "./Avatar/component";
+import MobileScreenHeader from './MobileScreenHeader/component'
+import Admineader from './adminHeader/component'
 export {
   FilledButton,
   Sidebar,
@@ -68,5 +71,7 @@ export {
   ConfirmRecieving,
   AttendenceModal,
   StatusBadge,
-  Header
+  Header,Avatar,
+  MobileScreenHeader,
+  Admineader,
 };
