@@ -15,7 +15,7 @@ import helpers from "../../utils/helpers";
 // Define types for the component's props
 interface CustomButtonProps {
   text?: string;
-  title: string;
+  title?: string;
   style?: any;
   textStyle?: any;
   onPress: () => void;
@@ -35,10 +35,13 @@ interface CustomButtonProps {
   rightIconStyle?: ViewStyle;
   desc: any;
   descTextprop: any;
+  Imagecontainer?:any
+  Imagecontainer2?:any
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
-  text = "Hassaann",
+  text,
+  Imagecontainer,
   title,
   style,
   textStyle,
@@ -59,7 +62,9 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   rightIconStyle,
   desc,
   descTextprop,
+  Imagecontainer2
 }) => {
+  console.log(title)
   return (
     <TouchableOpacity
       style={[styles.button, style, { backgroundColor: Color }]}
@@ -73,14 +78,14 @@ const CustomButton: React.FC<CustomButtonProps> = ({
               <View>
                 <Image
                   source={icons.documendPdfIcon}
-                  style={styles.image}
+                  style={[styles.image,Imagecontainer]}
                 ></Image>
               </View>
             )}
           </View>
           <View>
             <View>
-              {text && (
+              {title && (
                 <Text style={[styles.buttonText, textStyle]}>{title}</Text>
               )}
             </View>
@@ -93,7 +98,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
         </View>
         <View>
           {rightIcon && (
-            <Image source={icons.documentDownloadIcon} style={styles.image1}></Image>
+            <Image source={icons.documentDownloadIcon} style={[styles.image1,Imagecontainer2]}></Image>
           )}
         </View>
       </View>
@@ -104,10 +109,10 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 const styles = StyleSheet.create({
   button: {
     flexDirection: "row",
-    // backgroundColor: '#fff',
+    backgroundColor: 'red',
     // height: 25,
     borderRadius: 8,
-    width:helpers.wp(13),
+    // width:helpers.wp(13),
     alignItems: "center",
     // justifyContent: "center",
     flex:1,

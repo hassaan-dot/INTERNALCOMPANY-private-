@@ -48,6 +48,9 @@ const Component: React.FC<ComponentProps> = ({
                 {
                   flexDirection: icon ? "row" : "column",
                   alignItems: "center",
+                  // backgroundColor:'red',
+                  // padding:20
+                  // backgroundColor:"pink"
                 },
               ]}
             >
@@ -63,7 +66,7 @@ const Component: React.FC<ComponentProps> = ({
                 </View>
               )}
 
-              <View>
+              <View style={{}}>
                 <Text style={[styles.title, titleTextStyle]}>{title}</Text>
               </View>
             </View>

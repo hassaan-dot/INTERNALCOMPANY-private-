@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
+import { Platform, ScrollView, View } from "react-native";
 import {
   CardSection,
   NewsModal,
@@ -18,17 +18,21 @@ const Dashboard = () => {
   }
   return (
     <>
-      <ScrollView showsVerticalScrollIndicator={false} style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false} style={[styles.container]}>
         <View style={styles.container4}>
-        <ScreenHeader title={"Dashboard"}></ScreenHeader>
-
+          <ScreenHeader  title={"Dashboard"}></ScreenHeader>
         </View>
         <View></View>
-        <View style={styles.container2}>
-          <PredictorCard color={"#38CB89"}></PredictorCard>
-          <PredictorCard color={"#FFA600"}></PredictorCard>
-          <PredictorCard color={"#FF5630"}></PredictorCard>
-          <PredictorCard color={"#38CB89"}></PredictorCard>
+        <View style={[styles.container2]}>
+          <View style={styles.container5}>
+            <PredictorCard style={styles.container6} color={"#38CB89"}></PredictorCard>
+            <PredictorCard style={styles.container6}  color={"#FFA600"}></PredictorCard>
+          </View>
+
+          <View style={[styles.container5]}>
+            <PredictorCard style={styles.container6}  color={"#FF5630"}></PredictorCard>
+            <PredictorCard style={styles.container6} color={"#38CB89"}></PredictorCard>
+          </View>
         </View>
         <View style={styles.container3}>
           <CardSection onPress={Activate} OnCancel={deActivate}></CardSection>

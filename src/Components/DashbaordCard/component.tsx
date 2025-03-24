@@ -1,12 +1,16 @@
 import React from "react";
-import { View, Text, FlatList, Image, TouchableOpacity } from "react-native";
-import HorizontalLine from "../HorizontalLine/HorizontalLine";
-// import { Ionicons } from "@expo/vector-icons";
-import { styles } from "./styles";
-import Svg, { LinearGradient, Stop, Rect } from "react-native-svg";
+import {
+  FlatList,
+  Image,
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Svg, { LinearGradient, Rect, Stop } from "react-native-svg";
 import { icons } from "../../Resources";
+import { styles } from "./styles";
 
-// import { Line, LinearGradient } from "react-native-svg";
 type POItem = {
   id: string;
   name: string;
@@ -20,7 +24,6 @@ type NewsItem = {
   name: string;
   message: string;
   avatar: string;
-
 };
 
 const assignedPOs: POItem[] = [
@@ -43,15 +46,15 @@ const newsData: NewsItem[] = [
 ];
 
 interface CardSectionProps {
-  onPress?: () => void; 
-  OnCancel?:() => void;// Function prop (if needed)
+  onPress?: () => void;
+  OnCancel?: () => void; 
 }
 
-const CardSection: React.FC<CardSectionProps> = ({ onPress,OnCancel }) => {
+const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
+  const isMobileView = Platform.OS === "ios";
   return (
     <View style={styles.container}>
-      {/* Your Assigned PO */}
-      <View style={styles.card}>
+      {/* <View style={styles.card}>
         <Text style={styles.cardTitle}>Your Assigned PO</Text>
         <View style={{ marginVertical: 10 }}>
         <Svg height="1" width="100%">
@@ -86,36 +89,32 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress,OnCancel }) => {
             </View>
           )}
         />
-      </View>
+      </View> */}
 
-      <View style={styles.card2}>
-        <View style={styles.newsHeader}>
+      <View style={[styles.card2, isMobileView && styles.card3]}>
+        <View style={[styles.newsHeader, isMobileView && styles.newsHeader2]}>
           <Text style={styles.cardTitle}>News Panel</Text>
-          <TouchableOpacity style={styles.addButton} onPress={onPress}>
-            <Text style={styles.addButtonText}>Add News</Text>
-          </TouchableOpacity>
+          {!isMobileView && (
+            <TouchableOpacity style={styles.addButton} onPress={onPress}>
+              <Text style={styles.addButtonText}>Add News</Text>
+            </TouchableOpacity>
+          )}
         </View>
         <View style={{ marginVertical: 10 }}>
-          <HorizontalLine></HorizontalLine>
           <Svg height="1" width="100%">
-        <LinearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
-          <Stop offset="0%" stopColor="rgba(0,0,0,0)" />
-          <Stop offset="50%" stopColor="#000" />
-          <Stop offset="100%" stopColor="rgba(0,0,0,0)" />
-        </LinearGradient>
-        <Rect x="0" y="0" width="100%" height="1" fill="url(#grad)" />
-      </Svg>
+            <LinearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
+              <Stop offset="0%" stopColor="rgba(0,0,0,0)" />
+              <Stop offset="50%" stopColor="#000" />
+              <Stop offset="100%" stopColor="rgba(0,0,0,0)" />
+            </LinearGradient>
+            <Rect x="0" y="0" width="100%" height="1" fill="url(#grad)" />
+          </Svg>
         </View>
         <FlatList
           data={newsData}
           keyExtractor={(item) => item.id}
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
           renderItem={({ item }) => (
-            // <View style={styles.row}>
-            //   <Image source={{ uri: item.avatar }} style={styles.avatar} />
-            //   <Text style={styles.name}>{item.name}</Text>
-            //   <Text style={styles.message}>{item.message}</Text>
-            // </View>
             <View style={styles.row}>
               <View style={styles.profileView}>
                 <Image source={{ uri: item.avatar }} style={styles.avatar} />
@@ -124,11 +123,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress,OnCancel }) => {
               <View style={styles.customView2}>
                 <Text style={styles.actionText}>{item.message}</Text>
               </View>
-              <View style={styles.customView3}></View>
-
-              {/* <Text style={styles.code}>{item.code}</Text> */}
-              {/* <Ionicons name="arrow-forward-circle-outline" size={20} color="#5C6BC0" /> */}
-              {/* <TouchableOpacity>{"->"}</TouchableOpacity> */}
+              {!isMobileView && <View style={styles.customView3}></View>}
             </View>
           )}
         />

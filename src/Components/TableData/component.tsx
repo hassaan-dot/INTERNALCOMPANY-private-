@@ -122,7 +122,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         >
           {showEye && <TouchableOpacity onPress={() => onClickEye &&  onClickEye(item.email, item.id)}>
             <Image
-              source={icons.tableReadIcon}
+              source={icons.tableEyeIcon}
               style={{ width: 20, height: 20, marginRight: 6 }}
             ></Image>
           </TouchableOpacity>}
@@ -141,6 +141,12 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
           <TouchableOpacity>
             <Image
               source={icons.tableReadIcon}
+              style={{ width: 20, height: 20 }}
+            ></Image>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Image
+              source={icons.tableDocumentIcon}
               style={{ width: 20, height: 20 }}
             ></Image>
           </TouchableOpacity>

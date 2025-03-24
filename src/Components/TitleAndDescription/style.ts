@@ -9,7 +9,8 @@ export const styles = StyleSheet.create({
     fontSize:37,
     fontFamily:PoppinsMedium,
     fontWeight:'700',
-    color:'white'
+    color:'white',
+    // paddingRight:30,
   },
   subtitleCont: {
     // paddingHorizontal: helpers.normalize(5),

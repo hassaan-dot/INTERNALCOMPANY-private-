@@ -81,7 +81,7 @@
 
 // export default PredictorCard;
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, Text, StyleSheet, Image, Platform } from "react-native";
 import Svg, { Circle, Text as SvgText } from "react-native-svg";
 import helpers from "../../utils/helpers";
 import { icons } from "../../Resources";
@@ -89,19 +89,21 @@ import { PoppinsLight, PoppinsMedium, PoppinsRegular } from "../../Resources/fon
 
 type PredictorCardProps = {
   color: string;
+  style:any
 };
 
-const PredictorCard: React.FC<PredictorCardProps> = ({ color }) => {
+const PredictorCard: React.FC<PredictorCardProps> = ({ color,style }) => {
   const percentage: number = 74; // Circular progress value
+  const isMobileView = Platform.OS === "ios";
 
   return (
-    <View style={styles.card}>
+    <View style={[styles.card,style]}>
       <View>
-        <Text style={styles.title}>Total Paid PO</Text>
-        <Text style={styles.value}>5672</Text>
-        <View style={{flexDirection:'row',alignItems:'center'}}>
+        <Text style={[styles.title]}>Total Paid PO</Text>
+        <Text style={[styles.value,isMobileView&&styles.value2]}>5672</Text>
+        <View style={{flexDirection:'row',alignItems:'center',marginTop:10,}}>
           <Image source={icons.trendupIcon} style={{width:10,height:10,borderRadius:20,padding:5,backgroundColor:'#29AB91',}}></Image>
-        <Text style={styles.increaseText}> 14% Inc</Text>
+        <Text style={[styles.increaseText,isMobileView&&styles.increaseText2]}> 14% Inc</Text>
 
         </View>
       
@@ -146,6 +148,7 @@ const PredictorCard: React.FC<PredictorCardProps> = ({ color }) => {
 };
 
 const styles = StyleSheet.create({
+  
   card: {
     backgroundColor: "#fff",
     padding: 16,
@@ -172,14 +175,20 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "300",
     color: "#000",
-    marginVertical: 5,
+    // marginVertical: 5,
     fontFamily:PoppinsRegular
-
+  },
+  value2: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#29292B",
+    fontFamily:PoppinsRegular
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    marginTop:10
   },
   increaseContainer: {
     flexDirection: "row",
@@ -192,6 +201,14 @@ const styles = StyleSheet.create({
     // color: "#4CAF50",
     fontSize: 12,
     fontWeight: "200",
+    marginLeft:5,
+    fontFamily:PoppinsRegular
+
+  },
+  increaseText2: {
+    color: "#333333",
+    fontSize: 8,
+    fontWeight: "400",
     marginLeft:5,
     fontFamily:PoppinsRegular
 

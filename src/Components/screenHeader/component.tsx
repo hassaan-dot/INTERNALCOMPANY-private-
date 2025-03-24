@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { View, Text, TouchableOpacity, Image, Platform } from "react-native";
 import styles from "./styles";
 import ProfileHeader from "../ProfileHeader/component";
 import { icons } from "../../Resources";
@@ -26,12 +26,13 @@ const ClientManagement: FC<ClientManagementProps> = ({
   buttonViewMulitiple = false,
   buttonView = false,
 }) => {
+  const isMobileView=Platform.OS === "ios"
   return (
     <View style={styles.container}>
       {/* <ProfileHeader /> */}
 
       <View style={styles.headerContainer}>
-        <Text style={styles.title}>{title}</Text>
+        <Text style={[styles.title,isMobileView &&styles.TitleDesign]}>{title}</Text>
 
         <View style={styles.buttonContainer}>
           {create && (

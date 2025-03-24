@@ -1,59 +1,48 @@
-import { Dimensions, StyleSheet } from "react-native";
+import { Dimensions, Platform, StyleSheet } from "react-native";
 import helpers from "../../utils/helpers";
 import { RobotoMedium, RobotoRegular } from "../../Resources/fonts";
 const { width, height } = Dimensions.get("window");
+const isMobileView = Platform.OS === "ios";
+
 export const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    // padding: 10,
-    // flex:1,
-    height: helpers.hp(65),
+    height: isMobileView ? helpers.hp(50) : helpers.hp(65),
   },
+  newsHeader2: { justifyContent: "center" },
+  card3: { borderWidth: 5, borderColor: "#CCD9FF" },
   card: {
-    backgroundColor: "#fff",  
+    backgroundColor: "#fff",
     padding: 15,
-    // marginRight:15,
-    paddingHorizontal:0,
+    paddingHorizontal: 0,
     borderRadius: 16,
-    // shadowColor: "#000",
-    // shadowOpacity: 0.1,
-    // shadowRadius: 4,
-    // width: helpers.wp(37),
-    flex:1,
+    flex: 1,
     elevation: 3,
   },
   card2: {
-    backgroundColor: "#fff",  
+    backgroundColor: "#fff",
     padding: 15,
-    marginHorizontal:20,
-    paddingHorizontal:0,
-    borderRadius: 16,
-    // shadowColor: "#000",
-    // shadowOpacity: 0.1,
-    // shadowRadius: 4,
-    // width: helpers.wp(37),
-    flex:1,
-    elevation: 3,
+    marginHorizontal: isMobileView ? 0 : 20,
+    borderRadius: 16.38,
+    flex: 1,
   },
   cardTitle: {
     fontSize: 20,
     fontFamily: RobotoMedium,
     fontWeight: "600",
     padding: 10,
-    paddingHorizontal:20,
+    paddingHorizontal: 20,
     paddingTop: 5,
-    color:'#1B2A39'
-    // marginBottom: 10,
+    color: "#1B2A39",
   },
   row: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
-    // paddingVertical: 10,
   },
-  line: { flex:1, marginTop: 10 },
+  line: { flex: 1, marginTop: 10 },
   avatar: {
     width: 20,
     height: 20,
@@ -62,29 +51,27 @@ export const styles = StyleSheet.create({
   },
   name: {
     fontWeight: "400",
-    fontFamily:RobotoRegular
+    fontFamily: RobotoRegular,
   },
   actionText: {
     color: "#8D6E63",
-    fontFamily:RobotoRegular
-
+    fontFamily: RobotoRegular,
   },
 
   code: {
     color: "#5C6BC0",
-    fontFamily:RobotoRegular
-
+    fontFamily: RobotoRegular,
   },
   message: {
     color: "#8D6E63",
-    fontFamily:RobotoRegular
-
+    fontFamily: RobotoRegular,
   },
   newsHeader: {
     flexDirection: "row",
     justifyContent: "space-between",
+
     alignItems: "center",
-    paddingRight:12,
+    paddingRight: 12,
   },
   addButton: {
     backgroundColor: "#07504B",

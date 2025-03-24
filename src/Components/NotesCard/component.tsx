@@ -148,31 +148,9 @@ const NotesCard: React.FC<UserProfileProps> = ({
                 style={{
                   flexDirection: "row",
                   alignItems: "center",
-                  //   padding: 20,
                 }}
               >
-                {/* <CustomButton
-                  style={{
-                    flexDirection: "row",
-                    backgroundColor: "#fff",
-                    // height: 50,
-                    borderRadius: 8,
-                    // alignItems: "center",
-                    // justifyContent: "center",
-                    marginVertical: 10,
-                    // flex:1,
-                    padding:20,
-                  }}
-                  textStyle={{
-                    fontSize: 12,
-                    fontWeight: "600",
-                    color: "#0000",
-                  }}
-
-                  text={'Hassaan Khawaja'}
-                //   Color="#F3F6FF"
-                //   title={"Hassaan khawaja"}
-                ></CustomButton> */}
+           
                 <View style={{ marginVertical: 10,flexDirection:'row' }}>
                   {data.map((doc, index) => (
                     <View style={{marginBottom:48}}>

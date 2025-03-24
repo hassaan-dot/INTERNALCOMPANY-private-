@@ -267,6 +267,10 @@ import {
   TextInput,
   StyleSheet,
   TextInputProps,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Platform,
+  KeyboardAvoidingView,
 } from "react-native";
 import { PoppinsRegular } from "../../Resources/fonts";
 
@@ -291,9 +295,16 @@ const InputField: React.FC<InputFieldProps> = ({
   ...props
 }) => {
   return (
+  //  <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+  //  <KeyboardAvoidingView
+  //     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+  //     style={{ flex: 1 }}
+  //   >
     <View style={styles.container}>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
       <TextInput
+         returnKeyType="done" // Adds a "Done" button
+         onSubmitEditing={Keyboard.dismiss} 
         style={[styles.input, inputStyle]}
         value={value}
         onChangeText={onChangeText}
@@ -303,6 +314,8 @@ const InputField: React.FC<InputFieldProps> = ({
         {...props}
       />
     </View>
+    // </KeyboardAvoidingView>
+  //  </TouchableWithoutFeedback>
   );
 };
 

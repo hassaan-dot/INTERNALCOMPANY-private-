@@ -32,6 +32,7 @@ import CheckboxField from "./CheckField/component";
 import ConfirmRecieving from "./Modals/confirmRecieving/component";
 import AttendenceModal from "./Modals/Attendence/component";
 import StatusBadge from "./StatusIcon/component";
+import Header from './MobileScreenHeader/component'
 export {
   FilledButton,
   Sidebar,
@@ -67,4 +68,5 @@ export {
   ConfirmRecieving,
   AttendenceModal,
   StatusBadge,
+  Header
 };

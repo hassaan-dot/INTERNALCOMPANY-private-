@@ -14,6 +14,12 @@ const styles = StyleSheet.create({
     // paddingHorizontal: 25,
     // backgroundColor:'red',
   },
+  TitleDesign:{
+    fontSize:32,
+    fontWeight:'800',
+    color:'#000000'
+
+  },
   buttonContainer: {
     flexDirection: "row",
     gap: 10, // Adds spacing between buttons

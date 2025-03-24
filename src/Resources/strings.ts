@@ -1,3 +1,17 @@
-// export const string = {
-
-// };
+export const string = {
+login:'login',
+Login:'Login',
+loginEmail:"Log in with",
+enterEmail:'Enter email',
+EnteryourPassword:"Enter your Password",
+EnterPassword:"Enter password",
+logindesc:"Welcome Back,you have been missed!",
+RememberMe:"Remember Me",
+Forgetpassword:"Forget password ?",
+otpTitle:'Verification Code',
+otpdesc:'Please enter the code sent to ',
+enterCode:'Enter code',
+Submit:'Submit',
+ResendCode:'Resend Code',
+DidntrecieveCode:"Did'nt recieve the code?"
+};
