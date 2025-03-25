@@ -21,7 +21,8 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     fontFamily: PoppinsRegular,
-    paddingRight: 20,
+    // textAlign:'center'
+    // paddingRight: 20,
   },
   row: {
     flexDirection: "row",
@@ -33,9 +34,9 @@ export const styles = StyleSheet.create({
     backgroundColor: "#fff",
   },
   cell: {
-    flex: 1,
+    flex: 2,
     fontFamily: PoppinsRegular,
-    paddingRight: 20,
+    // paddingRight: 20,
   },
   activePageButton: {
     backgroundColor: "#07504B",
@@ -68,10 +69,10 @@ export const styles = StyleSheet.create({
     fontFamily: PoppinsRegular,
   },
   customDesign: {
-    flex: 1,
+    // flex: 1,
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
   },
-  customHeader: { flexDirection: "row", alignItems: "center", flex: 1 },
+  customHeader: { flexDirection: "row", alignItems: "center",  },
 });

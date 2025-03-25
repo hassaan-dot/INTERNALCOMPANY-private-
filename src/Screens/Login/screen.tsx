@@ -137,10 +137,10 @@ const LoginScreen: React.FC = () => {
           </View>
         </View>
         <OTPmodal visible={modalVisible} onSubmit={onSubmitFunction}></OTPmodal>
-        <ActionSheet
+        {/* <ActionSheet
           Visible={isVisible}
           onButtonPress={onButtonPress}
-        ></ActionSheet>
+        ></ActionSheet> */}
         {/* <ConfirmDelievery
                Visible={isVisible}
                onButtonPress={onButtonPress}

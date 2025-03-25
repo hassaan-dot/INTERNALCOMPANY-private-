@@ -36,6 +36,7 @@ import Header from './MobileScreenHeader/component'
 import Avatar from "./Avatar/component";
 import MobileScreenHeader from './MobileScreenHeader/component'
 import Admineader from './adminHeader/component'
+import truncateComponentName from "./WordTruncate/component";
 export {
   FilledButton,
   Sidebar,
@@ -74,4 +75,6 @@ export {
   Header,Avatar,
   MobileScreenHeader,
   Admineader,
+  truncateComponentName,
 };
+
