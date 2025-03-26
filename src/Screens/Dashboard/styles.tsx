@@ -25,7 +25,7 @@ export const styles = StyleSheet.create({
   container5: { flexDirection: "row", flex: 1 },
   container6: {
     marginRight: Platform.OS === "ios" ? 10 : 20,
-    marginHorizontal: Platform.OS === "ios" ? 0 : "",
+    marginHorizontal: Platform.OS === "ios" ? 0 :0 ,
     paddingHorizontal: Platform.OS === "ios" ? 5 : 10,
   },
 

@@ -1,29 +1,25 @@
+import { useGetUser } from "@/hooks/useUser";
+import { useEffect } from "react";
 import { create } from "zustand";
 
-type useModalStore = {
-  rowData: any;
-  setRowData: (rowData: any) => void;
-
+type UserStore = {
+  UserData: any;
+  setUserData: (rowData: any) => void;
   isClientModalOpen: boolean;
   setIsClientModalOpen: (isClientModalOpen: boolean) => void;
-
   isUserModalOpen: boolean;
   setIsUserModalOpen: (isUserModalOpen: boolean) => void;
-
-  isRequestModalOpen: boolean;
-  setIsRequestModalOpen: (isUserModalOpen: boolean) => void;
 };
 
-export const useModalStore = create<useModalStore>((set) => ({
+
+
+export const UserStore = create<UserStore>((set) => ({
+    
   isClientModalOpen: false,
   setIsClientModalOpen: (isClientModalOpen) => set({ isClientModalOpen }),
-
   isUserModalOpen: false,
   setIsUserModalOpen: (isUserModalOpen) => set({ isUserModalOpen }),
-
-  isRequestModalOpen: false,
-  setIsRequestModalOpen: (isRequestModalOpen) => set({ isRequestModalOpen }),
-
-  rowData: null,
-  setRowData: (rowData) => set({ rowData }),
+  UserData: null,
+  setUserData: (UserData) => set({ UserData }),
+//   handleFunction()
 }));

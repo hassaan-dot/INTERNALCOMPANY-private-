@@ -281,6 +281,7 @@ type InputFieldProps = {
   placeholder?: string;
   titleStyle?: any;
   inputStyle?: any;
+  multiline:any,
   secureTextEntry?: boolean;
 } & TextInputProps;
 
@@ -291,15 +292,13 @@ const InputField: React.FC<InputFieldProps> = ({
   titleStyle,
   placeholder,
   secureTextEntry,
+  multiline=false,
   inputStyle,
   ...props
+  
 }) => {
   return (
-  //  <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-  //  <KeyboardAvoidingView
-  //     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-  //     style={{ flex: 1 }}
-  //   >
+
     <View style={styles.container}>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
       <TextInput
@@ -308,8 +307,10 @@ const InputField: React.FC<InputFieldProps> = ({
         style={[styles.input, inputStyle]}
         value={value}
         onChangeText={onChangeText}
+        multiline={multiline}
+
         placeholder={placeholder}
-        placeholderTextColor={"#A9A9A9"}
+        placeholderTextColor={"#000"}
         secureTextEntry={secureTextEntry}
         {...props}
       />
@@ -321,7 +322,7 @@ const InputField: React.FC<InputFieldProps> = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 10,
+    // marginBottom: 10,
     marginVertical:5
   },
   title: {
@@ -337,9 +338,10 @@ const styles = StyleSheet.create({
     padding: 10,
     fontWeight: "500",
     fontSize: 16,
+    paddingVertical:8 ,
     // textAlignVertical:'top',
     fontFamily: PoppinsRegular,
-    paddingHorizontal: 15,
+    paddingHorizontal: 10,
     // fontSize: 15,
     height: 50,
   },

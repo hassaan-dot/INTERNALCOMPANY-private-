@@ -1,5 +1,4 @@
-import { useModalStore } from "@/store/useModalStore";
-import React, { useState } from "react";
+// import React, { useEffect, useState } from "react";
 import {
   Image,
   Modal,
@@ -11,6 +10,9 @@ import {
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
+import { CustomDropdownIndicator } from "../..";
+import { useEffect, useState } from "react";
+import { useModalStore } from "@/store/useModalStore";
 
 interface ClientModalProps {
   visible: boolean;
@@ -26,6 +28,7 @@ interface ClientModalProps {
     contactPerson?: string,
     phoneNumber?: string
   ) => void;
+  onLogin?: (username: string, password: string) => void; // New login prop
   First: string;
   Firstchild: string;
   Second: string;
@@ -42,15 +45,20 @@ interface ClientModalProps {
   Data: any;
   deleteD: boolean;
   update: boolean;
+  onPressUpdatefunction: any;
+  isLogin?: boolean; // Flag to indicate if this is a login modal
 }
 
-const CreateModal: React.FC<ClientModalProps> = ({
+const CreateUserModal: React.FC<ClientModalProps> = ({
   visible,
-  user,
   onClose,
   onSubmit,
+  Data,
+  user,
   create = false,
   deleteD = false,
+  update = false,
+  onLogin, // Destructure the new prop
   title,
   desc = false,
   invoice = false,
@@ -67,17 +75,25 @@ const CreateModal: React.FC<ClientModalProps> = ({
   eigth,
   ninth,
   modalContainerprop,
+  isLogin = false, // Default to false
 }) => {
+  const [Role, SetRole] = useState();
+  const [Dep, SetDep] = useState();
+
   const { rowData } = useModalStore();
   const [formData, setFormData] = useState(
     rowData ?? {
+      first_name: "",
+      last_name: "",
+      username: "",
       email: "",
-      contact_person_name: "",
-      company_name: "",
       phone_number: "",
+      password: "",
+      roles: "",
+      department: "",
     }
   );
-  console.log("rawig", rowData);
+
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -89,19 +105,41 @@ const CreateModal: React.FC<ClientModalProps> = ({
     onSubmit(formData);
   };
 
-  const validateForm = () => {
-    if (create) {
-      // Basic validation for create client form
-      return (
-        formData.contact_person_name.trim() !== "" &&
-        formData.email.trim() !== "" &&
-        formData.phone_number.trim() !== "" &&
-        formData.company_name.trim() !== ""
-      );
-    }
-    // Add other validation logic for different forms if needed
-    return true;
+  // const validateForm = () => {
+  //   if (isLogin) {
+  //     // Validation for login form
+  //     return formData.username.trim() !== "" && formData.password.trim() !== "";
+  //   }
+
+  //   if (create) {
+  //     // Basic validation for create client form
+  //     return (
+  //       formData.first_name.trim() !== "" &&
+  //       formData.email.trim() !== "" &&
+  //       formData.phone_number.trim() !== "" &&
+  //       formData.last_name.trim() !== ""
+  //     );
+  //   }
+  //   // Add other validation logic for different forms if needed
+  //   return true;
+  // };
+
+  type Item = {
+    key: any;
+    value: string;
   };
+
+  // const { data } = useUserRole();
+  // const { data } = useGetDepartment();
+
+  const items1: Item[] = [
+    { value: "Admin", key: 1 },
+    { value: "Employee", key: 2 },
+  ];
+  const items2: Item[] = [
+    { label: "anything", value: 1 },
+    // { label: "Employee", value: "2" },
+  ];
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -115,45 +153,44 @@ const CreateModal: React.FC<ClientModalProps> = ({
                     source={icons.modalIconOtp}
                     style={{ width: 60, height: 60 }}
                   />
-                  <Text style={styles.title}>
-                    {rowData?.isEdit ? "Update" : "Create"} Client
-                  </Text>
+                  <Text style={styles.title}>{title}</Text>
                 </>
               )}
 
-              {!create && (
+              {!create && !isLogin && (
                 <Text style={styles.title}>Send Payment Reminder</Text>
               )}
+
+              {isLogin && <Text style={styles.title}>Login</Text>}
 
               {desc && <Text style={styles.subtitle}>{desctext}</Text>}
             </View>
 
-            {First && (
+            <>
               <View style={[styleContainer]}>
                 <InputField
                   title={First}
                   placeholder={First}
-                  value={formData.contact_person_name}
-                  onChangeText={(text) =>
-                    handleInputChange("contact_person_name", text)
-                  }
+                  value={formData.first_name}
+                  onChangeText={(text) => handleInputChange("first_name", text)}
                   style={styles.input}
                   titleStyle={styles.fontSize}
                 />
-                {Firstchild && (
-                  <View style={{ marginLeft: 7 }}>
-                    <InputField
-                      title={Firstchild}
-                      placeholder={Firstchild}
-                      style={styles.input}
-                      titleStyle={styles.fontSize}
-                    />
-                  </View>
-                )}
-              </View>
-            )}
 
-            {Second && (
+                <View style={{ marginLeft: 7 }}>
+                  <InputField
+                    title={Firstchild}
+                    placeholder={Firstchild}
+                    value={formData.last_name}
+                    onChangeText={(text) =>
+                      handleInputChange("last_name", text)
+                    }
+                    style={styles.input}
+                    titleStyle={styles.fontSize}
+                  />
+                </View>
+              </View>
+
               <View>
                 <InputField
                   title={Second}
@@ -165,9 +202,31 @@ const CreateModal: React.FC<ClientModalProps> = ({
                   keyboardType="email-address"
                 />
               </View>
-            )}
 
-            {Third && (
+              <View>
+                <InputField
+                  title={"User Name"}
+                  placeholder={"Username"}
+                  value={formData.username}
+                  onChangeText={(text) => handleInputChange("username", text)}
+                  titleStyle={styles.fontSize}
+                  style={styles.input}
+                  keyboardType="email-address"
+                />
+              </View>
+
+              <View>
+                <InputField
+                  title={"Password"}
+                  placeholder={"Password"}
+                  value={formData.password}
+                  onChangeText={(text) => handleInputChange("password", text)}
+                  titleStyle={styles.fontSize}
+                  style={styles.input}
+                  keyboardType="email-address"
+                />
+              </View>
+
               <View>
                 <InputField
                   titleStyle={styles.fontSize}
@@ -181,80 +240,50 @@ const CreateModal: React.FC<ClientModalProps> = ({
                   keyboardType="phone-pad"
                 />
               </View>
-            )}
 
-            {Fourth && create && !invoice && (
               <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  title={Fourth}
-                  value={formData.company_name}
-                  onChangeText={(text) =>
-                    handleInputChange("company_name", text)
-                  }
-                  placeholder={Fourth}
-                  style={styles.input}
-                />
+                <CustomDropdownIndicator
+                  SetRole={SetRole}
+                  Role={Role}
+                  items={items1}
+                  title="Role"
+                ></CustomDropdownIndicator>
               </View>
-            )}
 
-            {(Fifth && !create) ||
-              (invoice && (
+              <View>
+                <CustomDropdownIndicator
+                  items={items2}
+                  title="Department"
+                  Role={Dep}
+                  SetRole={SetDep}
+                ></CustomDropdownIndicator>
+              </View>
+            </>
+
+            {isLogin && (
+              <>
                 <View>
                   <InputField
-                    titleStyle={styles.fontSize}
-                    title={Fifth}
-                    placeholder={Fifth}
+                    title="Username"
+                    placeholder="Enter your username"
+                    value={formData.username}
+                    onChangeText={(text) => handleInputChange("username", text)}
                     style={styles.input}
+                    titleStyle={styles.fontSize}
                   />
                 </View>
-              ))}
-
-            {Sixth && invoice && (
-              <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  title={Sixth}
-                  placeholder={Sixth}
-                  style={styles.input}
-                />
-              </View>
-            )}
-
-            {(seventh && !create) ||
-              (invoice && (
                 <View>
                   <InputField
-                    titleStyle={styles.fontSize}
-                    title={seventh}
-                    placeholder={seventh}
-                    style={styles.inputNote}
-                    multiline
-                  />
-                </View>
-              ))}
-
-            {(eigth && !create) ||
-              (invoice && (
-                <View>
-                  <InputField
-                    titleStyle={styles.fontSize}
-                    placeholder={eigth}
-                    title={eigth}
+                    title="Password"
+                    placeholder="Enter your password"
+                    value={formData.password}
+                    onChangeText={(text) => handleInputChange("password", text)}
                     style={styles.input}
+                    titleStyle={styles.fontSize}
+                    secureTextEntry
                   />
                 </View>
-              ))}
-
-            {(!user && create) || (
-              <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  placeholder={ninth}
-                  title={ninth}
-                  style={styles.input}
-                />
-              </View>
+              </>
             )}
           </ScrollView>
           <View style={styles.buttonContainer}>
@@ -264,34 +293,13 @@ const CreateModal: React.FC<ClientModalProps> = ({
             <TouchableOpacity
               style={[
                 styles.addButton,
-                !validateForm() && styles.disabledButton,
+                // !validateForm() && styles.disabledButton,
               ]}
-              onPress={
-                () =>
-                  // onPressUpdatefunction(
-                  //   formData?.company_name,
-                  //   formData?.email,
-                  //   formData?.contact_person_name,
-                  //   formData?.phone_number,
-                  //   formData?.documentId?.key
-                  // )
-                  // }
-                  handleSubmit()
-                // onSubmit(
-                //   formData?.companyName,
-                //   formData?.email,
-                //   formData?.contactPersonName,
-                //   formData?.phoneNumber
-                // )
-              }
+              onPress={handleSubmit}
               // disabled={!validateForm()}
             >
               <Text style={styles.addText}>
-                {create
-                  ? rowData?.isEdit
-                    ? "Update Client"
-                    : "Add Client"
-                  : "Update Client"}
+                {isLogin ? "Login" : !create ? "Send Reminder" : "Add Client"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -301,7 +309,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
   );
 };
 
-export default CreateModal;
+export default CreateUserModal;
 // import React, { useState, useEffect } from "react";
 // import {
 //   View,

@@ -1,91 +1,201 @@
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
 import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import { styles } from "./styles";
-import {useRouter} from "expo-router"
+import { useRouter } from "expo-router";
+import {
+  useCreateUser,
+  useDeleteUser,
+  useGetUser,
+  useUpdateUser,
+} from "@/hooks/useUser";
+import { User_columns_schema } from "../ClientManagement/_schema";
+import CreateUserModal from "@/src/Components/Modals/CreateModalUser/component";
+import { useModalStore } from "@/store/useModalStore";
+import { UserStore } from "./usershook";
 
 const UserManagement = () => {
-  const navigation = useNavigation();
+  const { isUserModalOpen, setIsUserModalOpen, rowData, setRowData } =
+    useModalStore();
+
+  const { UserData, setUserData } = UserStore();
+
   const [ModalOpen, setModalOpen] = useState(false);
+
   const [AttendenceModalOpen, setAttendenceModalOpen] = useState(false);
 
-  const router = useRouter()
+  const { data, isPending, error } = useGetUser();
 
-  function CreatClient() {
-    setModalOpen(true);
-  }
-  function onPressfunction() {
-    setModalOpen(false);
-    setAttendenceModalOpen(true);
-  }
-  
-  function onSubmitFunc() {
-    setAttendenceModalOpen(false);
-    // router.push("/(app)/user-management/user-details")
-  }
+  const router = useRouter();
 
-  const onClickEye = (username:string, id: number) => {
-    router.push(`/(app)/user-management/user-details?username=${username}&id=${id}`)
-  }
+  const { mutate: handleAdd } = useCreateUser();
 
-  const DATA = generateData();
+  const { mutate: handleUpdate } = useUpdateUser();
+
+  const { mutate: handleDelete } = useDeleteUser();
+
+  const onPressUpdatefunction = ({
+    first_name,
+    last_name,
+    username,
+    email,
+    phone_number,
+    password,
+    roles,
+    department,
+    id,
+  }: any) => {
+    if (!id) return;
+
+    const data = {
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      phone_number,
+      roles,
+      department,
+    };
+
+    handleUpdate({ data, id });
+  };
+
+  const onPressAddfunction = ({
+    first_name,
+    last_name,
+    username,
+    email,
+    phone_number,
+    password,
+    roles,
+    department,
+  }: any) => {
+    const data = {
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      phone_number,
+      roles,
+      department,
+    };
+
+    handleAdd(data);
+  };
+
+  const handleSubmit = (formData: any) => {
+    if (rowData?.isEdit) onPressUpdatefunction(formData);
+    else onPressAddfunction(formData);
+  };
+
+  const onPressEdit = ({
+    first_name,
+    last_name,
+    username,
+    email,
+    password,
+    phone_number,
+    roles,
+    department,
+    id,
+  }: any) => {
+    const data = {
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      phone_number,
+      roles,
+      department,
+      id,
+      isEdit: true,
+    };
+    setRowData(data);
+    setIsUserModalOpen(true);
+  };
+
+  const onPressDelete = (documentId: string) => {
+    const data = {
+      data: {
+        documentId: documentId,
+      },
+    };
+    console.log("deleted itwem is", documentId);
+    handleDelete(data);
+  };
+
+  const onOpenModal = () => {
+    setIsUserModalOpen(true);
+  };
+
+  const onCloseModal = () => {
+    setIsUserModalOpen(false);
+    setRowData(null);
+  };
+
+  const onClickEye = (username: string, id: number) => {
+    router.push(
+      `/(app)/user-management/user-details?username=${username}&id=${id}`
+    );
+  };
   return (
     <>
       <View style={styles.container1}>
         <ScreenHeader
           create={true}
           title={"User Management"}
-          onPress={CreatClient}
+          onPress={onOpenModal}
         ></ScreenHeader>
 
         <View>
           <CompanyTable
-            col1={"Name"}
-            col2={"Email"}
-            col3={"Phone number"}
-            col4={"Person Contact"}
-            col5={"Action"}
+            columns_schema={User_columns_schema}
             showActions={true}
             checkbox={true}
             pagination={true}
-            DATA={DATA}
+            DATA={data}
             showEye={true}
+            onPressUpdate={onPressEdit}
+            onPressDelete={onPressDelete}
             onClickEye={onClickEye}
           />
         </View>
       </View>
 
-      <AttendenceModal
+      {/* <AttendenceModal
         onSubmit={onSubmitFunc}
         clockIn={true}
         title={"Attendence"}
         isVisible={AttendenceModalOpen}
-      />
+      /> */}
 
-      <CreateModal
-        onSubmit={onPressfunction}
-        First="First Name"
-        Firstchild="Last name"
-        Second="Email Address"
-        Third="Phone number"
-        Fourth="Roles"
-        // Fifth="Departmnet"
-        // Sixth="Departmnet"
-        seventh="Departmnet"
-        eigth="Add document/Document"
-        desc={true}
-        desctext="Add your new users details"
-        // invoice={true}
-        styleContainer={{ flexDirection: "row" }}
-        create={true}
-        visible={ModalOpen}
-        title={"Create User"}
-        user={true}
-        ninth={"Departmment"}
-      />
+      {isUserModalOpen && (
+        <CreateUserModal
+          onClose={onCloseModal}
+          onSubmit={handleSubmit}
+          First="First Name"
+          Firstchild="Last name"
+          Second="Email Address"
+          Third="Phone number"
+          Fourth="Roles"
+          seventh="Departmnet"
+          eigth="Add document/Document"
+          desc={true}
+          desctext="Add your new users details"
+          styleContainer={{ flexDirection: "row" }}
+          create={true}
+          visible={isUserModalOpen}
+          title={"Create User"}
+          user={true}
+          ninth={"Departmment"}
+        />
+      )}
     </>
   );
 };

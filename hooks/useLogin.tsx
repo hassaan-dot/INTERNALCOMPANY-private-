@@ -22,6 +22,7 @@ export const useLogin = () => {
       await LocalStorage.save("token", data.jwt);
       await LocalStorage.save("user", data.user);
       router.replace("/(app)/dashboard");
+      
     },
     onError: (error) => {
       console.log("error", error);

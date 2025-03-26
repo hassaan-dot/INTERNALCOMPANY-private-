@@ -1,10 +1,9 @@
 import api from "@/services/axios";
-import LocalStorage from "@/services/local-storage";
-import { useAuthStore } from "@/store/useAuthStore";
+import { useModalStore } from "@/store/useModalStore";
+import { createIconSetFromFontello } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
-import {useModalStore} from "@/store/useModalStore"
- 
+
 const handleGetAllClient = async () => {
   const res = await api.get("/clients");
   return res.data;
@@ -14,8 +13,20 @@ const handleCreateClient = async (data: any) => {
   const res = await api.post("/clients", data);
   return res.data;
 };
-const handleUpdateClient = async (data: any) => {
-  const res = await api.post("/clients", data);
+
+const handleDeleteClient = async (data: any) => {
+  console.log("data is ", data.data.documentId);
+  const res = await api.delete(`/clients/${data.data.documentId}`);
+  return res.data;
+};
+
+const handleUpdateClient = async (data: any, id: string) => {
+  const res = await api.put(`/clients/${id}`, data);
+  return res.data;
+};
+
+const handleGetOneClient = async (documentId: string) => {
+  const res = await api.get(`/clients/${documentId}`);
   return res.data;
 };
 
@@ -26,40 +37,83 @@ export const useGetClient = () => {
   });
 };
 
-
 export const useCreateClient = () => {
-
-  const {setIsClientModalOpen} = useModalStore()
-  const queryClient = useQueryClient()
+  const { setIsClientModalOpen, setRowData } = useModalStore();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ["createClient"],
     mutationFn: (data: any) => handleCreateClient(data),
     onSuccess: async (data) => {
-      setIsClientModalOpen(false)
+      setIsClientModalOpen(false);
+      setRowData(null);
       queryClient.invalidateQueries({
         queryKey: ["clients"],
-      })
+      });
     },
     onError: (error) => {
       console.log("error", error);
     },
   });
 };
-export const useUpdateClient = () => {
 
-  const {setIsClientModalOpen} = useModalStore()
-  const queryClient = useQueryClient()
+export const useGetOneClient = () => {
+  const { setRowData, rowData } = useModalStore();
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation({
+    mutationKey: ["getoneRequest"],
+
+    mutationFn: ({ data, documentId }: any) => handleGetOneClient(documentId),
+    onSuccess: (data) => {
+      console.log("update informatiom", data);
+
+      setRowData(null);
+      queryClient.invalidateQueries({
+        queryKey: ["clients"],
+      });
+      router.push(
+        `/(app)/client-management/client-details?username=${rowData.title}&id=${rowData.documentId}`
+      );
+    },
+    onError: (error) => {
+      console.log("error", error);
+    },
+  });
+};
+
+export const useUpdateClient = () => {
+  const { setIsClientModalOpen, setRowData } = useModalStore();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationKey: ["updateClient"],
-    mutationFn: (data: any) => handleUpdateClient(data),
-    onSuccess: async (data) => {
-      console.log('update informatiom',data)
-      setIsClientModalOpen(false)
+    mutationFn: ({ data, id }: any) => handleUpdateClient(data, id),
+    onSuccess: (data) => {
+      console.log("update informatiom", data);
+      setIsClientModalOpen(false);
+      setRowData(null);
       queryClient.invalidateQueries({
         queryKey: ["clients"],
-      })
+      });
+    },
+    onError: (error) => {
+      console.log("error", error);
+    },
+  });
+};
+
+export const useDeleteClient = () => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["deleteClient"],
+    mutationFn: (data: any) => handleDeleteClient(data),
+    onSuccess: (data) => {
+      console.log("update informatiom", data);
+      queryClient.invalidateQueries({
+        queryKey: ["clients"],
+      });
     },
     onError: (error) => {
       console.log("error", error);

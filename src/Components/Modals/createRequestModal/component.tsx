@@ -1,5 +1,4 @@
-import { useModalStore } from "@/store/useModalStore";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Image,
   Modal,
@@ -8,6 +7,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+
+import { useGetUser } from "@/hooks/useUser";
+import { UserStore } from "@/src/Screens/UserManagement/usershook";
+import { useModalStore } from "@/store/useModalStore";
+import { CustomDropdownIndicator, MultiSelectDropdown } from "../..";
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
@@ -48,9 +52,9 @@ const CreateModal: React.FC<ClientModalProps> = ({
   visible,
   user,
   onClose,
-  onSubmit,
   create = false,
   deleteD = false,
+  onSubmit,
   title,
   desc = false,
   invoice = false,
@@ -69,15 +73,60 @@ const CreateModal: React.FC<ClientModalProps> = ({
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
+  const { UserData, setUserData } = UserStore();
+  const { data: UserApi, isPending, error } = useGetUser();
+
+  type Item = {
+    value: string;
+    label: any;
+  };
+
+  const items: Item[] = [
+    { value: "Priority", label: "Priority" },
+    { value: "Normal", label: "Normal" },
+  ];
+
+  const [value, setValue] = useState<string>("");
+
+  const [selectedUsers, setSelectedUsers] = useState([]);
+
+  // const handleSubmit = (formData: any) => {
+  //   if (rowData?.isEdit) onPressUpdatefunction(formData);
+  //   else onPressAddfunction(formData);
+  // };
+
   const [formData, setFormData] = useState(
     rowData ?? {
-      email: "",
-      contact_person_name: "",
-      company_name: "",
-      phone_number: "",
+      title: "",
+      description: "",
+      perform_on: "2025-09-25T02:14:37.074Z",
+      standing: "",
+      users: [],
     }
   );
-  console.log("rawig", rowData);
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      users: selectedUsers ? selectedUsers : rowData.users,
+    }));
+  }, [selectedUsers]); // Runs whenever selectedUsers changes
+
+  // Now, just modify selectedUsers, and formData.users updates automatically
+
+  const handleSelectUser = (value: string[]) => {
+    console.log("selected", value);
+    // setFormData((prev) => ({
+    //   ...prev,
+    //   users: [...prev.users, value],
+    // }));
+  };
+
+  const handleSubmit = () => {
+    // console.log("here it is", formData);
+    onSubmit(formData);
+
+    // );
+  };
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -85,21 +134,27 @@ const CreateModal: React.FC<ClientModalProps> = ({
     }));
   };
 
-  const handleSubmit = () => {
-    onSubmit(formData);
+  const transformUsersToDropdownItems = (users: any[]) => {
+    return (
+      users?.map((user) => ({
+        value: `${user?.first_name} ${user?.last_name}`,
+        key: user?.id,
+        original: user,
+      })) || []
+    );
   };
+  // console.log()
+  const userDropdownItems = transformUsersToDropdownItems(UserApi);
 
   const validateForm = () => {
-    if (create) {
-      // Basic validation for create client form
-      return (
-        formData.contact_person_name.trim() !== "" &&
-        formData.email.trim() !== "" &&
-        formData.phone_number.trim() !== "" &&
-        formData.company_name.trim() !== ""
-      );
-    }
-    // Add other validation logic for different forms if needed
+    // if (create) {
+    //   return (
+    //     formData.contact_person_name.trim() !== "" &&
+    //     formData.email.trim() !== "" &&
+    //     formData.phone_number.trim() !== "" &&
+    //     formData.company_name.trim() !== ""
+    //   );
+    // }
     return true;
   };
 
@@ -111,13 +166,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
             <View>
               {create && (
                 <>
-                  <Image
-                    source={icons.modalIconOtp}
-                    style={{ width: 60, height: 60 }}
-                  />
-                  <Text style={styles.title}>
-                    {rowData?.isEdit ? "Update" : "Create"} Client
-                  </Text>
+                  <Image source={icons.modalIconOtp} style={styles.modalIcon} />
+                  <Text style={styles.title}>Create Request</Text>
                 </>
               )}
 
@@ -125,137 +175,53 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 <Text style={styles.title}>Send Payment Reminder</Text>
               )}
 
-              {desc && <Text style={styles.subtitle}>{desctext}</Text>}
+              {desc && (
+                <Text style={styles.subtitle}>
+                  {"Add your new request as new details"}
+                </Text>
+              )}
             </View>
 
-            {First && (
-              <View style={[styleContainer]}>
-                <InputField
-                  title={First}
-                  placeholder={First}
-                  value={formData.contact_person_name}
-                  onChangeText={(text) =>
-                    handleInputChange("contact_person_name", text)
-                  }
-                  style={styles.input}
-                  titleStyle={styles.fontSize}
-                />
-                {Firstchild && (
-                  <View style={{ marginLeft: 7 }}>
-                    <InputField
-                      title={Firstchild}
-                      placeholder={Firstchild}
-                      style={styles.input}
-                      titleStyle={styles.fontSize}
-                    />
-                  </View>
-                )}
-              </View>
-            )}
+            <View style={{}}>
+              <InputField
+                title={"Title"}
+                placeholder={"Enter title"}
+                value={formData.title}
+                onChangeText={(text) => handleInputChange("title", text)}
+                titleStyle={styles.fontSize}
+                style={[styles.input, { paddingVertical: 8 }]}
+              />
+            </View>
 
-            {Second && (
-              <View>
-                <InputField
-                  title={Second}
-                  placeholder={Second}
-                  value={formData.email}
-                  onChangeText={(text) => handleInputChange("email", text)}
-                  titleStyle={styles.fontSize}
-                  style={styles.input}
-                  keyboardType="email-address"
-                />
-              </View>
-            )}
+            <View>
+              <InputField
+                titleStyle={styles.fontSize}
+                title={"description"}
+                multiline={formData?.description?.length > 50}
+                value={formData.description}
+                onChangeText={(text) => handleInputChange("description", text)}
+                placeholder={"Request Description"}
+                style={[styles.input, { paddingVertical: 8 }]}
+              />
+            </View>
 
-            {Third && (
-              <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  title={Third}
-                  value={formData.phone_number}
-                  onChangeText={(text) =>
-                    handleInputChange("phone_number", text)
-                  }
-                  placeholder={Third}
-                  style={styles.input}
-                  keyboardType="phone-pad"
-                />
-              </View>
-            )}
+            <View>
+              <CustomDropdownIndicator
+                title={"Role"}
+                Role={value}
+                SetRole={(val) => handleInputChange("standing", val)}
+                items={items}
+              ></CustomDropdownIndicator>
+            </View>
 
-            {Fourth && create && !invoice && (
-              <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  title={Fourth}
-                  value={formData.company_name}
-                  onChangeText={(text) =>
-                    handleInputChange("company_name", text)
-                  }
-                  placeholder={Fourth}
-                  style={styles.input}
-                />
-              </View>
-            )}
-
-            {(Fifth && !create) ||
-              (invoice && (
-                <View>
-                  <InputField
-                    titleStyle={styles.fontSize}
-                    title={Fifth}
-                    placeholder={Fifth}
-                    style={styles.input}
-                  />
-                </View>
-              ))}
-
-            {Sixth && invoice && (
-              <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  title={Sixth}
-                  placeholder={Sixth}
-                  style={styles.input}
-                />
-              </View>
-            )}
-
-            {(seventh && !create) ||
-              (invoice && (
-                <View>
-                  <InputField
-                    titleStyle={styles.fontSize}
-                    title={seventh}
-                    placeholder={seventh}
-                    style={styles.inputNote}
-                    multiline
-                  />
-                </View>
-              ))}
-
-            {(eigth && !create) ||
-              (invoice && (
-                <View>
-                  <InputField
-                    titleStyle={styles.fontSize}
-                    placeholder={eigth}
-                    title={eigth}
-                    style={styles.input}
-                  />
-                </View>
-              ))}
-
-            {(!user && create) || (
-              <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  placeholder={ninth}
-                  title={ninth}
-                  style={styles.input}
-                />
-              </View>
-            )}
+            <View>
+              <MultiSelectDropdown
+                title="Select Users"
+                items={userDropdownItems}
+                selectedItems={selectedUsers}
+                setSelectedItems={setSelectedUsers}
+              />
+            </View>
           </ScrollView>
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
@@ -266,24 +232,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 styles.addButton,
                 !validateForm() && styles.disabledButton,
               ]}
-              onPress={
-                () =>
-                  // onPressUpdatefunction(
-                  //   formData?.company_name,
-                  //   formData?.email,
-                  //   formData?.contact_person_name,
-                  //   formData?.phone_number,
-                  //   formData?.documentId?.key
-                  // )
-                  // }
-                  handleSubmit()
-                // onSubmit(
-                //   formData?.companyName,
-                //   formData?.email,
-                //   formData?.contactPersonName,
-                //   formData?.phoneNumber
-                // )
-              }
+              onPress={handleSubmit}
               // disabled={!validateForm()}
             >
               <Text style={styles.addText}>
@@ -302,6 +251,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
 };
 
 export default CreateModal;
+
 // import React, { useState, useEffect } from "react";
 // import {
 //   View,

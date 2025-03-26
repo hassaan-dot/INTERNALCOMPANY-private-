@@ -1,56 +1,187 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View } from "react-native";
-import { ScreenHeader, CompanyTable } from "../../Components";
-import CreateModal from "../../Components/Modals/createModal/component";
+import { CompanyTable, ScreenHeader } from "../../Components";
 // import Add_PO from "../../Screens/PO_Add/screen";
+import {
+  useCreateRequest,
+  useDeleteRequest,
+  useGetOneRequest,
+  useGetRequest,
+  useUpdateRequest,
+} from "@/hooks/useRequest";
+import { useGetUser } from "@/hooks/useUser";
+import CreateRequestModal from "@/src/Components/Modals/createRequestModal/component";
+import { useModalStore } from "@/store/useModalStore";
 import { useNavigation } from "@react-navigation/native";
-import {generateData} from '../../utils/Props/TableDataUserManagemenr/props'
-import {styles} from './styles'
 import { useRouter } from "expo-router";
+import { Requests_columns_schema } from "../ClientManagement/_schema";
+import { UserStore } from "../UserManagement/usershook";
+import { styles } from "./styles";
 const Request: React.FC<{ route: any }> = ({ route }) => {
-  
-  const DATA= generateData();
+  const { mutate: handleGetOne } = useGetOneRequest();
 
-  const navigation = useNavigation()
+  const { data } = useGetRequest();
+
+  const navigation = useNavigation();
+
   const [ModalOpen, setModalOpen] = useState(false);
+
+  const { UserData, setUserData } = UserStore();
+
+  const { data: UserApi, isPending, error } = useGetUser();
+
+  const { mutate: handleAdd } = useCreateRequest();
+  const { mutate: handleDelete } = useDeleteRequest();
+
+  const router = useRouter();
+  const { setIsRequestModalOpen, isRequestModalOpen, setRowData, rowData } =
+    useModalStore();
+
+  const { mutate: handleUpdate } = useUpdateRequest();
+
+  const onPressUpdatefunction = ({
+    title,
+    description,
+    perform_on,
+    standing,
+    users,
+    documentId,
+  }: any) => {
+    if (!standing) return;
+
+    const data = {
+      data: {
+        title: title,
+        description: description,
+        perform_on: perform_on,
+        standing: standing,
+        users: users,
+      },
+    };
+    // console.log("Data for update", data);
+    handleUpdate({ data, id: documentId });
+  };
+
+  useEffect(() => {
+    setUserData(UserApi);
+  }, [UserApi]);
+
+  const onPressAddfunction = ({
+    title,
+    description,
+    perform_on,
+    standing,
+    users,
+  }: any) => {
+    const data = {
+      data: {
+        title,
+        description,
+        perform_on,
+        standing,
+        users,
+      },
+    };
+
+    console.log("Data is", data);
+    handleAdd(data);
+  };
   function Create() {
-    return navigation.navigate('Request Details')
+    router.push(`/(app)/request/request-details`);
+
+    setIsRequestModalOpen(true);
   }
-  const router = useRouter()
-  const onClickEye = (username:string, id: number) => {
-    router.push(`/(app)/request/request-details?username=${username}&id=${id}`)
-  }
+
+  const onPressEdit = ({
+    title,
+    description,
+    perform_on,
+    standing,
+    users,
+    documentId,
+  }: any) => {
+    const data = {
+      title,
+      description,
+      perform_on,
+      standing,
+      users,
+      documentId,
+      isEdit: true,
+    };
+    setRowData(data);
+    setIsRequestModalOpen(true);
+  };
+  const onPressDelete = (documentId: string) => {
+    const data = {
+      data: {
+        documentId: documentId,
+      },
+    };
+    console.log("deleted itwem is", documentId);
+    handleDelete(data);
+  };
+  const onOpenModal = () => {
+    setIsRequestModalOpen(true);
+  };
+  const handleSubmit = (formData: any) => {
+    if (rowData?.isEdit) onPressUpdatefunction(formData);
+    else onPressAddfunction(formData);
+  };
+  const onCloseModal = () => {
+    setIsRequestModalOpen(false);
+    setRowData(null);
+  };
+  const onClickEye = ({ title, documentId }: any) => {
+    const data = {
+      data: {
+        title,
+      },
+    };
+    setRowData({ title, documentId });
+    console.log("Hassaaaaaan", rowData);
+    handleGetOne({ data, documentId });
+
+    // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
+  };
+
   return (
     <>
-      
       <View style={styles.container}>
-      <ScreenHeader
-        create={true}
-        // filter={true}
-        title={'Request List'}
-        onPress={Create}
-      ></ScreenHeader>
+        <ScreenHeader
+          create={true}
+          // filter={true}
+          title={"Request List"}
+          onPress={Create}
+        ></ScreenHeader>
 
         <View>
           <CompanyTable
-            col1={"Transaction ID"}
-            col2={"Date of Invoice"}
-            col3={"Recipient"}
-            col4={"Amount"}
-            col5={"Action"}
+            columns_schema={Requests_columns_schema}
             checkbox={true}
+            onPressUpdate={onPressEdit}
+            onPressDelete={onPressDelete}
             // showStatus={true}
-            DATA={DATA}
+            DATA={data}
             showActions={true}
             pagination={true}
             showEye={true}
             onClickEye={onClickEye}
-
-            
           ></CompanyTable>
         </View>
       </View>
-      <CreateModal create={true} visible={ModalOpen}></CreateModal>
+      {isRequestModalOpen && (
+        <CreateRequestModal
+          onSubmit={handleSubmit}
+          onClose={() => setIsRequestModalOpen(false)}
+          // onPressUpdatefunction={onPressUpdatefunction}
+          desc={true}
+          styleContainer={{ flexDirection: "row" }}
+          create={true}
+          visible={isRequestModalOpen}
+          user={true}
+        />
+      )}
     </>
   );
 };
