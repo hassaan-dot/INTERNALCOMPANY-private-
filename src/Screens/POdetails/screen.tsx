@@ -61,7 +61,6 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
       },
     };
 
-    console.log("Data is", data);
     handleAddNote(data);
   };
 
@@ -108,7 +107,6 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
         purchase_order: id,
       },
     };
-    console.log("data is", data);
     handleAddInvoice(data);
   };
 
@@ -184,7 +182,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
           </View>
           <View style={{ margin: 20 }}>
             <TableTitle
-              DATA={InvoiceData}
+              DATA={data?.data?.invoices}
               schema={Invoice_Schema}
               rowTextStyle={{ marginLeft: 18, fontFamily: PoppinsRegular }}
               onPress={AddInvoiceModalOpenfunc}
@@ -195,7 +193,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
           </View>
           <View style={{ margin: 20 }}>
             <TableTitle
-              DATA={ItemsData}
+              DATA={data?.data?.po_items}
               title="Items"
               rowTextStyle={{ marginLeft: 10, fontFamily: PoppinsRegular }}
               schema={Item_Schema}

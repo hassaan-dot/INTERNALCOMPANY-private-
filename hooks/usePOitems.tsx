@@ -17,7 +17,6 @@ const handleCreatePOItems = async (data: any) => {
 };
 
 const handleDeletePOItems = async (data: any) => {
-  console.log("data is ", data.data.documentId);
   const res = await api.delete(`/purchase-orders/${data.data.documentId}`);
   return res.data;
 };
@@ -28,7 +27,6 @@ const handleUpdatePOItems = async (data: any, id: string) => {
 };
 // sko38f7f6mv0gi1havb75f7f
 const handleGetOnePOItems = async (documentId: string) => {
-  console.log("document id", documentId);
   const res = await api.get(`/purchase-orders/${documentId}?populate=*`);
   return res.data;
 };

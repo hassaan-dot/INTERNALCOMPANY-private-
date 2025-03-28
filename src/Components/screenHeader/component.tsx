@@ -15,27 +15,31 @@ type ClientManagementProps = {
   onPress?: () => void;
   buttonView: boolean;
   buttonViewMulitiple: boolean;
+  showButton?: boolean;
 };
 
 const ClientManagement: FC<ClientManagementProps> = ({
   create,
   filter,
+  showButton = true,
   completed,
   title,
   onPress,
   buttonViewMulitiple = false,
   buttonView = false,
 }) => {
-  const isMobileView=Platform.OS === "ios"
+  const isMobileView = Platform.OS === "ios";
   return (
     <View style={styles.container}>
       {/* <ProfileHeader /> */}
 
       <View style={styles.headerContainer}>
-        <Text style={[styles.title,isMobileView &&styles.TitleDesign]}>{title}</Text>
+        <Text style={[styles.title, isMobileView && styles.TitleDesign]}>
+          {title}
+        </Text>
 
         <View style={styles.buttonContainer}>
-          {create && (
+          {showButton && create && (
             <TouchableOpacity style={styles.createButton} onPress={onPress}>
               <Image
                 source={icons.screenHeaderPlusIcon}
@@ -84,7 +88,13 @@ const ClientManagement: FC<ClientManagementProps> = ({
           )}
           {buttonViewMulitiple && (
             <>
-              <View style={{flexDirection:'row',alignItems:'center',right:15}}>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  right: 15,
+                }}
+              >
                 <ButtonGroup
                   ContainerStyle={{ flexDirection: "row", flex: 1 }}
                   Color1={"#E61216"}
@@ -105,7 +115,6 @@ const ClientManagement: FC<ClientManagementProps> = ({
                 <ButtonGroup
                   ContainerStyle={{ flexDirection: "row", flex: 1 }}
                   Color1={"#4682B4"}
-                  
                   style2={{
                     // paddingHorizontal: helpers.normalize(27),
                     borderRadius: 11,

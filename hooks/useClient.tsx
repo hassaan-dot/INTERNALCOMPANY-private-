@@ -72,7 +72,6 @@ export const useUpdateClient = () => {
     mutationKey: ["updateClient"],
     mutationFn: ({ data, id }: any) => handleUpdateClient(data, id),
     onSuccess: (data) => {
-      console.log("update informatiom", data);
       setIsClientModalOpen(false);
       setRowData(null);
       queryClient.invalidateQueries({
@@ -91,7 +90,6 @@ export const useDeleteClient = () => {
     mutationKey: ["deleteClient"],
     mutationFn: (data: any) => handleDeleteClient(data),
     onSuccess: (data) => {
-      console.log("update informatiom", data);
       queryClient.invalidateQueries({
         queryKey: ["clients"],
       });

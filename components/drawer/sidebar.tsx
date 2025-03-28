@@ -1,67 +1,18 @@
-// import { PoppinsRegular } from "@/constants/fonts";
-// import { drawer_items } from "@/constants/sidebar";
-// import { ProfileHeader } from "@/src/Components";
-// import helpers from "@/src/utils/helpers";
-// import { Drawer } from "expo-router/drawer";
-// import React from "react";
-// import { Platform } from "react-native";
-// import DrawerItem from "./drawer_item";
-
-// const Sidebar = () => {
-//   return (
-//     <Drawer
-//       initialRouteName="dashboard"
-//       drawerContent={() => <DrawerItem />}
-//       screenOptions={{
-//         header: (props) => <ProfileHeader {...props} />,
-//         headerShown: true,
-//         drawerStyle: {
-//           backgroundColor: "#fff",
-//           // width: helpers.wp(19),
-//           flex: 1,
-//           borderWidth: 0,
-//           borderColor: "#fff",
-//         },
-//         drawerLabelStyle: {
-//           fontSize: 16,
-//           fontWeight: "600",
-//           color: "#333",
-//           fontFamily: PoppinsRegular,
-//         },
-//         // drawerActiveTintColor: '#2F317E',
-//         // drawerInactiveTintColor: '#888',
-//         // drawerType:''
-//         drawerType: Platform.OS == "ios" ? "slide" : "permanent",
-//         // swipeEdgeWidth: 50,
-//         drawerPosition: "left",
-//       }}
-//     >
-//       {drawer_items?.map((item) => (
-//         <Drawer.Screen
-//           name={item.name}
-//           options={{
-//             // headerShown: false,
-//             drawerLabel: item.label,
-//             title: item.label,
-//             drawerIcon: item.drawerIcon,
-//           }}
-//         />
-//       ))}
-//     </Drawer>
-//   );
-// };
-
-// export default Sidebar;
 import { PoppinsRegular } from "@/constants/fonts";
-import { drawer_items } from "@/constants/sidebar";
 import { ProfileHeader } from "@/src/Components";
 import helpers from "@/src/utils/helpers";
 import { Drawer } from "expo-router/drawer";
-import React from "react";
+import React, { useMemo } from "react";
 import { Platform, useWindowDimensions } from "react-native";
 import DrawerItem from "./drawer_item";
+import { Image } from "react-native";
+import { icons } from "@/assets/icons/icons";
+import { useAuthStore } from "@/store/useAuthStore";
+import { ROLE } from "@/constants/role";
+import { drawerIconProps } from "@/constants/types";
 
 const Sidebar = () => {
+  const { user } = useAuthStore();
   const { width } = useWindowDimensions();
 
   const getDrawerWidth = () => {
@@ -84,10 +35,100 @@ const Sidebar = () => {
     return width >= 768 ? "permanent" : "slide";
   };
 
+  const drawer_items = useMemo(
+    () => [
+      {
+        name: "dashboard",
+        label: "Dashboard",
+        href: "/(app)/dashboard",
+        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+          <Image
+            source={icons.drawertabdashboardIcon}
+            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+          />
+        ),
+        show: true,
+      },
+      {
+        name: "user-management",
+        label: "User Management",
+        href: "/(app)/user-management",
+        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+          <Image
+            source={icons.drawertabUsersIcon}
+            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+          />
+        ),
+        show: user?.role?.name == ROLE.ADMIN,
+      },
+      {
+        name: "client-management",
+        label: "Client Management",
+        href: "/(app)/client-management",
+        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+          <Image
+            source={icons.drawertabUsersIcon}
+            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+          />
+        ),
+        show: user?.role?.name == ROLE.ADMIN,
+      },
+      {
+        name: "payment",
+        label: "Payment History",
+        href: "/(app)/payment",
+        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+          <Image
+            source={icons.drawertabnoteIcon}
+            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+          />
+        ),
+        show: true,
+      },
+      {
+        name: "po-management",
+        label: "PO Management",
+        href: "/(app)/po-management",
+        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+          <Image
+            source={icons.drawertabstarsupIcon}
+            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+          />
+        ),
+        show: true,
+      },
+      {
+        name: "request",
+        label: "Request",
+        href: "/(app)/request",
+        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+          <Image
+            source={icons.drawertabstarsupIcon}
+            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+          />
+        ),
+        show: true,
+      },
+      {
+        name: "report",
+        label: "Report",
+        href: "/(app)/report",
+        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+          <Image
+            source={icons.drawertabstarsupIcon}
+            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+          />
+        ),
+        show: user?.role?.name == ROLE.ADMIN,
+      },
+    ],
+    []
+  );
+
   return (
     <Drawer
       initialRouteName="dashboard"
-      drawerContent={() => <DrawerItem />}
+      drawerContent={() => <DrawerItem drawer_items={drawer_items} />}
       screenOptions={{
         header: (props) => <ProfileHeader {...props} />,
         headerShown: true,
@@ -112,17 +153,19 @@ const Sidebar = () => {
         overlayColor: "transparent",
       }}
     >
-      {drawer_items?.map((item, index) => (
-        <Drawer.Screen
-          key={index}
-          name={item.name}
-          options={{
-            drawerLabel: item.label,
-            title: item.label,
-            drawerIcon: item.drawerIcon,
-          }}
-        />
-      ))}
+      {drawer_items
+        ?.filter((item) => item.show)
+        ?.map((item, index) => (
+          <Drawer.Screen
+            key={index}
+            name={item.name}
+            options={{
+              drawerLabel: item.label,
+              title: item.label,
+              drawerIcon: item.drawerIcon,
+            }}
+          />
+        ))}
     </Drawer>
   );
 };

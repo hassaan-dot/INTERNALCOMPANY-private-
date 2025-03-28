@@ -77,7 +77,6 @@ const CreateModal: React.FC<ClientModalProps> = ({
       phone_number: "",
     }
   );
-  console.log("rawig", rowData);
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,

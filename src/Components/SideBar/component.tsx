@@ -9,7 +9,6 @@ const Sidebar: React.FC = () => {
   const currentRoute = useNavigationState(
     (state) => state?.routes?.[state.index]?.name
   );
-  console.log("curren index", currentRoute);
   return currentRoute === "Login" ? null : (
     <View style={styles.sidebar}>
       <View style={styles.childView}>

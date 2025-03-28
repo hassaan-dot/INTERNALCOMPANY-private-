@@ -123,7 +123,6 @@ const UserManagement = () => {
         documentId: documentId,
       },
     };
-    console.log("deleted itwem is", documentId);
     handleDelete(data);
   };
 

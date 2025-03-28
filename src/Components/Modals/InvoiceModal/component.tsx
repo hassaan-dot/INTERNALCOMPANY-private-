@@ -112,7 +112,6 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
     }
     return true;
   };
-  console.log("invoice paid", formData);
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>

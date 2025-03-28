@@ -14,19 +14,17 @@ const handleGetOneRequest = async (documentId: any) => {
 };
 
 const handleCreateRequest = async (data: any) => {
-  console.log("Configure", data);
   const res = await api.post("/requests", data);
   return res.data;
 };
 
 const handleDeleteRequest = async (data: any) => {
-  console.log("data is ", data.data.documentId);
   const res = await api.delete(`/requests/${data.data.documentId}`);
   return res.data;
 };
 
 const handleUpdateRequest = async (data: any, id: any) => {
-  const res = await api.put(`/clients/${id}`, data);
+  const res = await api.put(`/requests/${id}`, data);
   return res.data;
 };
 
@@ -88,7 +86,6 @@ export const useDeleteRequest = () => {
     mutationKey: ["deleteRequest"],
     mutationFn: (data: any) => handleDeleteRequest(data),
     onSuccess: (data) => {
-      console.log("update informatiom", data);
       queryRequest.invalidateQueries({
         queryKey: ["Requests"],
       });

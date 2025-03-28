@@ -37,7 +37,6 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
   item,
   horizontalwidth = "50%",
 }) => {
-  console.log("Hassaannnnnnnnnn", item.data.company_name);
   return (
     <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>

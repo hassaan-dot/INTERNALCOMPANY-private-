@@ -27,7 +27,6 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
   let showStatus = useState<boolean>(
     selectedTab !== "Purchasing Order List" ? true : false
   );
-  console.log("showActions", showActions, "showStatus", showStatus);
   return (
     <>
       <ScrollView style={styles.container1}>

@@ -17,10 +17,8 @@ export const useAuthStore = create<useAuthStore>((set) => ({
   setUser: (user) => set({ user }),
   isLoadingData: true,
   loadData: async () => {
-    // Load data from AsyncStorage
     const token = await LocalStorage.get("token");
     const user = await LocalStorage.get("user");
-
     set({ token, user, isLoadingData: false });
   },
 }));

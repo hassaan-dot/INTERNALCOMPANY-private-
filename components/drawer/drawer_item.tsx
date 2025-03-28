@@ -1,5 +1,4 @@
 import { PoppinsRegular } from "@/constants/fonts";
-import { drawer_items } from "@/constants/sidebar";
 import helpers from "@/src/utils/helpers";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { usePathname, useRouter } from "expo-router";
@@ -82,11 +81,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const CustomDrawerItem = () => {
+const CustomDrawerItem = ({ drawer_items }: any) => {
   const router = useRouter();
   const pathname = usePathname();
-
-  console.log("path", pathname);
 
   const handleTabPress = useCallback((tabName: any) => {
     return router.push(tabName);
@@ -96,26 +93,28 @@ const CustomDrawerItem = () => {
     <DrawerContentScrollView contentContainerStyle={styles.drawerContent}>
       <View style={styles.logoContainer}></View>
       <View style={styles.drawerItems}>
-        {drawer_items?.map((item, index) => (
-          <View key={index}>
-            <DrawerItem
-              focused={pathname.includes(item.name)}
-              label={item.label}
-              icon={item.drawerIcon}
-              onPress={() => handleTabPress(item.name)}
-              style={styles.drawerItem}
-              labelStyle={[
-                styles.drawerItemLabel,
-                pathname.includes(item.name) && {
-                  color: "#FFF",
-                  fontWeight: "600",
-                },
-              ]}
-              activeTintColor="#2F317E"
-              activeBackgroundColor="#07504B"
-            />
-          </View>
-        ))}
+        {drawer_items
+          ?.filter((item) => item.show)
+          ?.map((item, index) => (
+            <View key={index}>
+              <DrawerItem
+                focused={pathname.includes(item.name)}
+                label={item.label}
+                icon={item.drawerIcon}
+                onPress={() => handleTabPress(item.name)}
+                style={styles.drawerItem}
+                labelStyle={[
+                  styles.drawerItemLabel,
+                  pathname.includes(item.name) && {
+                    color: "#FFF",
+                    fontWeight: "600",
+                  },
+                ]}
+                activeTintColor="#2F317E"
+                activeBackgroundColor="#07504B"
+              />
+            </View>
+          ))}
       </View>
     </DrawerContentScrollView>
   );

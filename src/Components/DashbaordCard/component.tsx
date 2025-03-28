@@ -47,24 +47,24 @@ const newsData: NewsItem[] = [
 
 interface CardSectionProps {
   onPress?: () => void;
-  OnCancel?: () => void; 
+  OnCancel?: () => void;
 }
 
 const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
   const isMobileView = Platform.OS === "ios";
   return (
     <View style={styles.container}>
-      {/* <View style={styles.card}>
+      <View style={styles.card}>
         <Text style={styles.cardTitle}>Your Assigned PO</Text>
         <View style={{ marginVertical: 10 }}>
-        <Svg height="1" width="100%">
-        <LinearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
-          <Stop offset="0%" stopColor="rgba(0,0,0,0)" />
-          <Stop offset="50%" stopColor="#000" />
-          <Stop offset="100%" stopColor="rgba(0,0,0,0)" />
-        </LinearGradient>
-        <Rect x="0" y="0" width="100%" height="1" fill="url(#grad)" />
-      </Svg>
+          <Svg height="1" width="100%">
+            <LinearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
+              <Stop offset="0%" stopColor="rgba(0,0,0,0)" />
+              <Stop offset="50%" stopColor="#000" />
+              <Stop offset="100%" stopColor="rgba(0,0,0,0)" />
+            </LinearGradient>
+            <Rect x="0" y="0" width="100%" height="1" fill="url(#grad)" />
+          </Svg>
         </View>
         <FlatList
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
@@ -82,14 +82,16 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
               <View style={styles.customView}>
                 <Text style={styles.code}>{item.code}</Text>
               </View>
-              <View style={[styles.customView,{alignItems:'center'}]}>
-                <Image source={icons.dashboardButtonNewscardIcon} style={{width:15,height:15,marginLeft:20}}></Image>
+              <View style={[styles.customView, { alignItems: "center" }]}>
+                <Image
+                  source={icons.dashboardButtonNewscardIcon}
+                  style={{ width: 15, height: 15, marginLeft: 20 }}
+                ></Image>
               </View>
-
             </View>
           )}
         />
-      </View> */}
+      </View>
 
       <View style={[styles.card2, isMobileView && styles.card3]}>
         <View style={[styles.newsHeader, isMobileView && styles.newsHeader2]}>
@@ -113,7 +115,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
         <FlatList
           data={newsData}
           keyExtractor={(item) => item.id}
-          nestedScrollEnabled={false} 
+          nestedScrollEnabled={false}
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
           renderItem={({ item }) => (
             <View style={styles.row}>

@@ -11,26 +11,21 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   function CreatClient() {
     setModalOpen(true);
   }
-  const router = useRouter()
-  const onClickEye = (username:string, id: number) => {
-    router.push(`/(app)/payment/payment-details?username=${username}&id=${id}`)
-  }
+  const router = useRouter();
+  const onClickEye = (username: string, id: number) => {
+    router.push(`/(app)/payment/payment-details?username=${username}&id=${id}`);
+  };
   return (
     <>
       <View style={Styles.container}>
         <ScreenHeader
           create={true}
-          title={'Payment History'}
+          title={"Payment History"}
           onPress={CreatClient}
         ></ScreenHeader>
 
         <View>
           <CompanyTable
-            col1={"Name"}
-            col2={"Email"}
-            col3={"Phone number"}
-            col4={"Person Contact"}
-            col5={"Action"}
             showActions={true}
             checkbox={true}
             pagination={true}

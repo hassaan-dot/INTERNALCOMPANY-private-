@@ -9,7 +9,6 @@ export default function AuthLayout() {
     const app = LocalStorage.get("user"); // if you need the result
     // Or if you don't need the result:
     // await LocalStorage.save("user", data.user);
-    console.log("app", app);
   };
 
   saveUser();

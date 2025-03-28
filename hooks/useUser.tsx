@@ -13,7 +13,6 @@ const handleCreateUser = async (data: any) => {
 };
 
 const handleDeleteUser = async (data: any) => {
-  console.log("data is ", data.data.documentId);
   const res = await api.delete(`/users/${data.data.documentId}`);
   return res.data;
 };
@@ -57,7 +56,6 @@ export const useUpdateUser = () => {
     mutationKey: ["updateUser"],
     mutationFn: async ({ data, id }: any) => handleUpdateUser(data, id),
     onSuccess: (data) => {
-      console.log("update informatiom", data);
       setIsUserModalOpen(false);
       queryUser.invalidateQueries({
         queryKey: ["clients"],
@@ -75,7 +73,6 @@ export const useDeleteUser = () => {
     mutationKey: ["deleteUser"],
     mutationFn: (data: any) => handleDeleteUser(data),
     onSuccess: (data) => {
-      console.log("update informatiom", data);
       queryUser.invalidateQueries({
         queryKey: ["clients"],
       });

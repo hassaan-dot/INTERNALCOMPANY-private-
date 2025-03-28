@@ -5,7 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 
 const handleLogin = async (data: any) => {
-  const res = await api.post("/auth/local", data);
+  const res = await api.post("/login", data);
   return res.data;
 };
 
@@ -22,7 +22,6 @@ export const useLogin = () => {
       await LocalStorage.save("token", data.jwt);
       await LocalStorage.save("user", data.user);
       router.replace("/(app)/dashboard");
-      
     },
     onError: (error) => {
       console.log("error", error);

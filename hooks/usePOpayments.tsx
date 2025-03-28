@@ -14,7 +14,6 @@ const handleCreatePOInvoice = async (data: any) => {
 };
 
 const handleDeletePOInvoice = async (data: any) => {
-  console.log("data is ", data.data.documentId);
   const res = await api.delete(`/purchase-orders/${data.data.documentId}`);
   return res.data;
 };
@@ -25,7 +24,6 @@ const handleUpdatePOInvoice = async (data: any, id: string) => {
 };
 // sko38f7f6mv0gi1havb75f7f
 const handleGetOnePOInvoice = async (documentId: string) => {
-  console.log("document id", documentId);
   const res = await api.get(`/purchase-orders/${documentId}?populate=*`);
   return res.data;
 };
@@ -47,7 +45,12 @@ export const useCreateInvoice = () => {
     onSuccess: (data) => {
       setisInvoicePoModalOpen(false);
       queryPO.invalidateQueries({
+        queryKey: ["getoneRequest"],
+        type: "active",
+      });
+      queryPO.invalidateQueries({
         queryKey: ["invoice"],
+        type: "active",
       });
     },
     onError: (error) => {
@@ -55,21 +58,3 @@ export const useCreateInvoice = () => {
     },
   });
 };
-
-// export const useAddPOInvoice = (setFormData: any) => {
-//   // const { setIsPOModalOpen, setRowData } = useModalStore();
-//   const queryPO = useQueryClient();
-//   const router = useRouter();
-//   return useMutation({
-//     mutationKey: ["createpoInvoice"],
-//     mutationFn: (data: any) => handleCreatePOInvoice(data),
-//     onSuccess: (data) => {
-//       queryPO.invalidateQueries({
-//         queryKey: ["po"],
-//       });
-//     },
-//     onError: (error) => {
-//       console.log("error", error);
-//     },
-//   });
-// };

@@ -11,13 +11,13 @@ import CreateModal from "../../Components/Modals/createModal/component";
 // import TabSelector from "../../Components";
 import { styles } from "./styles";
 
-import {useLocalSearchParams} from "expo-router"
+import { useLocalSearchParams } from "expo-router";
 
 const UserDetails = () => {
-  const {username, id} = useLocalSearchParams()
-  
+  const { username, id } = useLocalSearchParams();
+
   const [ModalOpen, setModalOpen] = useState(false);
-  
+
   function CreatClient() {
     setModalOpen(true);
   }
@@ -31,12 +31,16 @@ const UserDetails = () => {
     selectedTab !== "Purchasing Order List" ? true : false
   );
 
-  console.log("showActions", showActions, "showStatus", showStatus);
   return (
     <>
       <ScrollView style={styles.container1}>
-        <Text>{username} {id}</Text>
-        <ScreenHeader title={"User Detail"} onPress={CreatClient}></ScreenHeader>
+        <Text>
+          {username} {id}
+        </Text>
+        <ScreenHeader
+          title={"User Detail"}
+          onPress={CreatClient}
+        ></ScreenHeader>
 
         <UserProfile profile={true}></UserProfile>
         <View style={styles.container2}>

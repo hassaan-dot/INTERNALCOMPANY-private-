@@ -1,6 +1,9 @@
 import React, { Dispatch, SetStateAction } from "react";
 import { View, Text } from "react-native";
-import { MultipleSelectList } from "react-native-dropdown-select-list";
+import {
+  MultipleSelectList,
+  SelectList,
+} from "react-native-dropdown-select-list";
 import { styles } from "./styles";
 
 interface MultiSelectDropdownProps {
@@ -18,8 +21,6 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
   setSelectedItems,
   title,
 }) => {
-  console.log("selected items :", selectedItems);
-
   return (
     <View style={styles.container}>
       {/* <Text style={styles.title}>{title}</Text> */}

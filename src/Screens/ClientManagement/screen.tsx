@@ -102,7 +102,6 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
         documentId: documentId,
       },
     };
-    console.log("deleted itwem is", documentId);
     handleDelete(data);
   };
   const onOpenModal = () => {
@@ -130,13 +129,11 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     router.push(
       `/(app)/client-management/client-details?username=${contact_person_name}&id=${documentId}`
     );
-    // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
   };
   function onPressfunction2() {
     setReminderModalOpen(false);
     navigation.navigate("client-details");
   }
-  // console.log('setdata is',Data)
   return (
     <>
       <ScrollView style={styles.container}>

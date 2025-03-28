@@ -6,12 +6,15 @@ import { CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { Po_Schema } from "../ClientManagement/_schema";
 import Styles from "./styles";
-const PO_Management: React.FC<{ route: any }> = ({ route }) => {
+import { useAuthStore } from "@/store/useAuthStore";
+import { ROLE } from "@/constants/role";
+import { DEPARTMENT } from "@/constants/department";
+
+const PO_Management = () => {
+  const { user } = useAuthStore();
   const [ModalOpen, setModalOpen] = useState(false);
 
   const { data, isPending, error } = useGetPO();
-
-  console.log("Data from is is", data);
 
   const onClickEye = ({ documentId, id }: any) => {
     router.push(`/(app)/po-management/po-details?id=${documentId}`);
@@ -20,7 +23,6 @@ const PO_Management: React.FC<{ route: any }> = ({ route }) => {
   const router = useRouter();
 
   const Handlenavigation = (username: string, id: number) => {
-    // router.push(`/(app)/po-management/po-add?username=${username}&id=${id}`);
     router.push(`/(app)/po-management/po-add`);
   };
 
@@ -32,6 +34,10 @@ const PO_Management: React.FC<{ route: any }> = ({ route }) => {
           filter={true}
           onPress={Handlenavigation}
           title={"Purchasing Orders"}
+          showButton={
+            user?.role?.name === ROLE.EMPLOYEE &&
+            user.department.name === DEPARTMENT.SALES
+          }
         ></ScreenHeader>
 
         <View>

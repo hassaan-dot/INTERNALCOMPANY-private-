@@ -54,7 +54,6 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
         users: users,
       },
     };
-    // console.log("Data for update", data);
     handleUpdate({ data, id: documentId });
   };
 
@@ -113,7 +112,6 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
         documentId: documentId,
       },
     };
-    console.log("deleted itwem is", documentId);
     handleDelete(data);
   };
   const onOpenModal = () => {
@@ -134,14 +132,12 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
   //     },
   //   };
   //   setRowData({ title, documentId });
-  //   console.log("Hassaaaaaan", rowData);
   //   handleGetOne({ data, documentId });
 
   //   // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
   // };
 
   const onClickEye = ({ documentId }: any) => {
-    console.log("Docummmmm", documentId);
     router.push(`/(app)/request/request-details?id=${documentId}`);
     // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
   };

@@ -37,7 +37,6 @@ const StatusModal: React.FC<NewsModalProps> = ({
   };
 
   const handleSend = () => {
-    console.log("Selected Questions:", selectedQuestions);
     onClose();
   };
 
