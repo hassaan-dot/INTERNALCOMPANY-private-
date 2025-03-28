@@ -1,6 +1,6 @@
 import { useGetUser } from "@/hooks/useUser";
 import React, { useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import {
   CustomDropdownIndicator,
@@ -10,12 +10,18 @@ import {
 } from "../../Components";
 import { styles } from "./styles";
 import { useModalStore } from "@/store/useModalStore";
+import { useGetOneRequest } from "@/hooks/useRequest";
+import { useLocalSearchParams } from "expo-router";
 
 const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
-  const { data, isPending, error } = useGetUser();
-  const { setRowData, rowData } = useModalStore();
+  const { id } = useLocalSearchParams();
+  const { data: getRequest, isFetching } = useGetOneRequest(id as string);
+  // console.log("KCNSNUENF", gestRequest.data.standing);
+  // const { data, isPending, error } = useGetOneRequest();
 
-  const [Value, setValue] = useState<string>("");
+  // ]  const { setRowData, rowData } = useModalStore();
+
+  const [Value, setValue] = useState<string>("234");
 
   const [title, setTitle] = useState<string>("");
 
@@ -41,6 +47,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
     { label: "Normal", value: "Normal" },
   ];
 
+  if (isFetching) return <ActivityIndicator style={{ flex: 1 }} />;
   return (
     <>
       <View style={styles.custom4}>
@@ -54,7 +61,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
               <InputField
                 style={styles.inputContainer}
                 placeholder="Enter a request title"
-                // value={title}
+                value={getRequest?.data?.title}
                 onChangeText={(text) => {
                   setTitle(text);
                 }}
@@ -77,6 +84,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 <InputField
                   style={styles.inputField}
                   placeholderTextColor={"#000000"}
+                  value={getRequest?.data?.description}
                   placeholder="Request description"
                   onChangeText={(text) => {
                     setDescription(text);
@@ -84,13 +92,13 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 />
               </View>
             </View>
-            <View style={{ marginRight: 20, marginTop: 20 }}>
+            {/* <View style={{ marginRight: 20, marginTop: 20 }}>
               <View style={styles.custom5}>
                 <Text
                   style={styles.sectionTitle}
-                >{`${data?.length} Users`}</Text>
+                >{`${getUser?.length} Users`}</Text>
                 <FlatList
-                  data={data}
+                  data={getUser}
                   keyExtractor={(item) => item.id}
                   contentContainerStyle={styles.custom6}
                   renderItem={({ item }) => (
@@ -101,7 +109,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                   )}
                 />
               </View>
-            </View>
+            </View> */}
           </View>
           <View style={styles.custom7}>
             <Text style={styles.sectionTitle}>Files</Text>

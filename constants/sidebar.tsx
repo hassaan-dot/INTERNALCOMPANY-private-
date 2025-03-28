@@ -74,4 +74,15 @@ export const drawer_items = [
       />
     ),
   },
+  {
+    name: "report",
+    label: "Report",
+    href: "/(app)/report",
+    drawerIcon: ({ color, size, focused }: drawerIconProps) => (
+      <Image
+        source={icons.drawertabstarsupIcon}
+        style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
+      />
+    ),
+  },
 ];

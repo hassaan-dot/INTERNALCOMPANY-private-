@@ -13,18 +13,14 @@ import { useGetUser } from "@/hooks/useUser";
 import CreateRequestModal from "@/src/Components/Modals/createRequestModal/component";
 import { useModalStore } from "@/store/useModalStore";
 import { useNavigation } from "@react-navigation/native";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { Requests_columns_schema } from "../ClientManagement/_schema";
 import { UserStore } from "../UserManagement/usershook";
 import { styles } from "./styles";
 const Request: React.FC<{ route: any }> = ({ route }) => {
-  const { mutate: handleGetOne } = useGetOneRequest();
+  // const { mutate: handleGetOne } = useGetOneRequest();
 
   const { data } = useGetRequest();
-
-  const navigation = useNavigation();
-
-  const [ModalOpen, setModalOpen] = useState(false);
 
   const { UserData, setUserData } = UserStore();
 
@@ -83,11 +79,10 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
       },
     };
 
-    console.log("Data is", data);
     handleAdd(data);
   };
   function Create() {
-    router.push(`/(app)/request/request-details`);
+    // router.push(`/(app)/request/request-details`);
 
     setIsRequestModalOpen(true);
   }
@@ -132,19 +127,24 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
     setIsRequestModalOpen(false);
     setRowData(null);
   };
-  const onClickEye = ({ title, documentId }: any) => {
-    const data = {
-      data: {
-        title,
-      },
-    };
-    setRowData({ title, documentId });
-    console.log("Hassaaaaaan", rowData);
-    handleGetOne({ data, documentId });
+  // const onClickEye = ({ title, documentId }: any) => {
+  //   const data = {
+  //     data: {
+  //       title,
+  //     },
+  //   };
+  //   setRowData({ title, documentId });
+  //   console.log("Hassaaaaaan", rowData);
+  //   handleGetOne({ data, documentId });
 
+  //   // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
+  // };
+
+  const onClickEye = ({ documentId }: any) => {
+    console.log("Docummmmm", documentId);
+    router.push(`/(app)/request/request-details?id=${documentId}`);
     // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
   };
-
   return (
     <>
       <View style={styles.container}>

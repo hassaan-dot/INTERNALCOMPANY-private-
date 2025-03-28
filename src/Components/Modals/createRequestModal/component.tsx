@@ -11,7 +11,11 @@ import {
 import { useGetUser } from "@/hooks/useUser";
 import { UserStore } from "@/src/Screens/UserManagement/usershook";
 import { useModalStore } from "@/store/useModalStore";
-import { CustomDropdownIndicator, MultiSelectDropdown } from "../..";
+import {
+  CustomDropdownIndicator,
+  DateTimeSelector,
+  MultiSelectDropdown,
+} from "../..";
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
@@ -73,7 +77,6 @@ const CreateModal: React.FC<ClientModalProps> = ({
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
-  const { UserData, setUserData } = UserStore();
   const { data: UserApi, isPending, error } = useGetUser();
 
   type Item = {
@@ -86,8 +89,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
     { value: "Normal", label: "Normal" },
   ];
 
-  const [value, setValue] = useState<string>("");
-
+  const [date, setDate] = useState<any>("");
+  const setDatefunction = (date: any) => {};
   const [selectedUsers, setSelectedUsers] = useState([]);
 
   // const handleSubmit = (formData: any) => {
@@ -99,7 +102,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
     rowData ?? {
       title: "",
       description: "",
-      perform_on: "2025-09-25T02:14:37.074Z",
+      perform_on: "",
       standing: "",
       users: [],
     }
@@ -109,23 +112,16 @@ const CreateModal: React.FC<ClientModalProps> = ({
       ...prev,
       users: selectedUsers ? selectedUsers : rowData.users,
     }));
-  }, [selectedUsers]); // Runs whenever selectedUsers changes
-
-  // Now, just modify selectedUsers, and formData.users updates automatically
-
-  const handleSelectUser = (value: string[]) => {
-    console.log("selected", value);
-    // setFormData((prev) => ({
-    //   ...prev,
-    //   users: [...prev.users, value],
-    // }));
-  };
+  }, [selectedUsers]);
+  useEffect(() => {
+    setFormData((prev) => ({
+      ...prev,
+      perform_on: date ? date : rowData?.perform_on,
+    }));
+  }, [date]);
 
   const handleSubmit = () => {
-    // console.log("here it is", formData);
     onSubmit(formData);
-
-    // );
   };
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
@@ -143,7 +139,6 @@ const CreateModal: React.FC<ClientModalProps> = ({
       })) || []
     );
   };
-  // console.log()
   const userDropdownItems = transformUsersToDropdownItems(UserApi);
 
   const validateForm = () => {
@@ -204,14 +199,22 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 style={[styles.input, { paddingVertical: 8 }]}
               />
             </View>
+            <View>
+              <DateTimeSelector
+                // Date={date}
+                onDateChange={(date) => setDate(date)}
+                // setDate={setDate}
+                title="Select Date/Time:"
+              ></DateTimeSelector>
+            </View>
 
             <View>
               <CustomDropdownIndicator
                 title={"Role"}
-                Role={value}
+                Role={formData.standing}
                 SetRole={(val) => handleInputChange("standing", val)}
                 items={items}
-              ></CustomDropdownIndicator>
+              />
             </View>
 
             <View>

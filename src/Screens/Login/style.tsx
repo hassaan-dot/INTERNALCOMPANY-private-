@@ -11,6 +11,13 @@ const styles = StyleSheet.create({
   },
 
   section2: { justifyContent: "flex-end" },
+  container1: {
+    flex: 1,
+    flexDirection: "row",
+    paddingRight: helpers.normalize(50),
+    paddingHorizontal: 40,
+    paddingBottom: 30,
+  },
   checkbox: {
     borderColor: "black",
     width: 15,
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
   section: {
     flexDirection: "row",
     alignItem: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     marginVertical: 10,
     marginTop: 20,
   },
@@ -94,18 +101,20 @@ const styles = StyleSheet.create({
   subtitle2: { marginTop: 5 },
   login_desc1: {
     borderRadius: 29,
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
+    flex: 1,
     backgroundColor: "#07504B",
   },
   login_desc2: {
     flex: 1,
-    padding: helpers.normalize(40),
+    // padding: helpers.normalize(40),
+    margin: 25,
     justifyContent: "center",
   },
   login_desc22: {
     flex: 1,
-    padding: helpers.normalize(0),
-    marginHorizontal: helpers.normalize(23),
+    // padding: helpers.normalize(0),
+    // marginHorizontal: helpers.normalize(23),
     justifyContent: "center",
   },
 });

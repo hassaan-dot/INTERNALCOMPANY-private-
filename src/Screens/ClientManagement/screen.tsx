@@ -26,6 +26,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   const router = useRouter();
 
   const { data, isPending, error } = useGetClient();
+
   const { mutate: handleAdd } = useCreateClient();
   const { mutate: handleUpdate } = useUpdateClient();
   const { mutate: handleDelete } = useDeleteClient();
@@ -49,6 +50,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     };
     handleUpdate({ data, id: documentId });
   };
+
   const onPressAddfunction = ({
     company_name,
     email,
@@ -115,18 +117,19 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   function onCancelfunction2() {
     setReminderModalOpen(false);
   }
-  const { mutate: handleGetOne } = useGetOneClient();
-
+  // const { mutate: handleGetOne } = useGetOneClient();
+  //
   const onClickEye = ({ contact_person_name, documentId }: any) => {
-    const data = {
-      data: {
-        contact_person_name,
-      },
-    };
-    setRowData({ contact_person_name, documentId });
-    console.log("Hassaaaaaan", rowData);
-    handleGetOne({ data, documentId });
-
+    // const data = {
+    //   data: {
+    //     contact_person_name,
+    //   },
+    // };
+    // setRowData({ contact_person_name, documentId });
+    // handleGetOne({ data, documentId });
+    router.push(
+      `/(app)/client-management/client-details?username=${contact_person_name}&id=${documentId}`
+    );
     // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
   };
   function onPressfunction2() {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import { View, StyleSheet, Text, Image } from "react-native";
 import { styles } from "./styles";
 import helpers from "../../utils/helpers";
@@ -27,12 +27,14 @@ interface UserProfileProps {
   TextTitle: string;
   height: any;
   ButtonTitle: string;
-  onPress:()=>void
-  onClose:()=>void
+  onPress: () => void;
+  onClose: () => void;
+  Data: any;
 }
 
 const NotesCard: React.FC<UserProfileProps> = ({
   rows,
+  Data,
   ButtonTitle,
   height = helpers.hp(40),
   name = "Ahmed",
@@ -52,20 +54,10 @@ const NotesCard: React.FC<UserProfileProps> = ({
   Document = false,
   TextTitle,
   onPress,
-  onClose
+  onClose,
 }) => {
-  const [data, setData] = useState([
-    {
-      name: "Documents.PDF",
-      type: "image/png",
-      size: 1 * 1024 * 1024, // 1MB in bytes
-    },
-    {
-      name: "Documents.PDF",
-      type: "image/png",
-      size: 1 * 1024 * 1024, // 1MB in bytes
-    },
-  ]);
+  const notes = useMemo(() => Data?.po_notes, [Data]);
+  const docs = useMemo(() => Data?.po_documents, [Data]);
   return (
     <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>
@@ -75,13 +67,13 @@ const NotesCard: React.FC<UserProfileProps> = ({
               flexDirection: "row",
               alignItems: "center",
               justifyContent: "space-between",
-              marginRight:20,
+              marginRight: 20,
             }}
           >
             <Text style={[styles.detailsTitle, titleStyle]}>{title}</Text>
             {titleIcon && (
               <FilledButton
-              onPress={onPress}
+                onPress={onPress}
                 titleStyle={{ fontSize: 10, fontWeight: 600, color: "black" }}
                 title={ButtonTitle}
                 containerStyle={{
@@ -89,6 +81,7 @@ const NotesCard: React.FC<UserProfileProps> = ({
                   height: 0,
                   paddingVertical: 15,
                   paddingHorizontal: 20,
+                  // marginBottom: 20,
                   borderRadius: 5.333,
                 }}
               ></FilledButton>
@@ -100,34 +93,74 @@ const NotesCard: React.FC<UserProfileProps> = ({
               flexirection: "row",
               borderColor: "#E8E8E8",
               // width: horizontalwidth,
-              flex:1
+              flex: 1,
+
+              // paddingBottom: 20,
             }}
           ></View>
-          <View style={{ marginLeft: 20, marginTop: 10, marginBottom: 30 }}>
-            {TextEnable && (
-              <View style={styles.profileView}>
-                <Image
-                  source={{
-                    uri: "https://randomuser.me/api/portraits/men/1.jpg",
-                  }}
-                  style={styles.avatar}
-                />
-                <Text style={styles.name}>{TextTitle}</Text>
-                <Image source={icons.editPencilicon} style={styles.avatar1} />
-              </View>
-            )}
+          <View
+            style={{
+              marginLeft: 20,
+              marginTop: 10,
+              // flex: 1,
+              paddingBottom: helpers.normalize(20),
+            }}
+          >
+            {TextEnable && null}
             {TextEnable && !Document && (
-              <View
-                style={{
-                  padding: 15,
-                  borderRadius: 10,
-                  backgroundColor: "#F8F8F8",
-                  paddingLeft: 15,
-                  paddingRight: 40,
-                  marginRight:30
-                }}
-              >
-                <Text
+              <View style={{}}>
+                {notes?.map((note, index) => (
+                  <>
+                    <View style={styles.profileView}>
+                      <Image
+                        source={{
+                          uri: "https://randomuser.me/api/portraits/men/1.jpg",
+                        }}
+                        style={styles.avatar}
+                      />
+                      <Text style={styles.name}>{note?.user?.username}</Text>
+                      <Image
+                        source={icons.editPencilicon}
+                        style={styles.avatar1}
+                      />
+                    </View>
+                    <View
+                      key={index}
+                      style={{
+                        padding: 15,
+                        borderRadius: 10,
+                        backgroundColor: "#F8F8F8",
+                        paddingLeft: 15,
+                        paddingRight: 40,
+                        marginRight: 30,
+                      }}
+                    >
+                      <Text
+                        style={{
+                          color: "#080808",
+                          fontWeight: "400",
+                          fontSize: 12,
+                          lineHeight: 20,
+                          fontFamily: PoppinsRegular,
+                        }}
+                      >
+                        {note?.note}
+                      </Text>
+                      <View style={{ flexDirection: "row", marginTop: 8 }}>
+                        <Text style={{ fontSize: 10, color: "#666" }}></Text>
+                        <Text
+                          style={{
+                            fontSize: 10,
+                            color: "#666",
+                            marginLeft: 10,
+                          }}
+                        ></Text>
+                      </View>
+                    </View>
+                  </>
+                ))}
+
+                {/* <Text
                   style={{
                     color: "#080808",
                     fontWeight: "400",
@@ -136,30 +169,24 @@ const NotesCard: React.FC<UserProfileProps> = ({
                     fontFamily: PoppinsRegular,
                   }}
                 >
-                  Client confirmed receipt of claim documents but requested a
-                  two-week extension for submitting the remaining evidence. No
-                  objections raised about policy terms. Follow-up scheduled for
-                  January 30, 2025.
-                </Text>
+             
+                </Text> */}
               </View>
             )}
-            {Document && TextEnable == false && (
+            {Document && !TextEnable && (
               <View
                 style={{
-                  flexDirection: "row",
-                  alignItems: "center",
+                  paddingBottom: helpers.normalize(5),
                 }}
               >
-           
-                <View style={{ marginVertical: 10,flexDirection:'row' }}>
-                  {data.map((doc, index) => (
-                    <View style={{marginBottom:48}}>
-                      <CustomButton
-                        Color="#F3F6FF"
-                        desc={doc.size}
-                        title={doc.name}
-                      ></CustomButton>
-                    </View>
+                <View style={{ marginVertical: 10, flexDirection: "row" }}>
+                  {docs?.map((doc: any, index: number) => (
+                    <CustomButton
+                      Color="#F3F6FF"
+                      desc={doc?.size}
+                      title={doc?.name}
+                      url={doc?.url}
+                    />
                   ))}
                 </View>
               </View>

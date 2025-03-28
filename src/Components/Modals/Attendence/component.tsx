@@ -1,14 +1,13 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  Modal,
-} from "react-native";
+import { View, Text, Modal } from "react-native";
 
 import { styles } from "./styles";
 import ButtonGroup from "../../HorizontalButtons/component";
 import helpers from "../../../utils/helpers";
 import { PoppinsRegular } from "../../../Resources/fonts";
+import { Entypo, Feather } from "@expo/vector-icons";
+import { Image } from "react-native";
+import { icons } from "@/assets/icons/icons";
 
 const categories: string[] = [
   "Everyone",
@@ -25,7 +24,7 @@ interface NewsModalProps {
   title: any;
   Activate: any;
   clockIn: boolean;
-  onSubmit:any
+  onSubmit: any;
 }
 
 const AttendenceModal: React.FC<NewsModalProps> = ({
@@ -46,7 +45,6 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
         : [...prev, category]
     );
   };
-
 
   return (
     <Modal visible={isVisible} transparent onRequestClose={onClose}>
@@ -116,7 +114,7 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
           </View>
 
           <ButtonGroup
-          onPress={onSubmit}
+            onPress={onSubmit}
             ContainerStyle={{ flexDirection: "row", flex: 1 }}
             Color1={""}
             textStyle1={{

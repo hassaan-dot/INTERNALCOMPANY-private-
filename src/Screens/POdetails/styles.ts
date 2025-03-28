@@ -3,7 +3,7 @@ import { PoppinsRegular } from "../../Resources/fonts";
 import helpers from "../../utils/helpers";
 
 const styles = StyleSheet.create({
-  container: { flex: 1,backgroundColor:"#F5F6FA" },
+  container: { flex: 1, backgroundColor: "#F5F6FA" },
   container2: {
     backgroundColor: "white",
     flex: 1,
@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginTop: 10,
     flexDirection: "row",
+    flex: 1,
     justifyContent: "space-between",
   },
   section: {

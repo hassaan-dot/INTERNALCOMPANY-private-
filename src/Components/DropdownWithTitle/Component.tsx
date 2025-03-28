@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import { View, Text, Image } from "react-native";
 import Select, { SingleValue } from "react-select"; // Import SingleValue for typing
 import { components } from "react-select";
-import { styles } from "./Styles.tsx";
-import { customStyles } from "./Styles.tsx";
+import { styles } from "./styles";
+import { customStyles } from "./styles";
 import { icons } from "@/src/Resources";
+import { Title } from "react-native-paper";
 
 // Define the type for items
 type Item = {
@@ -42,8 +43,9 @@ const DropDownTitleView: React.FC<DropDownTitleViewProps> = ({
   return (
     <View style={styles.container}>
       {title && (
-        <View>
-          <Text style={styles.title}>{title}</Text>
+        <View style={{ marginLeft: 2, marginBottom: 4 }}>
+          {title}
+          {/* <Text style={styles.title}>{title}</Text> */}
         </View>
       )}
       <View style={[styles.custom, containerStyle]}>
@@ -57,6 +59,7 @@ const DropDownTitleView: React.FC<DropDownTitleViewProps> = ({
           options={items}
           placeholder={placeholder}
           styles={customStyles}
+          value={Role}
           onChange={(selectedOption: SingleValue<Item>) =>
             SetRole(selectedOption ? selectedOption.value : null)
           }

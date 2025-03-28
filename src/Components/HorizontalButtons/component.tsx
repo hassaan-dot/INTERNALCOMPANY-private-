@@ -12,12 +12,14 @@ type ButtonGroupProps = {
   Color2: any;
   textStyle1: any;
   textStyle2: any;
-  style1:any
-  style2:any
+  style1: any;
+  style2: any;
+  onClose: any;
 };
 
 const ButtonGroup: React.FC<ButtonGroupProps> = ({
   buttonCount,
+  onClose,
   onPress,
   ContainerStyle,
   buttonTitle1,
@@ -33,13 +35,13 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
   return (
     <View style={[styles.container, ContainerStyle]}>
       <TouchableOpacity
-        style={[styles.button,style1, { backgroundColor: Color1 }]}
+        style={[styles.button, style1, { backgroundColor: Color1 }]}
         // onPress={() => onPress && onPress()}
       >
         <Text style={[styles.text, textStyle1]}>{buttonTitle1}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button,style2, { backgroundColor: Color2 }]}
+        style={[styles.button, style2, { backgroundColor: Color2 }]}
         onPress={onPress}
       >
         <Text style={[styles.text, textStyle2]}>{buttonTitle2}</Text>

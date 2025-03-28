@@ -5,13 +5,20 @@ import {
   CompanyTable,
   UserProfile,
   TabSelector,
+  ClientDetailsHeader,
 } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 // import TabSelector from "../../Components";
 import { styles } from "./styles";
 import { generateData } from "@/src/utils/Props/TableDataUserManagemenr/props";
+import { useLocalSearchParams } from "expo-router";
+import { useModalStore } from "@/store/useModalStore";
+import { useGetOneClient } from "@/hooks/useClient";
 const ClientDetails = () => {
+  const { id } = useLocalSearchParams();
   const [ModalOpen, setModalOpen] = useState(false);
+
+  const { data } = useGetOneClient(id as string);
   function CreatClient() {
     setModalOpen(true);
   }
@@ -24,7 +31,7 @@ const ClientDetails = () => {
   let showStatus = useState<boolean>(
     selectedTab !== "Purchasing Order List" ? true : false
   );
-  const DATA= generateData();
+  const DATA = generateData();
 
   return (
     <>
@@ -37,7 +44,7 @@ const ClientDetails = () => {
         </View>
 
         <View>
-          <UserProfile profile={true}></UserProfile>
+          <ClientDetailsHeader item={data} profile={true} />
         </View>
         <View style={styles.container3}>
           <TabSelector
@@ -48,11 +55,6 @@ const ClientDetails = () => {
         </View>
         <View style={styles.container4}>
           <CompanyTable
-            col1={"PO number"}
-            col2={"Email"}
-            col3={"Phone number"}
-            col4={"Status"}
-            col5={"Action"}
             showActions={true}
             checkbox={true}
             DATA={DATA}

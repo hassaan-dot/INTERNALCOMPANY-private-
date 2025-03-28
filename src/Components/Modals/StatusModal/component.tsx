@@ -1,9 +1,9 @@
-
 import React, { useState } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
-import { CheckboxField} from '../../index'
+import { CheckboxField } from "../../index";
 import helpers from "../../../utils/helpers";
 import { PoppinsRegular } from "../../../Resources/fonts";
+import { Entypo } from "@expo/vector-icons";
 
 const questions = [
   "Sales Person",
@@ -13,7 +13,6 @@ const questions = [
   "Sales Person",
   "Warehouse Department",
   "Operations Department",
- 
 ];
 
 interface NewsModalProps {
@@ -53,21 +52,25 @@ const StatusModal: React.FC<NewsModalProps> = ({
         }}
       >
         <View style={styles.container}>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <TouchableOpacity onPress={onClose}>
+              <Entypo
+                name="circle-with-cross"
+                size={25}
+                style={{ right: -10 }}
+                color="red"
+              ></Entypo>
+            </TouchableOpacity>
+          </View>
           <Text style={styles.title}>{title}</Text>
 
           <View>
             {questions.map((category) => (
-              <CheckboxField
-                text={category}
-              
-              />
+              <CheckboxField text={category} />
             ))}
           </View>
 
-          <TouchableOpacity
-            style={styles.sendButton}
-            onPress={onClose}
-          >
+          <TouchableOpacity style={styles.sendButton} onPress={onClose}>
             <Text style={styles.sendText}>Add status</Text>
           </TouchableOpacity>
         </View>

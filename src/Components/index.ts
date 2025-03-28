@@ -32,22 +32,28 @@ import CheckboxField from "./CheckField/component";
 import ConfirmRecieving from "./Modals/confirmRecieving/component";
 import AttendenceModal from "./Modals/Attendence/component";
 import StatusBadge from "./StatusIcon/component";
-import Header from './MobileScreenHeader/component'
+import Header from "./MobileScreenHeader/component";
 import Avatar from "./Avatar/component";
-import MobileScreenHeader from './MobileScreenHeader/component'
-import Admineader from './adminHeader/component'
+import MobileScreenHeader from "./MobileScreenHeader/component";
+import Admineader from "./adminHeader/component";
 import truncateComponentName from "./WordTruncate/component";
-import createUserModal from './Modals/CreateModalUser/component'
-import DateTimeSelector from './DateAndTime/compoent'
-import createRequestModal from './Modals/createRequestModal/component'
-import MultiSelectDropdown from './multiSelectionDropDown/component'
+import createUserModal from "./Modals/CreateModalUser/component";
+import DateTimeSelector from "./DateAndTime/compoent";
+import createRequestModal from "./Modals/createRequestModal/component";
+import MultiSelectDropdown from "./multiSelectionDropDown/component";
+import ClientDetailsHeader from "./clientDetailsHeader/component";
+import Password from "./InputField/password/component";
+import Indicator from "./ActivityIndicator/Indicator";
+import InvoiceModal from "./Modals/InvoiceModal/component";
 export {
   FilledButton,
   Sidebar,
+  InvoiceModal,
   CheckboxField,
   MultiSelectDropdown,
   GraphCard,
   DateTimeSelector,
+  Indicator,
   CustomDropdownIndicator,
   NewsModal,
   ButtonGroup,
@@ -78,11 +84,13 @@ export {
   ConfirmRecieving,
   AttendenceModal,
   StatusBadge,
-  Header,Avatar,
+  Header,
+  Avatar,
   MobileScreenHeader,
   Admineader,
   truncateComponentName,
   createUserModal,
-  createRequestModal
+  createRequestModal,
+  ClientDetailsHeader,
+  Password,
 };
-

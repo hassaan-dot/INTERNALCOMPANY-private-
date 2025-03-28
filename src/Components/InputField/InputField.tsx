@@ -281,7 +281,8 @@ type InputFieldProps = {
   placeholder?: string;
   titleStyle?: any;
   inputStyle?: any;
-  multiline:any,
+  multiline: any;
+  ispassword: boolean;
   secureTextEntry?: boolean;
 } & TextInputProps;
 
@@ -292,23 +293,22 @@ const InputField: React.FC<InputFieldProps> = ({
   titleStyle,
   placeholder,
   secureTextEntry,
-  multiline=false,
+  multiline = false,
   inputStyle,
+  ispassword,
   ...props
-  
 }) => {
   return (
-
     <View style={styles.container}>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
       <TextInput
-         returnKeyType="done" // Adds a "Done" button
-         onSubmitEditing={Keyboard.dismiss} 
+        returnKeyType="done" // Adds a "Done" button
+        onSubmitEditing={Keyboard.dismiss}
         style={[styles.input, inputStyle]}
         value={value}
         onChangeText={onChangeText}
         multiline={multiline}
-
+        keyboardType="datetime"
         placeholder={placeholder}
         placeholderTextColor={"#000"}
         secureTextEntry={secureTextEntry}
@@ -316,14 +316,14 @@ const InputField: React.FC<InputFieldProps> = ({
       />
     </View>
     // </KeyboardAvoidingView>
-  //  </TouchableWithoutFeedback>
+    //  </TouchableWithoutFeedback>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     // marginBottom: 10,
-    marginVertical:5
+    marginVertical: 5,
   },
   title: {
     fontSize: 16,
@@ -338,7 +338,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontWeight: "500",
     fontSize: 16,
-    paddingVertical:8 ,
+    paddingVertical: 8,
     // textAlignVertical:'top',
     fontFamily: PoppinsRegular,
     paddingHorizontal: 10,

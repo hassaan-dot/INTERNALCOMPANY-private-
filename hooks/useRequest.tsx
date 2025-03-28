@@ -9,7 +9,6 @@ const handleGetAllRequest = async () => {
 };
 
 const handleGetOneRequest = async (documentId: any) => {
-  console.log("Configure", documentId);
   const res = await api.get(`/requests/${documentId}`);
   return res.data;
 };
@@ -56,28 +55,11 @@ export const useCreateRequest = () => {
     },
   });
 };
-export const useGetOneRequest = () => {
-  const queryRequest = useQueryClient();
-  const { rowData, setRowData } = useModalStore();
-  const router = useRouter();
-  return useMutation({
-    mutationKey: ["getOneRequest"],
-    mutationFn: ({ data, documentId }: any) => handleGetOneRequest(documentId),
-    onSuccess: (data) => {
-      // setIsRequestModalOpen(false);
-
-      console.log("response is", data);
-      router.push(
-        `/(app)/request/request-details?username=${rowData.contact_person_name}&id=${rowData.documentId}`
-      );
-      setRowData(null);
-      queryRequest.invalidateQueries({
-        queryKey: ["Requests"],
-      });
-    },
-    onError: (error) => {
-      console.log("error", error);
-    },
+export const useGetOneRequest = (id: string) => {
+  // const queryRequest = useQueryClient();
+  return useQuery({
+    queryKey: ["Requests Details"],
+    queryFn: () => handleGetOneRequest(id),
   });
 };
 
@@ -89,7 +71,6 @@ export const useUpdateRequest = () => {
     mutationKey: ["updateRequest"],
     mutationFn: ({ data, id }: any) => handleUpdateRequest(data, id),
     onSuccess: (data) => {
-      console.log("update informatiom", data);
       setIsRequestModalOpen(false);
       queryRequest.invalidateQueries({
         queryKey: ["Requests"],

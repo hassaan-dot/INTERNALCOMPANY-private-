@@ -72,12 +72,13 @@ export const styles = StyleSheet.create({
   },
   detailsSection: {
     flex: 1,
-    width: helpers.wp(30),
+    // width: helpers.wp(30),
     justifyContent: "space-between",
 
     borderColor: "#E8E8E8",
     borderWidth: 1,
-    marginLeft: 15,
+    // marginLeft: 15,
+    // paddingBottom: helpers.normalize(20),
     // paddingHorizontal: 20,
     // paddingTop:15,
     paddingVertical: 0,

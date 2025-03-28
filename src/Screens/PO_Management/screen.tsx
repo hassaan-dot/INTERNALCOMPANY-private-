@@ -1,26 +1,29 @@
+import { useGetPO } from "@/hooks/usePO";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { ScreenHeader, CompanyTable } from "../../Components";
+import { CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
-import { useNavigation } from "@react-navigation/native";
-import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
+import { Po_Schema } from "../ClientManagement/_schema";
 import Styles from "./styles";
-import { useRouter } from "expo-router";
 const PO_Management: React.FC<{ route: any }> = ({ route }) => {
-  const navigation = useNavigation();
-
-  const DATA = generateData();
-
   const [ModalOpen, setModalOpen] = useState(false);
 
-  function onPressfunc() {
-    return navigation.navigate("Add New PO");
-  }
-  const router = useRouter()
-  const Handlenavigation = (username:string, id: number) => {
-    router.push(`/(app)/po-management/po-add?username=${username}&id=${id}`)
-  }
-  function Create() {}
+  const { data, isPending, error } = useGetPO();
+
+  console.log("Data from is is", data);
+
+  const onClickEye = ({ documentId, id }: any) => {
+    router.push(`/(app)/po-management/po-details?id=${documentId}`);
+  };
+
+  const router = useRouter();
+
+  const Handlenavigation = (username: string, id: number) => {
+    // router.push(`/(app)/po-management/po-add?username=${username}&id=${id}`);
+    router.push(`/(app)/po-management/po-add`);
+  };
+
   return (
     <>
       <View style={Styles.container}>
@@ -33,21 +36,17 @@ const PO_Management: React.FC<{ route: any }> = ({ route }) => {
 
         <View>
           <CompanyTable
-            col1={"Name"}
-            col2={"Email"}
-            col3={"Phone number"}
-            col4={"Person Contact"}
-            col5={"Action"}
+            columns_schema={Po_Schema}
             checkbox={true}
             showActions={true}
-            DATA={DATA}
+            showEye={true}
+            showStatus={true}
+            DATA={data}
+            onClickEye={onClickEye}
           ></CompanyTable>
         </View>
       </View>
-      <CreateModal
-       create={true} 
-       visible={ModalOpen}
-       ></CreateModal>
+      <CreateModal create={true} visible={ModalOpen}></CreateModal>
     </>
   );
 };

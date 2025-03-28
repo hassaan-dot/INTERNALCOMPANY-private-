@@ -16,10 +16,12 @@ interface UserProfileProps {
   titleStyle: any;
   buttons: any;
   onPress: () => void;
+  onClose: any;
 }
 
 const VerticalsButton: React.FC<UserProfileProps> = ({
   rows,
+  onClose,
   name = "Ahmed",
   email = "Ahmed@gmail.com",
   contact = "923174431419",
@@ -38,16 +40,19 @@ const VerticalsButton: React.FC<UserProfileProps> = ({
         <View
           style={[
             styles.profileSection,
-            { padding: !profile ? helpers.hp(0) : helpers.normalize(30), 
-              paddingVertical:!profile ? helpers.hp(0) : helpers.normalize(35),
-              paddingHorizontal: !profile ? helpers.hp(0) : helpers.normalize(45),
-            
+            {
+              // padding: !profile ? helpers.hp(0) : helpers.normalize(30),
+              paddingVertical: helpers.normalize(10),
+              // paddingHorizontal: !profile
+              //   ? helpers.hp(0)
+              //   : helpers.normalize(45),
             },
           ]}
         >
-          {!profile && (
+          {profile && (
             <ButtonGroup
               onPress={onPress}
+              onClose={onClose}
               textStyle2={{ color: "#07504B" }}
               Color1="#07504B"
               Color2="#FFF"

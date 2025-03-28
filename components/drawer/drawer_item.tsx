@@ -35,17 +35,19 @@ const styles = StyleSheet.create({
     marginVertical: 0,
     borderRadius: 10,
     padding: 0,
-    // paddingVertical:20,
+    paddingVertical: 0,
+    height: helpers.normalize(20),
 
     marginBottom: 12,
     // marginV:10,
     justifyContent: "center",
-    height: helpers.hp(5.5),
+    // height: helpers.hp(5.5),
   },
   drawerItemLabel: {
     fontSize: 14,
     fontWeight: "500",
     color: "#A47C60",
+    marginVertical: 0,
     fontFamily: PoppinsRegular,
   },
   submenuContainer: {

@@ -12,10 +12,10 @@ import { styles } from "./style";
 interface ComponentProps {
   title?: string;
   desc?: string;
-  subtitleContainer?:any;
+  subtitleContainer?: any;
   style?: ViewStyle;
-  textStyle?: TextStyle; // Style for the description text
-  titleTextStyle?: TextStyle; // Style for the title text
+  textStyle?: any; // Style for the description text
+  titleTextStyle?: any; // Style for the title text
   icon?: boolean; // Whether to display the icon or not
   iconSource?: any; // Image source for the icon, can be an image path or require() call
   imageStyle?: ImageStyle; // Style for the icon image
@@ -76,7 +76,7 @@ const Component: React.FC<ComponentProps> = ({
 
       <View>
         {desc && (
-          <View style={styles.subtitleCont,subtitleContainer}>
+          <View style={(styles.subtitleCont, subtitleContainer)}>
             <Text style={[styles.subtitle, textStyle]}>{desc}</Text>
           </View>
         )}

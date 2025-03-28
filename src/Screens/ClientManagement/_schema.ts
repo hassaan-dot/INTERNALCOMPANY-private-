@@ -41,11 +41,8 @@ export const User_columns_schema = [
     key: "provider",
     header: "Roles",
   },
-  // {
-  //   key: "company_name",
-  //   header: "Departments",
-  // },
 ];
+
 export const Requests_columns_schema = [
   {
     key: "documentId",
@@ -64,10 +61,59 @@ export const Requests_columns_schema = [
     key: "standing",
     header: "Invoice Type",
   },
-
-  // {
-  //   key: "company_name",
-  //   header: "Departments",
-  // },
 ];
 
+export const Po_Schema = [
+  {
+    key: "po_name",
+    header: "Name",
+  },
+  {
+    key: "email",
+    header: "Email",
+  },
+
+  {
+    key: "phone_number",
+    header: "Phone number",
+  },
+];
+
+export const Invoice_Schema = [
+  {
+    key: "date_of_payment",
+    header: "Date of each payment",
+  },
+  {
+    key: "payer",
+    header: "Name of each payment",
+  },
+
+  {
+    key: "amount",
+    header: "Amount paid",
+  },
+  {
+    key: "payment_method",
+    header: "Payment method",
+  },
+];
+export const Item_Schema = [
+  {
+    key: "item_number",
+    header: "Item Number",
+  },
+  {
+    key: "item_name",
+    header: "Item Name",
+  },
+
+  {
+    key: "price",
+    header: "Price",
+  },
+  {
+    key: "company",
+    header: "Company",
+  },
+];

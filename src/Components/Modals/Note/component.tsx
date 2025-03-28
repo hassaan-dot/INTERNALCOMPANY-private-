@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
 } from "react-native";
 
 import { styles } from "./styles";
+import LocalStorage from "@/services/local-storage";
 
 const categories: string[] = [
   "Everyone",
@@ -24,7 +25,7 @@ interface NewsModalProps {
   onClose: () => void;
   title: any;
   Activate: any;
-  onPress:()=>void
+  onPress: () => void;
 
   // OnCancel :() => void;
 }
@@ -33,23 +34,23 @@ const Note: React.FC<NewsModalProps> = ({
   isVisible,
   onClose,
   onPress,
-  // OnCancel,
 
   title = "News",
 }) => {
   const [news, setNews] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+  const [formData, setFormData] = useState({
+    note: "",
+  });
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
   const handleSend = () => {
-    // OnCancel
+    onPress(formData);
   };
 
   return (
@@ -69,14 +70,13 @@ const Note: React.FC<NewsModalProps> = ({
             style={styles.input}
             placeholder="Write your news here..."
             multiline
-            value={news}
-            onChangeText={setNews}
+            value={formData.note}
+            onChangeText={(text) => {
+              handleInputChange("note", text);
+            }}
           />
 
-          <TouchableOpacity
-            style={styles.sendButton}
-            onPress={onClose}
-          >
+          <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
             <Text style={styles.sendText}>Send</Text>
           </TouchableOpacity>
         </View>

@@ -3,8 +3,10 @@ import { View, Text, Image, StyleSheet } from "react-native";
 import helpers from "../../utils/helpers";
 import HorizontalLine from "../HorizontalLine/HorizontalLine";
 import { icons } from "../../Resources";
-import {styles} from './styles'
+import { styles } from "./styles";
 import StatusBadge from "../StatusIcon/component";
+import truncateComponentName from "../WordTruncate/component";
+import { formatDate } from "@/src/utils";
 interface UserProfileProps {
   name: string;
   email: string;
@@ -15,10 +17,11 @@ interface UserProfileProps {
   style: any;
   title: string;
   titleIcon: boolean;
-  titleStyle:any;
-  cardContainer:any;
-  detailscreenContainer:any
-  horizontalwidth:any
+  titleStyle: any;
+  cardContainer: any;
+  detailscreenContainer: any;
+  horizontalwidth: any;
+  data: any;
 }
 
 const UserProfile: React.FC<UserProfileProps> = ({
@@ -32,22 +35,23 @@ const UserProfile: React.FC<UserProfileProps> = ({
   title = "Details",
   titleIcon,
   titleStyle,
-  cardContainer
-  ,detailscreenContainer,
-  horizontalwidth='50%'
+  cardContainer,
+  detailscreenContainer,
+  horizontalwidth = "50%",
+  data,
 }) => {
   return (
-    <View style={[styles.card,cardContainer]}>
+    <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>
         {profile && (
           <View style={styles.profileSection}>
             <View style={styles.profileImage} />
-            <View style={{ marginLeft:5 }}>
+            <View style={{ marginLeft: 5 }}>
               <Text style={styles.name}>{name}</Text>
             </View>
           </View>
         )}
-        <View style={[styles.detailsSection,detailscreenContainer]}>
+        <View style={[styles.detailsSection, detailscreenContainer]}>
           <View
             style={{
               flexDirection: "row",
@@ -56,8 +60,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
             }}
           >
             <View style={{}}>
-              <Text style={[styles.detailsTitle,titleStyle]}>{title}</Text>
-              <HorizontalLine color="#B0C4DE" width={horizontalwidth}></HorizontalLine>
+              <Text style={[styles.detailsTitle, titleStyle]}>{title}</Text>
+              <HorizontalLine
+                color="#B0C4DE"
+                width={horizontalwidth}
+              ></HorizontalLine>
             </View>
             {!titleIcon && (
               <View>
@@ -73,28 +80,31 @@ const UserProfile: React.FC<UserProfileProps> = ({
           <View
             style={{
               flexDirection: "row",
-              justifyContent: "space-between",
+              // justifyContent: "space-between",
               flex: 1,
               marginTop: 12,
             }}
           >
             <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Name: </Text>
-              <Text style={[styles.link, style]}>{name}</Text>
+              <Text style={[styles.label, style]}>PO Name: </Text>
+              <Text style={[styles.link, style]}>{data?.data?.po_name}</Text>
             </View>
             <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Contact: </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
+              <Text style={[styles.label, style]}>Type: </Text>
+              <Text style={[styles.link, style]}>{"Internal"}</Text>
             </View>
             <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Role: </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
+              <Text style={[styles.label, style]}>Items Number: </Text>
+              <Text style={[styles.link, style]}>
+                {data?.data?.po_items?.length}
+              </Text>
             </View>
             <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Role: </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
+              <Text style={[styles.label, style]}>Creation Date: </Text>
+              <Text style={[styles.link, style]}>
+                {formatDate(data?.data?.createdAt)}
+              </Text>
             </View>
-
           </View>
 
           {/* <View
@@ -145,6 +155,5 @@ const UserProfile: React.FC<UserProfileProps> = ({
     </View>
   );
 };
-
 
 export default UserProfile;

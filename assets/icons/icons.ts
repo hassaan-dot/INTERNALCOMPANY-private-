@@ -37,4 +37,5 @@ export const icons: Record<string, { uri: string }> = {
   ProfileIcon4: require("./Group2.png"),
   ProfileIcon5: require("./Frame.png"),
   ProfileIcon6: require("./Group3.png"),
+  invoiceModalIcon: require("./Featured icon.png"),
 };

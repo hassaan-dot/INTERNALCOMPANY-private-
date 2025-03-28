@@ -18,6 +18,7 @@ interface UserProfileProps {
   detailscreenContainer: any;
   horizontalwidth: any;
   colorProp: any;
+  Data: any;
 }
 
 const InformationContainer: React.FC<UserProfileProps> = ({
@@ -28,6 +29,7 @@ const InformationContainer: React.FC<UserProfileProps> = ({
   country = "Saudia  Arabia",
   profile = false,
   style,
+  Data,
   title = "Details",
   titleIcon,
   titleStyle,
@@ -87,15 +89,19 @@ const InformationContainer: React.FC<UserProfileProps> = ({
               <Text style={[styles.label, style, { color: "#080808" }]}>
                 Contact Person Name{" "}
               </Text>
-              <Text style={[styles.link, style]}>{name}</Text>
+              <Text style={[styles.link, style]}>
+                {Data?.data?.contact_name}
+              </Text>
             </View>
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Company Name </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
+              <Text style={[styles.link, style]}>
+                {Data?.data?.company_name}
+              </Text>
             </View>
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Address </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
+              <Text style={[styles.link, style]}>{Data?.data?.address}</Text>
             </View>
           </View>
 
@@ -110,11 +116,13 @@ const InformationContainer: React.FC<UserProfileProps> = ({
           >
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Email </Text>
-              <Text style={[styles.link, style]}>{name}</Text>
+              <Text style={[styles.link, style]}>{Data?.data?.email}</Text>
             </View>
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Phone Number: </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
+              <Text style={[styles.link, style]}>
+                {Data?.data?.phone_number}
+              </Text>
             </View>
             <View style={[styles.detailsItem]}>
               {/* <Text style={[styles.label, style,{flex:2}]}>Role: </Text>

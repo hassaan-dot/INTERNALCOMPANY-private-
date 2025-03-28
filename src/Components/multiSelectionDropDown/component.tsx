@@ -22,7 +22,8 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>{title}</Text>
+      {/* <Text style={styles.title}>{title}</Text> */}
+      <View style={{ marginBottom: 4 }}>{title}</View>
       <MultipleSelectList
         setSelected={(val: any) => setSelectedItems(val)}
         data={items}

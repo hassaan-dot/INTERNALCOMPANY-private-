@@ -5,6 +5,7 @@ import helpers from "../../utils/helpers";
 import FilledButton from "../Buttons/FilledButton/FilledButton";
 import CompanyTable from "../TableData/component";
 import { PoppinsRegular } from "../../Resources/fonts";
+import { Invoice_Schema } from "@/src/Screens/ClientManagement/_schema";
 interface UserProfileProps {
   name: string;
   email: string;
@@ -27,13 +28,15 @@ interface UserProfileProps {
   ButtonTitle: string;
   titleIcon2: boolean;
   ButtonTitle2: string;
-  onPress:()=>void;
-  DATA:any
-
+  onPress: () => void;
+  DATA: any;
+  schema: any;
+  rowTextStyle: any;
 }
 
 const TableTitle: React.FC<UserProfileProps> = ({
   rows,
+  rowTextStyle,
   DATA,
   height = helpers.hp(40),
   name = "Ahmed",
@@ -55,7 +58,8 @@ const TableTitle: React.FC<UserProfileProps> = ({
   ButtonTitle,
   titleIcon2,
   ButtonTitle2,
-  onPress
+  onPress,
+  schema,
 }) => {
   return (
     <View style={[styles.card, cardContainer]}>
@@ -72,25 +76,27 @@ const TableTitle: React.FC<UserProfileProps> = ({
             }}
           >
             <Text style={[styles.detailsTitle, titleStyle]}>{title}</Text>
-            <View style={{flexDirection:'row',alignItems:'center'}}>
-              <View style={{marginRight:20,}}>
-
-      
-              {titleIcon && (
-                <FilledButton
-                  titleStyle={{ fontSize: 10, fontWeight: 600, color: "black" }}
-                  title={ButtonTitle}
-                  onPress={onPress}
-                  containerStyle={{
-                    backgroundColor: "#F3f6FF",
-                    height: 0,
-                    paddingVertical: 15,
-                    paddingHorizontal: 20,
-                    borderRadius: 5.333,
-                  }}
-                ></FilledButton>
-              )}
-                      </View>
+            <View style={{ flexDirection: "row", alignItems: "center" }}>
+              <View style={{ marginRight: 20 }}>
+                {titleIcon && (
+                  <FilledButton
+                    titleStyle={{
+                      fontSize: 10,
+                      fontWeight: 600,
+                      color: "black",
+                    }}
+                    title={ButtonTitle}
+                    onPress={onPress}
+                    containerStyle={{
+                      backgroundColor: "#F3f6FF",
+                      height: 0,
+                      paddingVertical: 15,
+                      paddingHorizontal: 20,
+                      borderRadius: 5.333,
+                    }}
+                  ></FilledButton>
+                )}
+              </View>
               {titleIcon2 && (
                 <FilledButton
                   titleStyle={{ fontSize: 10, fontWeight: 600, color: "black" }}
@@ -112,25 +118,22 @@ const TableTitle: React.FC<UserProfileProps> = ({
               flexirection: "row",
               borderColor: "#E8E8E8",
               // width: horizontalwidth,
-              flex:1
+              flex: 1,
             }}
           ></View>
           <View style={{ margin: 15, marginHorizontal: 20 }}>
             <CompanyTable
-              col1={"Data of each payment"}
-              col2={"Data of each payment"}
-              col3={"Amount paid"}
-              col4={"Payment Method"}
-              col5={"Payment status"}
+              columns_schema={schema}
               DATA={DATA}
               checkbox={false}
               headerTextStyle={{
                 color: "#2E2E2E",
                 fontSize: 13.4,
                 fontWeight: "500",
-                fontFamily:PoppinsRegular,
+                fontFamily: PoppinsRegular,
               }}
-              rowTextStyle={{  fontFamily:PoppinsRegular }}
+              showStatus={true}
+              rowTextStyle={rowTextStyle}
               pagination={false}
               headerRowStyle={{
                 backgroundColor: "#F3F6FF",

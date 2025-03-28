@@ -12,6 +12,15 @@ type useModalStore = {
 
   isRequestModalOpen: boolean;
   setIsRequestModalOpen: (isUserModalOpen: boolean) => void;
+
+  isInvoicePoModalOpen: boolean;
+  setisInvoicePoModalOpen: (isInvoicePoModalOpen: boolean) => void;
+
+  isNoteModalOpen: boolean;
+  setIsNoteModalOpen: (isNoteModalOpen: boolean) => void;
+
+  UserData: any;
+  setUserData: (UserData: any) => void;
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
@@ -24,6 +33,16 @@ export const useModalStore = create<useModalStore>((set) => ({
   isRequestModalOpen: false,
   setIsRequestModalOpen: (isRequestModalOpen) => set({ isRequestModalOpen }),
 
+  isNoteModalOpen: false,
+  setIsNoteModalOpen: (isNoteModalOpen) => set({ isNoteModalOpen }),
+
+  isInvoicePoModalOpen: false,
+  setisInvoicePoModalOpen: (isInvoicePoModalOpen) =>
+    set({ isInvoicePoModalOpen }),
+
   rowData: null,
   setRowData: (rowData) => set({ rowData }),
+
+  UserData: null,
+  setUserData: (UserData) => set({ UserData }),
 }));

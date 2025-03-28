@@ -3,15 +3,17 @@
   "compilerOptions": {
     "strict": true,
     "paths": {
-      "@/*": [
-        "./*"
-      ]
+      "@/*": ["./*"]
     }
   },
   "include": [
     "**/*.ts",
     "**/*.tsx",
     ".expo/types/**/*.ts",
-    "expo-env.d.ts"
-, "src/Components/DropdownWithTitle/Styles.tsx"  ]
+    "expo-env.d.ts",
+    "src/Components/DropdownWithTitle/styles.tsx",
+    "src/Components/ActivityIndicator/helper.js",
+    "src/Components/ActivityIndicator/Style.js",
+    "src/Components/ActivityIndicator/Indicator.js"
+  ]
 }

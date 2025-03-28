@@ -1,20 +1,17 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { View } from "react-native";
-import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
-import CreateModal from "../../Components/Modals/createModal/component";
-import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
-import { styles } from "./styles";
-import { useRouter } from "expo-router";
 import {
   useCreateUser,
   useDeleteUser,
   useGetUser,
   useUpdateUser,
 } from "@/hooks/useUser";
-import { User_columns_schema } from "../ClientManagement/_schema";
 import CreateUserModal from "@/src/Components/Modals/CreateModalUser/component";
 import { useModalStore } from "@/store/useModalStore";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { View } from "react-native";
+import { CompanyTable, ScreenHeader } from "../../Components";
+import { User_columns_schema } from "../ClientManagement/_schema";
+import { styles } from "./styles";
 import { UserStore } from "./usershook";
 
 const UserManagement = () => {

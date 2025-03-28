@@ -148,7 +148,7 @@ export const styles = StyleSheet.create({
     fontWeight: "400",
     marginBottom: 4,
     marginLeft: 5,
-    fontFamily: PoppinsRegular,
+    // fontFamily: PoppinsRegular,
     // fontFamily:PoppinsRegular,
     // marginBottom: 8,
   },
@@ -180,7 +180,9 @@ export const styles = StyleSheet.create({
 export const customStyles = {
   control: (provided: any) => ({
     ...provided,
-    backgroundColor: "transparent",
+    // backgroundColor: "red",
+    // flex: 1,
+
     border: "none",
     boxShadow: "none",
     minHeight: "auto",
@@ -194,12 +196,13 @@ export const customStyles = {
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    color: "#999",
+    color: "#000",
     fontSize: 14,
   }),
   singleValue: (provided: any) => ({
     ...provided,
-    color: "#333",
+    color: "#000",
+    fontWeight: "500",
     fontSize: 14,
   }),
   dropdownIndicator: (provided: any) => ({
@@ -212,20 +215,22 @@ export const customStyles = {
   menu: (provided: any) => ({
     ...provided,
     marginTop: 4,
-    borderRadius: 8,
-    borderWidth: 1,
+    // borderRadius: 100,
+    borderWidth: 2,
     borderColor: "#ddd",
-    boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+    // flex: 1,
+    width: "100%",
+    // boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
     zIndex: 9999,
   }),
   option: (provided: any, state: any) => ({
     ...provided,
-    backgroundColor: state.isSelected ? "#f0f0f0" : "white",
+    backgroundColor: state.isSelected ? "#fff" : "white",
     color: "#333",
     padding: 10,
     fontSize: 14,
     ":active": {
-      backgroundColor: "#f5f5f5",
+      backgroundColor: "#fff",
     },
   }),
   menuPortal: (provided: any) => ({

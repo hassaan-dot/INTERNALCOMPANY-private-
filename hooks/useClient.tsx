@@ -10,7 +10,7 @@ const handleGetAllClient = async () => {
 };
 
 const handleCreateClient = async (data: any) => {
-  const res = await api.post("/clients", data);
+  const res = await api.post("/clients/?populate=*", data);
   return res.data;
 };
 
@@ -57,29 +57,10 @@ export const useCreateClient = () => {
   });
 };
 
-export const useGetOneClient = () => {
-  const { setRowData, rowData } = useModalStore();
-  const queryClient = useQueryClient();
-  const router = useRouter();
-
-  return useMutation({
-    mutationKey: ["getoneRequest"],
-
-    mutationFn: ({ data, documentId }: any) => handleGetOneClient(documentId),
-    onSuccess: (data) => {
-      console.log("update informatiom", data);
-
-      setRowData(null);
-      queryClient.invalidateQueries({
-        queryKey: ["clients"],
-      });
-      router.push(
-        `/(app)/client-management/client-details?username=${rowData.title}&id=${rowData.documentId}`
-      );
-    },
-    onError: (error) => {
-      console.log("error", error);
-    },
+export const useGetOneClient = (document_id: string) => {
+  return useQuery({
+    queryKey: ["getoneRequest", document_id],
+    queryFn: () => handleGetOneClient(document_id),
   });
 };
 

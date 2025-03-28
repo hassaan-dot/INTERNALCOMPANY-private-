@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
-  ScreenHeader,
   CompanyTable,
-  TabSelector,
-  PredictorCard,
   GraphCard,
+  PredictorCard,
+  ScreenHeader,
+  TabSelector,
+  Indicator,
 } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
-// import TabSelector from "../../Components";
+import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import { styles } from "./styles";
-import {generateData} from '../../utils/Props/TableDataUserManagemenr/props'
 const Report: React.FC<{ route: any }> = ({ route }) => {
   const DATA = generateData();
 
@@ -30,12 +30,12 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
   console.log("showActions", showActions, "showStatus", showStatus);
   return (
     <>
-
       <ScrollView style={styles.container1}>
-      <ScreenHeader title={route?.name} onPress={CreatClient}></ScreenHeader>
+        <ScreenHeader title={"Reports"} onPress={CreatClient}></ScreenHeader>
 
-        <View style={{marginTop:15}}>
+        <View style={{ marginTop: 15 }}>
           <View style={styles.container2}>
+            {/* <Ballindicator></Ballindicator> */}
             <PredictorCard color={"#38CB89"}></PredictorCard>
             <PredictorCard color={"#FFA600"}></PredictorCard>
             <PredictorCard color={"#FF5630"}></PredictorCard>
@@ -58,12 +58,8 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
           />
         </View>
         <View style={{ marginTop: 5 }}>
+          {/* <Indicator></Indicator> */}
           <CompanyTable
-            col1={"PO number"}
-            col2={"Email"}
-            col3={"Phone number"}
-            col4={"Status"}
-            col5={"Action"}
             showActions={true}
             checkbox={true}
             pagination={true}

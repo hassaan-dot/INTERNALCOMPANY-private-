@@ -12,6 +12,7 @@ api.interceptors.request.use(
     if (token) {
       if (config.headers) {
         config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Accept = "multipart/form-data";
       }
     }
     return config;

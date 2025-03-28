@@ -9,7 +9,7 @@ interface CustomCheckboxFieldProps {
   field: {
     required?: boolean; // Assuming field can have a required property
   };
-  style:any
+  style: any;
   text?: string;
   isRequired?: boolean; // Whether the field is required or not
   isReadOnly?: boolean; // Whether the checkbox is read-only
@@ -31,7 +31,7 @@ const CustomCheckboxField: React.FC<CustomCheckboxFieldProps> = ({
   text,
   style,
   handleInputChange,
-}) => {
+}: any) => {
   // Managing checked state as a local state
   const [isChecked, setIsChecked] = useState<boolean>(value || false);
 
@@ -49,7 +49,8 @@ const CustomCheckboxField: React.FC<CustomCheckboxFieldProps> = ({
         <TouchableOpacity
           onPress={handleToggle}
           style={[
-            styles.checkbox,style,
+            styles.checkbox,
+            style,
             isChecked && styles.checked,
             isRequired && field.required && !isChecked && styles.errorCheckbox,
             bgColor && bgColor !== "" ? { backgroundColor: bgColor } : {},
@@ -60,7 +61,18 @@ const CustomCheckboxField: React.FC<CustomCheckboxFieldProps> = ({
             style={isChecked ? styles.checkbox : styles.uncheckbox}
           /> */}
         </TouchableOpacity>
-        <Text style={{marginLeft:0,color:'#000000',marginBottom:2,fontWeight:'200',fontSize:12,fontFamily:PoppinsRegular}}>{text}</Text>
+        <Text
+          style={{
+            marginLeft: 0,
+            color: "#000000",
+            marginBottom: 2,
+            fontWeight: "200",
+            fontSize: 12,
+            fontFamily: PoppinsRegular,
+          }}
+        >
+          {text}
+        </Text>
       </View>
     </View>
   );
