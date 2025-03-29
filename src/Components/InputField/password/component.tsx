@@ -1,17 +1,18 @@
-import React, { useState } from "react";
-import { TextInput, View, TouchableOpacity, Text } from "react-native";
 import { Ionicons } from "@expo/vector-icons"; // Using Expo icons
+import React, { useState } from "react";
+import { Text, TextInput, TouchableOpacity, View } from "react-native";
 import styles from "./styles";
-import { PoppinsRegular } from "@/constants/fonts";
 const Password = ({
   password,
   setPassword,
   styleContainer,
+  inputStyle,
   placeholder,
   title,
   titleStyle,
+  error,
+  errorMessage,
 }: any) => {
-  //   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   console.log("Password", password);
   console.log("setPassword", setPassword);
@@ -20,18 +21,14 @@ const Password = ({
     <View>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
 
-      <View style={[styles.container1, styleContainer]}>
+      <View style={[styles.container1, inputStyle]}>
         <TextInput
-          style={{
-            fontFamily: PoppinsRegular,
-            flex: 1,
-            // gap: 0,
-            // paddingVertical: 10,
-          }} // Space for icon
+          style={[styles.container2]}
           placeholder={placeholder}
           secureTextEntry={!showPassword}
           value={password}
           onChangeText={(text) => setPassword(text)}
+          error={error}
         />
         <TouchableOpacity
           onPress={() => setShowPassword(!showPassword)}
@@ -49,6 +46,9 @@ const Password = ({
           />
         </TouchableOpacity>
       </View>
+      {errorMessage && (
+        <Text style={{ color: "red", marginTop: 5 }}>{errorMessage}</Text>
+      )}
     </View>
   );
 };

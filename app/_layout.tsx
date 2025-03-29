@@ -6,6 +6,9 @@ import { SplashScreen } from "expo-router";
 import { Stack } from "expo-router/stack";
 import React, { useEffect } from "react";
 import { ThemeProvider } from "../src/utils/theme/theme";
+import { View } from "react-native";
+import Toast from "react-native-toast-message";
+import { toastConfig } from "@/services/toastConfig";
 SplashScreen.preventAutoHideAsync();
 
 const RootLayout = () => {
@@ -27,32 +30,35 @@ const RootLayout = () => {
   }
 
   return (
-    <QueryProvider>
-      <ThemeProvider>
-        <Stack screenOptions={{}}>
-          <Stack.Screen
-            name="index"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(auth)"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="(app)"
-            options={{
-              headerShown: false,
-            }}
-          />
+    <>
+      <QueryProvider>
+        <ThemeProvider>
+          <Stack screenOptions={{}}>
+            <Stack.Screen
+              name="index"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="(auth)"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="(app)"
+              options={{
+                headerShown: false,
+              }}
+            />
 
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-      </ThemeProvider>
-    </QueryProvider>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </ThemeProvider>
+      </QueryProvider>
+      <Toast config={toastConfig} />
+    </>
   );
 };
 

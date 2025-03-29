@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#07504B",
   },
+  inputError: { borderColor: "red" },
   login_desc2: {
     flex: 1,
     // padding: helpers.normalize(40),
@@ -117,5 +118,8 @@ const styles = StyleSheet.create({
     // marginHorizontal: helpers.normalize(23),
     justifyContent: "center",
   },
+  logincontainer: { marginTop: 10 },
+  logincontainer2: { marginTop: 20 },
+  container3: { margin: helpers.normalize(20) },
 });
 export default styles;

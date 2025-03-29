@@ -1,23 +1,25 @@
 import React, { useState } from "react";
 import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  Modal,
-  StyleSheet,
   Image,
+  Modal,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-// import { MaterialIcons } from "@expo/vector-icons";
-import { styles } from "./styles";
 import { icons } from "../../../Resources";
+import { styles } from "./styles";
 interface OTPModalProps {
   visible: boolean;
   onClose: () => void;
   onSubmit: () => void;
 }
 
-const OTPModal: React.FC<OTPModalProps> = ({ visible, onClose,onSubmit }) => {
+const OTPModal: React.FC<OTPModalProps> = ({
+  visible,
+  onClose,
+  onSubmit,
+}: any) => {
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
 
   const handleChangeText = (index: number, value: string) => {
@@ -38,7 +40,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ visible, onClose,onSubmit }) => {
               style={{ width: 55, height: 55 }}
             ></Image>
           </View>
-          <View style={{marginBottom:20,marginTop:16, paddingRight:50,}}>
+          <View style={{ marginBottom: 20, marginTop: 16, paddingRight: 50 }}>
             <Text style={styles.title}>
               Enter the OTP confirmation code sent to your phone
             </Text>
@@ -55,7 +57,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ visible, onClose,onSubmit }) => {
                 onChangeText={(text) => handleChangeText(index, text)}
               />
             ))}
-            <TouchableOpacity >
+            <TouchableOpacity>
               <Text style={styles.resendText}>Resend Code</Text>
             </TouchableOpacity>
           </View>
@@ -64,7 +66,6 @@ const OTPModal: React.FC<OTPModalProps> = ({ visible, onClose,onSubmit }) => {
             <Text style={styles.submitText}>Submit</Text>
           </TouchableOpacity>
         </View>
-        
       </View>
     </Modal>
   );

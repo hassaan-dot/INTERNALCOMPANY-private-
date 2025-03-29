@@ -46,9 +46,11 @@ import Password from "./InputField/password/component";
 import Indicator from "./ActivityIndicator/Indicator";
 import InvoiceModal from "./Modals/InvoiceModal/component";
 import SingleSelectDropDown from "./SingleSelectDropDown/component";
+import useFormValidation from "./FormValidation/component";
 export {
   FilledButton,
   Sidebar,
+  useFormValidation,
   InvoiceModal,
   CheckboxField,
   MultiSelectDropdown,

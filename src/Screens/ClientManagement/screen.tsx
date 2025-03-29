@@ -74,6 +74,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   };
 
   const handleSubmit = (formData: any) => {
+    console.log("formData", formData);
     if (rowData?.isEdit) onPressUpdatefunction(formData);
     else onPressAddfunction(formData);
   };

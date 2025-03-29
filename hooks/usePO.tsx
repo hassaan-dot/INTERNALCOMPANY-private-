@@ -3,6 +3,7 @@ import { useModalStore } from "@/store/useModalStore";
 import { createIconSetFromFontello } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllPO = async () => {
   const res = await api.get(
@@ -22,7 +23,6 @@ const handleCreatePO = async (data: any) => {
 };
 
 const handleDeletePO = async (data: any) => {
-  console.log("data is ", data.data.documentId);
   const res = await api.delete(`/purchase-orders/${data.data.documentId}`);
   return res.data;
 };
@@ -54,6 +54,7 @@ export const useCreatePO = (setFormData: any) => {
     mutationKey: ["createpo"],
     mutationFn: (data: any) => handleCreatePO(data),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Your PO is create successfully");
       router.back();
       setFormData(null);
       queryPO.invalidateQueries({
@@ -61,7 +62,7 @@ export const useCreatePO = (setFormData: any) => {
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error.message);
     },
   });
 };
@@ -94,17 +95,19 @@ export const useUpdatePO = () => {
 };
 
 export const useDeletePO = () => {
-  const queryPO = useQueryPO();
+  const queryPO = useQueryClient();
   return useMutation({
     mutationKey: ["deletePO"],
     mutationFn: (data: any) => handleDeletePO(data),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Your PO has beem Deleted successfully");
+
       queryPO.invalidateQueries({
-        queryKey: ["clients"],
+        queryKey: ["po"],
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error.message);
     },
   });
 };

@@ -3,7 +3,13 @@ import { StyleSheet, View, Text } from "react-native";
 import React from "react";
 import { PoppinsRegular } from "@/constants/fonts";
 
-const SingleSelectDropDown = ({ items, selected, setSelected, title }: any) => {
+const SingleSelectDropDown = ({
+  items,
+  error,
+  selected = "222",
+  setSelected,
+  title,
+}: any) => {
   // const [selected, setSelected] = React.useState("");
 
   return (
@@ -14,6 +20,8 @@ const SingleSelectDropDown = ({ items, selected, setSelected, title }: any) => {
         data={items}
         value="key"
         save="value"
+        initialValue="Banana"
+        defaultOption={selected} // Set the default option
         boxStyles={styles.boxStyles}
         inputStyles={styles.inputStyles}
         dropdownStyles={styles.dropdownStyles}
@@ -27,6 +35,7 @@ const SingleSelectDropDown = ({ items, selected, setSelected, title }: any) => {
       {/* {selected ? (
         <Text style={styles.selectedText}>Selected: {selected}</Text>
       ) : null} */}
+      {error && <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>}
     </View>
   );
 };

@@ -13,6 +13,7 @@ interface MultiSelectDropdownProps {
   selectedItems: any[];
   setSelectedItems: Dispatch<SetStateAction<any[]>>;
   title: string;
+  error?: any;
 }
 
 const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
@@ -21,6 +22,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
   selectedItems,
   setSelectedItems,
   title,
+  error,
 }) => {
   return (
     <View style={styles.container}>
@@ -52,6 +54,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
         defaultOptions={items}
         selectedItems={selectedItems}
       />
+      {error && <Text style={{ color: "red", marginTop: -6 }}>{error}</Text>}
     </View>
   );
 };

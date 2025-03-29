@@ -1,3 +1,5 @@
+import { useGetUser } from "@/hooks/useUser";
+import { useModalStore } from "@/store/useModalStore";
 import React, { useEffect, useState } from "react";
 import {
   Image,
@@ -7,12 +9,8 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-
-import { useGetUser } from "@/hooks/useUser";
-import { UserStore } from "@/src/Screens/UserManagement/usershook";
-import { useModalStore } from "@/store/useModalStore";
+import * as yup from "yup";
 import {
-  CustomDropdownIndicator,
   DateTimeSelector,
   MultiSelectDropdown,
   SingleSelectDropDown,
@@ -29,12 +27,7 @@ interface ClientModalProps {
   styleContainer: any;
   title: string;
   onClose: () => void;
-  onSubmit: (
-    companyName?: string,
-    email?: string,
-    contactPerson?: string,
-    phoneNumber?: string
-  ) => void;
+  onSubmit: any;
   First: string;
   Firstchild: string;
   Second: string;
@@ -53,6 +46,21 @@ interface ClientModalProps {
   update: boolean;
 }
 
+// Validation schema
+const requestSchema = yup.object().shape({
+  title: yup
+    .string()
+    .required("Title is required")
+    .min(3, "Title must be at least 3 characters"),
+  description: yup
+    .string()
+    .required("Description is required")
+    .min(10, "Description must be at least 10 characters"),
+  standing: yup.string().required("Priority selection is required"),
+  users: yup.array().min(1, "At least one user must be selected"),
+  perform_on: yup.string().required("Date/time selection is required"),
+});
+
 const CreateModal: React.FC<ClientModalProps> = ({
   visible,
   user,
@@ -65,11 +73,12 @@ const CreateModal: React.FC<ClientModalProps> = ({
   invoice = false,
   styleContainer,
   desctext,
-
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
   const { data: UserApi, isPending, error } = useGetUser();
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   type Item = {
     value: string;
@@ -82,14 +91,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
   ];
 
   const [date, setDate] = useState<any>("");
-  const setDatefunction = (date: any) => {};
-  const [selectedUsers, setSelectedUsers] = useState([]);
-
-  // const handleSubmit = (formData: any) => {
-  //   if (rowData?.isEdit) onPressUpdatefunction(formData);
-  //   else onPressAddfunction(formData);
-  // };
-
+  const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
   const [formData, setFormData] = useState(
     rowData ?? {
       title: "",
@@ -99,53 +101,84 @@ const CreateModal: React.FC<ClientModalProps> = ({
       users: [],
     }
   );
-  console.log("formData", formData);
+
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      users: selectedUsers ? selectedUsers : rowData.users,
+      users: selectedUsers ? selectedUsers : rowData?.users || [],
     }));
   }, [selectedUsers]);
+
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
-      perform_on: date ? date : rowData?.perform_on,
+      perform_on: date ? date : rowData?.perform_on || "",
     }));
   }, [date]);
 
-  const handleSubmit = () => {
-    onSubmit(formData);
-  };
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    clearError(field);
+  };
+
+  const clearError = (field: string) => {
+    if (errors[field]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  const validateForm = async () => {
+    try {
+      await requestSchema.validate(formData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const newErrors: Record<string, string> = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            newErrors[error.path] = error.message;
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
+    }
+  };
+
+  const handleSubmit = async () => {
+    setTouched({
+      title: true,
+      description: true,
+      standing: true,
+      users: true,
+      perform_on: true,
+    });
+
+    const isValid = await validateForm();
+    if (isValid) {
+      onSubmit(formData);
+    }
   };
 
   const transformUsersToDropdownItems = (users: any[]) => {
-    if (!users) return;
-    return (
-      users?.map((user) => ({
-        value: `${user?.first_name} ${user?.last_name}`,
-        key: user?.id,
-        original: user,
-      })) || []
-    );
+    if (!users) return [];
+    return users.map((user) => ({
+      value: `${user?.first_name} ${user?.last_name}`,
+      key: user?.id,
+      original: user,
+    }));
   };
-  const userDropdownItems = transformUsersToDropdownItems(UserApi?.data);
-  console.log("Data from creat request modal", UserApi.data);
-  const validateForm = () => {
-    // if (create) {
-    //   return (
-    //     formData.contact_person_name.trim() !== "" &&
-    //     formData.email.trim() !== "" &&
-    //     formData.phone_number.trim() !== "" &&
-    //     formData.company_name.trim() !== ""
-    //   );
-    // }
-    return true;
-  };
+
+  const userDropdownItems = transformUsersToDropdownItems(UserApi?.data || []);
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -177,31 +210,43 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 placeholder={"Enter title"}
                 value={formData.title}
                 onChangeText={(text) => handleInputChange("title", text)}
+                onBlur={() => setTouched((prev) => ({ ...prev, title: true }))}
                 titleStyle={styles.fontSize}
                 style={[styles.input, { paddingVertical: 8 }]}
+                error={touched.title && errors.title}
+                errorMessage={touched.title && errors.title}
+                multiline={false}
+                ispassword={false}
               />
             </View>
 
             <View style={{ marginBottom: 5 }}>
               <InputField
-                titleStyle={styles.fontSize}
-                title={"description"}
-                multiline={formData?.description?.length > 50}
+                title={"Description"}
+                placeholder={"Request Description"}
                 value={formData.description}
                 onChangeText={(text) => handleInputChange("description", text)}
-                placeholder={"Request Description"}
-                placeholderTextColor="#757575"
+                onBlur={() =>
+                  setTouched((prev) => ({ ...prev, description: true }))
+                }
+                titleStyle={styles.fontSize}
                 style={[styles.input, { paddingVertical: 8 }]}
+                multiline={true}
+                ispassword={false}
+                error={touched.description && errors.description}
+                errorMessage={touched.description && errors.description}
+                placeholderTextColor="#757575"
               />
             </View>
 
             <View style={{ marginBottom: 5 }}>
               <SingleSelectDropDown
-                title={"Select standings"}
+                title={"Select Priority"}
                 selected={formData.standing}
                 setSelected={(val) => handleInputChange("standing", val)}
                 items={items}
-              ></SingleSelectDropDown>
+                error={touched.standing && errors.standing}
+              />
             </View>
 
             <View style={{ marginBottom: 5 }}>
@@ -210,15 +255,21 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 items={userDropdownItems}
                 selectedItems={selectedUsers}
                 setSelectedItems={setSelectedUsers}
+                error={touched.users && errors.users}
+                onBlur={() => setTouched((prev) => ({ ...prev, users: true }))}
               />
             </View>
+
             <View style={{ marginBottom: 12 }}>
               <DateTimeSelector
-                // Date={date}
-                onDateChange={(date) => setDate(date)}
-                // setDate={setDate}
+                onDateChange={(date) => {
+                  setDate(date);
+                  setTouched((prev) => ({ ...prev, perform_on: true }));
+                  clearError("perform_on");
+                }}
                 title="Select Date/Time:"
-              ></DateTimeSelector>
+                error={touched.perform_on && errors.perform_on}
+              />
             </View>
           </ScrollView>
           <View style={styles.buttonContainer}>
@@ -228,17 +279,13 @@ const CreateModal: React.FC<ClientModalProps> = ({
             <TouchableOpacity
               style={[
                 styles.addButton,
-                !validateForm() && styles.disabledButton,
+                Object.keys(errors).length > 0 && styles.disabledButton,
               ]}
               onPress={handleSubmit}
-              // disabled={!validateForm()}
+              // disabled={Object.keys(errors).length > 0}
             >
               <Text style={styles.addText}>
-                {create
-                  ? rowData?.isEdit
-                    ? "Update Client"
-                    : "Add Client"
-                  : "Update Client"}
+                {create ? "Create Request" : "Send Reminder"}
               </Text>
             </TouchableOpacity>
           </View>

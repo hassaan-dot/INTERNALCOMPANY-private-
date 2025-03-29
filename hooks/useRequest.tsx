@@ -3,6 +3,8 @@ import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { Link } from "expo-router";
+import { toastError, toastSuccess } from "../services/toast-messages";
+
 const handleGetAllRequest = async () => {
   const res = await api.get("/requests");
   return res.data;
@@ -45,13 +47,15 @@ export const useCreateRequest = () => {
     mutationKey: ["createRequest"],
     mutationFn: (data: any) => handleCreateRequest(data),
     onSuccess: async (data) => {
+      toastSuccess("Success!", "Your request has been created successfully");
+
       setIsRequestModalOpen(false);
       queryRequest.invalidateQueries({
         queryKey: ["Requests"],
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error.message);
     },
   });
 };
@@ -71,13 +75,15 @@ export const useUpdateRequest = () => {
     mutationKey: ["updateRequest"],
     mutationFn: ({ data, id }: any) => handleUpdateRequest(data, id),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Your request has been updated successfully");
+
       setIsRequestModalOpen(false);
       queryRequest.invalidateQueries({
         queryKey: ["Requests"],
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error.message);
     },
   });
 };
@@ -88,12 +94,14 @@ export const useDeleteRequest = () => {
     mutationKey: ["deleteRequest"],
     mutationFn: (data: any) => handleDeleteRequest(data),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Your request has been deleted successfully");
+
       queryRequest.invalidateQueries({
         queryKey: ["Requests"],
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error.message);
     },
   });
 };

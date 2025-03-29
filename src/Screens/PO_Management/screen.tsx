@@ -1,4 +1,4 @@
-import { useGetPO } from "@/hooks/usePO";
+import { useDeletePO, useGetPO } from "@/hooks/usePO";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
@@ -15,6 +15,7 @@ const PO_Management = () => {
   const [ModalOpen, setModalOpen] = useState(false);
 
   const { data, isPending, error } = useGetPO();
+  const { mutate: DeletePO } = useDeletePO();
 
   const onClickEye = ({ documentId, id }: any) => {
     router.push(`/(app)/po-management/po-details?id=${documentId}`);
@@ -24,6 +25,14 @@ const PO_Management = () => {
 
   const Handlenavigation = (username: string, id: number) => {
     router.push(`/(app)/po-management/po-add`);
+  };
+  const onPressDelete = (documentId: string) => {
+    const data = {
+      data: {
+        documentId: documentId,
+      },
+    };
+    DeletePO(data);
   };
 
   return (
@@ -48,6 +57,7 @@ const PO_Management = () => {
             showEye={true}
             showStatus={true}
             DATA={data}
+            onPressDelete={onPressDelete}
             onClickEye={onClickEye}
           ></CompanyTable>
         </View>

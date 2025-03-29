@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 8,
     //   paddingVertical: 4,
     marginRight: 5,
-    marginBottom: 5,
+    // marginBottom: 5,
   },
   dropdownBadgeText: {
     fontSize: 12,

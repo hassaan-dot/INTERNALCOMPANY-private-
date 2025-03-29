@@ -6,6 +6,7 @@ import { View, Text } from "react-native";
 
 export default function CustomDateTimePicker({
   title = "Select Date & Time",
+  error,
   width = "94.2%",
   onDateChange = (date) => {},
 }) {
@@ -56,6 +57,7 @@ export default function CustomDateTimePicker({
           shouldCloseOnSelect={true}
         />
       </View>
+      {error && <Text style={{ color: "red", marginTop: 4 }}>{error}</Text>}
 
       <style jsx global>{`
         .custom-date-picker {

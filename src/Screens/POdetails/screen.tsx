@@ -212,11 +212,13 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
         isVisible={StatusModalOpen}
       ></StatusModal>
 
-      <InvoiceModal
-        onClose={AddInvoiceModalClosefunc}
-        onSubmit={onPressAddInvoicefunction}
-        visible={isInvoicePoModalOpen}
-      ></InvoiceModal>
+      {isInvoicePoModalOpen && (
+        <InvoiceModal
+          onClose={AddInvoiceModalClosefunc}
+          onSubmit={onPressAddInvoicefunction}
+          visible={isInvoicePoModalOpen}
+        ></InvoiceModal>
+      )}
       <ConfirmRecieving
         title={"Confirm Client Recieving"}
         create={true}

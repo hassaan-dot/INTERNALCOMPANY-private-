@@ -2,6 +2,10 @@ import { StyleSheet, ViewStyle, TextStyle } from "react-native";
 import { PoppinsRegular } from "@/constants/fonts";
 
 const styles = StyleSheet.create({
+  container2:{
+    fontFamily: PoppinsRegular,
+    flex: 1,
+  },
   container1: {
     borderWidth: 1,
     borderColor: "#00504B",

@@ -7,11 +7,13 @@ import {
   DateTimeSelector,
   InputField,
   ScreenHeader,
+  SingleSelectDropDown,
 } from "../../Components";
 import { styles } from "./styles";
 import { useModalStore } from "@/store/useModalStore";
 import { useGetOneRequest } from "@/hooks/useRequest";
 import { useLocalSearchParams } from "expo-router";
+import { formatDate } from "@/src/utils";
 
 const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
   const { id } = useLocalSearchParams();
@@ -34,6 +36,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
   ];
 
   if (isFetching) return <ActivityIndicator style={{ flex: 1 }} />;
+  console.log("get", getRequest);
   return (
     <>
       <View style={styles.custom4}>
@@ -48,16 +51,19 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 style={styles.inputContainer}
                 placeholder="Enter a request title"
                 value={getRequest?.data?.title}
+                editable={false}
                 onChangeText={(text) => {
                   setTitle(text);
                 }}
               />
               <View style={styles.rowContainer}>
-                <Text style={styles.text}>Date to perform:</Text>
+                <Text style={styles.date}>Date to perform:</Text>
                 <View style={styles.dateContainer}>
-                  <DateTimeSelector />
+                  <Text style={styles.dateText}>
+                    {formatDate(getRequest?.data?.perform_on)}
+                  </Text>
                 </View>
-                <View style={{ marginTop: 20 }}>
+                <View style={{}}>
                   <CustomDropdownIndicator
                     items={items}
                     placeholder="Priority"
@@ -68,7 +74,9 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
               </View>
               <View style={styles.descriptionContainer}>
                 <InputField
+                  editable={false}
                   style={styles.inputField}
+                  multiline={true}
                   placeholderTextColor={"#000000"}
                   value={getRequest?.data?.description}
                   placeholder="Request description"

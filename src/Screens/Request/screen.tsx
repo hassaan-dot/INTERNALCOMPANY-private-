@@ -60,7 +60,7 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
   useEffect(() => {
     setUserData(UserApi);
   }, [UserApi]);
-  
+
   const onPressAddfunction = ({
     title,
     description,
@@ -118,6 +118,7 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
     setIsRequestModalOpen(true);
   };
   const handleSubmit = (formData: any) => {
+    console.log("formData", formData);
     if (rowData?.isEdit) onPressUpdatefunction(formData);
     else onPressAddfunction(formData);
   };

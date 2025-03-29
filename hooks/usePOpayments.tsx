@@ -1,6 +1,7 @@
 import api from "@/services/axios";
 import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllInvoices = async () => {
   const res = await api.get("/invoices?populate=*");
@@ -43,6 +44,8 @@ export const useCreateInvoice = () => {
     mutationKey: ["createinvoice"],
     mutationFn: (data: any) => handleCreatePOInvoice(data),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Invoice has been Added successfully");
+
       setisInvoicePoModalOpen(false);
       queryPO.invalidateQueries({
         queryKey: ["getoneRequest"],
@@ -54,7 +57,7 @@ export const useCreateInvoice = () => {
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Failed!", error.message);
     },
   });
 };
@@ -64,6 +67,8 @@ export const useDeleteInvoice = () => {
     mutationKey: ["deleteInvoice"],
     mutationFn: (data: any) => handleDeletePOInvoice(data),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Invoice has been Deleted successfully");
+
       queryPO.invalidateQueries({
         queryKey: ["getoneRequest"],
         type: "active",
@@ -74,7 +79,7 @@ export const useDeleteInvoice = () => {
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Failed!", error.message);
     },
   });
 };
