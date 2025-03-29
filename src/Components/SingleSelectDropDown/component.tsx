@@ -1,24 +1,18 @@
 import { SelectList } from "react-native-dropdown-select-list";
 import { StyleSheet, View, Text } from "react-native";
 import React from "react";
+import { PoppinsRegular } from "@/constants/fonts";
 
-const SingleSelectDropDown = () => {
-  const [selected, setSelected] = React.useState("");
-
-  const data = [
-    { key: "1", value: "Option 1" },
-    { key: "2", value: "Option 2" },
-    { key: "3", value: "Option 3" },
-    { key: "4", value: "Option 4" },
-    { key: "5", value: "Option 5" },
-  ];
+const SingleSelectDropDown = ({ items, selected, setSelected, title }: any) => {
+  // const [selected, setSelected] = React.useState("");
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>Select an option</Text>
+      <Text style={styles.label}>{title}</Text>
       <SelectList
-        setSelected={(val) => setSelected(val)}
-        data={data}
+        setSelected={setSelected}
+        data={items}
+        value="key"
         save="value"
         boxStyles={styles.boxStyles}
         inputStyles={styles.inputStyles}
@@ -28,50 +22,43 @@ const SingleSelectDropDown = () => {
         placeholder="Select option"
         searchPlaceholder="Search..."
         notFoundText="No options found"
-        defaultOption={{ key: "1", value: "Option 1" }} // Default selected option
+        // defaultOption={{ key: "1", value: "Option 1" }} // Default selected option
       />
-      {selected ? (
+      {/* {selected ? (
         <Text style={styles.selectedText}>Selected: {selected}</Text>
-      ) : null}
+      ) : null} */}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
+    // padding: 20,
     width: "100%",
-    maxWidth: 400,
+    // maxWidth: 400,
   },
   label: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#4a4a4a",
-    marginBottom: 8,
+    fontSize: 14,
+    fontWeight: "400",
+    marginBottom: 4,
+    fontFamily: PoppinsRegular,
   },
   boxStyles: {
     borderWidth: 1,
-    borderColor: "#e0e0e0",
-    borderRadius: 8,
+    borderColor: "#ddd",
+    borderRadius: 6,
     backgroundColor: "#fff",
     paddingHorizontal: 14,
-    paddingVertical: 12,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.1,
-    shadowRadius: 2,
-    elevation: 2,
+    paddingLeft: 10,
+    paddingVertical: 9,
   },
   inputStyles: {
-    fontSize: 16,
-    color: "#333",
+    fontSize: 14,
+    color: "#757575",
   },
   dropdownStyles: {
     borderWidth: 1,
-    borderColor: "#e0e0e0",
+    borderColor: "#ddd",
     borderRadius: 8,
     marginTop: 8,
     backgroundColor: "#fff",

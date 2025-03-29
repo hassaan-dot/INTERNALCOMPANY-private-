@@ -45,13 +45,14 @@ import ClientDetailsHeader from "./clientDetailsHeader/component";
 import Password from "./InputField/password/component";
 import Indicator from "./ActivityIndicator/Indicator";
 import InvoiceModal from "./Modals/InvoiceModal/component";
-import SelectListDropDown from "./SingleSelectDropDown/component";
+import SingleSelectDropDown from "./SingleSelectDropDown/component";
 export {
   FilledButton,
   Sidebar,
   InvoiceModal,
   CheckboxField,
   MultiSelectDropdown,
+  SingleSelectDropDown,
   GraphCard,
   DateTimeSelector,
   Indicator,

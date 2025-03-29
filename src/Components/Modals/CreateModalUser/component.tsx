@@ -10,7 +10,7 @@ import {
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
-import { CustomDropdownIndicator } from "../..";
+import { CustomDropdownIndicator, SingleSelectDropDown } from "../..";
 import { useEffect, useState } from "react";
 import { useModalStore } from "@/store/useModalStore";
 
@@ -137,7 +137,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     { value: "Employee", key: 2 },
   ];
   const items2: Item[] = [
-    { label: "anything", value: 1 },
+    { value: "anything", key: 1 },
     // { label: "Employee", value: "2" },
   ];
 
@@ -241,22 +241,22 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
                 />
               </View>
 
-              <View>
-                <CustomDropdownIndicator
-                  SetRole={SetRole}
-                  Role={Role}
+              <View style={{ marginBottom: 5 }}>
+                <SingleSelectDropDown
                   items={items1}
-                  title="Role"
-                ></CustomDropdownIndicator>
+                  title="Select Role"
+                  selected={Role}
+                  setSelected={SetRole}
+                />
               </View>
 
-              <View>
-                <CustomDropdownIndicator
+              <View style={{ marginBottom: 10 }}>
+                <SingleSelectDropDown
                   items={items2}
-                  title="Department"
-                  Role={Dep}
-                  SetRole={SetDep}
-                ></CustomDropdownIndicator>
+                  title="Select Department"
+                  selected={Dep}
+                  setSelected={SetDep}
+                />
               </View>
             </>
 

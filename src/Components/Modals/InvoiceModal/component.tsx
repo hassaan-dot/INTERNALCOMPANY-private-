@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { DateTimeSelector } from "../..";
+import { DateTimeSelector, SingleSelectDropDown } from "../..";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
 
@@ -72,6 +72,23 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
 }) => {
   const { rowData } = useModalStore();
   const [date, setDate] = useState<any>("");
+  type Item = {
+    value: string;
+    label: any;
+  };
+
+  const items: Item[] = [
+    { value: "Bank Transfer", label: "Bank Transfer" },
+    { value: "Cash", label: "Cash" },
+    { value: "Credit Card", label: "Credit Card" },
+    { value: "Others", label: "Others" },
+  ];
+  const itemsStatus: Item[] = [
+    { value: "Completed", label: "Completed" },
+    { value: "Pending", label: "Pending" },
+    { value: "Refund", label: "Refund" },
+    { value: "Others", label: "Others" },
+  ];
 
   const [formData, setFormData] = useState(
     rowData ?? {
@@ -137,21 +154,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
                 titleStyle={styles.fontSize}
               />
             </View>
-
-            <View>
-              <InputField
-                title={"Payment Method"}
-                placeholder={"Select Method"}
-                value={formData.email}
-                onChangeText={(text) =>
-                  handleInputChange("payment_method", text)
-                }
-                titleStyle={styles.fontSize}
-                style={styles.input}
-                keyboardType="email-address"
-              />
-            </View>
-            <View>
+            <View style={{ marginBottom: 6 }}>
               <InputField
                 title={"Amount"}
                 placeholder={"Enter Amount"}
@@ -162,20 +165,26 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
                 keyboardType="email-address"
               />
             </View>
-            <View>
-              <InputField
-                title={"Payment Status"}
-                placeholder={"Select Status"}
-                value={formData.email}
-                onChangeText={(text) =>
+            <View style={{ marginBottom: 6 }}>
+              <SingleSelectDropDown
+                title="Payment Method"
+                setSelected={(text) =>
+                  handleInputChange("payment_method", text)
+                }
+                items={items}
+              ></SingleSelectDropDown>
+            </View>
+
+            <View style={{ marginBottom: 6 }}>
+              <SingleSelectDropDown
+                title="Payment Status"
+                setSelected={(text) =>
                   handleInputChange("payment_status", text)
                 }
-                titleStyle={styles.fontSize}
-                style={styles.input}
-                keyboardType="email-address"
-              />
+                items={itemsStatus}
+              ></SingleSelectDropDown>
             </View>
-            <View>
+            <View style={{ marginBottom: 13 }}>
               <DateTimeSelector
                 onDateChange={(date) => setDate(date)}
               ></DateTimeSelector>

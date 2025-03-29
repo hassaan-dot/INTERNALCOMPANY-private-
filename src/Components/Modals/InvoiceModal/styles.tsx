@@ -10,7 +10,7 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    width: "25%",
+    width: "28%",
     backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
@@ -48,7 +48,7 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
-    marginBottom: 5,
+    // marginBottom: 5,
   },
   buttonContainer: {
     flexDirection: "row",

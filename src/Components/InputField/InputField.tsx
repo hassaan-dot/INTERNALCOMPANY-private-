@@ -284,6 +284,7 @@ type InputFieldProps = {
   multiline: any;
   ispassword: boolean;
   secureTextEntry?: boolean;
+  placeholderTextColor?: any;
 } & TextInputProps;
 
 const InputField: React.FC<InputFieldProps> = ({
@@ -296,6 +297,7 @@ const InputField: React.FC<InputFieldProps> = ({
   multiline = false,
   inputStyle,
   ispassword,
+  placeholderTextColor = "#757575",
   ...props
 }) => {
   return (
@@ -310,7 +312,7 @@ const InputField: React.FC<InputFieldProps> = ({
         multiline={multiline}
         keyboardType="datetime"
         placeholder={placeholder}
-        placeholderTextColor={"#000"}
+        placeholderTextColor={placeholderTextColor}
         secureTextEntry={secureTextEntry}
         {...props}
       />

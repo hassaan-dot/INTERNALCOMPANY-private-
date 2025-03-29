@@ -15,6 +15,7 @@ import {
   CustomDropdownIndicator,
   DateTimeSelector,
   MultiSelectDropdown,
+  SingleSelectDropDown,
 } from "../..";
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
@@ -98,6 +99,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
       users: [],
     }
   );
+  console.log("formData", formData);
   useEffect(() => {
     setFormData((prev) => ({
       ...prev,
@@ -131,8 +133,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
       })) || []
     );
   };
-  const userDropdownItems = transformUsersToDropdownItems(UserApi);
-
+  const userDropdownItems = transformUsersToDropdownItems(UserApi?.data);
+  console.log("Data from creat request modal", UserApi.data);
   const validateForm = () => {
     // if (create) {
     //   return (
@@ -169,7 +171,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
               )}
             </View>
 
-            <View style={{}}>
+            <View style={{ marginBottom: 5 }}>
               <InputField
                 title={"Title"}
                 placeholder={"Enter title"}
@@ -180,7 +182,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
               />
             </View>
 
-            <View>
+            <View style={{ marginBottom: 5 }}>
               <InputField
                 titleStyle={styles.fontSize}
                 title={"description"}
@@ -188,34 +190,35 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 value={formData.description}
                 onChangeText={(text) => handleInputChange("description", text)}
                 placeholder={"Request Description"}
+                placeholderTextColor="#757575"
                 style={[styles.input, { paddingVertical: 8 }]}
               />
             </View>
-            <View>
-              <DateTimeSelector
-                // Date={date}
-                onDateChange={(date) => setDate(date)}
-                // setDate={setDate}
-                title="Select Date/Time:"
-              ></DateTimeSelector>
-            </View>
 
-            <View>
-              <CustomDropdownIndicator
-                title={"Role"}
-                Role={formData.standing}
-                SetRole={(val) => handleInputChange("standing", val)}
+            <View style={{ marginBottom: 5 }}>
+              <SingleSelectDropDown
+                title={"Select standings"}
+                selected={formData.standing}
+                setSelected={(val) => handleInputChange("standing", val)}
                 items={items}
-              />
+              ></SingleSelectDropDown>
             </View>
 
-            <View>
+            <View style={{ marginBottom: 5 }}>
               <MultiSelectDropdown
                 title="Select Users"
                 items={userDropdownItems}
                 selectedItems={selectedUsers}
                 setSelectedItems={setSelectedUsers}
               />
+            </View>
+            <View style={{ marginBottom: 12 }}>
+              <DateTimeSelector
+                // Date={date}
+                onDateChange={(date) => setDate(date)}
+                // setDate={setDate}
+                title="Select Date/Time:"
+              ></DateTimeSelector>
             </View>
           </ScrollView>
           <View style={styles.buttonContainer}>

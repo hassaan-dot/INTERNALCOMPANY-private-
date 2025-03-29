@@ -5,6 +5,7 @@ import {
   SelectList,
 } from "react-native-dropdown-select-list";
 import { styles } from "./styles";
+import { PoppinsRegular } from "@/constants/fonts";
 
 interface MultiSelectDropdownProps {
   items: { key: string; value: string }[];
@@ -23,8 +24,18 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
 }) => {
   return (
     <View style={styles.container}>
-      {/* <Text style={styles.title}>{title}</Text> */}
-      <View style={{ marginBottom: 4 }}>{title}</View>
+      <View style={{}}>
+        <Text
+          style={{
+            fontSize: 14,
+            fontWeight: "400",
+            // marginBottom: 4,
+            fontFamily: PoppinsRegular,
+          }}
+        >
+          {title}
+        </Text>
+      </View>
       <MultipleSelectList
         setSelected={(val: any) => setSelectedItems(val)}
         data={items}
