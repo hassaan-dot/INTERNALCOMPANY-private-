@@ -33,6 +33,7 @@ export const styles = StyleSheet.create({
   row: {
     flexDirection: "row",
     alignItems: "center",
+    // flex: 0.5,
   },
   card: {
     borderRadius: 8,

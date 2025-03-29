@@ -9,7 +9,9 @@ const handleGetAllRequest = async () => {
 };
 
 const handleGetOneRequest = async (documentId: any) => {
-  const res = await api.get(`/requests/${documentId}`);
+  const res = await api.get(
+    `/requests/${documentId}?populate[0]=users&populate[1]=users.role`
+  );
   return res.data;
 };
 

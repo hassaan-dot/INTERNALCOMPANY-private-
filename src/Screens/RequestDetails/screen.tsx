@@ -16,26 +16,12 @@ import { useLocalSearchParams } from "expo-router";
 const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
   const { id } = useLocalSearchParams();
   const { data: getRequest, isFetching } = useGetOneRequest(id as string);
-  // console.log("KCNSNUENF", gestRequest.data.standing);
-  // const { data, isPending, error } = useGetOneRequest();
-
-  // ]  const { setRowData, rowData } = useModalStore();
 
   const [Value, setValue] = useState<string>("234");
 
   const [title, setTitle] = useState<string>("");
 
   const [description, setDescription] = useState<string>("");
-
-  const [date, setDate] = useState<string>("30 May 2021 20:45");
-
-  const [priority, setPriority] = useState<string>("Medium");
-
-  const [file, setFile] = useState();
-  // console.log("RequestTitle", title);
-  // console.log("Description", description);
-  // console.log("date", date);
-  // console.log("Priority", Value);
 
   type Item = {
     label: string;
@@ -92,24 +78,27 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 />
               </View>
             </View>
-            {/* <View style={{ marginRight: 20, marginTop: 20 }}>
+            <View style={{ marginRight: 20, marginTop: 20 }}>
               <View style={styles.custom5}>
-                <Text
-                  style={styles.sectionTitle}
-                >{`${getUser?.length} Users`}</Text>
+                <Text style={styles.sectionTitle}>
+                  {/* {`${getUser?.length} Users`} */}
+                  {`${getRequest?.data?.users?.length} ${
+                    getRequest?.data?.users?.length > 1 ? "Users" : "User"
+                  }`}
+                </Text>
                 <FlatList
-                  data={getUser}
+                  data={getRequest?.data?.users}
                   keyExtractor={(item) => item.id}
                   contentContainerStyle={styles.custom6}
                   renderItem={({ item }) => (
                     <View style={styles.userRow}>
                       <Avatar.Text size={40} style={styles.avatar} />
-                      <Text style={styles.customText}>{item?.first_name}</Text>
+                      <Text style={styles.customText}>{item?.username}</Text>
                     </View>
                   )}
                 />
               </View>
-            </View> */}
+            </View>
           </View>
           <View style={styles.custom7}>
             <Text style={styles.sectionTitle}>Files</Text>

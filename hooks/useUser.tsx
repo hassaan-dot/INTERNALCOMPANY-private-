@@ -3,7 +3,9 @@ import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 const handleGetAllUser = async () => {
-  const res = await api.get("/users");
+  const res = await api.get(
+    "/user-management/get?populate[1]=role&populate[0]=department&pagination[page]=1&pagination[pageSize]=2"
+  );
   return res.data;
 };
 

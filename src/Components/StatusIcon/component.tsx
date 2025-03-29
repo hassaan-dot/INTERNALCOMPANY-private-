@@ -1,3 +1,4 @@
+import { PoppinsRegular } from "@/constants/fonts";
 import helpers from "@/src/utils/helpers";
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 3,
     paddingHorizontal: 12,
-    // right: 15,
+    right: 18,
 
     borderRadius: 20,
   },
@@ -45,6 +46,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "300",
     color: "#027A48",
+    fontFamily: PoppinsRegular,
   },
 });
 

@@ -1,88 +1,3 @@
-// import React, { useState } from "react";
-// import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
-// import DateTimePicker, {
-//   DateTimePickerEvent,
-// } from "@react-native-community/datetimepicker";
-// import { format } from "date-fns";
-// import { styles } from "./styles";
-// type Mode = "date" | "time";
-
-// const DateTimeSelector = () => {
-//   const [date, setDate] = useState<Date>(new Date());
-//   const [mode, setMode] = useState<Mode>("date");
-//   const [show, setShow] = useState<boolean>(false);
-
-//   const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
-//     const currentDate = selectedDate || date;
-//     setShow(false);
-//     setDate(currentDate);
-//   };
-
-//   const showMode = (currentMode: Mode) => {
-//     setShow(true);
-//     setMode(currentMode);
-//   };
-
-//   const showDatepicker = () => {
-//     console.log("Hassaam");
-//     setShow(true);
-
-//     // showMode('date');
-//   };
-
-//   const showTimepicker = () => {
-//     showMode("time");
-//   };
-
-//   return (
-//     <View style={styles.container}>
-//       {/* <Text style={styles.label}>Select Date and Time</Text> */}
-//       <View style={styles.pickerContainer}>
-//         <TouchableOpacity onPress={showDatepicker} style={styles.button}>
-//           <Text style={styles.buttonText}>{format(date, "dd MMM yyyy")}</Text>
-//         </TouchableOpacity>
-
-//         <TouchableOpacity onPress={showTimepicker} style={styles.button}>
-//           <Text style={styles.buttonText}>{format(date, "HH:mm")}</Text>
-//         </TouchableOpacity>
-//       </View>
-
-//       {!show && (
-//         <DateTimePicker
-//           testID="dateTimePicker"
-//           value={date}
-//           mode={mode}
-//           is24Hour={true}
-//           // display="default"
-//           onChange={onChange}
-//         />
-//       )}
-//     </View>
-//   );
-// };
-
-// export default DateTimeSelector;
-// import { useState } from "react";
-// import { useState } from "react";
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-
-// export default function CustomDateTimePicker() {
-//   const [startDate, setStartDate] = useState(new Date());
-
-//   return (
-//     // <div>
-//     <DatePicker
-//       selected={startDate}
-//       onChange={(date) => setStartDate(date)}
-//       showTimeSelect
-//       dateFormat="MMMM d, yyyy h:mm aa"
-//       timeFormat="HH:mm"
-//     />
-//     // </div>
-//   );
-// }
-// import { useState } from "react";
 import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -130,7 +45,7 @@ export default function CustomDateTimePicker({
           shouldCloseOnSelect={false}
         />
       </div>
-      <style jsx global>{`
+      {/* <style jsx global>{`
         .picker-title {
           margin: 0;
           font-size: 1.2rem;
@@ -144,7 +59,7 @@ export default function CustomDateTimePicker({
         .picker-content {
           // flex: 1;
           // padding: 20px;
-          display: flex;
+          // display: flex;
           // flex-direction: column;
         }
 
@@ -246,6 +161,171 @@ export default function CustomDateTimePicker({
           border-radius: 50%;
           font-size: 12px;
           padding: 2px;
+        }
+      `}</style> */}
+      <style jsx global>{`
+        .picker-title {
+          margin: 0px;
+          font-size: 1.2rem;
+          font-weight: 600;
+        }
+
+        .picker-container {
+          marginvertical: 200px 200px;
+        }
+
+        .custom-date-picker {
+          padding: 12px 15px;
+          font-size: 16px;
+          border: 1px solid #e2e8f0;
+          border-radius: 6px;
+          width: 185%;
+          color: #2d3748;
+          // flex: 1;
+          background-color: #fff;
+          // transition: all 0.2s ease;
+        }
+
+        .custom-date-picker:focus {
+          outline: none;
+          margin: 20px;
+          // border-color: #4f46e5;
+          // box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2);
+        }
+
+        /* Calendar Container */
+        .custom-calendar {
+          border-radius: 8px;
+          border: 1px solid #e2e8f0;
+          font-family: inherit;
+          margin: 0px 0px -100px 80px;
+        }
+
+        /* Header Styling */
+        .react-datepicker__header {
+          background-color: #4f46e5;
+          color: white;
+          border-top-left-radius: 8px;
+          border-top-right-radius: 8px;
+          border-bottom: none;
+          padding: 12px 0;
+        }
+
+        .react-datepicker__current-month,
+        .react-datepicker-time__header,
+        .react-datepicker__day-name {
+          color: white;
+          font-weight: 500;
+        }
+
+        .react-datepicker__day {
+          color: #2d3748;
+          transition: all 0.2s ease;
+          border-radius: 4px;
+          margin: 0.166rem;
+          padding: 0.25rem;
+        }
+
+        .react-datepicker__day:hover {
+          background-color: #e2e8f0;
+        }
+
+        .react-datepicker__day--selected,
+        .react-datepicker__day--keyboard-selected {
+          background-color: #4f46e5;
+          color: white;
+        }
+
+        .react-datepicker__day--today {
+          font-weight: bold;
+          color: #4f46e5;
+          background-color: #e9d8fd;
+        }
+
+        .react-datepicker__day--outside-month {
+          color: #cbd5e0;
+        }
+
+        /* Navigation Arrows */
+        .react-datepicker__navigation {
+          top: 10px;
+        }
+
+        .react-datepicker__navigation--previous {
+          border-right-color: white;
+        }
+
+        .react-datepicker__navigation--next {
+          border-left-color: white;
+        }
+
+        .react-datepicker__time-container {
+          border-left: 1px solid #e2e8f0;
+          width: 110px;
+        }
+
+        .react-datepicker__time-container .react-datepicker__time {
+          background: white;
+          border-bottom-right-radius: 8px;
+        }
+
+        .react-datepicker__time-box {
+          width: 100% !important;
+        }
+
+        .react-datepicker__time-list {
+          padding: 0;
+        }
+
+        .react-datepicker__time-list-item {
+          padding: 8px 10px;
+          font-weight: 500;
+          color: #2d3748;
+          transition: all 0.2s ease;
+        }
+
+        .react-datepicker__time-list-item:hover {
+          background-color: #e2e8f0;
+        }
+
+        .react-datepicker__time-list-item--selected {
+          background-color: #4f46e5 !important;
+          color: white;
+          font-weight: 600;
+        }
+
+        /* Today Button */
+        .react-datepicker__today-button {
+          background: #f8fafc;
+          border-top: 1px solid #e2e8f0;
+          color: #4f46e5;
+          font-weight: 500;
+          padding: 8px 0;
+          cursor: pointer;
+          border-bottom-left-radius: 8px;
+          border-bottom-right-radius: 8px;
+          transition: background 0.2s ease;
+        }
+
+        .react-datepicker__today-button:hover {
+          background: #e2e8f0;
+        }
+
+        /* Clear Button */
+        .react-datepicker__close-icon::after {
+          background-color: #4f46e5;
+          color: white;
+          border-radius: 50%;
+          font-size: 12px;
+          padding: 2px;
+          height: 16px;
+          width: 16px;
+          line-height: 16px;
+        }
+
+        /* Popper Positioning */
+        .custom-popper {
+          z-index: 100;
         }
       `}</style>
     </View>

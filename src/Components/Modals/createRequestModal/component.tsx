@@ -63,17 +63,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
   desc = false,
   invoice = false,
   styleContainer,
-  First,
   desctext,
-  Firstchild,
-  Second,
-  Third,
-  Fourth,
-  Fifth,
-  Sixth,
-  seventh,
-  eigth,
-  ninth,
+
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
@@ -131,6 +122,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
   };
 
   const transformUsersToDropdownItems = (users: any[]) => {
+    if (!users) return;
     return (
       users?.map((user) => ({
         value: `${user?.first_name} ${user?.last_name}`,

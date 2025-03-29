@@ -65,7 +65,11 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
 }) => {
   const [currentPage, setCurrentPage] = useState(1);
 
-  const IconHandleStatus = ({ is_active, payment_status }: any) => {
+  const IconHandleStatus = ({
+    is_active,
+    payment_status,
+    item_status,
+  }: any) => {
     if (is_active === true) {
       return <StatusBadge text="Active" />;
     }
@@ -75,15 +79,28 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     if (payment_status === "Pending") {
       return (
         <StatusBadge
-          text="pending"
+          text="Pending "
           textColor={"white"}
-          dot={"white"}
+          dot={"#ECFDF3"}
           color="#A47C60"
         />
       );
     }
     if (payment_status === "Completed") {
       return <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />;
+    }
+    if (item_status === "Delivered") {
+      return <StatusBadge text="Delieverd" dot={"#12B76A"} color="#ECFDF3" />;
+    }
+    if (item_status === "Processing") {
+      return (
+        <StatusBadge
+          text="Processing"
+          dot={"#ECFDF3"}
+          textColor={"#fff"}
+          color="#A47C60"
+        />
+      );
     }
     // or some default casem
   };

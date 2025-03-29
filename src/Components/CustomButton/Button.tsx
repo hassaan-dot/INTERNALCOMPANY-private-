@@ -143,11 +143,12 @@ const styles = StyleSheet.create({
   image: {
     width: 30,
     height: 30,
-    marginRight: 5,
+    marginRight: 8,
   },
   image1: {
-    width: 15,
-    height: 15,
+    width: 17,
+    height: 17,
+    marginLeft: 20,
   },
 });
 

@@ -3,34 +3,71 @@ import { View } from "react-native";
 import { ScreenHeader, CompanyTable } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
-import Styles from "./styles";
 import { useRouter } from "expo-router";
+import {
+  useCreateInvoice,
+  useDeleteInvoice,
+  useGetInvoice,
+} from "@/hooks/usePOpayments";
+import { Invoice_Schema } from "../ClientManagement/_schema";
+import { PoppinsRegular } from "@/constants/fonts";
+import styles from "./styles";
 const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
-  const DATA = generateData();
   const [ModalOpen, setModalOpen] = useState(false);
-  function CreatClient() {
-    setModalOpen(true);
-  }
+
   const router = useRouter();
   const onClickEye = (username: string, id: number) => {
     router.push(`/(app)/payment/payment-details?username=${username}&id=${id}`);
   };
+  const { mutate: handleAddInvoice } = useCreateInvoice();
+  const { mutate: handleDelete } = useDeleteInvoice();
+
+  const { data: InvoiceData } = useGetInvoice();
+  const onPressAddInvoicefunction = ({
+    date_of_payment,
+    payer,
+    amount,
+    payment_method,
+    payment_status,
+  }: any) => {
+    const data = {
+      data: {
+        date_of_payment: date_of_payment,
+        payer: payer,
+        amount: amount,
+        payment_method: payment_method,
+        payment_status: payment_status,
+        purchase_order: 60,
+      },
+    };
+    handleAddInvoice(data);
+  };
+  const onPressDelete = (documentId: string) => {
+    const data = {
+      data: {
+        documentId: documentId,
+      },
+    };
+    console.log("Deleted item is", data);
+    handleDelete(data);
+  };
   return (
     <>
-      <View style={Styles.container}>
-        <ScreenHeader
-          create={true}
-          title={"Payment History"}
-          onPress={CreatClient}
-        ></ScreenHeader>
+      <View style={styles.container}>
+        <ScreenHeader title={"Payment History"}></ScreenHeader>
 
-        <View>
+        <View style={styles.container1}>
           <CompanyTable
             showActions={true}
-            checkbox={true}
+            onPressDelete={onPressDelete}
+            rowTextStyle={{ marginLeft: 10, fontFamily: PoppinsRegular }}
+            headerTextStyle={{ left: 10 }}
+            // checkbox={true}
             pagination={true}
-            DATA={DATA}
+            DATA={InvoiceData}
+            columns_schema={Invoice_Schema}
             showEye={true}
+            showStatus={true}
             onClickEye={onClickEye}
           ></CompanyTable>
         </View>

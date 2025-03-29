@@ -157,7 +157,6 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
             checkbox={true}
             onPressUpdate={onPressEdit}
             onPressDelete={onPressDelete}
-            // showStatus={true}
             DATA={data}
             showActions={true}
             pagination={true}

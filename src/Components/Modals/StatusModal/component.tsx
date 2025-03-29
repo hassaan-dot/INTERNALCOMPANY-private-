@@ -89,7 +89,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 20,
     paddingHorizontal: 30,
-    width: helpers.wp(28),
+    width: "28%",
     borderRadius: 2,
   },
   title: {

@@ -15,7 +15,7 @@ export const styles = StyleSheet.create({
   card: {
     backgroundColor: "#fff",
     padding: 15,
-    paddingHorizontal: 0,
+    paddingHorizontal: 15,
     borderRadius: 16,
     flex: 1,
     elevation: 3,
@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   card2: {
     backgroundColor: "#fff",
     padding: 15,
-    marginHorizontal: isMobileView ? 0 : 20,
+    marginHorizontal: isMobileView ? 0 : 15,
     borderRadius: 16.38,
     flex: 1,
   },
@@ -56,7 +56,7 @@ export const styles = StyleSheet.create({
   actionText: {
     color: "#8D6E63",
     fontFamily: RobotoRegular,
-    flex:1
+    flex: 1,
   },
 
   code: {
