@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     // borderColor: "#ddd",
     borderWidth: 1,
 
-    minHeight: helpers.normalize(80),
+    // minHeight: helpers.normalize(80),
     textAlignVertical: "top",
 
     borderRadius: 8,
