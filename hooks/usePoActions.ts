@@ -1,0 +1,144 @@
+import api from "@/services/axios";
+import { toastError, toastSuccess } from "@/services/toast-messages";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
+const handleAcceptPO = async (id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/accept`);
+  return res.data;
+};
+
+const handleRejectPO = async (id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/reject`);
+  return res.data;
+};
+
+const handleClosePO = async (id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/close`);
+  return res.data;
+};
+
+const handleConfirmPO = async (id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/confirm-receiving`);
+  return res.data;
+};
+
+const handleAssignPO = async (data: any, id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/assign`, data);
+  return res.data;
+};
+
+const handleChangePOStatus = async (data: any, id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/change-status`, data);
+  return res.data;
+};
+
+export const usePOActions = (id: string) => {
+  const queryPO = useQueryClient();
+
+  const { mutate: handleAccept, isPending: isAccepting } = useMutation({
+    mutationKey: ["accept-po", id],
+    mutationFn: () => handleAcceptPO(id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "PO Accepted Successfully");
+      queryPO.invalidateQueries({
+        queryKey: ["getoneRequest", id],
+        type: "active",
+      });
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
+  });
+
+  const { mutate: handleReject, isPending: isRejecting } = useMutation({
+    mutationKey: ["reject-po", id],
+    mutationFn: () => handleRejectPO(id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "PO Rejected Successfully");
+      queryPO.invalidateQueries({
+        queryKey: ["getoneRequest", id],
+        type: "active",
+      });
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
+  });
+
+  const { mutate: handlePOClose, isPending: isClosing } = useMutation({
+    mutationKey: ["close-po", id],
+    mutationFn: () => handleClosePO(id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "PO Closed Successfully");
+      queryPO.invalidateQueries({
+        queryKey: ["getoneRequest", id],
+        type: "active",
+      });
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
+  });
+
+  const { mutate: handleConfirmRecieving, isPending: isConfirming } =
+    useMutation({
+      mutationKey: ["confirm-po", id],
+      mutationFn: () => handleConfirmPO(id),
+      onSuccess: (data) => {
+        toastSuccess("Success!", "PO Confirmed Successfully");
+        queryPO.invalidateQueries({
+          queryKey: ["getoneRequest", id],
+          type: "active",
+        });
+      },
+      onError: (error: any) => {
+        toastError("Oops!", error?.response?.data?.error?.message);
+      },
+    });
+
+  const { mutate: handlePOAssign, isPending: isAssigning } = useMutation({
+    mutationKey: ["assign-po", id],
+    mutationFn: (data: any) => handleAssignPO(data, id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "PO Assigned Successfully");
+      queryPO.invalidateQueries({
+        queryKey: ["getoneRequest", id],
+        type: "active",
+      });
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
+  });
+
+  const { mutate: handleChangeStatus, isPending: isChangingStatus } =
+    useMutation({
+      mutationKey: ["change-po-status", id],
+      mutationFn: (data: any) => handleChangePOStatus(data, id),
+      onSuccess: (data) => {
+        toastSuccess("Success!", "PO Status Changed Successfully");
+        queryPO.invalidateQueries({
+          queryKey: ["getoneRequest", id],
+          type: "active",
+        });
+      },
+      onError: (error: any) => {
+        toastError("Oops!", error?.response?.data?.error?.message);
+      },
+    });
+
+  return {
+    handleAccept,
+    isAccepting,
+    handleReject,
+    isRejecting,
+    handlePOClose,
+    isClosing,
+    handleConfirmRecieving,
+    isConfirming,
+    handlePOAssign,
+    isAssigning,
+    handleChangeStatus,
+    isChangingStatus,
+  };
+};

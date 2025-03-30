@@ -31,7 +31,7 @@ const handleUpdatePO = async (data: any, id: string) => {
   const res = await api.put(`/purchase-orders/${id}`, data);
   return res.data;
 };
-// sko38f7f6mv0gi1havb75f7f
+
 const handleGetOnePO = async (documentId: string) => {
   const res = await api.get(
     `/purchase-orders/${documentId}?populate[0]=invoices&populate[1]=po_notes&populate[2]=po_notes.user&populate[3]=po_items&populate[4]=location&populate[5]=po_documents`
