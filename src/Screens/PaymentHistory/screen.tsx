@@ -1,16 +1,16 @@
-import React, { useState } from "react";
-import { View } from "react-native";
-import { ScreenHeader, CompanyTable } from "../../Components";
-import CreateModal from "../../Components/Modals/createModal/component";
-import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
-import { useRouter } from "expo-router";
+import { PoppinsRegular } from "@/constants/fonts";
 import {
   useCreateInvoice,
   useDeleteInvoice,
   useGetInvoice,
 } from "@/hooks/usePOpayments";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
+import { useRouter } from "expo-router";
+import React, { useState } from "react";
+import { View } from "react-native";
+import { CompanyTable, ScreenHeader } from "../../Components";
+import CreateModal from "../../Components/Modals/createModal/component";
 import { Invoice_Schema } from "../ClientManagement/_schema";
-import { PoppinsRegular } from "@/constants/fonts";
 import styles from "./styles";
 const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   const [ModalOpen, setModalOpen] = useState(false);
@@ -22,7 +22,9 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   const { mutate: handleAddInvoice } = useCreateInvoice();
   const { mutate: handleDelete } = useDeleteInvoice();
 
-  const { data: InvoiceData } = useGetInvoice();
+  const { data: InvoiceData, refetch } = useGetInvoice();
+  useRefreshOnFocus(refetch);
+
   const onPressAddInvoicefunction = ({
     date_of_payment,
     payer,
@@ -48,7 +50,6 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
         documentId: documentId,
       },
     };
-    console.log("Deleted item is", data);
     handleDelete(data);
   };
   return (
@@ -62,7 +63,6 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
             onPressDelete={onPressDelete}
             rowTextStyle={{ marginLeft: 10, fontFamily: PoppinsRegular }}
             headerTextStyle={{ left: 10 }}
-            // checkbox={true}
             pagination={true}
             DATA={InvoiceData}
             columns_schema={Invoice_Schema}

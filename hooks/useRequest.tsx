@@ -6,7 +6,9 @@ import { Link } from "expo-router";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllRequest = async () => {
-  const res = await api.get("/requests");
+  const res = await api.get(
+    "/requests?populate[0]=users&populate[1]=users.role"
+  );
   return res.data;
 };
 

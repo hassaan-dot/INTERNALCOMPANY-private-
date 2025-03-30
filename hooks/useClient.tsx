@@ -3,9 +3,12 @@ import { useModalStore } from "@/store/useModalStore";
 import { createIconSetFromFontello } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
+import { toastError, toastSuccess } from "../services/toast-messages";
 
-const handleGetAllClient = async () => {
-  const res = await api.get("/clients");
+const handleGetAllClient = async (filters: any) => {
+  const res = await api.get(
+    `/clients?pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
+  );
   return res.data;
 };
 
@@ -31,9 +34,10 @@ const handleGetOneClient = async (documentId: string) => {
 };
 
 export const useGetClient = () => {
+  const { filters } = useModalStore();
   return useQuery({
-    queryKey: ["clients"],
-    queryFn: () => handleGetAllClient(),
+    queryKey: ["clients", filters],
+    queryFn: () => handleGetAllClient(filters),
   });
 };
 
@@ -45,14 +49,16 @@ export const useCreateClient = () => {
     mutationKey: ["createClient"],
     mutationFn: (data: any) => handleCreateClient(data),
     onSuccess: async (data) => {
+      toastSuccess("Success!", "Client Created successfully");
       setIsClientModalOpen(false);
       setRowData(null);
       queryClient.invalidateQueries({
         queryKey: ["clients"],
       });
     },
-    onError: (error) => {
-      console.log("error", error);
+    onError: (error: any) => {
+      console.log(error);
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };
@@ -72,14 +78,16 @@ export const useUpdateClient = () => {
     mutationKey: ["updateClient"],
     mutationFn: ({ data, id }: any) => handleUpdateClient(data, id),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Client Updated successfully");
+
       setIsClientModalOpen(false);
       setRowData(null);
       queryClient.invalidateQueries({
         queryKey: ["clients"],
       });
     },
-    onError: (error) => {
-      console.log("error", error);
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };
@@ -90,12 +98,14 @@ export const useDeleteClient = () => {
     mutationKey: ["deleteClient"],
     mutationFn: (data: any) => handleDeleteClient(data),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Client deleted successfully");
+
       queryClient.invalidateQueries({
         queryKey: ["clients"],
       });
     },
-    onError: (error) => {
-      console.log("error", error);
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };

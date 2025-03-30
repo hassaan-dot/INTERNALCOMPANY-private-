@@ -3,6 +3,7 @@ import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { styles } from "./styles";
 import { icons } from "../../Resources";
 import { CheckBox, StatusBadge, truncateComponentName } from "..";
+import { useModalStore } from "@/store/useModalStore";
 
 interface CompanyTableProps {
   columns_schema: {
@@ -63,7 +64,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   showEye = false,
   onClickEye,
 }) => {
-  const [currentPage, setCurrentPage] = useState(1);
+  const { filters, setFilters } = useModalStore();
 
   const IconHandleStatus = ({
     is_active,
@@ -110,16 +111,11 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
 
   const ITEMS_PER_PAGE = hasPaginationMeta
     ? DATA?.meta?.pagination?.pageSize
-    : 10;
+    : 25;
 
   const totalPages = hasPaginationMeta
     ? DATA?.meta?.pagination?.pageCount
     : Math.ceil((dataArray?.length || 0) / ITEMS_PER_PAGE);
-
-  const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-  const paginatedData = hasPaginationMeta
-    ? dataArray // If we have pagination meta, the server handles pagination
-    : dataArray?.slice(startIndex, startIndex + ITEMS_PER_PAGE);
 
   const [expandedEmail, setExpandedEmail] = useState<number | null>(null);
 
@@ -188,7 +184,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   return (
     <View style={styles.container}>
       <FlatList
-        data={paginatedData}
+        data={dataArray}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderItem}
         ListHeaderComponent={() => (
@@ -205,8 +201,8 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
       {pagination && (
         <View style={styles.paginationContainer}>
           <TouchableOpacity
-            disabled={currentPage === 1}
-            onPress={() => setCurrentPage(currentPage - 1)}
+            disabled={filters.page == 1}
+            onPress={() => setFilters({ ...filters, page: filters.page - 1 })}
           >
             <Image
               source={icons.tablepaginationleftarrowIcon}
@@ -216,16 +212,16 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
           {Array.from({ length: totalPages }, (_, i) => (
             <TouchableOpacity
               key={i}
-              onPress={() => setCurrentPage(i + 1)}
+              onPress={() => setFilters({ ...filters, page: i + 1 })}
               style={[
                 styles.pageButton,
-                currentPage === i + 1 && styles.activePageButton,
+                filters.page == i + 1 && styles.activePageButton,
               ]}
             >
               <Text
                 style={[
                   styles.pageButton,
-                  currentPage === i + 1 && styles.activePage,
+                  filters.page == i + 1 && styles.activePage,
                 ]}
               >
                 {i + 1}
@@ -233,8 +229,8 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
             </TouchableOpacity>
           ))}
           <TouchableOpacity
-            disabled={currentPage === totalPages}
-            onPress={() => setCurrentPage(currentPage + 1)}
+            disabled={filters.page == totalPages}
+            onPress={() => setFilters({ ...filters, page: filters.page + 1 })}
           >
             <Image
               source={icons.tablepaginationrightarrowIcon}

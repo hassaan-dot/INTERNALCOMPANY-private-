@@ -74,5 +74,5 @@ export const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
   },
-  customHeader: { flexDirection: "row", alignItems: "center",  },
+  customHeader: { flexDirection: "row", alignItems: "center" },
 });

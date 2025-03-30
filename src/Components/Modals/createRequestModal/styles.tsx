@@ -59,7 +59,7 @@ export const styles = StyleSheet.create({
     lineHeight: 22,
     // textAlignVertical:'center',
     borderWidth: 1,
-    borderColor: "#ddd",
+    // borderColor: "#ddd",
     borderRadius: 5,
     // marginBottom: 5,
   },

@@ -17,7 +17,7 @@ const styles = StyleSheet.create({
   inputContainer: { flex: 1, marginBottom: 5 },
   label: { fontSize: 14, fontWeight: "600", marginBottom: 5 },
   input: {
-    borderColor: "#ddd",
+    // borderColor: "#ddd",
     borderWidth: 1,
 
     minHeight: helpers.normalize(80),
@@ -30,7 +30,7 @@ const styles = StyleSheet.create({
     padding: 10,
     paddingVertical: 12,
     borderWidth: 1,
-    borderColor: "#ddd",
+    // borderColor: "#ddd",
     borderRadius: 5,
     marginBottom: 5,
     marginRight: 25,

@@ -34,6 +34,7 @@ const InputField: React.FC<InputFieldProps> = ({
   onChangeText,
   titleStyle,
   placeholder,
+
   editable = true,
   secureTextEntry,
   multiline = false,
@@ -51,8 +52,7 @@ const InputField: React.FC<InputFieldProps> = ({
         returnKeyType="done" // Adds a "Done" button
         onSubmitEditing={Keyboard.dismiss}
         style={[
-          styles.input,
-          inputStyle && inputStyle,
+          styles.input && inputStyle,
           { borderColor: error ? "red" : "#ddd" },
         ]}
         value={value}

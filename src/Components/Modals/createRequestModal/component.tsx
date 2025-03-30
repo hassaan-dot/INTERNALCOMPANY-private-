@@ -18,6 +18,7 @@ import {
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
+import { formatISODate } from "@/src/utils";
 
 interface ClientModalProps {
   visible: boolean;
@@ -90,8 +91,10 @@ const CreateModal: React.FC<ClientModalProps> = ({
     { value: "Normal", label: "Normal" },
   ];
 
-  const [date, setDate] = useState<any>("");
-  const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
+  const [date, setDate] = useState<any>(rowData?.perform_on ?? "");
+  const [selectedUsers, setSelectedUsers] = useState<any[]>(
+    rowData?.users || []
+  );
   const [formData, setFormData] = useState(
     rowData ?? {
       title: "",
@@ -173,12 +176,13 @@ const CreateModal: React.FC<ClientModalProps> = ({
     if (!users) return [];
     return users.map((user) => ({
       value: `${user?.first_name} ${user?.last_name}`,
-      key: user?.id,
-      original: user,
+      key: user?.documentId,
     }));
   };
 
   const userDropdownItems = transformUsersToDropdownItems(UserApi?.data || []);
+
+  console.log("selected users", selectedUsers);
 
   return (
     <Modal visible={visible} transparent animationType="slide">
@@ -212,7 +216,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 onChangeText={(text) => handleInputChange("title", text)}
                 onBlur={() => setTouched((prev) => ({ ...prev, title: true }))}
                 titleStyle={styles.fontSize}
-                style={[styles.input, { paddingVertical: 8 }]}
+                inputStyle={[styles.input, { paddingVertical: 8 }]}
                 error={touched.title && errors.title}
                 errorMessage={touched.title && errors.title}
                 multiline={false}
@@ -230,7 +234,12 @@ const CreateModal: React.FC<ClientModalProps> = ({
                   setTouched((prev) => ({ ...prev, description: true }))
                 }
                 titleStyle={styles.fontSize}
-                style={[styles.input, { paddingVertical: 8 }]}
+                inputStyle={[
+                  styles.input,
+                  {
+                    paddingVertical: 8,
+                  },
+                ]}
                 multiline={true}
                 ispassword={false}
                 error={touched.description && errors.description}
@@ -257,6 +266,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 setSelectedItems={setSelectedUsers}
                 error={touched.users && errors.users}
                 onBlur={() => setTouched((prev) => ({ ...prev, users: true }))}
+                defaultSelectedItems={rowData?.userSelection ?? []}
               />
             </View>
 
@@ -269,6 +279,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 }}
                 title="Select Date/Time:"
                 error={touched.perform_on && errors.perform_on}
+                selectedDate={date}
               />
             </View>
           </ScrollView>

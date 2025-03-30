@@ -7,13 +7,11 @@ import { View, Text } from "react-native";
 export default function CustomDateTimePicker({
   title = "Select Date & Time",
   error,
+  selectedDate = null,
   width = "94.2%",
   onDateChange = (date) => {},
 }) {
-  const [startDate, setStartDate] = useState();
-
   const handleDateChange = (date) => {
-    setStartDate(date);
     onDateChange(date);
   };
 
@@ -37,16 +35,13 @@ export default function CustomDateTimePicker({
 
       <View style={{}}>
         <DatePicker
-          selected={startDate}
+          selected={selectedDate ?? ""}
           onChange={handleDateChange}
           showTimeSelect
           timeIntervals={15}
-          dateFormat="MMMM d, yyyy h:mm aa"
-          timeFormat="h:mm aa"
+          dateFormat="Pp"
           className="custom-date-picker"
           calendarClassName="custom-calendar"
-          // popperClassName="custom-popper"
-          // wrapperClassName="custom-wrapper"
           minDate={null}
           placeholderText="Select date and time"
           showPopperArrow={false}

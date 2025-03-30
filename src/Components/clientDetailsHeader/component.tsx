@@ -44,7 +44,7 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
           <View style={styles.profileSection}>
             <View style={styles.profileImage} />
             <View style={{ marginLeft: 6, marginRight: helpers.normalize(20) }}>
-              <Text style={styles.name}>{item.data.contact_person_name}</Text>
+              <Text style={styles.name}>{item?.data?.contact_person_name}</Text>
             </View>
           </View>
         )}
@@ -87,25 +87,25 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Name: </Text>
                 <Text style={[styles.link, style]}>
-                  {item.data.company_name}
+                  {item?.data?.contact_person_name}
                 </Text>
               </View>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Contact: </Text>
                 <Text style={[styles.link, style]}>
-                  {item.data.phone_number}
+                  {item?.data?.phone_number}
                 </Text>
               </View>
             </View>
             <View style={{ flexDirection: "row" }}>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Email: </Text>
-                <Text style={[styles.link, style]}>{item.data.email}</Text>
+                <Text style={[styles.link, style]}>{item?.data?.email}</Text>
               </View>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Company: </Text>
                 <Text style={[styles.link, style]}>
-                  {item.data.company_name}
+                  {item?.data?.company_name}
                 </Text>
               </View>
             </View>

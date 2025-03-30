@@ -14,6 +14,7 @@ interface MultiSelectDropdownProps {
   setSelectedItems: Dispatch<SetStateAction<any[]>>;
   title: string;
   error?: any;
+  defaultSelectedItems?: any[];
 }
 
 const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
@@ -23,7 +24,9 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
   setSelectedItems,
   title,
   error,
+  defaultSelectedItems,
 }) => {
+  console.log("default", defaultSelectedItems);
   return (
     <View style={styles.container}>
       <View style={{}}>
@@ -39,6 +42,7 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
         </Text>
       </View>
       <MultipleSelectList
+        defaultOptions={defaultSelectedItems}
         setSelected={(val: any) => setSelectedItems(val)}
         data={items}
         save="key"
@@ -51,8 +55,6 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
         badgeStyles={styles.dropdownBadge}
         badgeTextStyles={styles.dropdownBadgeText}
         multiple={true}
-        defaultOptions={items}
-        selectedItems={selectedItems}
       />
       {error && <Text style={{ color: "red", marginTop: -6 }}>{error}</Text>}
     </View>

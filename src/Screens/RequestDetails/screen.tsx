@@ -13,7 +13,7 @@ import { styles } from "./styles";
 import { useModalStore } from "@/store/useModalStore";
 import { useGetOneRequest } from "@/hooks/useRequest";
 import { useLocalSearchParams } from "expo-router";
-import { formatDate } from "@/src/utils";
+import { formatDateForDisplay } from "@/src/utils";
 
 const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
   const { id } = useLocalSearchParams();
@@ -60,7 +60,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 <Text style={styles.date}>Date to perform:</Text>
                 <View style={styles.dateContainer}>
                   <Text style={styles.dateText}>
-                    {formatDate(getRequest?.data?.perform_on)}
+                    {formatDateForDisplay(getRequest?.data?.perform_on)}
                   </Text>
                 </View>
                 <View style={{}}>

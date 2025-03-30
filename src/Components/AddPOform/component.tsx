@@ -136,7 +136,7 @@
 
 // export default POForm;
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import InputField from "../InputField/InputField";
 import helpers from "../../utils/helpers";
 import { ButtonRow } from "../CncelAddButtons/component";
@@ -274,13 +274,13 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.row}>
         <View style={styles.inputContainer}>
           <InputField
             placeholder="Reference Name"
             title="PO Name"
-            style={styles.input1}
+            inputStyle={styles.input1}
             value={formData.po_name}
             onChangeText={(text) => handleInputChange("po_name", text)}
             onBlur={() => setTouched((prev) => ({ ...prev, po_name: true }))}
@@ -294,7 +294,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
           <InputField
             placeholder="Company Name"
             title="Company Name"
-            style={styles.input1}
+            inputStyle={styles.input1}
             value={formData.company_name}
             onChangeText={(text) => handleInputChange("company_name", text)}
             onBlur={() =>
@@ -312,7 +312,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
           <InputField
             placeholder="Contact Name"
             title="Contact Name"
-            style={styles.input1}
+            inputStyle={styles.input1}
             value={formData.contact_name}
             onChangeText={(text) => handleInputChange("contact_name", text)}
             onBlur={() =>
@@ -328,7 +328,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
           <InputField
             placeholder="Enter Email Address"
             title="Email Address"
-            style={styles.input1}
+            inputStyle={styles.input1}
             value={formData.email}
             onChangeText={(text) => handleInputChange("email", text)}
             onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
@@ -346,7 +346,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
           <InputField
             placeholder="Phone number"
             title="Phone Number"
-            style={styles.input1}
+            inputStyle={styles.input1}
             value={formData.phone_number}
             onChangeText={(text) => handleInputChange("phone_number", text)}
             onBlur={() =>
@@ -363,7 +363,37 @@ const POForm: React.FC<Props> = ({ onPress }) => {
           <InputField
             placeholder="Enter Home Address"
             title="Address"
-            style={styles.input1}
+            inputStyle={styles.input1}
+            value={formData.address}
+            onChangeText={(text) => handleInputChange("address", text)}
+            onBlur={() => setTouched((prev) => ({ ...prev, address: true }))}
+            error={touched.address && errors.address}
+            errorMessage={touched.address && errors.address}
+            multiline={false}
+            ispassword={false}
+          />
+        </View>
+      </View>
+      <View style={{ flexDirection: "row" }}>
+        <View style={styles.inputContainer}>
+          <InputField
+            placeholder="dociuments/Files"
+            title="Add documents/Files"
+            inputStyle={styles.input1}
+            value={formData.address}
+            onChangeText={(text) => handleInputChange("address", text)}
+            onBlur={() => setTouched((prev) => ({ ...prev, address: true }))}
+            error={touched.address && errors.address}
+            errorMessage={touched.address && errors.address}
+            multiline={false}
+            ispassword={false}
+          />
+        </View>
+        <View style={styles.inputContainer}>
+          <InputField
+            placeholder="Location"
+            title="Enter Location"
+            inputStyle={styles.input1}
             value={formData.address}
             onChangeText={(text) => handleInputChange("address", text)}
             onBlur={() => setTouched((prev) => ({ ...prev, address: true }))}
@@ -392,7 +422,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
           addDisabled={Object.keys(errors).length > 0}
         />
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

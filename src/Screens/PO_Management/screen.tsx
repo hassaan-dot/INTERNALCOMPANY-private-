@@ -9,12 +9,15 @@ import Styles from "./styles";
 import { useAuthStore } from "@/store/useAuthStore";
 import { ROLE } from "@/constants/role";
 import { DEPARTMENT } from "@/constants/department";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 
 const PO_Management = () => {
   const { user } = useAuthStore();
   const [ModalOpen, setModalOpen] = useState(false);
 
-  const { data, isPending, error } = useGetPO();
+  const { data, isPending, error, refetch } = useGetPO();
+  useRefreshOnFocus(refetch);
+
   const { mutate: DeletePO } = useDeletePO();
 
   const onClickEye = ({ documentId, id }: any) => {
@@ -44,8 +47,9 @@ const PO_Management = () => {
           onPress={Handlenavigation}
           title={"Purchasing Orders"}
           showButton={
-            user?.role?.name === ROLE.EMPLOYEE &&
-            user.department.name === DEPARTMENT.SALES
+            (user?.role?.name === ROLE.EMPLOYEE &&
+              user.department.name === DEPARTMENT.SALES) ||
+            user?.role?.name === ROLE.ADMIN
           }
         ></ScreenHeader>
 
@@ -57,6 +61,7 @@ const PO_Management = () => {
             showEye={true}
             showStatus={true}
             DATA={data}
+            pagination={true}
             onPressDelete={onPressDelete}
             onClickEye={onClickEye}
           ></CompanyTable>

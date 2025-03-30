@@ -13,6 +13,7 @@ import { CompanyTable, ScreenHeader } from "../../Components";
 import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { UserStore } from "./usershook";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 
 const UserManagement = () => {
   const { isUserModalOpen, setIsUserModalOpen, rowData, setRowData } =
@@ -24,7 +25,8 @@ const UserManagement = () => {
 
   const [AttendenceModalOpen, setAttendenceModalOpen] = useState(false);
 
-  const { data, isPending, error } = useGetUser();
+  const { data, isPending, error, refetch } = useGetUser();
+  useRefreshOnFocus(refetch);
 
   const router = useRouter();
 

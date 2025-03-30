@@ -2,9 +2,9 @@ import api from "@/services/axios";
 import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
-const handleGetAllUser = async () => {
+const handleGetAllUser = async (filters: any) => {
   const res = await api.get(
-    "/user-management/get?populate[1]=role&populate[0]=department&pagination[page]=1&pagination[pageSize]=2"
+    `/user-management/get?populate[1]=role&populate[0]=department&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
   );
   return res.data;
 };
@@ -25,9 +25,10 @@ const handleUpdateUser = async (data: any, id: any) => {
 };
 
 export const useGetUser = () => {
+  const { filters } = useModalStore();
   return useQuery({
-    queryKey: ["users"],
-    queryFn: () => handleGetAllUser(),
+    queryKey: ["users", filters],
+    queryFn: () => handleGetAllUser(filters),
   });
 };
 

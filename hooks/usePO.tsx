@@ -5,9 +5,9 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
-const handleGetAllPO = async () => {
+const handleGetAllPO = async (filters: any) => {
   const res = await api.get(
-    "/purchase-orders?populate[0]=invoices&populate[1]=po_notes&populate[2]=po_notes.user&populate[3]=po_items&populate[4]=location&populate[5]=po_documents"
+    `/purchase-orders?populate[0]=invoices&populate[1]=po_notes&populate[2]=po_notes.user&populate[3]=po_items&populate[4]=location&populate[5]=po_documents&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
   );
   return res.data;
 };
@@ -40,9 +40,10 @@ const handleGetOnePO = async (documentId: string) => {
 };
 
 export const useGetPO = () => {
+  const { filters } = useModalStore();
   return useQuery({
     queryKey: ["po"],
-    queryFn: () => handleGetAllPO(),
+    queryFn: () => handleGetAllPO(filters),
   });
 };
 

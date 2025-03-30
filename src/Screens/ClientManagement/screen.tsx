@@ -16,6 +16,7 @@ import { styles } from "./styles";
 
 import { useModalStore } from "@/store/useModalStore";
 import { useGetOneRequest } from "@/hooks/useRequest";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 
 const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   const { isClientModalOpen, setIsClientModalOpen, setRowData, rowData } =
@@ -25,7 +26,9 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   const navigation = useNavigation();
   const router = useRouter();
 
-  const { data, isPending, error } = useGetClient();
+  const { data, isPending, error, refetch } = useGetClient();
+
+  useRefreshOnFocus(refetch);
 
   const { mutate: handleAdd } = useCreateClient();
   const { mutate: handleUpdate } = useUpdateClient();

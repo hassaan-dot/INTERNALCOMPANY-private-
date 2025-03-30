@@ -21,6 +21,12 @@ type useModalStore = {
 
   UserData: any;
   setUserData: (UserData: any) => void;
+
+  filters: { page: string | number; pageSize: string | number };
+  setFilters: (filters: {
+    page: string | number;
+    pageSize: string | number;
+  }) => void;
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
@@ -45,4 +51,7 @@ export const useModalStore = create<useModalStore>((set) => ({
 
   UserData: null,
   setUserData: (UserData) => set({ UserData }),
+
+  filters: { page: "1", pageSize: "25" },
+  setFilters: (filters) => set({ filters }),
 }));

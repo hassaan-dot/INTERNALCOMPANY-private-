@@ -90,7 +90,7 @@ const LoginScreen: React.FC = () => {
     setSubmitAttempted(true);
     const isValid = await validateForm();
 
-    if (!isValid) {
+    if (isValid) {
       setIsVisible(true);
       const data = {
         identifier: email,

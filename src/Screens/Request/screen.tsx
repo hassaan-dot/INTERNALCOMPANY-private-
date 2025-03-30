@@ -17,14 +17,20 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { Requests_columns_schema } from "../ClientManagement/_schema";
 import { UserStore } from "../UserManagement/usershook";
 import { styles } from "./styles";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
+import { formatDate } from "@/src/utils";
 const Request: React.FC<{ route: any }> = ({ route }) => {
-  // const { mutate: handleGetOne } = useGetOneRequest();
+  const { data, refetch } = useGetRequest();
 
-  const { data } = useGetRequest();
+  const {
+    data: UserApi,
+    isPending,
+    error,
+    refetch: handleUserRefetch,
+  } = useGetUser();
 
-  const { UserData, setUserData } = UserStore();
-
-  const { data: UserApi, isPending, error } = useGetUser();
+  useRefreshOnFocus(refetch);
+  useRefreshOnFocus(handleUserRefetch);
 
   const { mutate: handleAdd } = useCreateRequest();
   const { mutate: handleDelete } = useDeleteRequest();
@@ -57,10 +63,6 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
     handleUpdate({ data, id: documentId });
   };
 
-  useEffect(() => {
-    setUserData(UserApi);
-  }, [UserApi]);
-
   const onPressAddfunction = ({
     title,
     description,
@@ -72,14 +74,15 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
       data: {
         title,
         description,
-        perform_on,
+        perform_on: formatDate(perform_on),
         standing,
         users,
       },
     };
-
+    // console.log("data", data);
     handleAdd(data);
   };
+
   function Create() {
     // router.push(`/(app)/request/request-details`);
 
@@ -99,7 +102,11 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
       description,
       perform_on,
       standing,
-      users,
+      users: users?.map((u: any) => u.documentId),
+      userSelection: users?.map((u: any) => ({
+        key: u.documentId,
+        label: `${u.first_name}${u.last_name}  `,
+      })),
       documentId,
       isEdit: true,
     };
@@ -118,7 +125,6 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
     setIsRequestModalOpen(true);
   };
   const handleSubmit = (formData: any) => {
-    console.log("formData", formData);
     if (rowData?.isEdit) onPressUpdatefunction(formData);
     else onPressAddfunction(formData);
   };
@@ -150,7 +156,7 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
           // filter={true}
           title={"Request List"}
           onPress={Create}
-        ></ScreenHeader>
+        />
 
         <View>
           <CompanyTable
