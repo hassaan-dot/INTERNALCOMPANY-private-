@@ -1,0 +1,26 @@
+export enum PO_STATUS {
+  SALESPERSON = "Salesperson",
+  PURCHASING_DEPARTMENT = "Purchasing Department",
+  OPERATION_DEPARTMENT = "Operation Department",
+  WAREHOUSE_DEPARTMENT = "Warehouse Department",
+  PLACED_FOR_COLLECTION = "Placed For Collection",
+  READY_TO_SHIP = "Ready To Ship",
+  DELIVERY = "Delivery",
+}
+
+export const PO_STATUS_LIST = [
+  PO_STATUS.SALESPERSON,
+  PO_STATUS.PURCHASING_DEPARTMENT,
+  PO_STATUS.OPERATION_DEPARTMENT,
+  PO_STATUS.WAREHOUSE_DEPARTMENT,
+  PO_STATUS.PLACED_FOR_COLLECTION,
+  PO_STATUS.READY_TO_SHIP,
+  PO_STATUS.DELIVERY,
+];
+
+export enum PO_ACTIVE_STATUS {
+  DRAFT = "Draft",
+  ACCEPTED = "Accepted",
+  REJECTED = "Rejected",
+  CLOSED = "Closed",
+}

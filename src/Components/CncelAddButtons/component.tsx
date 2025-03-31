@@ -1,11 +1,11 @@
 import React from "react";
 import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
 import { styles } from "./styles";
+import { useModalStore } from "@/store/useModalStore";
 interface ButtonProps {
   label: string;
   onPress: () => void;
   type?: "primary" | "secondary";
-  
 }
 
 const CustomButton: React.FC<ButtonProps> = ({
@@ -37,10 +37,14 @@ const ButtonRow: React.FC<{ onCancel: () => void; onAdd: () => void }> = ({
   onCancel,
   onAdd,
 }) => {
+  const { rowData } = useModalStore();
   return (
     <View style={styles.buttonRow}>
       <CustomButton label="Cancel" onPress={onCancel} type="secondary" />
-      <CustomButton label="Add" onPress={onAdd} />
+      <CustomButton
+        label={rowData?.isEdit ? "Update" : "Add"}
+        onPress={onAdd}
+      />
     </View>
   );
 };

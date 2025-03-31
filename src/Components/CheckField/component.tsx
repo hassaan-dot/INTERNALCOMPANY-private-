@@ -1,46 +1,39 @@
-import React, { useState } from "react";
-import { View, TouchableOpacity, Text, Image } from "react-native";
+import { PO_STATUS } from "@/constants/po_status";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import { styles } from "./style";
-import { icons } from "../../Resources";
 
 interface CheckboxFieldProps {
-  text: string;
+  text: PO_STATUS;
   Correct?: boolean;
-  textStyle: any;
+  textStyle?: any;
   icon?: boolean;
-  onSelect: (selectedOption: string) => void;
+  onSelect: (value: PO_STATUS) => void;
+  selected: PO_STATUS;
 }
-
-
 
 const CheckboxField: React.FC<CheckboxFieldProps> = ({
   text,
   Correct = true,
   icon = true,
   textStyle = {},
+  selected,
   onSelect,
 }) => {
-  const [isSelected, setIsSelected] = useState(false);
-
-  const handlePress = () => {
-    setIsSelected(!isSelected);
-    onSelect(text);
-  };
-
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={[
           styles.option,
-          isSelected ? styles.selectedOptionTrue : styles.unSelected,
+          selected === text ? styles.selectedOptionTrue : styles.unSelected,
         ]}
-        onPress={handlePress}
+        onPress={() => onSelect(text)}
       >
         <Text
           style={[
             styles.optionText,
             textStyle,
-            isSelected && styles.selectedOptionText,
+            selected === text && styles.selectedOptionText,
           ]}
         >
           {text}
@@ -49,7 +42,7 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
         <View style={styles.container1}>
           <TouchableOpacity style={styles.dashedSquare}>
             <View style={styles.outerCircle}>
-              <View style={[styles.innerCircle]} />
+              {selected === text && <View style={[styles.innerCircle]} />}
             </View>
           </TouchableOpacity>
         </View>

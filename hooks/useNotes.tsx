@@ -21,7 +21,7 @@ export const useCreateNote = () => {
     onSuccess: (data) => {
       setIsNoteModalOpen(false);
       queryPO.invalidateQueries({
-        queryKey: ["getoneRequest"],
+        queryKey: ["getonePO"],
         type: "active",
       });
     },

@@ -18,37 +18,42 @@ import {
 import ConfirmRecieving from "../../Components/Modals/confirmRecieving/component";
 import CreateModal from "../../Components/Modals/createModal/component";
 import helpers from "../../utils/helpers";
-import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import { Invoice_Schema, Item_Schema } from "../ClientManagement/_schema";
 import styles from "./styles";
 import { useModalStore } from "@/store/useModalStore";
 import { useCreateNote } from "@/hooks/useNotes";
 import { useCreateInvoice, useGetInvoice } from "@/hooks/usePOpayments";
 import { useGetItems } from "@/hooks/usePOitems";
-const POdetails: React.FC<{ route: any }> = ({ route }) => {
-  const DATA = generateData();
-  // const token = await LocalStorage.get("token");
-  const [ConfirmRecievingModalOpen, setConfirmRecievingModalOpen] =
-    useState(false);
+import { usePOActions } from "@/hooks/usePoActions";
+import { formatDateForAPI } from "@/services/dateFormatter";
 
+const POdetails: React.FC<{ route: any }> = ({ route }) => {
   const {
     isInvoicePoModalOpen,
     setisInvoicePoModalOpen,
     setIsNoteModalOpen,
     isNoteModalOpen,
+    isStatusModalOpen,
+    setIsStatusModalOpen,
   } = useModalStore();
 
-  const [StatusModalOpen, setStatusModalOpen] = useState(false);
   const { mutate: handleAddNote } = useCreateNote();
   const { mutate: handleAddInvoice } = useCreateInvoice();
 
-  const [NoteModalOpen, setNoteModalOpen] = useState(false);
-
   const { id } = useLocalSearchParams();
-  const { data: InvoiceData } = useGetInvoice();
-  const { data: ItemsData } = useGetItems();
 
   const { data } = useGetOnePO(id as string);
+
+  const {
+    handleAccept,
+    handleReject,
+    handleConfirmRecieving,
+    handlePOClose,
+    isAccepting,
+    isRejecting,
+    isConfirming,
+    isClosing,
+  } = usePOActions(id as string);
 
   const onPressAddNotefunction = async ({ note }: any) => {
     const userData: any = await LocalStorage.get("user");
@@ -64,24 +69,12 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
     handleAddNote(data);
   };
 
-  function ConfirmRecievingOpenfunc() {
-    setConfirmRecievingModalOpen(true);
-  }
-  function StatusModalOpenfunc() {
-    setStatusModalOpen(true);
-  }
-
-  async function StatusModalClosefunc() {
-    const user = await LocalStorage.get("user");
-    setStatusModalOpen(false);
-  }
+  const handleCloseStatusModal = () => {
+    setIsStatusModalOpen(false);
+  };
 
   function NoteModalOpenfunc() {
     setIsNoteModalOpen(true);
-  }
-
-  function NoteModalClosefunc() {
-    setNoteModalOpen(false);
   }
 
   function AddInvoiceModalOpenfunc() {
@@ -99,7 +92,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
   }: any) => {
     const data = {
       data: {
-        date_of_payment: date_of_payment,
+        date_of_payment: formatDateForAPI(date_of_payment),
         payer: payer,
         amount: amount,
         payment_method: payment_method,
@@ -107,6 +100,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
         purchase_order: id,
       },
     };
+    console.log("data", data);
     handleAddInvoice(data);
   };
 
@@ -114,7 +108,19 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
     <>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={{ marginLeft: 25 }}>
-          <ScreenHeader buttonView={true} title={"PO Details"}></ScreenHeader>
+          <ScreenHeader
+            buttonViewMulitiple={true}
+            title={"PO Details"}
+            data={data?.data}
+            handleAccept={handleAccept}
+            handleReject={handleReject}
+            handleConfirm={handleConfirmRecieving}
+            handleClosePO={handlePOClose}
+            isAccepting={isAccepting}
+            isRejecting={isRejecting}
+            isConfirming={isConfirming}
+            isClosing={isClosing}
+          ></ScreenHeader>
         </View>
         <View style={styles.container2}>
           <View style={styles.section}>
@@ -131,10 +137,8 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
             </View>
             <View>
               <VerticalsButton
-                onPress={StatusModalOpenfunc}
-                onClose={StatusModalClosefunc}
+                onPress={() => setIsStatusModalOpen(true)}
                 profile={true}
-                buttons={2}
               ></VerticalsButton>
             </View>
           </View>
@@ -206,11 +210,14 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
         </View>
       </ScrollView>
 
-      <StatusModal
-        onClose={StatusModalClosefunc}
-        title={"Change status"}
-        isVisible={StatusModalOpen}
-      ></StatusModal>
+      {isStatusModalOpen && (
+        <StatusModal
+          onClose={handleCloseStatusModal}
+          title={"Change status"}
+          isVisible={isStatusModalOpen}
+          current_status={data?.data?.po_status}
+        />
+      )}
 
       {isInvoicePoModalOpen && (
         <InvoiceModal

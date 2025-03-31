@@ -27,6 +27,9 @@ type useModalStore = {
     page: string | number;
     pageSize: string | number;
   }) => void;
+
+  isStatusModalOpen: boolean;
+  setIsStatusModalOpen: (isStatusModalOpen: boolean) => void;
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
@@ -54,4 +57,7 @@ export const useModalStore = create<useModalStore>((set) => ({
 
   filters: { page: "1", pageSize: "25" },
   setFilters: (filters) => set({ filters }),
+
+  isStatusModalOpen: false,
+  setIsStatusModalOpen: (isStatusModalOpen) => set({ isStatusModalOpen }),
 }));

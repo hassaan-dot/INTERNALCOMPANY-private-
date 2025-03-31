@@ -28,7 +28,7 @@ const handleDeletePO = async (data: any) => {
 };
 
 const handleUpdatePO = async (data: any, id: string) => {
-  const res = await api.put(`/purchase-orders/${id}`, data);
+  const res = await api.post(`/purchase-orders/${id}`, data);
   return res.data;
 };
 
@@ -70,23 +70,21 @@ export const useCreatePO = (setFormData: any) => {
 
 export const useGetOnePO = (document_id: string) => {
   return useQuery({
-    queryKey: ["getoneRequest", document_id],
+    queryKey: ["getonePO", document_id],
     queryFn: () => handleGetOnePO(document_id),
   });
 };
 
 export const useUpdatePO = () => {
-  const { setIsPOModalOpen, setRowData } = useModalStore();
-  const queryPO = useQueryPO();
+  // const { setIsPOModalOpen, setRowData } = useModalStore();
+  const queryPO = useQueryClient();
 
   return useMutation({
     mutationKey: ["updatePO"],
     mutationFn: ({ data, id }: any) => handleUpdatePO(data, id),
     onSuccess: (data) => {
-      setIsPOModalOpen(false);
-      setRowData(null);
       queryPO.invalidateQueries({
-        queryKey: ["clients"],
+        queryKey: ["po"],
       });
     },
     onError: (error) => {

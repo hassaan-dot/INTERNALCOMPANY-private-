@@ -6,8 +6,8 @@ import { View, Text } from "react-native";
 
 export default function CustomDateTimePicker({
   title = "Select Date & Time",
-  error,
-  selectedDate = null,
+  error = "",
+  selectedDate = "",
   width = "94.2%",
   onDateChange = (date) => {},
 }) {

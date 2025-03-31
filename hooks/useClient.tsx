@@ -65,7 +65,7 @@ export const useCreateClient = () => {
 
 export const useGetOneClient = (document_id: string) => {
   return useQuery({
-    queryKey: ["getoneRequest", document_id],
+    queryKey: ["getoneClient", document_id],
     queryFn: () => handleGetOneClient(document_id),
   });
 };

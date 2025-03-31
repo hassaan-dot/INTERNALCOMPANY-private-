@@ -9,6 +9,7 @@ const handleGetAllInvoices = async () => {
 };
 
 const handleCreatePOInvoice = async (data: any) => {
+  console.log("data2", data);
   const res = await api.post("/invoices", data);
 
   return res.data;
@@ -45,10 +46,9 @@ export const useCreateInvoice = () => {
     mutationFn: (data: any) => handleCreatePOInvoice(data),
     onSuccess: (data) => {
       toastSuccess("Success!", "Invoice has been Added successfully");
-
       setisInvoicePoModalOpen(false);
       queryPO.invalidateQueries({
-        queryKey: ["getoneRequest"],
+        queryKey: ["getonePO"],
         type: "active",
       });
       queryPO.invalidateQueries({
@@ -70,7 +70,7 @@ export const useDeleteInvoice = () => {
       toastSuccess("Success!", "Invoice has been Deleted successfully");
 
       queryPO.invalidateQueries({
-        queryKey: ["getoneRequest"],
+        queryKey: ["getonePO"],
         type: "active",
       });
       queryPO.invalidateQueries({

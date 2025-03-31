@@ -9,18 +9,17 @@ const SingleSelectDropDown = ({
   selected = "222",
   setSelected,
   title,
+  containerStyle,
 }: any) => {
   // const [selected, setSelected] = React.useState("");
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <Text style={styles.label}>{title}</Text>
       <SelectList
         setSelected={setSelected}
         data={items}
-        value="key"
-        save="value"
-        initialValue="Banana"
+        save="key"
         defaultOption={selected} // Set the default option
         boxStyles={styles.boxStyles}
         inputStyles={styles.inputStyles}
@@ -43,13 +42,14 @@ const SingleSelectDropDown = ({
 const styles = StyleSheet.create({
   container: {
     // padding: 20,
-    width: "100%",
+    // width: "100%",
     // maxWidth: 400,
   },
   label: {
-    fontSize: 14,
+    fontSize: 16,
     fontWeight: "400",
     marginBottom: 4,
+    color: "#000",
     fontFamily: PoppinsRegular,
   },
   boxStyles: {

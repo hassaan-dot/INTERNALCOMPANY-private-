@@ -1,5 +1,11 @@
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
+import {
+  View,
+  TouchableOpacity,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+} from "react-native";
 import { styles } from "./styles";
 type ButtonGroupProps = {
   buttonCount?: number;
@@ -14,12 +20,32 @@ type ButtonGroupProps = {
   textStyle2: any;
   style1: any;
   style2: any;
-  onClose: any;
+};
+
+export const SingleButton = ({ color, text, onPress, isLoading }: any) => {
+  return (
+    <TouchableOpacity
+      style={[
+        styles.button,
+        {
+          // paddingHorizontal: 35,
+          borderRadius: 11,
+          borderWidth: 0,
+        },
+        { backgroundColor: color },
+      ]}
+      onPress={onPress}
+      disabled={isLoading}
+    >
+      <Text style={[styles.text]}>
+        {isLoading ? <ActivityIndicator /> : text}
+      </Text>
+    </TouchableOpacity>
+  );
 };
 
 const ButtonGroup: React.FC<ButtonGroupProps> = ({
   buttonCount,
-  onClose,
   onPress,
   ContainerStyle,
   buttonTitle1,
@@ -36,7 +62,7 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
     <View style={[styles.container, ContainerStyle]}>
       <TouchableOpacity
         style={[styles.button, style1, { backgroundColor: Color1 }]}
-        // onPress={() => onPress && onPress()}
+        onPress={onPress}
       >
         <Text style={[styles.text, textStyle1]}>{buttonTitle1}</Text>
       </TouchableOpacity>

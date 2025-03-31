@@ -81,7 +81,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 4,
-    flex: 0.45,
+    flex: 0.3,
   },
   label: {
     fontSize: 14,

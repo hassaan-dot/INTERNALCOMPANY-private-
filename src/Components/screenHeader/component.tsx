@@ -4,10 +4,15 @@ import styles from "./styles";
 import ProfileHeader from "../ProfileHeader/component";
 import { icons } from "../../Resources";
 import { useNavigation } from "@react-navigation/native";
-import ButtonGroup from "../HorizontalButtons/component";
+import ButtonGroup, { SingleButton } from "../HorizontalButtons/component";
 import helpers from "../../utils/helpers";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useQueryClient } from "@tanstack/react-query";
+import { PO_ACTIVE_STATUS } from "@/constants/po_status";
+import { ROLE } from "@/constants/role";
+import { DEPARTMENT } from "@/constants/department";
 
-type ClientManagementProps = {
+type ScreenHeaderProps = {
   create?: boolean;
   filter?: boolean;
   title?: string;
@@ -16,9 +21,18 @@ type ClientManagementProps = {
   buttonView: boolean;
   buttonViewMulitiple: boolean;
   showButton?: boolean;
+  data?: any;
+  handleAccept?: any;
+  handleReject?: any;
+  handleConfirm?: any;
+  handleClosePO?: any;
+  isAccepting?: boolean;
+  isRejecting?: boolean;
+  isConfirming?: boolean;
+  isClosing?: boolean;
 };
 
-const ClientManagement: FC<ClientManagementProps> = ({
+const ScreenHeader: FC<ScreenHeaderProps> = ({
   create,
   filter,
   showButton = true,
@@ -26,13 +40,21 @@ const ClientManagement: FC<ClientManagementProps> = ({
   title,
   onPress,
   buttonViewMulitiple = false,
-  buttonView = false,
+  data = null,
+  handleAccept,
+  handleReject,
+  handleConfirm,
+  handleClosePO,
+  isAccepting,
+  isRejecting,
+  isConfirming,
+  isClosing,
 }) => {
+  const { user } = useAuthStore();
+
   const isMobileView = Platform.OS === "ios";
   return (
     <View style={styles.container}>
-      {/* <ProfileHeader /> */}
-
       <View style={styles.headerContainer}>
         <Text style={[styles.title, isMobileView && styles.TitleDesign]}>
           {title}
@@ -65,27 +87,6 @@ const ClientManagement: FC<ClientManagementProps> = ({
               <Text style={styles.createText}>Completed</Text>
             </TouchableOpacity>
           )}
-          {buttonView && (
-            <View>
-              <ButtonGroup
-                ContainerStyle={{ flexDirection: "row", flex: 1, right: 10 }}
-                Color1={"#E61216"}
-                style2={{
-                  paddingHorizontal: helpers.normalize(27),
-                  borderRadius: 11,
-                  borderWidth: 0,
-                }}
-                style1={{
-                  paddingHorizontal: helpers.normalize(27),
-                  borderRadius: 11,
-                  borderWidth: 0,
-                }}
-                Color2={"#3A9671"}
-                buttonTitle1={"Reject"}
-                buttonTitle2={"Accept"}
-              ></ButtonGroup>
-            </View>
-          )}
           {buttonViewMulitiple && (
             <>
               <View
@@ -95,40 +96,48 @@ const ClientManagement: FC<ClientManagementProps> = ({
                   right: 15,
                 }}
               >
-                <ButtonGroup
-                  ContainerStyle={{ flexDirection: "row", flex: 1 }}
-                  Color1={"#E61216"}
-                  style2={{
-                    // paddingHorizontal: helpers.normalize(27),
-                    borderRadius: 11,
-                    borderWidth: 0,
-                  }}
-                  style1={{
-                    // paddingHorizontal: helpers.normalize(27),
-                    borderRadius: 11,
-                    borderWidth: 0,
-                  }}
-                  Color2={"#3A9671"}
-                  buttonTitle1={"Reject"}
-                  buttonTitle2={"Accept"}
-                ></ButtonGroup>
-                <ButtonGroup
-                  ContainerStyle={{ flexDirection: "row", flex: 1 }}
-                  Color1={"#4682B4"}
-                  style2={{
-                    // paddingHorizontal: helpers.normalize(27),
-                    borderRadius: 11,
-                    borderWidth: 0,
-                  }}
-                  style1={{
-                    // paddingHorizontal: helpers.normalize(27),
-                    borderRadius: 11,
-                    borderWidth: 0,
-                  }}
-                  Color2={"#F15252"}
-                  buttonTitle1={"Confirm Recieving"}
-                  buttonTitle2={"Close PO"}
-                ></ButtonGroup>
+                {user?.role?.name === ROLE.ADMIN &&
+                  data?.active_status === PO_ACTIVE_STATUS.DRAFT && (
+                    <SingleButton
+                      text="Accept"
+                      color="#3A9671"
+                      onPress={handleAccept}
+                      isLoading={isAccepting}
+                    />
+                  )}
+                {user?.role?.name === ROLE.ADMIN &&
+                  data?.active_status === PO_ACTIVE_STATUS.DRAFT && (
+                    <SingleButton
+                      text="Reject"
+                      color="#E61216"
+                      onPress={handleReject}
+                      isLoading={isRejecting}
+                    />
+                  )}
+                {(user?.role?.name === ROLE.ADMIN ||
+                  user?.department?.name === DEPARTMENT.SALES) &&
+                  data?.active_status === PO_ACTIVE_STATUS.ACCEPTED &&
+                  !data?.is_confirmed && (
+                    <SingleButton
+                      text="Confirm Receiving"
+                      color="#4682B4"
+                      onPress={handleConfirm}
+                      isLoading={isConfirming}
+                    />
+                  )}
+                {user?.role?.name === ROLE.ADMIN &&
+                  data?.active_status === PO_ACTIVE_STATUS.ACCEPTED &&
+                  data?.is_confirmed && (
+                    <SingleButton
+                      text="Close PO"
+                      color="#F15252"
+                      onPress={handleClosePO}
+                      isLoading={isClosing}
+                    />
+                  )}
+                {data?.active_status === PO_ACTIVE_STATUS.CLOSED && (
+                  <SingleButton text="Closed" color="#F15252" />
+                )}
               </View>
             </>
           )}
@@ -138,4 +147,4 @@ const ClientManagement: FC<ClientManagementProps> = ({
   );
 };
 
-export default ClientManagement;
+export default ScreenHeader;

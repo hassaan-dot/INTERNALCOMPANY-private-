@@ -11,17 +11,18 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "flex-start",
     marginBottom: 10,
   },
-  inputContainer: { flex: 1, marginBottom: 5 },
+  inputContainer: { marginBottom: 5, width: "50%" },
   label: { fontSize: 14, fontWeight: "600", marginBottom: 5 },
   input: {
     // borderColor: "#ddd",
     borderWidth: 1,
 
-    // minHeight: helpers.normalize(80),
+    minHeight: helpers.normalize(70),
     textAlignVertical: "top",
+    padding: 15,
 
     borderRadius: 8,
   },

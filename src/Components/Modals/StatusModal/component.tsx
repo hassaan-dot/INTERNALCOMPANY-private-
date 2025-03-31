@@ -1,43 +1,42 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { View, Text, Modal, TouchableOpacity, StyleSheet } from "react-native";
 import { CheckboxField } from "../../index";
 import helpers from "../../../utils/helpers";
 import { PoppinsRegular } from "../../../Resources/fonts";
 import { Entypo } from "@expo/vector-icons";
-
-const questions = [
-  "Sales Person",
-  "Warehouse Department",
-  "Operations Department",
-  "Shopping Department",
-  "Sales Person",
-  "Warehouse Department",
-  "Operations Department",
-];
+import { PO_STATUS, PO_STATUS_LIST } from "@/constants/po_status";
+import { useLocalSearchParams } from "expo-router";
+import { usePOActions } from "@/hooks/usePoActions";
+import { ActivityIndicator } from "react-native";
 
 interface NewsModalProps {
   isVisible: boolean;
   onClose: () => void;
   title?: string;
+  current_status: PO_STATUS;
 }
 
 const StatusModal: React.FC<NewsModalProps> = ({
   isVisible,
   onClose,
+  current_status,
   title = "News",
 }) => {
-  const [selectedQuestions, setSelectedQuestions] = useState<string[]>([]);
+  const [selected, setSelected] = useState<PO_STATUS>(current_status);
 
-  const toggleSelection = (question: string) => {
-    setSelectedQuestions((prev) =>
-      prev.includes(question)
-        ? prev.filter((q) => q !== question)
-        : [...prev, question]
-    );
-  };
+  const handleChange = useCallback((value: PO_STATUS) => {
+    setSelected(value);
+  }, []);
 
-  const handleSend = () => {
-    onClose();
+  const { id } = useLocalSearchParams();
+
+  const { handleChangeStatus, isChangingStatus } = usePOActions(id as string);
+
+  const handleSubmit = () => {
+    const data = {
+      po_status: selected,
+    };
+    handleChangeStatus(data);
   };
 
   return (
@@ -64,13 +63,23 @@ const StatusModal: React.FC<NewsModalProps> = ({
           <Text style={styles.title}>{title}</Text>
 
           <View>
-            {questions.map((category) => (
-              <CheckboxField text={category} />
+            {PO_STATUS_LIST.map((category) => (
+              <CheckboxField
+                text={category}
+                onSelect={handleChange}
+                selected={selected}
+              />
             ))}
           </View>
 
-          <TouchableOpacity style={styles.sendButton} onPress={onClose}>
-            <Text style={styles.sendText}>Add status</Text>
+          <TouchableOpacity
+            style={styles.sendButton}
+            onPress={handleSubmit}
+            disabled={isChangingStatus}
+          >
+            <Text style={styles.sendText}>
+              {isChangingStatus ? <ActivityIndicator /> : "Add status"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

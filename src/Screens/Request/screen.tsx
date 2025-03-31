@@ -19,6 +19,7 @@ import { UserStore } from "../UserManagement/usershook";
 import { styles } from "./styles";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { formatDate } from "@/src/utils";
+import { formatDateForAPI } from "@/services/dateFormatter";
 const Request: React.FC<{ route: any }> = ({ route }) => {
   const { data, refetch } = useGetRequest();
 
@@ -74,12 +75,12 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
       data: {
         title,
         description,
-        perform_on: formatDate(perform_on),
+        perform_on: formatDateForAPI(perform_on),
         standing,
         users,
       },
     };
-    // console.log("data", data);
+    console.log("datafrom requests", data);
     handleAdd(data);
   };
 

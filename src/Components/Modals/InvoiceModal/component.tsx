@@ -473,6 +473,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
 
             <View style={{ marginBottom: 13 }}>
               <DateTimeSelector
+                selectedDate={formData.date_of_payment}
                 onDateChange={(date) => setDate(date)}
                 error={touched.date_of_payment && errors.date_of_payment}
               />

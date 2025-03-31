@@ -1,15 +1,15 @@
 import { format, parseISO } from "date-fns";
 
-export function formatDate(input: string) {
+export function formatDate(input: any) {
   const formatedDate = format(input, "yyyy-MM-dd HH:mm:ss");
   return formatedDate;
 }
 
-export function formatDateForDisplay(isoString: string) {
+export function formatDateForDisplay(isoString: any) {
   return format(new Date(isoString), "Pp");
 }
 
-export const handleDownload = async (url?: string, title?: string) => {
+export const handleDownload = async (url?: any, title?: any) => {
   if (!url || !title) return;
   try {
     const response = await fetch(url, {

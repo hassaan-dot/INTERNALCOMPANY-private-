@@ -1,5 +1,6 @@
 import api from "@/services/axios";
 import { toastError, toastSuccess } from "@/services/toast-messages";
+import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const handleAcceptPO = async (id: string) => {
@@ -34,6 +35,7 @@ const handleChangePOStatus = async (data: any, id: string) => {
 
 export const usePOActions = (id: string) => {
   const queryPO = useQueryClient();
+  const { setIsStatusModalOpen } = useModalStore();
 
   const { mutate: handleAccept, isPending: isAccepting } = useMutation({
     mutationKey: ["accept-po", id],
@@ -41,7 +43,7 @@ export const usePOActions = (id: string) => {
     onSuccess: (data) => {
       toastSuccess("Success!", "PO Accepted Successfully");
       queryPO.invalidateQueries({
-        queryKey: ["getoneRequest", id],
+        queryKey: ["getonePO", id],
         type: "active",
       });
     },
@@ -56,7 +58,7 @@ export const usePOActions = (id: string) => {
     onSuccess: (data) => {
       toastSuccess("Success!", "PO Rejected Successfully");
       queryPO.invalidateQueries({
-        queryKey: ["getoneRequest", id],
+        queryKey: ["getonePO", id],
         type: "active",
       });
     },
@@ -71,7 +73,7 @@ export const usePOActions = (id: string) => {
     onSuccess: (data) => {
       toastSuccess("Success!", "PO Closed Successfully");
       queryPO.invalidateQueries({
-        queryKey: ["getoneRequest", id],
+        queryKey: ["getonePO", id],
         type: "active",
       });
     },
@@ -87,7 +89,7 @@ export const usePOActions = (id: string) => {
       onSuccess: (data) => {
         toastSuccess("Success!", "PO Confirmed Successfully");
         queryPO.invalidateQueries({
-          queryKey: ["getoneRequest", id],
+          queryKey: ["getonePO", id],
           type: "active",
         });
       },
@@ -102,7 +104,7 @@ export const usePOActions = (id: string) => {
     onSuccess: (data) => {
       toastSuccess("Success!", "PO Assigned Successfully");
       queryPO.invalidateQueries({
-        queryKey: ["getoneRequest", id],
+        queryKey: ["getonePO", id],
         type: "active",
       });
     },
@@ -117,8 +119,9 @@ export const usePOActions = (id: string) => {
       mutationFn: (data: any) => handleChangePOStatus(data, id),
       onSuccess: (data) => {
         toastSuccess("Success!", "PO Status Changed Successfully");
+        setIsStatusModalOpen(false);
         queryPO.invalidateQueries({
-          queryKey: ["getoneRequest", id],
+          queryKey: ["getonePO", id],
           type: "active",
         });
       },

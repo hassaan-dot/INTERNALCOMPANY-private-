@@ -9,7 +9,7 @@ export const styles = StyleSheet.create({
     // borderRadius: 14,
     // padding: 10,
     // paddingVertical: 2,
-    
+
     marginBottom: 17,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -22,7 +22,6 @@ export const styles = StyleSheet.create({
   },
   selectedOptionFalse: {
     // backgroundColor: "#FFEBF8",
-
     // borderColor: "#F51796",
     // borderWidth: 2,
   },
@@ -32,7 +31,7 @@ export const styles = StyleSheet.create({
     // textAlign:'center',
     textAlignVertical: "top",
     color: "#2D2234",
-    fontFamily:PoppinsRegular,
+    fontFamily: PoppinsRegular,
     fontWeight: "400",
   },
   selectedOptionText: {
@@ -48,7 +47,7 @@ export const styles = StyleSheet.create({
     height: helpers.normalize(20),
   },
   tick: {
-    color: "green", 
+    color: "green",
   },
   cross: {
     color: "red",
@@ -81,12 +80,11 @@ export const styles = StyleSheet.create({
   innerCircle: {
     width: 8,
     height: 8,
-    margin:10,
+    margin: 10,
     borderRadius: 25,
     borderWidth: 2,
 
     borderColor: "#1E38A8",
     backgroundColor: "blue",
-
   },
 });

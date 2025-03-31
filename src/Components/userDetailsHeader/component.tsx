@@ -6,7 +6,8 @@ import { icons } from "../../Resources";
 import { styles } from "./styles";
 import StatusBadge from "../StatusIcon/component";
 import truncateComponentName from "../WordTruncate/component";
-import { formatDate } from "@/src/utils";
+import { formatDateForDisplay } from "@/src/utils";
+// import { formatDate } from "@/src/utils";
 interface UserProfileProps {
   name: string;
   email: string;
@@ -72,7 +73,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                   source={icons.tableStatusIcon}
                   style={{ width: helpers.wp(5), height: helpers.hp(5) }}
                 ></Image> */}
-                <StatusBadge></StatusBadge>
+                <StatusBadge text={data?.data?.po_status} />
               </View>
             )}
           </View>
@@ -85,9 +86,11 @@ const UserProfile: React.FC<UserProfileProps> = ({
               marginTop: 12,
             }}
           >
-            <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>PO Name: </Text>
-              <Text style={[styles.link, style]}>{data?.data?.po_name}</Text>
+            <View style={[styles.detailsItem, { flex: 0.6 }]}>
+              <Text style={[styles.label, style, {}]}>PO Name: </Text>
+              <Text style={[styles.link, style]}>
+                {truncateComponentName(data?.data?.po_name, 20)}
+              </Text>
             </View>
             <View style={styles.detailsItem}>
               <Text style={[styles.label, style]}>Type: </Text>
@@ -99,57 +102,13 @@ const UserProfile: React.FC<UserProfileProps> = ({
                 {data?.data?.po_items?.length}
               </Text>
             </View>
-            <View style={styles.detailsItem}>
+            <View style={[styles.detailsItem, { flex: 0.555 }]}>
               <Text style={[styles.label, style]}>Creation Date: </Text>
               <Text style={[styles.link, style]}>
-                {formatDate(data?.data?.createdAt)}
+                {formatDateForDisplay(data?.data?.createdAt)}
               </Text>
             </View>
           </View>
-
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 10,
-              flex: 1,
-            }}
-            // style={styles.customStyle}
-          >
-            <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Email: </Text>
-              <Text style={[styles.link, style]}>{email}</Text>
-            </View>
-
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Country: </Text>
-              <Text style={styles.link}>{country}</Text>
-            </View>
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Department: </Text>
-              <Text style={styles.link}>{country}</Text>
-            </View>
-          </View> */}
-
-          {/* <View
-            // style={{
-            //   flexDirection: "row",
-            //   justifyContent: "space-between",
-            //   marginTop: 10,
-            // }}
-            style={styles.customStyle}
-
-          >
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Email: </Text>
-              <Text style={styles.link}>{email}</Text>
-            </View>
-
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Country: </Text>
-              <Text style={styles.link}>{country}</Text>
-            </View>
-          </View> */}
         </View>
       </View>
     </View>

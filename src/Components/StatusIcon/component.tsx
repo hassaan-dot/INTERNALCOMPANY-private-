@@ -30,15 +30,19 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 3,
+    justifyContent: "center",
+    paddingVertical: 2,
     paddingHorizontal: 12,
-    right: 18,
+    // right: 18,
+    // width: "43%",
+    // flex: 1,
 
     borderRadius: 20,
   },
   dot: {
     width: 8,
     height: 8,
+    alignSelf: "center",
     borderRadius: 4,
     marginRight: 6,
   },
@@ -46,6 +50,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: "300",
     color: "#027A48",
+    textAlign: "center",
     fontFamily: PoppinsRegular,
   },
 });

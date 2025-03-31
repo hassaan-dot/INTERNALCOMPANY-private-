@@ -4,6 +4,7 @@ import { styles } from "./styles";
 import { icons } from "../../Resources";
 import { CheckBox, StatusBadge, truncateComponentName } from "..";
 import { useModalStore } from "@/store/useModalStore";
+import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 
 interface CompanyTableProps {
   columns_schema: {
@@ -70,37 +71,103 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     is_active,
     payment_status,
     item_status,
+    active_status,
   }: any) => {
     if (is_active === true) {
-      return <StatusBadge text="Active" />;
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge text="Active" />
+        </View>
+      );
     }
     if (is_active === false) {
-      return <StatusBadge />;
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge />
+        </View>
+      );
     }
     if (payment_status === "Pending") {
       return (
-        <StatusBadge
-          text="Pending "
-          textColor={"white"}
-          dot={"#ECFDF3"}
-          color="#A47C60"
-        />
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge
+            text="Pending "
+            textColor={"white"}
+            dot={"#ECFDF3"}
+            color="#A47C60"
+          />
+        </View>
       );
     }
     if (payment_status === "Completed") {
-      return <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />;
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />
+        </View>
+      );
     }
     if (item_status === "Delivered") {
-      return <StatusBadge text="Delieverd" dot={"#12B76A"} color="#ECFDF3" />;
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge text="Delieverd" dot={"#12B76A"} color="#ECFDF3" />
+        </View>
+      );
     }
     if (item_status === "Processing") {
       return (
-        <StatusBadge
-          text="Processing"
-          dot={"#ECFDF3"}
-          textColor={"#fff"}
-          color="#A47C60"
-        />
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge
+            text="Processing"
+            dot={"#ECFDF3"}
+            textColor={"#fff"}
+            color="#A47C60"
+          />
+        </View>
+      );
+    }
+    if (active_status === PO_ACTIVE_STATUS.DRAFT) {
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge
+            text="Draft"
+            dot={"#ECFDF3"}
+            textColor={"#5A6470"}
+            color="#5A6470"
+          />
+        </View>
+      );
+    }
+    if (active_status === PO_ACTIVE_STATUS.ACCEPTED) {
+      return (
+        <View
+          style={{ alignItems: "center", flex: 0.2, backgroundColor: "red" }}
+        >
+          <StatusBadge text="Accepted" dot={"#12B76A"} color="#ECFDF3" />
+        </View>
+      );
+    }
+    if (active_status === PO_ACTIVE_STATUS.REJECTED) {
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge
+            text="Rejected"
+            textColor={"#EC4746"}
+            dot={"#EC4746"}
+            color="#FECACA"
+          />
+        </View>
+      );
+    }
+    if (active_status === PO_ACTIVE_STATUS.CLOSED) {
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge
+            text="Closed"
+            textColor={"#FFF"}
+            dot={"#FFF"}
+            color="#D3BF9F"
+          />
+        </View>
       );
     }
     // or some default casem
