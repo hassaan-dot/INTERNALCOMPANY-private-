@@ -26,7 +26,6 @@ const MultiSelectDropdown: React.FC<MultiSelectDropdownProps> = ({
   error,
   defaultSelectedItems,
 }) => {
-  console.log("default", defaultSelectedItems);
   return (
     <View style={styles.container}>
       <View style={{}}>

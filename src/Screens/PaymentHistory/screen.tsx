@@ -16,8 +16,8 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   const [ModalOpen, setModalOpen] = useState(false);
 
   const router = useRouter();
-  const onClickEye = (username: string, id: number) => {
-    router.push(`/(app)/payment/payment-details?username=${username}&id=${id}`);
+  const onClickEye = ({ documentId }: any) => {
+    router.push(`/(app)/payment/payment-details?id=${documentId}`);
   };
   const { mutate: handleAddInvoice } = useCreateInvoice();
   const { mutate: handleDelete } = useDeleteInvoice();
@@ -67,6 +67,7 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
             DATA={InvoiceData}
             columns_schema={Invoice_Schema}
             showEye={true}
+            showDocument={true}
             showStatus={true}
             onClickEye={onClickEye}
           ></CompanyTable>

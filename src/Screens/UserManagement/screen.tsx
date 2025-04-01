@@ -1,3 +1,4 @@
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import {
   useCreateUser,
   useDeleteUser,
@@ -13,7 +14,7 @@ import { CompanyTable, ScreenHeader } from "../../Components";
 import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { UserStore } from "./usershook";
-import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
+import { useGetDepartments } from "@/hooks/useDepartments";
 
 const UserManagement = () => {
   const { isUserModalOpen, setIsUserModalOpen, rowData, setRowData } =
@@ -36,6 +37,8 @@ const UserManagement = () => {
 
   const { mutate: handleDelete } = useDeleteUser();
 
+  const { data: GetDepartments } = useGetDepartments();
+
   const onPressUpdatefunction = ({
     first_name,
     last_name,
@@ -43,7 +46,7 @@ const UserManagement = () => {
     email,
     phone_number,
     password,
-    roles,
+    role,
     department,
     id,
   }: any) => {
@@ -56,8 +59,8 @@ const UserManagement = () => {
       email,
       password,
       phone_number,
-      roles,
-      department,
+      role: role?.id,
+      department: department?.id,
     };
 
     handleUpdate({ data, id });
@@ -70,7 +73,7 @@ const UserManagement = () => {
     email,
     phone_number,
     password,
-    roles,
+    role,
     department,
   }: any) => {
     const data = {
@@ -80,8 +83,8 @@ const UserManagement = () => {
       email,
       password,
       phone_number,
-      roles,
-      department,
+      role,
+      department: 2,
     };
 
     handleAdd(data);
@@ -99,7 +102,7 @@ const UserManagement = () => {
     email,
     password,
     phone_number,
-    roles,
+    role,
     department,
     id,
   }: any) => {
@@ -110,8 +113,8 @@ const UserManagement = () => {
       email,
       password,
       phone_number,
-      roles,
-      department,
+      role: role,
+      department: department,
       id,
       isEdit: true,
     };
@@ -119,10 +122,10 @@ const UserManagement = () => {
     setIsUserModalOpen(true);
   };
 
-  const onPressDelete = (documentId: string) => {
+  const onPressDelete = (documentId: string, id: any) => {
     const data = {
       data: {
-        documentId: documentId,
+        documentId: id,
       },
     };
     handleDelete(data);
@@ -158,10 +161,12 @@ const UserManagement = () => {
             checkbox={true}
             pagination={true}
             DATA={data}
-            showEye={true}
             onPressUpdate={onPressEdit}
             onPressDelete={onPressDelete}
             onClickEye={onClickEye}
+            showDel={true}
+            showEdit={true}
+            showTime={true}
           />
         </View>
       </View>
@@ -181,9 +186,6 @@ const UserManagement = () => {
           Firstchild="Last name"
           Second="Email Address"
           Third="Phone number"
-          Fourth="Roles"
-          seventh="Departmnet"
-          eigth="Add document/Document"
           desc={true}
           desctext="Add your new users details"
           styleContainer={{ flexDirection: "row" }}

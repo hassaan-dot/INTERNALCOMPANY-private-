@@ -6,7 +6,7 @@ import { PoppinsRegular } from "@/constants/fonts";
 const SingleSelectDropDown = ({
   items,
   error,
-  selected = "222",
+  selected = "",
   setSelected,
   title,
   containerStyle,
@@ -22,12 +22,13 @@ const SingleSelectDropDown = ({
         save="key"
         defaultOption={selected} // Set the default option
         boxStyles={styles.boxStyles}
-        inputStyles={styles.inputStyles}
+        inputStyles={[styles.inputStyles, { color: selected && "#000000" }]}
         dropdownStyles={styles.dropdownStyles}
         dropdownItemStyles={styles.dropdownItemStyles}
         dropdownTextStyles={styles.dropdownTextStyles}
-        placeholder="Select option"
+        placeholder={`${selected}` || "Select"}
         searchPlaceholder="Search..."
+        placeholderTextColor=""
         notFoundText="No options found"
         // defaultOption={{ key: "1", value: "Option 1" }} // Default selected option
       />

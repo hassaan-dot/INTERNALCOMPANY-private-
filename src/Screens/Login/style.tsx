@@ -5,9 +5,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    padding: 30,
-    paddingHorizontal: 25,
-    backgroundColor: "#FFF",
   },
 
   section2: { justifyContent: "flex-end" },
@@ -101,25 +98,28 @@ const styles = StyleSheet.create({
   subtitle2: { marginTop: 5 },
   login_desc1: {
     borderRadius: 29,
-    // justifyContent: "flex-end",
     flex: 1,
     backgroundColor: "#07504B",
+    margin: 25,
   },
   inputError: { borderColor: "red" },
   login_desc2: {
     flex: 1,
-    // padding: helpers.normalize(40),
     margin: 25,
+    // paddingHorizontal: helpers.normalize(40),
     justifyContent: "center",
   },
   login_desc22: {
     flex: 1,
-    // padding: helpers.normalize(0),
-    // marginHorizontal: helpers.normalize(23),
+
     justifyContent: "center",
   },
   logincontainer: { marginTop: 10 },
   logincontainer2: { marginTop: 20 },
-  container3: { margin: helpers.normalize(20) },
+  container3: {
+    margin: helpers.normalize(20),
+    marginTop: helpers.normalize(50),
+    marginHorizontal: helpers.normalize(50),
+  },
 });
 export default styles;

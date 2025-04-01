@@ -103,9 +103,6 @@ const POForm: React.FC<Props> = ({ onPress }) => {
       email,
       phone_number,
       address,
-      location,
-      notes,
-      isEdit: true,
     };
     console.log("data", data);
     handleUpdate({ data, id: documentId });

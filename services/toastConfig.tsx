@@ -1,9 +1,11 @@
+import { icons } from "@/assets/icons/icons";
 import { Text } from "react-native";
-import { View } from "react-native";
+import { View, Image } from "react-native";
 
 export const toastConfig = {
   success: ({ text1, text2 }: { text1: string; text2?: string }) => (
     <View style={styles.success}>
+      {/* <Image source={icons.toastNotificationIcon} st /> */}
       <Text style={styles.text1}>{text1}</Text>
       {text2 && <Text style={styles.text2}>{text2}</Text>}
     </View>

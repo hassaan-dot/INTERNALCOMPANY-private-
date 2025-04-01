@@ -28,7 +28,7 @@ const handleDeletePO = async (data: any) => {
 };
 
 const handleUpdatePO = async (data: any, id: string) => {
-  const res = await api.post(`/purchase-orders/${id}`, data);
+  const res = await api.put(`/purchase-orders/${id}`, data);
   return res.data;
 };
 

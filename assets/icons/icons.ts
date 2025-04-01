@@ -14,6 +14,7 @@ export const icons: Record<string, { uri: string }> = {
   tableReadIcon: require("./Trash can copy.png"),
   tableStatusIcon: require("./_Badge base.png"),
   tableEyeIcon: require("./Eye.png"),
+  tableTimeIcon: require("./iconTime.png"),
   tableDocumentIcon: require("./document-text.png"),
   screenHeaderPlusIcon: require("./Plus.png"),
   screenHeaderFilterIcon: require("./filter.png"),
@@ -38,4 +39,5 @@ export const icons: Record<string, { uri: string }> = {
   ProfileIcon5: require("./Frame.png"),
   ProfileIcon6: require("./Group3.png"),
   invoiceModalIcon: require("./Featured icon.png"),
+  toastNotificationIcon: require("./toastnotification.png"),
 };

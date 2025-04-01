@@ -9,7 +9,6 @@ const handleGetAllInvoices = async () => {
 };
 
 const handleCreatePOInvoice = async (data: any) => {
-  console.log("data2", data);
   const res = await api.post("/invoices", data);
 
   return res.data;
@@ -20,12 +19,12 @@ const handleDeletePOInvoice = async (data: any) => {
   return res.data;
 };
 
-const handleUpdatePOInvoice = async (data: any, id: string) => {
+const handleUpdateInvoice = async (data: any, id: string) => {
   const res = await api.put(`/invoices/${id}`, data);
   return res.data;
 };
 // sko38f7f6mv0gi1havb75f7f
-const handleGetOnePOInvoice = async (documentId: string) => {
+const handleGetOneInvoice = async (documentId: string) => {
   const res = await api.get(`/invoices/${documentId}?populate=*`);
   return res.data;
 };
@@ -81,5 +80,11 @@ export const useDeleteInvoice = () => {
     onError: (error) => {
       toastError("Failed!", error.message);
     },
+  });
+};
+export const useGetOneInvoice = (documentId: any) => {
+  return useQuery({
+    queryKey: ["getonePo"],
+    queryFn: () => handleGetOneInvoice(documentId),
   });
 };

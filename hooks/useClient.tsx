@@ -18,7 +18,6 @@ const handleCreateClient = async (data: any) => {
 };
 
 const handleDeleteClient = async (data: any) => {
-  console.log("data is ", data.data.documentId);
   const res = await api.delete(`/clients/${data.data.documentId}`);
   return res.data;
 };
@@ -57,7 +56,6 @@ export const useCreateClient = () => {
       });
     },
     onError: (error: any) => {
-      console.log(error);
       toastError("Oops!", error?.response?.data?.error?.message);
     },
   });

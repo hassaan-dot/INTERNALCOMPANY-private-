@@ -100,7 +100,6 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
         purchase_order: id,
       },
     };
-    console.log("data", data);
     handleAddInvoice(data);
   };
 
@@ -188,7 +187,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
             <TableTitle
               DATA={data?.data?.invoices}
               schema={Invoice_Schema}
-              rowTextStyle={{ marginLeft: 18, fontFamily: PoppinsRegular }}
+              rowTextStyle={{ marginLeft: 8, fontFamily: PoppinsRegular }}
               onPress={AddInvoiceModalOpenfunc}
               ButtonTitle="Add Invoice"
               titleIcon={true}

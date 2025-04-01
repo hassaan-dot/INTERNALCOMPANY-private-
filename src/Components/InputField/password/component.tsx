@@ -14,8 +14,6 @@ const Password = ({
   errorMessage,
 }: any) => {
   const [showPassword, setShowPassword] = useState(false);
-  console.log("Password", password);
-  console.log("setPassword", setPassword);
 
   return (
     <View>

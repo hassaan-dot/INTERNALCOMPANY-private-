@@ -80,7 +80,6 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
         users,
       },
     };
-    console.log("datafrom requests", data);
     handleAdd(data);
   };
 
@@ -169,6 +168,7 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
             showActions={true}
             pagination={true}
             showEye={true}
+            showDocument={true}
             onClickEye={onClickEye}
           ></CompanyTable>
         </View>

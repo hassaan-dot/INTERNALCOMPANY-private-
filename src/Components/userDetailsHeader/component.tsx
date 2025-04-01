@@ -86,7 +86,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
               marginTop: 12,
             }}
           >
-            <View style={[styles.detailsItem, { flex: 0.6 }]}>
+            <View style={[styles.detailsItem, {}]}>
               <Text style={[styles.label, style, {}]}>PO Name: </Text>
               <Text style={[styles.link, style]}>
                 {truncateComponentName(data?.data?.po_name, 20)}
@@ -102,10 +102,10 @@ const UserProfile: React.FC<UserProfileProps> = ({
                 {data?.data?.po_items?.length}
               </Text>
             </View>
-            <View style={[styles.detailsItem, { flex: 0.555 }]}>
+            <View style={[styles.detailsItem, {}]}>
               <Text style={[styles.label, style]}>Creation Date: </Text>
               <Text style={[styles.link, style]}>
-                {formatDateForDisplay(data?.data?.createdAt)}
+                {/* {formatDateForDisplay(data?.data?.createdAt)} */}
               </Text>
             </View>
           </View>

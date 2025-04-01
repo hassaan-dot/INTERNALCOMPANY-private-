@@ -51,10 +51,7 @@ const InputField: React.FC<InputFieldProps> = ({
       <TextInput
         returnKeyType="done" // Adds a "Done" button
         onSubmitEditing={Keyboard.dismiss}
-        style={[
-          styles.input && inputStyle,
-          { borderColor: error ? "red" : "#ddd" },
-        ]}
+        style={[styles.input, inputStyle, { borderColor: error && "red" }]}
         value={value}
         onChangeText={onChangeText}
         multiline={multiline}
@@ -88,17 +85,15 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#00504B",
+    // borderColor: "#00504B",
     borderRadius: 10,
     padding: 10,
     fontWeight: "500",
     fontSize: 14,
-    paddingVertical: 4,
-    // textAlignVertical:'top',
+    paddingVertical: 14,
+
     fontFamily: PoppinsRegular,
-    paddingHorizontal: 8,
-    // fontSize: 15,
-    height: 40,
+    paddingHorizontal: 10,
   },
 });
 

@@ -36,7 +36,6 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
   ];
 
   if (isFetching) return <ActivityIndicator style={{ flex: 1 }} />;
-  console.log("get", getRequest);
   return (
     <>
       <View style={styles.custom4}>

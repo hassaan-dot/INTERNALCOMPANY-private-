@@ -1,6 +1,7 @@
 import api from "@/services/axios";
 import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllUser = async (filters: any) => {
   const res = await api.get(
@@ -40,13 +41,15 @@ export const useCreateUser = () => {
     mutationKey: ["createUser"],
     mutationFn: async (data: any) => handleCreateUser(data),
     onSuccess: async (data) => {
+      toastSuccess("Success!", "User is created successfully");
+
       setIsUserModalOpen(false);
       queryUser.invalidateQueries({
-        queryKey: ["clients"],
+        queryKey: ["users"],
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error.message);
     },
   });
 };
@@ -60,12 +63,15 @@ export const useUpdateUser = () => {
     mutationFn: async ({ data, id }: any) => handleUpdateUser(data, id),
     onSuccess: (data) => {
       setIsUserModalOpen(false);
+
+      toastSuccess("Success!", "User is updated successfully");
+
       queryUser.invalidateQueries({
-        queryKey: ["clients"],
+        queryKey: ["users"],
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };
@@ -76,12 +82,14 @@ export const useDeleteUser = () => {
     mutationKey: ["deleteUser"],
     mutationFn: (data: any) => handleDeleteUser(data),
     onSuccess: (data) => {
+      toastSuccess("Success!", "User is deletd successfully");
+
       queryUser.invalidateQueries({
-        queryKey: ["clients"],
+        queryKey: ["users"],
       });
     },
     onError: (error) => {
-      console.log("error", error);
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };

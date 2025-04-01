@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { View, FlatList, Text, TouchableOpacity, Image } from "react-native";
 import { styles } from "./styles";
-import { icons } from "../../Resources";
+import { icons } from "@/assets/icons/icons";
 import { CheckBox, StatusBadge, truncateComponentName } from "..";
 import { useModalStore } from "@/store/useModalStore";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
@@ -22,6 +22,11 @@ interface CompanyTableProps {
   showEye?: boolean;
   onPressUpdate: any;
   onPressDelete: any;
+  showDel: boolean;
+  showEdit: boolean;
+  showTime: boolean;
+  showDocument: boolean;
+
   onClickEye?: (item: any) => void;
 }
 
@@ -43,7 +48,11 @@ const TableHeader: React.FC<CompanyTableProps> = ({
         {truncateComponentName(c.header, 20)}
       </Text>
     ))}
-    {showStatus && <Text style={[styles.headerText, { flex: 2 }]}>Status</Text>}
+    {showStatus && (
+      <Text style={[styles.headerText, , headerTextStyle, { flex: 2 }]}>
+        Status
+      </Text>
+    )}
     {showActions && (
       <Text style={[styles.headerText, { flex: 2 }]}>Actions</Text>
     )}
@@ -63,6 +72,10 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   pagination,
   DATA,
   showEye = false,
+  showDel = false,
+  showEdit = false,
+  showDocument = false,
+  showTime = false,
   onClickEye,
 }) => {
   const { filters, setFilters } = useModalStore();
@@ -89,21 +102,21 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     }
     if (payment_status === "Pending") {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge
-            text="Pending "
-            textColor={"white"}
-            dot={"#ECFDF3"}
-            color="#A47C60"
-          />
-        </View>
+        // <View style={{ alignItems: "center", flex: 0.2 }}>
+        <StatusBadge
+          text="Pending "
+          textColor={"white"}
+          dot={"#ECFDF3"}
+          color="#A47C60"
+        />
+        // </View>
       );
     }
     if (payment_status === "Completed") {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />
-        </View>
+        // <View style={{ alignItems: "center", flex: 0.2 }}>
+        <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />
+        // </View>
       );
     }
     if (item_status === "Delivered") {
@@ -115,7 +128,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     }
     if (item_status === "Processing") {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
+        <View style={{ alignItems: "center" }}>
           <StatusBadge
             text="Processing"
             dot={"#ECFDF3"}
@@ -202,13 +215,24 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
             <Text style={[styles.cell, rowTextStyle]}>
               {isExpanded
                 ? item[c?.key]
-                : truncateComponentName(item[c.key], 10)}
+                : truncateComponentName(item[c.key], 16)}
             </Text>
           </TouchableOpacity>
         ))}
 
         {showStatus && (
-          <View style={[styles.cell, { flex: 2 }, styles.actionIcons]}>
+          <View
+            style={[
+              styles.cell,
+              {
+                flex: 2,
+                // backgroundColor: "red",
+                alignItems: "center",
+                // justifyContent: "center",
+              },
+              styles.actionIcons,
+            ]}
+          >
             {IconHandleStatus(item)}
           </View>
         )}
@@ -224,24 +248,41 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                 />
               </TouchableOpacity>
             )}
-            <TouchableOpacity onPress={() => onPressDelete(item.documentId)}>
-              <Image
-                source={icons.tableDeleteIcon}
-                style={{ width: 20, height: 20, marginRight: 6 }}
-              />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => onPressUpdate(item)}>
-              <Image
-                source={icons.tableEditIcon}
-                style={{ width: 20, height: 20, marginRight: 6 }}
-              />
-            </TouchableOpacity>
-            {/* <TouchableOpacity>
-              <Image
-                source={icons.tableDocumentIcon}
-                style={{ width: 20, height: 20, tintColor: "#07504B" }}
-              />
-            </TouchableOpacity> */}
+            {showEdit && (
+              <TouchableOpacity onPress={() => onPressUpdate(item)}>
+                <Image
+                  source={icons.tableEditIcon}
+                  style={{ width: 20, height: 20, marginRight: 6 }}
+                />
+              </TouchableOpacity>
+            )}
+            {showDel && (
+              <TouchableOpacity
+                onPress={() => onPressDelete(item.documentId, item.id)}
+              >
+                <Image
+                  source={icons.tableDeleteIcon}
+                  style={{ width: 20, height: 20, marginRight: 6 }}
+                />
+              </TouchableOpacity>
+            )}
+
+            {showDocument && (
+              <TouchableOpacity>
+                <Image
+                  source={icons.tableDocumentIcon}
+                  style={{ width: 20, height: 20, tintColor: "#292D32" }}
+                />
+              </TouchableOpacity>
+            )}
+            {showTime && (
+              <TouchableOpacity>
+                <Image
+                  source={icons.tableTimeIcon}
+                  style={{ width: 20, height: 20, tintColor: "#292D32" }}
+                />
+              </TouchableOpacity>
+            )}
           </View>
         )}
       </View>

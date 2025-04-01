@@ -1,35 +1,42 @@
+import { useGetOneInvoice } from "@/hooks/usePOpayments";
+import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
-  ScreenHeader,
-  InformationContainer,
-  Note,
-  StatusModal,
   CreatetModal,
+  Note,
+  PaymentDetailsCard,
+  ScreenHeader,
+  StatusModal,
 } from "../../Components";
-import CreateModal from "../../Components/Modals/createModal/component";
-import helpers from "../../utils/helpers";
-import styles from "./styles";
 import ConfirmRecieving from "../../Components/Modals/confirmRecieving/component";
+import CreateModal from "../../Components/Modals/createModal/component";
+import styles from "./styles";
 const PaymentDetails: React.FC<{ route: any }> = ({ route }) => {
+  const { id } = useLocalSearchParams();
+  const { data } = useGetOneInvoice(id);
   const [ModalOpen, setModalOpen] = useState(false);
   function Create() {}
   return (
     <>
       <ScrollView style={styles.container}>
         <View style={styles.container2}>
-          <ScreenHeader title={'Payment Details'} onPress={Create}></ScreenHeader>
+          <ScreenHeader
+            title={"Payment Details"}
+            onPress={Create}
+          ></ScreenHeader>
         </View>
         <View style={styles.container3}>
           <View style={styles.LoginBox}>
-            <InformationContainer
+            <PaymentDetailsCard
               style={styles.textStyle}
               titleStyle={styles.Text}
               rows={1}
-              title={"Client Information"}
-              horizontalwidth={helpers.wp(75.9)}
+              Data={data}
+              title={"Payment Information"}
+              // horizontalwidth={helpers.wp(75.9)}
               detailscreenContainer={styles.detailScreenContainer}
-            ></InformationContainer>
+            />
           </View>
         </View>
       </ScrollView>

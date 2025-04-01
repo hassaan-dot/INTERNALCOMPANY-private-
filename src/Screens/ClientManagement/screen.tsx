@@ -77,7 +77,6 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   };
 
   const handleSubmit = (formData: any) => {
-    console.log("formData", formData);
     if (rowData?.isEdit) onPressUpdatefunction(formData);
     else onPressAddfunction(formData);
   };
@@ -154,10 +153,13 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
             columns_schema={columns_schema}
             checkbox={true}
             showActions={true}
-            showEye={true}
+            // showEye={true}
             onClickEye={onClickEye}
             pagination={true}
             DATA={data}
+            showEdit={true}
+            showDel={true}
+            showDocument={true}
           ></CompanyTable>
         </View>
       </ScrollView>

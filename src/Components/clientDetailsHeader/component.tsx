@@ -5,6 +5,7 @@ import HorizontalLine from "../HorizontalLine/HorizontalLine";
 import { icons } from "../../Resources";
 import { styles } from "./styles";
 import StatusBadge from "../StatusIcon/component";
+import Avatar from "../Avatar/component";
 interface UserProfileProps {
   contact_person_name: string;
   email: string;
@@ -42,8 +43,8 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
       <View style={styles.row}>
         {profile && (
           <View style={styles.profileSection}>
-            <View style={styles.profileImage} />
-            <View style={{ marginLeft: 6, marginRight: helpers.normalize(20) }}>
+            <Avatar />
+            <View style={{ marginLeft: 0, marginRight: helpers.normalize(20) }}>
               <Text style={styles.name}>{item?.data?.contact_person_name}</Text>
             </View>
           </View>
@@ -97,7 +98,7 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
                 </Text>
               </View>
             </View>
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", marginTop: 6 }}>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Email: </Text>
                 <Text style={[styles.link, style]}>{item?.data?.email}</Text>

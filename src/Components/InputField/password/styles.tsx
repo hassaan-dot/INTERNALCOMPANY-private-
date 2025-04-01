@@ -2,7 +2,7 @@ import { StyleSheet, ViewStyle, TextStyle } from "react-native";
 import { PoppinsRegular } from "@/constants/fonts";
 
 const styles = StyleSheet.create({
-  container2:{
+  container2: {
     fontFamily: PoppinsRegular,
     flex: 1,
   },
@@ -15,7 +15,8 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 16,
     flex: 1,
-    paddingVertical: 12,
+    paddingVertical: 14,
+    // paddingVertical: 12,
     // textAlignVertical:'top',
     fontFamily: PoppinsRegular,
     // paddingHorizontal: 10,

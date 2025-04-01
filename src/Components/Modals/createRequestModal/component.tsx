@@ -182,8 +182,6 @@ const CreateModal: React.FC<ClientModalProps> = ({
 
   const userDropdownItems = transformUsersToDropdownItems(UserApi?.data || []);
 
-  console.log("selected users", selectedUsers);
-
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>

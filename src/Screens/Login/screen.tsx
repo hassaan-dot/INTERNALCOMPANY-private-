@@ -1,23 +1,19 @@
+import { useLogin } from "@/hooks/useLogin";
+import { string } from "@/src/Resources/strings";
 import React, { useState } from "react";
 import { Platform, Text, TouchableOpacity, View } from "react-native";
+import * as yup from "yup";
 import {
   CheckBox,
+  Indicator,
   InputField,
   OTPmodal,
   Password,
   TitleAndDescription,
 } from "../../Components";
-import styles from "./style";
-import { useLogin } from "@/hooks/useLogin";
-import { string } from "@/src/Resources/strings";
-import * as yup from "yup";
 import useFormValidation from "../../Components/FormValidation/component";
-import {
-  toastSuccess,
-  toastError,
-  toastInfo,
-} from "../../../services/toast-messages";
-
+import styles from "./style";
+import { useModalStore } from "@/store/useModalStore";
 const loginSchema = yup.object().shape({
   email: yup
     .string()
@@ -41,7 +37,7 @@ const LoginScreen: React.FC = () => {
     email: "",
     password: "",
   });
-
+  const { isActivityIndicator, setisActivityIndicator } = useModalStore();
   const {
     values,
     errors: errorsForm,
@@ -92,6 +88,7 @@ const LoginScreen: React.FC = () => {
 
     if (isValid) {
       setIsVisible(true);
+      setisActivityIndicator(true);
       const data = {
         identifier: email,
         password: password,
@@ -122,120 +119,113 @@ const LoginScreen: React.FC = () => {
     }
   };
 
-  const handleAction = () => {
-    try {
-      // toastSuccess("Success!", "Your action was completed successfully", {
-      //   position: "bottom",
-      //   topOffset: 50,
-      // });
-
-      toastError("Oops!", "Something went wrong");
-    } catch (error) {
-      toastError("Error", error.message);
-    }
-  };
-
   return (
-    <View style={[styles.container, isMobileView && styles.container2]}>
-      <View style={styles.login_desc1}>
-        <View style={styles.container1}>
-          <View style={{ alignSelf: "flex-end" }}>
-            <TitleAndDescription title={string.login2} desc={string.login3} />
+    <>
+      <View style={[styles.container, isMobileView && styles.container2]}>
+        <View style={styles.login_desc1}>
+          <View style={styles.container1}>
+            <View style={{ alignSelf: "flex-end" }}>
+              <TitleAndDescription title={string.login2} desc={string.login3} />
+            </View>
           </View>
         </View>
-      </View>
 
-      <View style={[styles.login_desc2, isMobileView && styles.login_desc22]}>
-        <View style={styles.container3}>
-          <View>
-            <TitleAndDescription
-              titleTextStyle={[
-                styles.titleTextStyle,
-                isMobileView && styles.titleTextStyle2,
-              ]}
-              textStyle={[
-                styles.textStyle,
-                isMobileView && styles.titleTextStyle2,
-              ]}
-              subtitleContainer={[
-                styles.subtitle,
-                isMobileView && styles.subtitle2,
-              ]}
-              title={isMobileView ? string.loginEmail : string.login}
-              desc={isMobileView ? "email" : string.logindesc}
-            />
-          </View>
+        <View style={[styles.login_desc2, isMobileView && styles.login_desc22]}>
+          <View style={styles.container3}>
+            <View>
+              <TitleAndDescription
+                titleTextStyle={[
+                  styles.titleTextStyle,
+                  isMobileView && styles.titleTextStyle2,
+                ]}
+                textStyle={[
+                  styles.textStyle,
+                  isMobileView && styles.titleTextStyle2,
+                ]}
+                subtitleContainer={[
+                  styles.subtitle,
+                  isMobileView && styles.subtitle2,
+                ]}
+                title={isMobileView ? string.loginEmail : string.login}
+                desc={isMobileView ? "email" : string.logindesc}
+              />
+            </View>
 
-          <View style={styles.logincontainer2}>
-            <InputField
-              placeholder={string.enterEmail}
-              title="Email"
-              inputStyle={[
-                isMobileView && styles.inputMobileView,
-                submitAttempted && errors.email && styles.inputError,
-              ]}
-              value={email}
-              onChangeText={(text) => handleInputChange("email", text)}
-              titleStyle={{ marginBottom: 10 }}
-              error={submitAttempted ? errors.email : undefined}
-              errorMessage={
-                submitAttempted && errors.email
-                  ? errors.email
-                  : values.email.length > 0 &&
-                    !/^\S+@\S+\.\S+$/.test(values.email)
-                  ? "Please enter a valid email"
-                  : undefined
-              }
-            />
-          </View>
-          <View style={styles.logincontainer}>
-            <Password
-              placeholder={
-                isMobileView ? string.EnterPassword : string.EnteryourPassword
-              }
-              title="Password"
-              password={password}
-              setPassword={(text) => handleInputChange("password", text)}
-              inputStyle={
-                submitAttempted && errors.password && styles.inputError
-              }
-              error={submitAttempted ? errors.password : undefined}
-              errorMessage={
-                submitAttempted && errors.password
-                  ? errors.password
-                  : password.length > 0 && password.length < 6
-                  ? "Password must be at least 6 characters"
-                  : undefined
-              }
-            />
-          </View>
-          <View style={[styles.section, isMobileView && styles.section2]}>
-            {!isMobileView && (
-              <CheckBox style={styles.checkbox} text={string.RememberMe} />
-            )}
-            <TouchableOpacity>
-              <Text style={[styles.forget, isMobileView && styles.forget2]}>
-                {string.Forgetpassword}
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.logincontainer}>
-            <TouchableOpacity
-              onPress={handlePressLogin}
-              // onPress={handleAction}
-              style={[styles.loginButton, isMobileView && styles.loginButton2]}
-            >
-              <Text
-                style={[styles.loginText, isMobileView && styles.loginText2]}
+            <View style={styles.logincontainer2}>
+              <InputField
+                placeholder={string.enterEmail}
+                title="Email..."
+                inputStyle={[
+                  isMobileView && styles.inputMobileView,
+                  submitAttempted && errors.email && styles.inputError,
+                ]}
+                value={email}
+                onChangeText={(text) => handleInputChange("email", text)}
+                titleStyle={{ marginBottom: 10 }}
+                error={submitAttempted ? errors.email : undefined}
+                errorMessage={
+                  submitAttempted && errors.email
+                    ? errors.email
+                    : values.email.length > 0 &&
+                      !/^\S+@\S+\.\S+$/.test(values.email)
+                    ? "Please enter a valid email"
+                    : undefined
+                }
+              />
+            </View>
+            <View style={styles.logincontainer}>
+              <Password
+                placeholder={
+                  isMobileView ? string.EnterPassword : string.EnteryourPassword
+                }
+                container2={{}}
+                title="Password"
+                password={password}
+                setPassword={(text) => handleInputChange("password", text)}
+                inputStyle={
+                  submitAttempted && errors.password && styles.inputError
+                }
+                error={submitAttempted ? errors.password : undefined}
+                errorMessage={
+                  submitAttempted && errors.password
+                    ? errors.password
+                    : password.length > 0 && password.length < 6
+                    ? "Password must be at least 6 characters"
+                    : undefined
+                }
+              />
+            </View>
+            <View style={[styles.section, isMobileView && styles.section2]}>
+              {!isMobileView && (
+                <CheckBox style={styles.checkbox} text={string.RememberMe} />
+              )}
+              <TouchableOpacity>
+                <Text style={[styles.forget, isMobileView && styles.forget2]}>
+                  {string.Forgetpassword}
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.logincontainer}>
+              <TouchableOpacity
+                onPress={handlePressLogin}
+                style={[
+                  styles.loginButton,
+                  isMobileView && styles.loginButton2,
+                ]}
               >
-                {string.Login}
-              </Text>
-            </TouchableOpacity>
+                <Text
+                  style={[styles.loginText, isMobileView && styles.loginText2]}
+                >
+                  {string.Login}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
+          <OTPmodal visible={modalVisible} onSubmit={onSubmitFunction} />
         </View>
-        <OTPmodal visible={modalVisible} onSubmit={onSubmitFunction} />
       </View>
-    </View>
+      {/* {isActivityIndicator && <Indicator></Indicator>} */}
+    </>
   );
 };
 

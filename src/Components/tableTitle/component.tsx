@@ -134,6 +134,7 @@ const TableTitle: React.FC<UserProfileProps> = ({
               }}
               showStatus={true}
               rowTextStyle={rowTextStyle}
+              // headerTextSt={{  }}
               pagination={false}
               headerRowStyle={{
                 backgroundColor: "#F3F6FF",

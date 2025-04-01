@@ -12,6 +12,8 @@ import { SingleSelectDropDown } from "../..";
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
+import { useGetDepartments } from "@/hooks/useDepartments";
+import { useGetuserRole } from "@/hooks/userRole";
 
 interface ClientModalProps {
   visible: boolean;
@@ -76,6 +78,9 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
   modalContainerprop,
   isLogin = false, // Default to false
 }) => {
+  const { data: GetDepartments } = useGetDepartments();
+  const { data: getRoles } = useGetuserRole();
+
   const [Role, SetRole] = useState();
   const [Dep, SetDep] = useState();
 
@@ -88,7 +93,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
       email: "",
       phone_number: "",
       password: "",
-      roles: "",
+      role: "",
       department: "",
     }
   );
@@ -127,7 +132,6 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     key: any;
     value: string;
   };
-
   // const { data } = useUserRole();
   // const { data } = useGetDepartment();
 
@@ -139,7 +143,27 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     { value: "anything", key: 1 },
     // { label: "Employee", value: "2" },
   ];
+  const transformdepsToDropdownItems = (deps: any[]) => {
+    if (!deps) return [];
+    return deps.map((dep) => ({
+      value: `${dep?.name} `,
+      key: dep?.documentId,
+    }));
+  };
+  const transformRolesToDropdownItems = (roles: any[]) => {
+    if (!roles) return [];
+    return roles.map((role) => ({
+      value: `${role?.name} `,
+      key: role?.documentId,
+    }));
+  };
 
+  const depsDropdownItems = transformdepsToDropdownItems(
+    GetDepartments?.data || []
+  );
+  const rolesDropdownItems = transformRolesToDropdownItems(
+    getRoles?.roles || []
+  );
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
@@ -210,7 +234,6 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
                   onChangeText={(text) => handleInputChange("username", text)}
                   titleStyle={styles.fontSize}
                   style={styles.input}
-                  keyboardType="email-address"
                 />
               </View>
 
@@ -222,7 +245,6 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
                   onChangeText={(text) => handleInputChange("password", text)}
                   titleStyle={styles.fontSize}
                   style={styles.input}
-                  keyboardType="email-address"
                 />
               </View>
 
@@ -239,21 +261,20 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
                   keyboardType="phone-pad"
                 />
               </View>
-
               <View style={{ marginBottom: 5 }}>
                 <SingleSelectDropDown
-                  items={items1}
+                  items={rolesDropdownItems}
                   title="Select Role"
-                  selected={Role}
-                  setSelected={SetRole}
+                  selected={formData?.role?.name}
+                  setSelected={(key) => handleInputChange("roles", key)}
                 />
               </View>
 
               <View style={{ marginBottom: 10 }}>
                 <SingleSelectDropDown
-                  items={items2}
+                  items={depsDropdownItems}
                   title="Select Department"
-                  selected={Dep}
+                  selected={formData?.department?.name}
                   setSelected={SetDep}
                 />
               </View>
@@ -298,7 +319,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
               // disabled={!validateForm()}
             >
               <Text style={styles.addText}>
-                {isLogin ? "Login" : !create ? "Send Reminder" : "Add Client"}
+                {rowData?.isEdit ? "Edit User" : "Add User"}
               </Text>
             </TouchableOpacity>
           </View>

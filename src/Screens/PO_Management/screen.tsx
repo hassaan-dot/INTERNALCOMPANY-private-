@@ -201,7 +201,6 @@ const PO_Management = () => {
     };
     setRowData(data);
     handleNavigateToAdd();
-    console.log("data", data);
   };
   const shouldShowButton =
     (user?.role?.name === ROLE.EMPLOYEE &&
@@ -223,6 +222,8 @@ const PO_Management = () => {
         checkbox={true}
         showActions={true}
         showEye={true}
+        showDel={true}
+        showEdit={true}
         showStatus={true}
         DATA={data}
         pagination={true}
