@@ -21,9 +21,9 @@ const categories: string[] = [
 
 interface NewsModalProps {
   isVisible: boolean;
-  onClose :() => void;
+  onClose: () => void;
   title: any;
-  Activate:any
+  Activate: any;
   // OnCancel :() => void;
 }
 
@@ -32,11 +32,20 @@ const NewsModal: React.FC<NewsModalProps> = ({
   onClose,
 
   // OnCancel,
-  
+
   title = "News",
 }) => {
   const [news, setNews] = useState<string>("");
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const PO_STATUS = [
+    { key: "SALESPERSON", value: "Salesperson" },
+    { key: "PURCHASING_DEPARTMENT", value: "Purchasing Department" },
+    { key: "OPERATION_DEPARTMENT", value: "Operation Department" },
+    { key: "WAREHOUSE_DEPARTMENT", value: "Warehouse Department" },
+    { key: "PLACED_FOR_COLLECTION", value: "Placed For Collection" },
+    { key: "READY_TO_SHIP", value: "Ready To Ship" },
+    { key: "DELIVERY", value: "Delivery" },
+  ];
 
   const toggleCategory = (category: string) => {
     setSelectedCategories((prev) =>
@@ -51,11 +60,7 @@ const NewsModal: React.FC<NewsModalProps> = ({
   // };
 
   return (
-    <Modal
-      visible={isVisible}
-      transparent
-      onRequestClose={onClose}
-    >
+    <Modal visible={isVisible} transparent onRequestClose={onClose}>
       <View
         style={{
           flex: 1,
@@ -75,27 +80,24 @@ const NewsModal: React.FC<NewsModalProps> = ({
             onChangeText={setNews}
           />
           <View style={styles.chipContainer}>
-            {categories.map((category) => (
+            {PO_STATUS.map((category) => (
               <TouchableOpacity
-                key={category}
+                key={category.key}
                 style={[
                   styles.chip,
-                  selectedCategories.includes(category)
+                  selectedCategories.includes(category.value)
                     ? styles.chipSelected
                     : styles.chipUnselected,
                 ]}
-                onPress={() => toggleCategory(category)}
+                onPress={() => toggleCategory(category.key)}
               >
-                <Text style={styles.chipText}>{category}</Text>
+                <Text style={styles.chipText}>{category.value}</Text>
               </TouchableOpacity>
             ))}
           </View>
-          <TouchableOpacity style={styles.sendButton} 
-          onPress={onClose}
-          >
+          <TouchableOpacity style={styles.sendButton} onPress={onClose}>
             <Text style={styles.sendText}>Send</Text>
           </TouchableOpacity>
-         
         </View>
       </View>
     </Modal>

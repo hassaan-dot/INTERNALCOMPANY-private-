@@ -1,6 +1,6 @@
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
-import { View } from "react-native";
+import { ScrollView, View } from "react-native";
 import { POForm, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import Styles from "./styles";
@@ -17,9 +17,9 @@ const PO_AddScreen: React.FC<{ route: any }> = ({ route }) => {
     <>
       <View style={Styles.container}>
         <ScreenHeader title={"Add PO"}></ScreenHeader>
-        <View style={Styles.container2}>
+        <ScrollView style={Styles.container2}>
           <POForm onPress={onClickEye}></POForm>
-        </View>
+        </ScrollView>
       </View>
       <CreateModal create={true} visible={ModalOpen}></CreateModal>
     </>

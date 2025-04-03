@@ -8,6 +8,7 @@ const SingleSelectDropDown = ({
   error,
   selected = "",
   setSelected,
+  errorMessage,
   title,
   containerStyle,
 }: any) => {
@@ -21,7 +22,7 @@ const SingleSelectDropDown = ({
         data={items}
         save="key"
         defaultOption={selected} // Set the default option
-        boxStyles={styles.boxStyles}
+        boxStyles={[styles.boxStyles, { borderColor: error && "red" }]}
         inputStyles={[styles.inputStyles, { color: selected && "#000000" }]}
         dropdownStyles={styles.dropdownStyles}
         dropdownItemStyles={styles.dropdownItemStyles}
@@ -35,7 +36,9 @@ const SingleSelectDropDown = ({
       {/* {selected ? (
         <Text style={styles.selectedText}>Selected: {selected}</Text>
       ) : null} */}
-      {error && <Text style={{ color: "red", marginTop: 5 }}>{error}</Text>}
+      {error && (
+        <Text style={{ color: "red", marginTop: 5 }}>{errorMessage}</Text>
+      )}
     </View>
   );
 };

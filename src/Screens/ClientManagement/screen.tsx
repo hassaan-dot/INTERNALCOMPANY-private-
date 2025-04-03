@@ -72,7 +72,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
         phone_number: phone_number,
       },
     };
-
+    console.log("Data is from client", data);
     handleAdd(data);
   };
 

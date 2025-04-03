@@ -168,144 +168,119 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContainer, modalContainerprop]}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View>
-              {create && (
-                <>
-                  <Image
-                    source={icons.modalIconOtp}
-                    style={{ width: 60, height: 60 }}
-                  />
-                  <Text style={styles.title}>{title}</Text>
-                </>
-              )}
-
-              {!create && !isLogin && (
-                <Text style={styles.title}>Send Payment Reminder</Text>
-              )}
-
-              {isLogin && <Text style={styles.title}>Login</Text>}
-
-              {desc && <Text style={styles.subtitle}>{desctext}</Text>}
-            </View>
-
-            <>
-              <View style={[styleContainer]}>
-                <InputField
-                  title={First}
-                  placeholder={First}
-                  value={formData.first_name}
-                  onChangeText={(text) => handleInputChange("first_name", text)}
-                  style={styles.input}
-                  titleStyle={styles.fontSize}
-                />
-
-                <View style={{ marginLeft: 7 }}>
-                  <InputField
-                    title={Firstchild}
-                    placeholder={Firstchild}
-                    value={formData.last_name}
-                    onChangeText={(text) =>
-                      handleInputChange("last_name", text)
-                    }
-                    style={styles.input}
-                    titleStyle={styles.fontSize}
-                  />
-                </View>
-              </View>
-
-              <View>
-                <InputField
-                  title={Second}
-                  placeholder={Second}
-                  value={formData.email}
-                  onChangeText={(text) => handleInputChange("email", text)}
-                  titleStyle={styles.fontSize}
-                  style={styles.input}
-                  keyboardType="email-address"
-                />
-              </View>
-
-              <View>
-                <InputField
-                  title={"User Name"}
-                  placeholder={"Username"}
-                  value={formData.username}
-                  onChangeText={(text) => handleInputChange("username", text)}
-                  titleStyle={styles.fontSize}
-                  style={styles.input}
-                />
-              </View>
-
-              <View>
-                <InputField
-                  title={"Password"}
-                  placeholder={"Password"}
-                  value={formData.password}
-                  onChangeText={(text) => handleInputChange("password", text)}
-                  titleStyle={styles.fontSize}
-                  style={styles.input}
-                />
-              </View>
-
-              <View>
-                <InputField
-                  titleStyle={styles.fontSize}
-                  title={Third}
-                  value={formData.phone_number}
-                  onChangeText={(text) =>
-                    handleInputChange("phone_number", text)
-                  }
-                  placeholder={Third}
-                  style={styles.input}
-                  keyboardType="phone-pad"
-                />
-              </View>
-              <View style={{ marginBottom: 5 }}>
-                <SingleSelectDropDown
-                  items={rolesDropdownItems}
-                  title="Select Role"
-                  selected={formData?.role?.name}
-                  setSelected={(key) => handleInputChange("roles", key)}
-                />
-              </View>
-
-              <View style={{ marginBottom: 10 }}>
-                <SingleSelectDropDown
-                  items={depsDropdownItems}
-                  title="Select Department"
-                  selected={formData?.department?.name}
-                  setSelected={SetDep}
-                />
-              </View>
-            </>
-
-            {isLogin && (
+          <View>
+            {create && (
               <>
-                <View>
-                  <InputField
-                    title="Username"
-                    placeholder="Enter your username"
-                    value={formData.username}
-                    onChangeText={(text) => handleInputChange("username", text)}
-                    style={styles.input}
-                    titleStyle={styles.fontSize}
-                  />
-                </View>
-                <View>
-                  <InputField
-                    title="Password"
-                    placeholder="Enter your password"
-                    value={formData.password}
-                    onChangeText={(text) => handleInputChange("password", text)}
-                    style={styles.input}
-                    titleStyle={styles.fontSize}
-                    secureTextEntry
-                  />
-                </View>
+                <Image
+                  source={icons.modalIconOtp}
+                  style={{ width: 60, height: 60 }}
+                />
+                <Text style={styles.title}>{title}</Text>
               </>
             )}
+
+            {!create && !isLogin && (
+              <Text style={styles.title}>Send Payment Reminder</Text>
+            )}
+
+            {isLogin && <Text style={styles.title}>Login</Text>}
+
+            {desc && <Text style={styles.subtitle}>{desctext}</Text>}
+          </View>
+
+          <ScrollView
+            contentContainerStyle={
+              {
+                // backgroundColor: "red",
+              }
+            }
+          >
+            <View style={[styleContainer]}>
+              <InputField
+                title={First}
+                placeholder={First}
+                value={formData.first_name}
+                onChangeText={(text) => handleInputChange("first_name", text)}
+                style={styles.input}
+                titleStyle={styles.fontSize}
+              />
+
+              <View style={{ marginLeft: 7 }}>
+                <InputField
+                  title={Firstchild}
+                  placeholder={Firstchild}
+                  value={formData.last_name}
+                  onChangeText={(text) => handleInputChange("last_name", text)}
+                  style={styles.input}
+                  titleStyle={styles.fontSize}
+                />
+              </View>
+            </View>
+
+            <View>
+              <InputField
+                title={Second}
+                placeholder={Second}
+                value={formData.email}
+                onChangeText={(text) => handleInputChange("email", text)}
+                titleStyle={styles.fontSize}
+                style={styles.input}
+                keyboardType="email-address"
+              />
+            </View>
+
+            <View>
+              <InputField
+                title={"User Name"}
+                placeholder={"Username"}
+                value={formData.username}
+                onChangeText={(text) => handleInputChange("username", text)}
+                titleStyle={styles.fontSize}
+                style={styles.input}
+              />
+            </View>
+
+            <View>
+              <InputField
+                title={"Password"}
+                placeholder={"Password"}
+                value={formData.password}
+                onChangeText={(text) => handleInputChange("password", text)}
+                titleStyle={styles.fontSize}
+                style={styles.input}
+              />
+            </View>
+
+            <View>
+              <InputField
+                titleStyle={styles.fontSize}
+                title={Third}
+                value={formData.phone_number}
+                onChangeText={(text) => handleInputChange("phone_number", text)}
+                placeholder={Third}
+                style={styles.input}
+                keyboardType="phone-pad"
+              />
+            </View>
+            <View style={{ marginBottom: 5 }}>
+              <SingleSelectDropDown
+                items={rolesDropdownItems}
+                title="Select Role"
+                selected={formData?.role?.name}
+                setSelected={(key) => handleInputChange("roles", key)}
+              />
+            </View>
+
+            <View style={{ marginBottom: 10 }}>
+              <SingleSelectDropDown
+                items={depsDropdownItems}
+                title="Select Department"
+                selected={formData?.department?.name}
+                setSelected={SetDep}
+              />
+            </View>
           </ScrollView>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelText}>Cancel</Text>

@@ -50,7 +50,6 @@ export const useCreateClient = () => {
     onSuccess: async (data) => {
       toastSuccess("Success!", "Client Created successfully");
       setIsClientModalOpen(false);
-      setRowData(null);
       queryClient.invalidateQueries({
         queryKey: ["clients"],
       });

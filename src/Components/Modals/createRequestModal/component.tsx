@@ -18,7 +18,7 @@ import {
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
-import { formatISODate } from "@/src/utils";
+// import { formatISODate } from "@/src/utils";
 
 interface ClientModalProps {
   visible: boolean;

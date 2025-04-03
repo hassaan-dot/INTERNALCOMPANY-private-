@@ -15,6 +15,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 40,
     paddingBottom: 30,
   },
+  input: { paddingVertical: 15 },
   checkbox: {
     borderColor: "black",
     width: 15,

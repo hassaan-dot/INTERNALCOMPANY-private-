@@ -15,7 +15,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 16,
     flex: 1,
-    paddingVertical: 14,
+    paddingVertical: 13,
     // paddingVertical: 12,
     // textAlignVertical:'top',
     fontFamily: PoppinsRegular,

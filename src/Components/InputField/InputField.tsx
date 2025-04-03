@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
     padding: 10,
     fontWeight: "500",
     fontSize: 14,
-    paddingVertical: 14,
+    paddingVertical: 8,
 
     fontFamily: PoppinsRegular,
     paddingHorizontal: 10,

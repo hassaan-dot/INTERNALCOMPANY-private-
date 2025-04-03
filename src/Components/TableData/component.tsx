@@ -26,6 +26,7 @@ interface CompanyTableProps {
   showEdit: boolean;
   showTime: boolean;
   showDocument: boolean;
+  onClickTime: any;
 
   onClickEye?: (item: any) => void;
 }
@@ -37,6 +38,7 @@ const TableHeader: React.FC<CompanyTableProps> = ({
   headerRowStyle,
   columns_schema,
   headerTextStyle,
+  // onCliclTimeFunc,
 }) => (
   <View style={[styles.headerRow, headerRowStyle]}>
     <View style={styles.customHeader}>{checkbox && <CheckBox />}</View>
@@ -76,6 +78,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   showEdit = false,
   showDocument = false,
   showTime = false,
+  onClickTime,
   onClickEye,
 }) => {
   const { filters, setFilters } = useModalStore();
@@ -276,7 +279,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
               </TouchableOpacity>
             )}
             {showTime && (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={onClickTime}>
                 <Image
                   source={icons.tableTimeIcon}
                   style={{ width: 20, height: 20, tintColor: "#292D32" }}

@@ -54,6 +54,11 @@ const poSchema = yup.object().shape({
     .required("Phone number is required")
     .matches(/^[0-9]+$/, "Phone number can only contain numbers")
     .min(10, "Phone number must be at least 10 digits"),
+  location: yup
+    .string()
+    .required("Location is required")
+    .matches(/^[0-9]+$/, " location can only contain numbers")
+    .min(10, "location is required"),
   address: yup
     .string()
     .required("Address is required")
@@ -194,6 +199,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
       email: true,
       phone_number: true,
       address: true,
+      location: true,
       notes: true,
     });
     const isValid = await validateForm();
@@ -223,258 +229,262 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View style={styles.row}>
-        <View style={styles.inputContainer}>
-          <InputField
-            placeholder="Reference Name"
-            title="PO Name"
-            inputStyle={styles.input1}
-            value={formData.po_name}
-            onChangeText={(text) => handleInputChange("po_name", text)}
-            onBlur={() => setTouched((prev) => ({ ...prev, po_name: true }))}
-            error={touched.po_name && errors.po_name}
-            errorMessage={touched.po_name && errors.po_name}
-            multiline={false}
-            ispassword={false}
-          />
+    <ScrollView contentContainerStyle={{ flex: 1 }}>
+      <View style={styles.container}>
+        <View style={styles.row}>
+          <View style={styles.inputContainer}>
+            <InputField
+              placeholder="Reference Name"
+              title="PO Name"
+              inputStyle={styles.input1}
+              value={formData.po_name}
+              onChangeText={(text) => handleInputChange("po_name", text)}
+              onBlur={() => setTouched((prev) => ({ ...prev, po_name: true }))}
+              error={touched.po_name && errors.po_name}
+              errorMessage={touched.po_name && errors.po_name}
+              multiline={false}
+              ispassword={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputField
+              placeholder="Company Name"
+              title="Company Name"
+              inputStyle={styles.input1}
+              value={formData.company_name}
+              onChangeText={(text) => handleInputChange("company_name", text)}
+              onBlur={() =>
+                setTouched((prev) => ({ ...prev, company_name: true }))
+              }
+              error={touched.company_name && errors.company_name}
+              errorMessage={touched.company_name && errors.company_name}
+              multiline={false}
+              ispassword={false}
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <InputField
-            placeholder="Company Name"
-            title="Company Name"
-            inputStyle={styles.input1}
-            value={formData.company_name}
-            onChangeText={(text) => handleInputChange("company_name", text)}
-            onBlur={() =>
-              setTouched((prev) => ({ ...prev, company_name: true }))
-            }
-            error={touched.company_name && errors.company_name}
-            errorMessage={touched.company_name && errors.company_name}
-            multiline={false}
-            ispassword={false}
-          />
+        <View style={styles.row}>
+          <View style={styles.inputContainer}>
+            <InputField
+              placeholder="Contact Name"
+              title="Contact Name"
+              inputStyle={styles.input1}
+              value={formData.contact_name}
+              onChangeText={(text) => handleInputChange("contact_name", text)}
+              onBlur={() =>
+                setTouched((prev) => ({ ...prev, contact_name: true }))
+              }
+              error={touched.contact_name && errors.contact_name}
+              errorMessage={touched.contact_name && errors.contact_name}
+              multiline={false}
+              ispassword={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputField
+              placeholder="Enter Email Address"
+              title="Email Address"
+              inputStyle={styles.input1}
+              value={formData.email}
+              onChangeText={(text) => handleInputChange("email", text)}
+              onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
+              keyboardType="email-address"
+              autoCapitalize="none"
+              error={touched.email && errors.email}
+              errorMessage={touched.email && errors.email}
+              multiline={false}
+              ispassword={false}
+            />
+          </View>
         </View>
-      </View>
-      <View style={styles.row}>
-        <View style={styles.inputContainer}>
-          <InputField
-            placeholder="Contact Name"
-            title="Contact Name"
-            inputStyle={styles.input1}
-            value={formData.contact_name}
-            onChangeText={(text) => handleInputChange("contact_name", text)}
-            onBlur={() =>
-              setTouched((prev) => ({ ...prev, contact_name: true }))
-            }
-            error={touched.contact_name && errors.contact_name}
-            errorMessage={touched.contact_name && errors.contact_name}
-            multiline={false}
-            ispassword={false}
-          />
+        <View style={styles.row}>
+          <View style={styles.inputContainer}>
+            <InputField
+              placeholder="Phone number"
+              title="Phone Number"
+              inputStyle={styles.input1}
+              value={formData.phone_number}
+              onChangeText={(text) => handleInputChange("phone_number", text)}
+              onBlur={() =>
+                setTouched((prev) => ({ ...prev, phone_number: true }))
+              }
+              keyboardType="phone-pad"
+              error={touched.phone_number && errors.phone_number}
+              errorMessage={touched.phone_number && errors.phone_number}
+              multiline={false}
+              ispassword={false}
+            />
+          </View>
+          <View style={styles.inputContainer}>
+            <InputField
+              placeholder="Enter Home Address"
+              title="Address"
+              inputStyle={styles.input1}
+              value={formData.address}
+              onChangeText={(text) => handleInputChange("address", text)}
+              onBlur={() => setTouched((prev) => ({ ...prev, address: true }))}
+              error={touched.address && errors.address}
+              errorMessage={touched.address && errors.address}
+              multiline={false}
+              ispassword={false}
+            />
+          </View>
         </View>
-        <View style={styles.inputContainer}>
-          <InputField
-            placeholder="Enter Email Address"
-            title="Email Address"
-            inputStyle={styles.input1}
-            value={formData.email}
-            onChangeText={(text) => handleInputChange("email", text)}
-            onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
-            keyboardType="email-address"
-            autoCapitalize="none"
-            error={touched.email && errors.email}
-            errorMessage={touched.email && errors.email}
-            multiline={false}
-            ispassword={false}
-          />
-        </View>
-      </View>
-      <View style={styles.row}>
-        <View style={styles.inputContainer}>
-          <InputField
-            placeholder="Phone number"
-            title="Phone Number"
-            inputStyle={styles.input1}
-            value={formData.phone_number}
-            onChangeText={(text) => handleInputChange("phone_number", text)}
-            onBlur={() =>
-              setTouched((prev) => ({ ...prev, phone_number: true }))
-            }
-            keyboardType="phone-pad"
-            error={touched.phone_number && errors.phone_number}
-            errorMessage={touched.phone_number && errors.phone_number}
-            multiline={false}
-            ispassword={false}
-          />
-        </View>
-        <View style={styles.inputContainer}>
-          <InputField
-            placeholder="Enter Home Address"
-            title="Address"
-            inputStyle={styles.input1}
-            value={formData.address}
-            onChangeText={(text) => handleInputChange("address", text)}
-            onBlur={() => setTouched((prev) => ({ ...prev, address: true }))}
-            error={touched.address && errors.address}
-            errorMessage={touched.address && errors.address}
-            multiline={false}
-            ispassword={false}
-          />
-        </View>
-      </View>
-      {!rowData?.isEdit && (
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-between",
-            alignItems: "start",
-          }}
-        >
-          <View style={[styles.inputContainer]}>
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "400",
-                fontFamily: PoppinsRegular,
-                // marginTop: -5,
-                bottom: 3,
-              }}
-            >
-              Documents
-            </Text>
+        {!rowData?.isEdit && (
+          <View
+            style={{
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "start",
+            }}
+          >
+            <View style={[styles.inputContainer]}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "400",
+                  fontFamily: PoppinsRegular,
+                  // marginTop: -5,
+                  bottom: 3,
+                }}
+              >
+                Documents
+              </Text>
 
-            <View
-              style={{
-                borderRadius: 6,
-                borderColor: "#ddd",
-                borderWidth: 1,
-                paddingVertical: 9,
-                // height: 42,
-                marginRight: 22,
-                // marginTop: 5,
-                // width: "100%",
-              }}
-            >
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <View>
-                  <TouchableOpacity
-                    onPress={pickDocument}
-                    style={{
-                      backgroundColor: "#f6f6f6",
-                      padding: 5,
-                      marginLeft: 7,
-                      borderRadius: 4,
-                      justifyContent: "center",
-                    }}
-                  >
-                    <Feather
-                      name="paperclip"
-                      color={"#07504B"}
-                      style={{}}
-                      size={12}
-                    ></Feather>
-                  </TouchableOpacity>
-                </View>
+              <View
+                style={{
+                  borderRadius: 6,
+                  borderColor: "#ddd",
+                  borderWidth: 1,
+                  paddingVertical: 9,
+                  // height: 42,
+                  marginRight: 22,
+                  // marginTop: 5,
+                  // width: "100%",
+                }}
+              >
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                  <View>
+                    <TouchableOpacity
+                      onPress={pickDocument}
+                      style={{
+                        backgroundColor: "#f6f6f6",
+                        padding: 5,
+                        marginLeft: 7,
+                        borderRadius: 4,
+                        justifyContent: "center",
+                      }}
+                    >
+                      <Feather
+                        name="paperclip"
+                        color={"#07504B"}
+                        style={{}}
+                        size={12}
+                      ></Feather>
+                    </TouchableOpacity>
+                  </View>
 
-                <View>
-                  <TouchableOpacity
-                    onPress={pickDocument}
-                    style={{
-                      marginLeft: 7,
-                    }}
-                  >
-                    {documents.length < 1 && (
-                      <Text>Upload your attachments/Documents</Text>
+                  <View>
+                    <TouchableOpacity
+                      onPress={pickDocument}
+                      style={{
+                        marginLeft: 7,
+                      }}
+                    >
+                      {documents.length < 1 && (
+                        <Text>Upload your attachments/Documents</Text>
+                      )}
+                    </TouchableOpacity>
+                    {documents.length > 0 && (
+                      <View style={{}}>
+                        <FlatList
+                          style={{ width: "60%" }}
+                          showsHorizontalScrollIndicator={false}
+                          horizontal={true}
+                          data={documents}
+                          keyExtractor={(_, index) => index.toString()}
+                          renderItem={({ item }) => (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+
+                                borderRadius: 8,
+                              }}
+                            >
+                              {item.type.startsWith("image/") ? (
+                                <Image
+                                  source={{ uri: item.uri }}
+                                  style={{
+                                    width: 20,
+                                    height: 20,
+                                    marginRight: 8,
+                                  }}
+                                />
+                              ) : null}
+                              <Text
+                                style={{ flex: 1, marginLeft: 7 }}
+                                numberOfLines={1}
+                              >
+                                {item.name}
+                              </Text>
+                              <TouchableOpacity
+                                onPress={() => removeDocument(item)}
+                              >
+                                <AntDesign
+                                  name="close"
+                                  size={12}
+                                  color="red"
+                                  style={{ marginLeft: 10 }}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                          )}
+                        />
+
+                        {documents.map((doc, index) => null)}
+                      </View>
                     )}
-                  </TouchableOpacity>
-                  {documents.length > 0 && (
-                    <View style={{}}>
-                      <FlatList
-                        style={{ width: "60%" }}
-                        showsHorizontalScrollIndicator={false}
-                        horizontal={true}
-                        data={documents}
-                        keyExtractor={(_, index) => index.toString()}
-                        renderItem={({ item }) => (
-                          <View
-                            style={{
-                              flexDirection: "row",
-                              alignItems: "center",
-                              justifyContent: "space-between",
-
-                              borderRadius: 8,
-                            }}
-                          >
-                            {item.type.startsWith("image/") ? (
-                              <Image
-                                source={{ uri: item.uri }}
-                                style={{
-                                  width: 20,
-                                  height: 20,
-                                  marginRight: 8,
-                                }}
-                              />
-                            ) : null}
-                            <Text
-                              style={{ flex: 1, marginLeft: 7 }}
-                              numberOfLines={1}
-                            >
-                              {item.name}
-                            </Text>
-                            <TouchableOpacity
-                              onPress={() => removeDocument(item)}
-                            >
-                              <AntDesign
-                                name="close"
-                                size={12}
-                                color="red"
-                                style={{ marginLeft: 10 }}
-                              />
-                            </TouchableOpacity>
-                          </View>
-                        )}
-                      />
-
-                      {documents.map((doc, index) => null)}
-                    </View>
-                  )}
+                  </View>
                 </View>
               </View>
             </View>
+            <View style={[styles.inputContainer, { marginRight: 60 }]}>
+              <SingleSelectDropDown
+                items={locationItems}
+                containerStyle={{ marginRight: 20 }}
+                setSelected={(location) =>
+                  handleInputChange("location", location)
+                }
+                title="Enter Location"
+                error={touched.location && errors.location}
+                errorMessage={touched.location && errors.location}
+              ></SingleSelectDropDown>
+            </View>
           </View>
-          <View style={[styles.inputContainer, { marginRight: 60 }]}>
-            <SingleSelectDropDown
-              items={locationItems}
-              containerStyle={{ marginRight: 20 }}
-              setSelected={(location) =>
-                handleInputChange("location", location)
-              }
-              title="Enter Location"
-            ></SingleSelectDropDown>
+        )}
+        {!rowData?.isEdit && (
+          <View style={[{ marginRight: helpers.normalize(10) }]}>
+            <InputField
+              inputStyle={styles.input}
+              title="Add notes"
+              multiline={true}
+              placeholder="Add your notes"
+              value={formData.notes}
+              onChangeText={(text) => handleInputChange("notes", text)}
+              ispassword={false}
+            />
           </View>
-        </View>
-      )}
-      {!rowData?.isEdit && (
-        <View style={[{ marginRight: helpers.normalize(10) }]}>
-          <InputField
-            inputStyle={styles.input}
-            title="Add notes"
-            multiline={true}
-            placeholder="Add your notes"
-            value={formData.notes}
-            onChangeText={(text) => handleInputChange("notes", text)}
-            ispassword={false}
+        )}
+        <View style={styles.buttonRow}>
+          <ButtonRow
+            onCancel={handleClose}
+            onAdd={handleSubmit}
+            edit={rowData?.isEdit}
+            addDisabled={Object.keys(errors).length > 0}
           />
         </View>
-      )}
-      <View style={styles.buttonRow}>
-        <ButtonRow
-          onCancel={handleClose}
-          onAdd={handleSubmit}
-          edit={rowData?.isEdit}
-          addDisabled={Object.keys(errors).length > 0}
-        />
       </View>
     </ScrollView>
   );

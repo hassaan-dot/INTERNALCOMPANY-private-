@@ -34,7 +34,7 @@ export const useGetUser = () => {
 };
 
 export const useCreateUser = () => {
-  const { setIsUserModalOpen } = useModalStore();
+  const { setIsUserModalOpen, setRowData } = useModalStore();
   const queryUser = useQueryClient();
 
   return useMutation({
@@ -44,6 +44,7 @@ export const useCreateUser = () => {
       toastSuccess("Success!", "User is created successfully");
 
       setIsUserModalOpen(false);
+
       queryUser.invalidateQueries({
         queryKey: ["users"],
       });
@@ -57,7 +58,7 @@ export const useCreateUser = () => {
 export const useUpdateUser = () => {
   const { setIsUserModalOpen } = useModalStore();
   const queryUser = useQueryClient();
-
+  const { setRowData } = useModalStore();
   return useMutation({
     mutationKey: ["updateUser"],
     mutationFn: async ({ data, id }: any) => handleUpdateUser(data, id),
@@ -65,6 +66,7 @@ export const useUpdateUser = () => {
       setIsUserModalOpen(false);
 
       toastSuccess("Success!", "User is updated successfully");
+      setRowData(null);
 
       queryUser.invalidateQueries({
         queryKey: ["users"],

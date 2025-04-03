@@ -71,14 +71,14 @@ export const useGetOneRequest = (id: string) => {
 
 export const useUpdateRequest = () => {
   const queryRequest = useQueryClient();
-  const { setIsRequestModalOpen } = useModalStore();
+  const { setIsRequestModalOpen, setRowData } = useModalStore();
 
   return useMutation({
     mutationKey: ["updateRequest"],
     mutationFn: ({ data, id }: any) => handleUpdateRequest(data, id),
     onSuccess: (data) => {
       toastSuccess("Success!", "Your request has been updated successfully");
-
+      setRowData(null);
       setIsRequestModalOpen(false);
       queryRequest.invalidateQueries({
         queryKey: ["Requests"],

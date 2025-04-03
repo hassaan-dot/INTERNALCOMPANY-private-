@@ -156,6 +156,7 @@ const LoginScreen: React.FC = () => {
                 placeholder={string.enterEmail}
                 title="Email..."
                 inputStyle={[
+                  styles.input,
                   isMobileView && styles.inputMobileView,
                   submitAttempted && errors.email && styles.inputError,
                 ]}

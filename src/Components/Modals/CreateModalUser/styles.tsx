@@ -11,11 +11,13 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     // width:helpers.wp(28),
+    flex: 1,
     backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
+
     marginHorizontal: 20,
-    marginVertical: 10,
+    marginVertical: 30,
   },
   fontSize: { fontSize: 14 },
   icon: {

@@ -12,6 +12,7 @@ const Password = ({
   titleStyle,
   error,
   errorMessage,
+  placeholderTextColor = "#757575",
 }: any) => {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -25,6 +26,7 @@ const Password = ({
           placeholder={placeholder}
           secureTextEntry={!showPassword}
           value={password}
+          placeholderTextColor={placeholderTextColor}
           onChangeText={(text) => setPassword(text)}
           error={error}
         />

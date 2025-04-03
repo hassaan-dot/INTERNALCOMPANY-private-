@@ -10,7 +10,7 @@ import { useModalStore } from "@/store/useModalStore";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { CompanyTable, ScreenHeader } from "../../Components";
+import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
 import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { UserStore } from "./usershook";
@@ -139,6 +139,12 @@ const UserManagement = () => {
     setIsUserModalOpen(false);
     setRowData(null);
   };
+  const onCliclTimeFunc = () => {
+    setAttendenceModalOpen(true);
+  };
+  const onCliclTimeFuncClose = () => {
+    setAttendenceModalOpen(false);
+  };
 
   const onClickEye = (username: string, id: number) => {
     router.push(
@@ -164,6 +170,7 @@ const UserManagement = () => {
             onPressUpdate={onPressEdit}
             onPressDelete={onPressDelete}
             onClickEye={onClickEye}
+            onClickTime={onCliclTimeFunc}
             showDel={true}
             showEdit={true}
             showTime={true}
@@ -171,12 +178,12 @@ const UserManagement = () => {
         </View>
       </View>
 
-      {/* <AttendenceModal
-        onSubmit={onSubmitFunc}
+      <AttendenceModal
+        onSubmit={onCliclTimeFuncClose}
         clockIn={true}
         title={"Attendence"}
         isVisible={AttendenceModalOpen}
-      /> */}
+      />
 
       {isUserModalOpen && (
         <CreateUserModal
