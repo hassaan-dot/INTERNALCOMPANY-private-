@@ -103,7 +103,7 @@ const Sidebar = () => {
         href: "/(app)/request",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
-            source={icons.drawertabstarsupIcon}
+            source={icons.drawertabnoteIcon}
             style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
           />
         ),

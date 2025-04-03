@@ -58,7 +58,7 @@ const requestSchema = yup.object().shape({
     .required("Description is required")
     .min(10, "Description must be at least 10 characters"),
   standing: yup.string().required("Priority selection is required"),
-  users: yup.array().min(1, "At least one user must be selected"),
+  users: yup.array().min(0, "At least one user must be selected"),
   perform_on: yup.string().required("Date/time selection is required"),
 });
 

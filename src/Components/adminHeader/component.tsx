@@ -1,10 +1,6 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { Image, Text, View } from "react-native";
 import { styles } from "./style";
-import { icons } from "@/src/Resources";
-import helpers from "../../utils/helpers";
-import SearchBar from "../SearchBar/searchBar";
-import { MobileScreenHeader } from "..";
 
 interface ProfileHeaderProps {
   profileImage: any; // Can be a local image source or a URI string
@@ -30,15 +26,18 @@ const Admineader: React.FC<ProfileHeaderProps> = ({
         // alignItems: "center",
       }}
     >
-      <View style={{justifyContent:"flex-end"}}>
-      <Text style={{fontWeight:'700',fontSize:16,color:'#000'}}>
-        {'Admin user'}
-      </Text>
+      <View style={{ justifyContent: "flex-end" }}>
+        <Text style={{ fontWeight: "700", fontSize: 16, color: "#000" }}>
+          {"Admin user"}
+        </Text>
       </View>
 
-      <View style={{ flexDirection: "row" }}> 
+      <View style={{ flexDirection: "row" }}>
         <View>
-        <Image source={{ uri:'https://randomuser.me/api/portraits/men/1.jpg'}} style={styles.avatar} />
+          <Image
+            source={{ uri: "https://randomuser.me/api/portraits/men/1.jpg" }}
+            style={styles.avatar}
+          />
         </View>
       </View>
     </View>

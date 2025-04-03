@@ -1,8 +1,6 @@
 import api from "@/services/axios";
 import { useModalStore } from "@/store/useModalStore";
-import { createIconSetFromFontello } from "@expo/vector-icons";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useRouter } from "expo-router";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllClient = async (filters: any) => {

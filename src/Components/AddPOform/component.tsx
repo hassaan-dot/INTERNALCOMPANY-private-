@@ -58,7 +58,7 @@ const poSchema = yup.object().shape({
     .string()
     .required("Location is required")
     .matches(/^[0-9]+$/, " location can only contain numbers")
-    .min(10, "location is required"),
+    .min(1, "location is required"),
   address: yup
     .string()
     .required("Address is required")
@@ -472,7 +472,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
               multiline={true}
               placeholder="Add your notes"
               value={formData.notes}
-              onChangeText={(text) => handleInputChange("notes", text)}
+              onChangeText={(text) => handleInputChange("location", text)}
               ispassword={false}
             />
           </View>

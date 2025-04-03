@@ -9,14 +9,14 @@ import {
 } from "react-native";
 import { styles } from "./style";
 import helpers from "../../../utils/helpers";
-import { icons } from "../../../Resources";
+import { icons } from "@/assets/icons/icons";
 import { navigate } from "../../../utils/NavigationService";
 
 interface ComponentProps {
   image?: any;
   title: string;
   amount: string | number;
-  paymentStatus:string;
+  paymentStatus: string;
   onViewReceipt: () => void;
   onContributeAgain: () => void;
 }
