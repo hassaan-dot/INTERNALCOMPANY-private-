@@ -48,9 +48,6 @@ const Component: React.FC<ComponentProps> = ({
                 {
                   flexDirection: icon ? "row" : "column",
                   alignItems: "center",
-                  // backgroundColor:'red',
-                  // padding:20
-                  // backgroundColor:"pink"
                 },
               ]}
             >

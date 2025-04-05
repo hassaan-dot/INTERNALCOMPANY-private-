@@ -1,25 +1,29 @@
-import {StyleSheet} from 'react-native';
-import helpers from '../../utils/helpers';
-import { PoppinsBold, PoppinsLight, PoppinsMedium, PoppinsRegular, PoppinsSemiBold } from '../../Resources/fonts';
+import { StyleSheet } from "react-native";
+import helpers from "../../utils/helpers";
+import {
+  PoppinsBold,
+  PoppinsLight,
+  PoppinsMedium,
+  PoppinsRegular,
+  PoppinsSemiBold,
+} from "../../Resources/fonts";
 export const styles = StyleSheet.create({
-  descContainer: {
-
-  },
+  descContainer: {},
   title: {
-    fontSize:37,
-    fontFamily:PoppinsMedium,
-    fontWeight:'700',
-    color:'white',
+    fontSize: 37,
+    fontFamily: PoppinsMedium,
+    fontWeight: "700",
+    color: "white",
     // paddingRight:30,
   },
   subtitleCont: {
     // paddingHorizontal: helpers.normalize(5),
-    marginTop:5,
+    marginTop: 5,
   },
   subtitle: {
     fontSize: 25,
-    fontFamily:PoppinsBold,
-    fontWeight:'100',
-    color: '#fff',
+    fontFamily: PoppinsMedium,
+    fontWeight: "100",
+    color: "#fff",
   },
 });
