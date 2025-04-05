@@ -15,6 +15,7 @@ interface UserProfileProps {
   titleIcon: boolean;
   titleStyle: any;
   buttons: any;
+  onPress2: any;
   onPress: () => void;
 }
 
@@ -31,6 +32,7 @@ const VerticalsButton: React.FC<UserProfileProps> = ({
   titleStyle,
   buttons,
   onPress,
+  onPress2,
 }) => {
   return (
     <View style={styles.card}>
@@ -50,6 +52,7 @@ const VerticalsButton: React.FC<UserProfileProps> = ({
           {profile && (
             <ButtonGroup
               onPress={onPress}
+              onPress2={onPress2}
               textStyle2={{ color: "#07504B" }}
               Color1="#07504B"
               Color2="#FFF"

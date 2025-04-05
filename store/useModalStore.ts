@@ -19,6 +19,9 @@ type useModalStore = {
   isNoteModalOpen: boolean;
   setIsNoteModalOpen: (isNoteModalOpen: boolean) => void;
 
+  isAssignEmployeeModalOpen: boolean;
+  setisAssignEmployeeModalOpen: (isAssignEmployeeModalOpen: boolean) => void;
+
   isActivityIndicator: boolean;
   setisActivityIndicator: (isActivityIndicator: boolean) => void;
 
@@ -66,4 +69,8 @@ export const useModalStore = create<useModalStore>((set) => ({
 
   isActivityIndicator: false,
   setisActivityIndicator: (isActivityIndicator) => set({ isActivityIndicator }),
+
+  isAssignEmployeeModalOpen: false,
+  setisAssignEmployeeModalOpen: (isAssignEmployeeModalOpen) =>
+    set({ isAssignEmployeeModalOpen }),
 }));

@@ -23,8 +23,9 @@ const handleConfirmPO = async (id: string) => {
   return res.data;
 };
 
-const handleAssignPO = async (data: any, id: string) => {
-  const res = await api.post(`/purchase-orders/${id}/assign`, data);
+const handleAssignPO = async (users: any, id: string) => {
+  console.log("users", users);
+  const res = await api.post(`/purchase-orders/${id}/assign`, users);
   return res.data;
 };
 
@@ -35,13 +36,15 @@ const handleChangePOStatus = async (data: any, id: string) => {
 
 export const usePOActions = (id: string) => {
   const queryPO = useQueryClient();
-  const { setIsStatusModalOpen } = useModalStore();
+  const { setIsStatusModalOpen, setisAssignEmployeeModalOpen } =
+    useModalStore();
 
   const { mutate: handleAccept, isPending: isAccepting } = useMutation({
     mutationKey: ["accept-po", id],
     mutationFn: () => handleAcceptPO(id),
     onSuccess: (data) => {
       toastSuccess("Success!", "PO Accepted Successfully");
+
       queryPO.invalidateQueries({
         queryKey: ["getonePO", id],
         type: "active",
@@ -100,9 +103,10 @@ export const usePOActions = (id: string) => {
 
   const { mutate: handlePOAssign, isPending: isAssigning } = useMutation({
     mutationKey: ["assign-po", id],
-    mutationFn: (data: any) => handleAssignPO(data, id),
+    mutationFn: ({ users }: any) => handleAssignPO(users, id),
     onSuccess: (data) => {
       toastSuccess("Success!", "PO Assigned Successfully");
+      setisAssignEmployeeModalOpen(false);
       queryPO.invalidateQueries({
         queryKey: ["getonePO", id],
         type: "active",

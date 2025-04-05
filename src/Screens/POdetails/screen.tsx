@@ -5,6 +5,7 @@ import { useLocalSearchParams } from "expo-router";
 import React, { useEffect, useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
+  AssignEmployee,
   InformationContainer,
   InvoiceModal,
   Note,
@@ -35,13 +36,13 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
     isNoteModalOpen,
     isStatusModalOpen,
     setIsStatusModalOpen,
+    isAssignEmployeeModalOpen,
+    setisAssignEmployeeModalOpen,
   } = useModalStore();
-
+  const { id } = useLocalSearchParams();
   const { mutate: handleAddNote } = useCreateNote();
   const { mutate: handleAddInvoice } = useCreateInvoice();
-
-  const { id } = useLocalSearchParams();
-
+  // console.log("handlePOAssign", handlePOAssign);
   const { data } = useGetOnePO(id as string);
 
   const {
@@ -80,9 +81,21 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
   function AddInvoiceModalOpenfunc() {
     setisInvoicePoModalOpen(true);
   }
+
+  function onCloseAssignModal() {
+    setisAssignEmployeeModalOpen(false);
+  }
+  function onOpenAssignModal() {
+    setisAssignEmployeeModalOpen(true);
+  }
   function AddInvoiceModalClosefunc() {
     setisInvoicePoModalOpen(false);
   }
+  const { handlePOAssign } = usePOActions(id as string);
+
+  const handleSubmit = ({ users }: any) => {
+    handlePOAssign({ users: { users } });
+  };
   const onPressAddInvoicefunction = ({
     date_of_payment,
     payer,
@@ -138,6 +151,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
               <VerticalsButton
                 onPress={() => setIsStatusModalOpen(true)}
                 profile={true}
+                onPress2={onOpenAssignModal}
               ></VerticalsButton>
             </View>
           </View>
@@ -170,7 +184,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
             </View>
             <View style={{ flex: 1, marginLeft: 15 }}>
               <NotesCard
-                titleIcon={true}
+                // titleIcon={true}
                 detailscreenContainer={styles.container6}
                 height={60}
                 titleStyle={styles.Text}
@@ -178,7 +192,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
                 Data={data?.data}
                 title="Documents"
                 TextEnable={false}
-                ButtonTitle="Upload"
+                // ButtonTitle="Upload"
                 horizontalwidth={helpers.wp(35)}
               ></NotesCard>
             </View>
@@ -240,6 +254,15 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
         isVisible={isNoteModalOpen}
       ></Note>
       <CreateModal create={false} visible={false}></CreateModal>
+      <AssignEmployee
+        onClose={onCloseAssignModal}
+        onSubmit={handleSubmit}
+        // Data={handlePOAssign}
+
+        desc={true}
+        visible={isAssignEmployeeModalOpen}
+        title={"Assign Employee"}
+      ></AssignEmployee>
     </>
   );
 };

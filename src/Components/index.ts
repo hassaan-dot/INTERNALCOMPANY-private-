@@ -1,4 +1,4 @@
-import FilledButton from "./Buttons/FilledButton/FilledButton";
+// import FilledButton from "./Buttons/FilledButton/FilledButton";
 import Box from "./Box/component";
 import TitleAndDescription from "./TitleAndDescription/component";
 import InputField from "./InputField/InputField";
@@ -48,10 +48,12 @@ import InvoiceModal from "./Modals/InvoiceModal/component";
 import SingleSelectDropDown from "./SingleSelectDropDown/component";
 import useFormValidation from "./FormValidation/component";
 import PaymentDetailsCard from "./PaymentDetailsCard/component";
+import AssignEmployee from "./Modals/AssignEmployee/component";
 export {
   // FilledButton,
   Sidebar,
   useFormValidation,
+  AssignEmployee,
   InvoiceModal,
   CheckboxField,
   MultiSelectDropdown,
