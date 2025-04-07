@@ -1,53 +1,27 @@
-import React, { useState } from "react";
-import { ScrollView, Text, TouchableOpacity, View } from "react-native";
-import {
-  ScreenHeader,
-  CompanyTable,
-  UserProfile,
-  TabSelector,
-  GraphCard,
-} from "../../Components";
-import CreateModal from "../../Components/Modals/createModal/component";
-// import TabSelector from "../../Components";
+import React from "react";
+import { ScrollView, View } from "react-native";
+import { GraphCard, ScreenHeader, UserProfile } from "../../Components";
 import { styles } from "./styles";
 
 import { useLocalSearchParams } from "expo-router";
+import { useGetOneUser } from "@/hooks/useUser";
+import UserDetailHeader from "./header";
 
 const UserDetails = () => {
-  const { username, id } = useLocalSearchParams();
+  const { id } = useLocalSearchParams();
 
-  const [ModalOpen, setModalOpen] = useState(false);
-
-  function CreatClient() {
-    setModalOpen(true);
-  }
-  const [selectedTab, setSelectedTab] = useState<string>(
-    "Purchasing Order List"
-  );
-  let showActions = useState<boolean>(
-    selectedTab == "Purchasing Order List" ? true : false
-  );
-  let showStatus = useState<boolean>(
-    selectedTab !== "Purchasing Order List" ? true : false
-  );
+  const { data } = useGetOneUser(id as string);
 
   return (
     <>
       <ScrollView style={styles.container1}>
-        <Text>
-          {username} {id}
-        </Text>
-        <ScreenHeader
-          title={"User Detail"}
-          onPress={CreatClient}
-        ></ScreenHeader>
+        <ScreenHeader title={"User Detail"}></ScreenHeader>
 
-        <UserProfile profile={true}></UserProfile>
+        <UserDetailHeader item={data} />
         <View style={styles.container2}>
-          <GraphCard></GraphCard>
+          <GraphCard />
         </View>
       </ScrollView>
-      <CreateModal create={true} visible={ModalOpen}></CreateModal>
     </>
   );
 };

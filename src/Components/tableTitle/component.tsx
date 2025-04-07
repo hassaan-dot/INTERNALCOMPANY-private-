@@ -35,26 +35,13 @@ interface UserProfileProps {
 }
 
 const TableTitle: React.FC<UserProfileProps> = ({
-  rows,
   rowTextStyle,
   DATA,
-  height = helpers.hp(40),
-  name = "Ahmed",
-  email = "Ahmed@gmail.com",
-  contact = "923174431419",
-  country = "Saudia  Arabia",
-  profile = false,
-  style,
   title,
   titleIcon = false,
   titleStyle,
   cardContainer,
   detailscreenContainer,
-  horizontalwidth = "50%",
-  colorProp = "#D0D5DD",
-  TextEnable = false,
-  Document = false,
-  TextTitle,
   ButtonTitle,
   titleIcon2,
   ButtonTitle2,
@@ -134,7 +121,6 @@ const TableTitle: React.FC<UserProfileProps> = ({
               }}
               showStatus={true}
               rowTextStyle={rowTextStyle}
-              // headerTextSt={{  }}
               pagination={false}
               headerRowStyle={{
                 backgroundColor: "#F3F6FF",

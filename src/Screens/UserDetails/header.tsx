@@ -1,9 +1,8 @@
+import { Avatar, HorizontalLine } from "@/src/Components";
 import React from "react";
 import { Text, View } from "react-native";
 import helpers from "../../utils/helpers";
-import Avatar from "../Avatar/component";
-import HorizontalLine from "../HorizontalLine/HorizontalLine";
-import { styles } from "./styles";
+import { styles } from "./header_style";
 
 interface UserProfileProps {
   contact_person_name: string;
@@ -22,11 +21,8 @@ interface UserProfileProps {
   item: any;
 }
 
-const ClientDetailsHeader: React.FC<UserProfileProps> = ({
-  profile = false,
+const UserDetailHeader: React.FC<UserProfileProps> = ({
   style,
-  title = "Details",
-  titleIcon,
   titleStyle,
   cardContainer,
   detailscreenContainer,
@@ -36,14 +32,12 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
   return (
     <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>
-        {profile && (
-          <View style={styles.profileSection}>
-            <Avatar />
-            <View style={{ marginLeft: 0, marginRight: helpers.normalize(20) }}>
-              <Text style={styles.name}>{item?.data?.contact_person_name}</Text>
-            </View>
+        <View style={styles.profileSection}>
+          <Avatar />
+          <View style={{ marginLeft: 0, marginRight: helpers.normalize(20) }}>
+            <Text style={styles.name}>{item?.first_name}</Text>
           </View>
-        )}
+        </View>
         <View style={[styles.detailsSection, detailscreenContainer]}>
           <View
             style={{
@@ -53,21 +47,9 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
             }}
           >
             <View style={{}}>
-              <Text style={[styles.detailsTitle, titleStyle]}>{title}</Text>
-              <HorizontalLine
-                color="#B0C4DE"
-                width={horizontalwidth}
-              ></HorizontalLine>
+              <Text style={[styles.detailsTitle, titleStyle]}>Details</Text>
+              <HorizontalLine color="#B0C4DE" width={horizontalwidth} />
             </View>
-            {!titleIcon && (
-              <View>
-                {/* <Image
-                  source={icons.tableStatusIcon}
-                  style={{ width: helpers.wp(5), height: helpers.hp(5) }}
-                ></Image> */}
-                {/* <StatusBadge></StatusBadge> */}
-              </View>
-            )}
           </View>
 
           <View
@@ -83,25 +65,35 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Name: </Text>
                 <Text style={[styles.link, style]}>
-                  {item?.data?.contact_person_name}
+                  {item?.first_name} {item?.last_name}
                 </Text>
               </View>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Contact: </Text>
                 <Text style={[styles.link, style]}>
-                  {item?.data?.phone_number}
+                  {item?.phone_number ?? "-"}
+                </Text>
+              </View>
+              <View style={styles.detailsItem}>
+                <Text style={[styles.label, style]}>Role: </Text>
+                <Text style={[styles.link, style]}>
+                  {item?.role?.name ?? "-"}
                 </Text>
               </View>
             </View>
             <View style={{ flexDirection: "row", marginTop: 6 }}>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Email: </Text>
-                <Text style={[styles.link, style]}>{item?.data?.email}</Text>
+                <Text style={[styles.link, style]}>{item?.email}</Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Company: </Text>
+                <Text style={[styles.label, style]}>Username: </Text>
+                <Text style={[styles.link, style]}>{item?.username}</Text>
+              </View>
+              <View style={styles.detailsItem}>
+                <Text style={[styles.label, style]}>Department: </Text>
                 <Text style={[styles.link, style]}>
-                  {item?.data?.company_name}
+                  {item?.department?.name}
                 </Text>
               </View>
             </View>
@@ -112,4 +104,4 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
   );
 };
 
-export default ClientDetailsHeader;
+export default UserDetailHeader;

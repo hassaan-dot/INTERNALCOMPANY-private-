@@ -90,31 +90,22 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   const { mutate: handleAdd } = useCreatePO(setFormData);
   const router = useRouter();
 
-  const onPressUpdatefunction = ({
-    po_name,
-    company_name,
-    contact_name,
-    email,
-    phone_number,
-    address,
-    location,
-    documentId,
-    notes,
-  }: any) => {
+  const onPressUpdatefunction = async () => {
     const data = {
-      po_name,
-      company_name,
-      contact_name,
-      email,
-      phone_number,
-      address,
+      po_name: formData?.po_name,
+      company_name: formData?.company_name,
+      contact_name: formData?.contact_name,
+      email: formData?.email,
+      phone_number: formData?.phone_number,
+      address: formData?.address,
     };
-    console.log("data", data);
-    handleUpdate({ data, id: documentId });
+
+    handleUpdate({ data, id: formData?.documentId });
   };
+
   const handleSubmit = () => {
     if (rowData?.isEdit) {
-      onPressUpdatefunction(formData);
+      onPressUpdatefunction();
     } else {
       onPressAddfunction();
     }
@@ -357,10 +348,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                   borderColor: "#ddd",
                   borderWidth: 1,
                   paddingVertical: 9,
-                  // height: 42,
                   marginRight: 22,
-                  // marginTop: 5,
-                  // width: "100%",
                 }}
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -471,8 +459,8 @@ const POForm: React.FC<Props> = ({ onPress }) => {
               title="Add notes"
               multiline={true}
               placeholder="Add your notes"
-              value={formData.notes}
-              onChangeText={(text) => handleInputChange("location", text)}
+              value={formData?.notes}
+              onChangeText={(text) => handleInputChange("notes", text)}
               ispassword={false}
             />
           </View>

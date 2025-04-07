@@ -1,13 +1,13 @@
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { ScrollView, View } from "react-native";
 import { POForm, ScreenHeader } from "../../Components";
-import CreateModal from "../../Components/Modals/createModal/component";
 import Styles from "./styles";
-const PO_AddScreen: React.FC<{ route: any }> = ({ route }) => {
-  const [ModalOpen, setModalOpen] = useState(false);
+import { useModalStore } from "@/store/useModalStore";
 
+const PO_AddScreen = () => {
   const router = useRouter();
+  const { rowData } = useModalStore();
   const onClickEye = (username: string, id: number) => {
     router.push(
       `/(app)/po-management/po-details?username=${username}&id=${id}`
@@ -16,12 +16,11 @@ const PO_AddScreen: React.FC<{ route: any }> = ({ route }) => {
   return (
     <>
       <View style={Styles.container}>
-        <ScreenHeader title={"Add PO"}></ScreenHeader>
+        <ScreenHeader title={rowData?.isEdit ? "Update PO" : "Add PO"} />
         <ScrollView style={Styles.container2}>
           <POForm onPress={onClickEye}></POForm>
         </ScrollView>
       </View>
-      <CreateModal create={true} visible={ModalOpen}></CreateModal>
     </>
   );
 };

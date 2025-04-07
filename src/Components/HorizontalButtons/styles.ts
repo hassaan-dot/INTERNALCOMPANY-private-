@@ -7,9 +7,6 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
-    // margin:10,
-    //   gap: 10,
-    //   marginVertical: 10,
   },
   button: {
     backgroundColor: "#f8f8f8",

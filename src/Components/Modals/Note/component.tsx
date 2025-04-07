@@ -1,24 +1,8 @@
-import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  Modal,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import React, { useState } from "react";
+import { Modal, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { styles } from "./styles";
-import LocalStorage from "@/services/local-storage";
-
-const categories: string[] = [
-  "Everyone",
-  "Management",
-  "Sales",
-  "Warehouse",
-  "Finance",
-  "Other",
-];
+import { Entypo } from "@expo/vector-icons";
 
 interface NewsModalProps {
   isVisible: boolean;
@@ -26,8 +10,6 @@ interface NewsModalProps {
   title: any;
   Activate: any;
   onPress: () => void;
-
-  // OnCancel :() => void;
 }
 
 const Note: React.FC<NewsModalProps> = ({
@@ -37,8 +19,6 @@ const Note: React.FC<NewsModalProps> = ({
 
   title = "News",
 }) => {
-  const [news, setNews] = useState<string>("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
   const [formData, setFormData] = useState({
     note: "",
   });
@@ -65,6 +45,16 @@ const Note: React.FC<NewsModalProps> = ({
         }}
       >
         <View style={styles.container}>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <TouchableOpacity onPress={onClose}>
+              <Entypo
+                name="circle-with-cross"
+                size={25}
+                style={{ right: -10 }}
+                color="red"
+              />
+            </TouchableOpacity>
+          </View>
           <Text style={styles.title}>{title}</Text>
           <TextInput
             style={styles.input}

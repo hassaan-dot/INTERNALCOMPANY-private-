@@ -13,16 +13,10 @@ import { View } from "react-native";
 import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
 import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
-import { UserStore } from "./usershook";
-import { useGetDepartments } from "@/hooks/useDepartments";
 
 const UserManagement = () => {
   const { isUserModalOpen, setIsUserModalOpen, rowData, setRowData } =
     useModalStore();
-
-  const { UserData, setUserData } = UserStore();
-
-  const [ModalOpen, setModalOpen] = useState(false);
 
   const [AttendenceModalOpen, setAttendenceModalOpen] = useState(false);
 
@@ -36,8 +30,6 @@ const UserManagement = () => {
   const { mutate: handleUpdate } = useUpdateUser();
 
   const { mutate: handleDelete } = useDeleteUser();
-
-  const { data: GetDepartments } = useGetDepartments();
 
   const onPressUpdatefunction = ({
     first_name,
@@ -57,10 +49,9 @@ const UserManagement = () => {
       last_name,
       username,
       email,
-      password,
       phone_number,
-      role: role?.id,
-      department: department?.id,
+      role,
+      department,
     };
 
     handleUpdate({ data, id });
@@ -84,7 +75,7 @@ const UserManagement = () => {
       password,
       phone_number,
       role,
-      department: 2,
+      department,
     };
 
     handleAdd(data);
@@ -113,8 +104,10 @@ const UserManagement = () => {
       email,
       password,
       phone_number,
-      role: role,
-      department: department,
+      role: role?.id,
+      role_name: role?.name,
+      department: department?.id,
+      department_name: department?.name,
       id,
       isEdit: true,
     };
@@ -146,10 +139,8 @@ const UserManagement = () => {
     setAttendenceModalOpen(false);
   };
 
-  const onClickEye = (username: string, id: number) => {
-    router.push(
-      `/(app)/user-management/user-details?username=${username}&id=${id}`
-    );
+  const onClickEye = ({ id }: any) => {
+    router.push(`/(app)/user-management/user-details?id=${id}`);
   };
   return (
     <>
@@ -158,7 +149,7 @@ const UserManagement = () => {
           create={true}
           title={"User Management"}
           onPress={onOpenModal}
-        ></ScreenHeader>
+        />
 
         <View>
           <CompanyTable
@@ -170,6 +161,7 @@ const UserManagement = () => {
             onPressUpdate={onPressEdit}
             onPressDelete={onPressDelete}
             onClickEye={onClickEye}
+            showEye={true}
             onClickTime={onCliclTimeFunc}
             showDel={true}
             showEdit={true}

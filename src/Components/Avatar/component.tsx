@@ -2,7 +2,7 @@ import React from "react";
 import { Image, ImageStyle, StyleSheet } from "react-native";
 
 interface AvatarProps {
-  uri: string;
+  uri?: string;
   width?: number;
   height?: number;
   borderRadius?: number;
@@ -10,13 +10,18 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({
-  uri='https://randomuser.me/api/portraits/men/1.jpg',
+  uri = "https://randomuser.me/api/portraits/men/1.jpg",
   width = 80,
   height = 80,
   borderRadius = 40,
   marginRight = 15,
 }) => {
-  return <Image source={{ uri }} style={[styles.avatar, { width, height, borderRadius, marginRight }]} />;
+  return (
+    <Image
+      source={{ uri }}
+      style={[styles.avatar, { width, height, borderRadius, marginRight }]}
+    />
+  );
 };
 
 const styles = StyleSheet.create({
@@ -25,7 +30,6 @@ const styles = StyleSheet.create({
     height: 20,
     borderRadius: 15,
     // marginRight: 15,
-   
   } as ImageStyle,
 });
 

@@ -2,28 +2,23 @@ import {
   useCreateClient,
   useDeleteClient,
   useGetClient,
-  useGetOneClient,
   useUpdateClient,
 } from "@/hooks/useClient";
-import { useNavigation } from "@react-navigation/native";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { ScrollView, View } from "react-native";
 import { CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { columns_schema } from "./_schema";
 import { styles } from "./styles";
 
-import { useModalStore } from "@/store/useModalStore";
-import { useGetOneRequest } from "@/hooks/useRequest";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
+import { useModalStore } from "@/store/useModalStore";
 
 const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   const { isClientModalOpen, setIsClientModalOpen, setRowData, rowData } =
     useModalStore();
 
-  const [ReminderModalOpen, setReminderModalOpen] = useState(false);
-  const navigation = useNavigation();
   const router = useRouter();
 
   const { data, isPending, error, refetch } = useGetClient();
@@ -116,27 +111,10 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     setRowData(null);
   };
 
-  function onCancelfunction2() {
-    setReminderModalOpen(false);
-  }
-  // const { mutate: handleGetOne } = useGetOneClient();
-  //
-  const onClickEye = ({ contact_person_name, documentId }: any) => {
-    // const data = {
-    //   data: {
-    //     contact_person_name,
-    //   },
-    // };
-    // setRowData({ contact_person_name, documentId });
-    // handleGetOne({ data, documentId });
-    router.push(
-      `/(app)/client-management/client-details?username=${contact_person_name}&id=${documentId}`
-    );
+  const onClickEye = ({ documentId }: any) => {
+    router.push(`/(app)/client-management/client-details?id=${documentId}`);
   };
-  function onPressfunction2() {
-    setReminderModalOpen(false);
-    navigation.navigate("client-details");
-  }
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -153,7 +131,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
             columns_schema={columns_schema}
             checkbox={true}
             showActions={true}
-            // showEye={true}
+            showEye={true}
             onClickEye={onClickEye}
             pagination={true}
             DATA={data}
@@ -179,21 +157,6 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
           title={"Create Client"}
         />
       )}
-
-      {/* <CreateModal
-        onClose={onCancelfunction2}
-        onSubmit={onPressfunction2}
-        First="Contact person name"
-        Second="Email Address"
-        Third="Phone number"
-        Fourth="Company name"
-        Fifth="Amount"
-        Sixth="Amount"
-        seventh="Amount"
-        desc={true}
-        desctext="Add client payment details"
-        visible={ReminderModalOpen}
-      ></CreateModal> */}
     </>
   );
 };

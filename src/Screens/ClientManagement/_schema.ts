@@ -38,8 +38,12 @@ export const User_columns_schema = [
     header: "Phone Number",
   },
   {
-    key: "provider",
-    header: "Roles",
+    key: "role.name",
+    header: "Role",
+  },
+  {
+    key: "department.name",
+    header: "Department",
   },
 ];
 

@@ -24,8 +24,8 @@ export const useLogin = () => {
       toastSuccess("Success!", "Your login was completed successfully");
       router.replace("/(app)/dashboard");
     },
-    onError: (error) => {
-      toastError("Oops!", error.message);
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };

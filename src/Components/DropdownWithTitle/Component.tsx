@@ -1,11 +1,8 @@
-import React, { useState } from "react";
-import { View, Text, Image } from "react-native";
-import Select, { SingleValue } from "react-select"; // Import SingleValue for typing
-import { components } from "react-select";
-import { styles } from "./styles";
-import { customStyles } from "./styles";
 import { icons } from "@/src/Resources";
-import { Title } from "react-native-paper";
+import React from "react";
+import { Image, View } from "react-native";
+import Select, { components, SingleValue } from "react-select"; // Import SingleValue for typing
+import { customStyles, styles } from "./Styles";
 
 // Define the type for items
 type Item = {

@@ -40,7 +40,10 @@ const CheckboxField: React.FC<CheckboxFieldProps> = ({
         </Text>
 
         <View style={styles.container1}>
-          <TouchableOpacity style={styles.dashedSquare}>
+          <TouchableOpacity
+            style={styles.dashedSquare}
+            onPress={() => onSelect(text)}
+          >
             <View style={styles.outerCircle}>
               {selected === text && <View style={[styles.innerCircle]} />}
             </View>

@@ -31,7 +31,6 @@ const SingleSelectDropDown = ({
         searchPlaceholder="Search..."
         placeholderTextColor=""
         notFoundText="No options found"
-        // defaultOption={{ key: "1", value: "Option 1" }} // Default selected option
       />
       {/* {selected ? (
         <Text style={styles.selectedText}>Selected: {selected}</Text>

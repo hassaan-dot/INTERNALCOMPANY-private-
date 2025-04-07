@@ -1,8 +1,8 @@
-import POdetailsScreen from "@/src/Screens/POdetails/screen";
+import PODetailScreen from "@/src/Screens/POdetails/screen";
 import React from "react";
 
 const podetails = () => {
-  return <POdetailsScreen />;
+  return <PODetailScreen />;
 };
 
 export default podetails;

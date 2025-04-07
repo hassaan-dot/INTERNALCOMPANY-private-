@@ -39,6 +39,7 @@ const AssignEmployee: React.FC<AssignEmployeeProps> = ({
 
   const [formData, setFormData] = useState<FormData>({ users: [] });
   const [selectedUsers, setSelectedUsers] = useState<any[]>([]);
+
   const handleInputChange = (field: keyof FormData, value: Employee[]) => {
     setFormData((prev) => ({
       ...prev,
@@ -68,7 +69,7 @@ const AssignEmployee: React.FC<AssignEmployeeProps> = ({
     })) || [];
 
   const EmployeeDropdownItems = transformToDropdownItems(data?.data || []);
-
+  handleInputChange;
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
@@ -83,22 +84,13 @@ const AssignEmployee: React.FC<AssignEmployeeProps> = ({
           </View>
 
           <View style={{ marginBottom: 10 }}>
-            {/* <SingleSelectDropDown
-              items={EmployeeDropdownItems}
-              title="Select Employees"
-              setSelected={(data: Employee[]) =>
-                handleInputChange("users", data)
-              }
-              selected={formData.users}
-              multiple
-            /> */}
             <MultiSelectDropdown
               title="Select Employees"
               items={EmployeeDropdownItems}
               selectedItems={selectedUsers}
               setSelectedItems={setSelectedUsers}
               defaultSelectedItems={rowData?.userSelection ?? []}
-            ></MultiSelectDropdown>
+            />
           </View>
 
           <View style={styles.buttonContainer}>

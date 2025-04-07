@@ -8,7 +8,7 @@ export enum PO_STATUS {
   DELIVERY = "Delivery",
 }
 
-export const PO_STATUS_LIST = [
+export const PO_STATUS_LIST = Object.freeze([
   PO_STATUS.SALESPERSON,
   PO_STATUS.PURCHASING_DEPARTMENT,
   PO_STATUS.OPERATION_DEPARTMENT,
@@ -16,7 +16,7 @@ export const PO_STATUS_LIST = [
   PO_STATUS.PLACED_FOR_COLLECTION,
   PO_STATUS.READY_TO_SHIP,
   PO_STATUS.DELIVERY,
-];
+]);
 
 export enum PO_ACTIVE_STATUS {
   DRAFT = "Draft",

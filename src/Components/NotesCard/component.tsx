@@ -333,10 +333,10 @@ const NotesCard: React.FC<UserProfileProps> = ({
                         style={styles.avatar}
                       />
                       <Text style={styles.name}>{note?.user?.username}</Text>
-                      <Image
+                      {/* <Image
                         source={icons.editPencilicon}
                         style={styles.avatar1}
-                      />
+                      /> */}
                     </View>
                     <View
                       style={{

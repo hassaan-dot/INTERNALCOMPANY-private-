@@ -1,19 +1,15 @@
-import { useGetUser } from "@/hooks/useUser";
+import { useGetOneRequest } from "@/hooks/useRequest";
+import { formatDate } from "@/src/utils";
+import { useLocalSearchParams } from "expo-router";
 import React, { useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 import { Avatar } from "react-native-paper";
 import {
   CustomDropdownIndicator,
-  DateTimeSelector,
   InputField,
   ScreenHeader,
-  SingleSelectDropDown,
 } from "../../Components";
 import { styles } from "./styles";
-import { useModalStore } from "@/store/useModalStore";
-import { useGetOneRequest } from "@/hooks/useRequest";
-import { useLocalSearchParams } from "expo-router";
-import { formatDateForDisplay } from "@/src/utils";
 
 const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
   const { id } = useLocalSearchParams();
@@ -59,7 +55,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 <Text style={styles.date}>Date to perform:</Text>
                 <View style={styles.dateContainer}>
                   <Text style={styles.dateText}>
-                    {formatDateForDisplay(getRequest?.data?.perform_on)}
+                    {formatDate(getRequest?.data?.perform_on)}
                   </Text>
                 </View>
                 <View style={{}}>

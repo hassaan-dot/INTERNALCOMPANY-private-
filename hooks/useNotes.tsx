@@ -1,15 +1,11 @@
 import api from "@/services/axios";
+import { toastError, toastSuccess } from "@/services/toast-messages";
 import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const handleCreateNote = async (data: any) => {
-  try {
-    const res = await api.post("/po-notes", data);
-
-    return res.data;
-  } catch (error) {
-    console.log("method errro", error);
-  }
+  const res = await api.post("/po-notes", data);
+  return res.data;
 };
 
 export const useCreateNote = () => {
@@ -24,9 +20,10 @@ export const useCreateNote = () => {
         queryKey: ["getonePO"],
         type: "active",
       });
+      toastSuccess("Success!", "Note added successfully");
     },
-    onError: (error) => {
-      console.log("error", error);
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };

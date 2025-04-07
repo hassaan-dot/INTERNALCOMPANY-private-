@@ -261,9 +261,9 @@ const invoiceSchema = yup.object().shape({
     .required("Payer name is required")
     .min(2, "Payer name must be at least 2 characters"),
   amount: yup
-    .string()
-    .required("Amount is required")
-    .matches(/^[0-9]+(\.[0-9]{1,2})?$/, "Amount must be a valid number"),
+    .number()
+    .min(1, "Amount must be greater than 0")
+    .required("Amount is required"),
   payment_method: yup.string().required("Payment method is required"),
   payment_status: yup.string().required("Payment status is required"),
   date_of_payment: yup.string().required("Payment date is required"),
@@ -271,26 +271,14 @@ const invoiceSchema = yup.object().shape({
 
 const InvoiceModal: React.FC<ClientModalProps> = ({
   visible,
-  user,
+
   onClose,
   onSubmit,
-  create = false,
-  deleteD = false,
-  title,
+
   desc = false,
-  invoice = false,
   styleContainer,
-  First,
   desctext,
-  Firstchild,
-  Second,
-  Third,
-  Fourth,
-  Fifth,
-  Sixth,
-  seventh,
-  eigth,
-  ninth,
+
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
@@ -307,14 +295,13 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
     { value: "Bank Transfer", label: "Bank Transfer" },
     { value: "Cash", label: "Cash" },
     { value: "Credit Card", label: "Credit Card" },
-    { value: "Others", label: "Others" },
+    { value: "Other", label: "Other" },
   ];
 
   const itemsStatus: Item[] = [
     { value: "Completed", label: "Completed" },
     { value: "Pending", label: "Pending" },
-    { value: "Refund", label: "Refund" },
-    { value: "Others", label: "Others" },
+    { value: "Failed", label: "Failed" },
   ];
 
   const [formData, setFormData] = useState(

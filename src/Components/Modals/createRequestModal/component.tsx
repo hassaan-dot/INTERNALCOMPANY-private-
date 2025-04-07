@@ -1,4 +1,4 @@
-import { useGetUser } from "@/hooks/useUser";
+import { useGetEmployees } from "@/hooks/useEmployee";
 import { useModalStore } from "@/store/useModalStore";
 import React, { useEffect, useState } from "react";
 import {
@@ -64,20 +64,14 @@ const requestSchema = yup.object().shape({
 
 const CreateModal: React.FC<ClientModalProps> = ({
   visible,
-  user,
   onClose,
   create = false,
-  deleteD = false,
   onSubmit,
-  title,
   desc = false,
-  invoice = false,
-  styleContainer,
-  desctext,
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
-  const { data: UserApi, isPending, error } = useGetUser();
+  const { data: UserApi, isPending, error } = useGetEmployees();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
@@ -275,7 +269,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
                   setTouched((prev) => ({ ...prev, perform_on: true }));
                   clearError("perform_on");
                 }}
-                title="Select Date/Time:"
+                title={"Select Date/Time:"}
                 error={touched.perform_on && errors.perform_on}
                 selectedDate={date}
               />

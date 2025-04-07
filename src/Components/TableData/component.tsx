@@ -5,6 +5,9 @@ import { icons } from "@/assets/icons/icons";
 import { CheckBox, StatusBadge, truncateComponentName } from "..";
 import { useModalStore } from "@/store/useModalStore";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
+import { getValueFromKey } from "@/src/utils";
+import { ROLE } from "@/constants/role";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface CompanyTableProps {
   columns_schema: {
@@ -27,8 +30,8 @@ interface CompanyTableProps {
   showTime: boolean;
   showDocument: boolean;
   onClickTime: any;
-
   onClickEye?: (item: any) => void;
+  isPO?: boolean;
 }
 
 const TableHeader: React.FC<CompanyTableProps> = ({
@@ -80,7 +83,9 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   showTime = false,
   onClickTime,
   onClickEye,
+  isPO = false,
 }) => {
+  const { user } = useAuthStore();
   const { filters, setFilters } = useModalStore();
 
   const IconHandleStatus = ({
@@ -88,6 +93,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     payment_status,
     item_status,
     active_status,
+    is_confirmed,
   }: any) => {
     if (is_active === true) {
       return (
@@ -105,21 +111,25 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     }
     if (payment_status === "Pending") {
       return (
-        // <View style={{ alignItems: "center", flex: 0.2 }}>
         <StatusBadge
           text="Pending "
           textColor={"white"}
           dot={"#ECFDF3"}
           color="#A47C60"
         />
-        // </View>
       );
     }
     if (payment_status === "Completed") {
+      return <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />;
+    }
+    if (payment_status === "Failed") {
       return (
-        // <View style={{ alignItems: "center", flex: 0.2 }}>
-        <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />
-        // </View>
+        <StatusBadge
+          text="Failed"
+          textColor={"#EC4746"}
+          dot={"#EC4746"}
+          color="#FECACA"
+        />
       );
     }
     if (item_status === "Delivered") {
@@ -147,13 +157,33 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
           <StatusBadge
             text="Draft"
             dot={"#ECFDF3"}
-            textColor={"#5A6470"}
+            textColor={"#ECFDF3"}
             color="#5A6470"
           />
         </View>
       );
     }
-    if (active_status === PO_ACTIVE_STATUS.ACCEPTED) {
+
+    if (active_status === PO_ACTIVE_STATUS.CLOSED) {
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge
+            text="Closed"
+            textColor={"#EC4746"}
+            dot={"#EC4746"}
+            color="#FECACA"
+          />
+        </View>
+      );
+    }
+
+    if (is_confirmed) {
+      return (
+        <View style={{ alignItems: "center", flex: 0.2 }}>
+          <StatusBadge text="Confirmed" dot={"#12B76A"} color="#ECFDF3" />
+        </View>
+      );
+    } else if (active_status === PO_ACTIVE_STATUS.ACCEPTED) {
       return (
         <View
           style={{ alignItems: "center", flex: 0.2, backgroundColor: "red" }}
@@ -162,6 +192,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         </View>
       );
     }
+
     if (active_status === PO_ACTIVE_STATUS.REJECTED) {
       return (
         <View style={{ alignItems: "center", flex: 0.2 }}>
@@ -174,18 +205,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         </View>
       );
     }
-    if (active_status === PO_ACTIVE_STATUS.CLOSED) {
-      return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge
-            text="Closed"
-            textColor={"#FFF"}
-            dot={"#FFF"}
-            color="#D3BF9F"
-          />
-        </View>
-      );
-    }
+
     // or some default casem
   };
   // Determine if we have pagination meta data or just an array
@@ -217,8 +237,8 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
           >
             <Text style={[styles.cell, rowTextStyle]}>
               {isExpanded
-                ? item[c?.key]
-                : truncateComponentName(item[c.key], 16)}
+                ? getValueFromKey(item, c?.key)
+                : truncateComponentName(getValueFromKey(item, c?.key), 16)}
             </Text>
           </TouchableOpacity>
         ))}
@@ -252,7 +272,18 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
               </TouchableOpacity>
             )}
             {showEdit && (
-              <TouchableOpacity onPress={() => onPressUpdate(item)}>
+              <TouchableOpacity
+                onPress={() => onPressUpdate(item)}
+                disabled={
+                  isPO
+                    ? (user?.role?.name !== ROLE.ADMIN &&
+                        item?.po_created_by?.documentId !== user?.documentId) ||
+                      item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                      item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                      item?.is_confirmed
+                    : false
+                }
+              >
                 <Image
                   source={icons.tableEditIcon}
                   style={{ width: 20, height: 20, marginRight: 6 }}
@@ -262,6 +293,14 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
             {showDel && (
               <TouchableOpacity
                 onPress={() => onPressDelete(item.documentId, item.id)}
+                disabled={
+                  isPO
+                    ? (user?.role?.name !== ROLE.ADMIN &&
+                        item?.po_created_by?.documentId !== user?.documentId) ||
+                      item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
+                      item?.is_confirmed
+                    : false
+                }
               >
                 <Image
                   source={icons.tableDeleteIcon}

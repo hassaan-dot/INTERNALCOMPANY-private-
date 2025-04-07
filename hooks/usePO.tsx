@@ -5,10 +5,6 @@ import { useRouter } from "expo-router";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllPO = async (filters: any) => {
-  // const res = await api.get(
-  //   `/purchase-orders?populate[0]=invoices&populate[1]=po_notes&populate[2]=po_notes.user&populate[3]=po_items&populate[4]=location&populate[5]=po_documents&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
-  // );
-
   const res = await api.get(`/purchase-orders?populate[7]=po_created_by`);
   return res.data;
 };
@@ -44,9 +40,9 @@ export const useGetPO = () => {
 };
 
 export const useCreatePO = (setFormData: any) => {
-  const { setRowData } = useModalStore();
   const queryPO = useQueryClient();
   const router = useRouter();
+
   return useMutation({
     mutationKey: ["createpo"],
     mutationFn: (data: any) => handleCreatePO(data),
@@ -58,8 +54,8 @@ export const useCreatePO = (setFormData: any) => {
         queryKey: ["po"],
       });
     },
-    onError: (error) => {
-      toastError("Oops!", error.message);
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };
@@ -72,6 +68,7 @@ export const useGetOnePO = (document_id: string) => {
 };
 
 export const useUpdatePO = () => {
+  const router = useRouter();
   const { setRowData } = useModalStore();
   const queryPO = useQueryClient();
 
@@ -79,13 +76,15 @@ export const useUpdatePO = () => {
     mutationKey: ["updatePO"],
     mutationFn: ({ data, id }: any) => handleUpdatePO(data, id),
     onSuccess: (data) => {
+      toastSuccess("Success!", "Your PO is updated successfully");
+      router.back();
       setRowData(null);
       queryPO.invalidateQueries({
         queryKey: ["po"],
       });
     },
-    onError: (error) => {
-      console.log("error", error);
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };
@@ -102,8 +101,8 @@ export const useDeletePO = () => {
         queryKey: ["po"],
       });
     },
-    onError: (error) => {
-      toastError("Oops!", error.message);
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
     },
   });
 };

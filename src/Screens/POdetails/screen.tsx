@@ -1,8 +1,14 @@
 import { PoppinsRegular } from "@/constants/fonts";
+import { useCreateNote } from "@/hooks/useNotes";
 import { useGetOnePO } from "@/hooks/usePO";
+import { useCreateInvoice } from "@/hooks/usePOpayments";
+import { usePOActions } from "@/hooks/usePoActions";
+import { formatDateForAPI } from "@/services/dateFormatter";
 import LocalStorage from "@/services/local-storage";
+import PoDetailProfile from "@/src/Components/poDetailsProfileHeader/component";
+import { useModalStore } from "@/store/useModalStore";
 import { useLocalSearchParams } from "expo-router";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { ScrollView, View } from "react-native";
 import {
   AssignEmployee,
@@ -13,22 +19,16 @@ import {
   ScreenHeader,
   StatusModal,
   TableTitle,
-  UserProfile,
   VerticalsButton,
 } from "../../Components";
 import ConfirmRecieving from "../../Components/Modals/confirmRecieving/component";
-import CreateModal from "../../Components/Modals/createModal/component";
 import helpers from "../../utils/helpers";
 import { Invoice_Schema, Item_Schema } from "../ClientManagement/_schema";
 import styles from "./styles";
-import { useModalStore } from "@/store/useModalStore";
-import { useCreateNote } from "@/hooks/useNotes";
-import { useCreateInvoice, useGetInvoice } from "@/hooks/usePOpayments";
-import { useGetItems } from "@/hooks/usePOitems";
-import { usePOActions } from "@/hooks/usePoActions";
-import { formatDateForAPI } from "@/services/dateFormatter";
+import { PO_ACTIVE_STATUS } from "@/constants/po_status";
+import { useAuthStore } from "@/store/useAuthStore";
 
-const POdetails: React.FC<{ route: any }> = ({ route }) => {
+const PODetailScreen = () => {
   const {
     isInvoicePoModalOpen,
     setisInvoicePoModalOpen,
@@ -39,10 +39,10 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
     isAssignEmployeeModalOpen,
     setisAssignEmployeeModalOpen,
   } = useModalStore();
+  const { user } = useAuthStore();
   const { id } = useLocalSearchParams();
   const { mutate: handleAddNote } = useCreateNote();
   const { mutate: handleAddInvoice } = useCreateInvoice();
-  // console.log("handlePOAssign", handlePOAssign);
   const { data } = useGetOnePO(id as string);
 
   const {
@@ -56,14 +56,12 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
     isClosing,
   } = usePOActions(id as string);
 
-  const onPressAddNotefunction = async ({ note }: any) => {
-    const userData: any = await LocalStorage.get("user");
-
+  const onPressAddNotefunction = ({ note }: any) => {
     const data = {
       data: {
         note: note,
         purchase_order: id,
-        user: userData?.id,
+        user: user?.documentId,
       },
     };
 
@@ -77,6 +75,10 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
   function NoteModalOpenfunc() {
     setIsNoteModalOpen(true);
   }
+
+  const handleNoteModalClose = () => {
+    setIsNoteModalOpen(false);
+  };
 
   function AddInvoiceModalOpenfunc() {
     setisInvoicePoModalOpen(true);
@@ -132,27 +134,32 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
             isRejecting={isRejecting}
             isConfirming={isConfirming}
             isClosing={isClosing}
-          ></ScreenHeader>
+          />
         </View>
         <View style={styles.container2}>
           <View style={styles.section}>
             <View style={{ flex: 1 }}>
-              <UserProfile
+              <PoDetailProfile
                 data={data}
                 style={{ color: "#2E2E2E" }}
                 titleStyle={{ fontWeight: "400" }}
-                rows={1}
                 title={"PO Details"}
                 cardContainer={styles.card}
                 detailscreenContainer={styles.container3}
-              ></UserProfile>
+              />
             </View>
             <View>
               <VerticalsButton
                 onPress={() => setIsStatusModalOpen(true)}
                 profile={true}
                 onPress2={onOpenAssignModal}
-              ></VerticalsButton>
+                btn1Disable={
+                  data?.data?.active_status !== PO_ACTIVE_STATUS.ACCEPTED
+                }
+                btn2Disable={
+                  data?.data?.active_status !== PO_ACTIVE_STATUS.ACCEPTED
+                }
+              />
             </View>
           </View>
           <View style={styles.LoginBox}>
@@ -184,7 +191,6 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
             </View>
             <View style={{ flex: 1, marginLeft: 15 }}>
               <NotesCard
-                // titleIcon={true}
                 detailscreenContainer={styles.container6}
                 height={60}
                 titleStyle={styles.Text}
@@ -192,7 +198,6 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
                 Data={data?.data}
                 title="Documents"
                 TextEnable={false}
-                // ButtonTitle="Upload"
                 horizontalwidth={helpers.wp(35)}
               ></NotesCard>
             </View>
@@ -239,7 +244,7 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
           visible={isInvoicePoModalOpen}
         ></InvoiceModal>
       )}
-      <ConfirmRecieving
+      {/* <ConfirmRecieving
         title={"Confirm Client Recieving"}
         create={true}
         styleContainer={{ flexDirection: "row" }}
@@ -247,24 +252,26 @@ const POdetails: React.FC<{ route: any }> = ({ route }) => {
         Firstchild="PO Number"
         Second="upload proof of received "
         visible={false}
-      ></ConfirmRecieving>
-      <Note
-        onPress={onPressAddNotefunction}
-        title={"Note"}
-        isVisible={isNoteModalOpen}
-      ></Note>
-      <CreateModal create={false} visible={false}></CreateModal>
-      <AssignEmployee
-        onClose={onCloseAssignModal}
-        onSubmit={handleSubmit}
-        // Data={handlePOAssign}
-
-        desc={true}
-        visible={isAssignEmployeeModalOpen}
-        title={"Assign Employee"}
-      ></AssignEmployee>
+      /> */}
+      {isNoteModalOpen && (
+        <Note
+          onClose={handleNoteModalClose}
+          onPress={onPressAddNotefunction}
+          title={"Note"}
+          isVisible={isNoteModalOpen}
+        ></Note>
+      )}
+      {isAssignEmployeeModalOpen && (
+        <AssignEmployee
+          onClose={onCloseAssignModal}
+          onSubmit={handleSubmit}
+          desc={true}
+          visible={isAssignEmployeeModalOpen}
+          title={"Assign Employee"}
+        />
+      )}
     </>
   );
 };
 
-export default POdetails;
+export default PODetailScreen;

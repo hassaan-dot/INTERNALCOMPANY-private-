@@ -17,39 +17,37 @@ interface UserProfileProps {
   buttons: any;
   onPress2: any;
   onPress: () => void;
+  btn1Disable?: boolean;
+  btn2Disable?: boolean;
 }
 
 const VerticalsButton: React.FC<UserProfileProps> = ({
-  rows,
-  name = "Ahmed",
-  email = "Ahmed@gmail.com",
-  contact = "923174431419",
-  country = "Saudia  Arabia",
   profile = false,
-  style,
-  title = "Details",
-  titleIcon,
-  titleStyle,
   buttons,
   onPress,
   onPress2,
+  btn1Disable,
+  btn2Disable,
 }) => {
   return (
     <View style={styles.card}>
-      <View style={[styles.row]}>
+      <View
+        style={[
+          styles.row,
+          {
+            minWidth: 200,
+          },
+        ]}
+      >
         <View
           style={[
             styles.profileSection,
             {
-              // padding: !profile ? helpers.hp(0) : helpers.normalize(30),
-              paddingVertical: helpers.normalize(15),
-              // paddingHorizontal: !profile
-              //   ? helpers.hp(0)
-              //   : helpers.normalize(45),
+              padding: helpers.normalize(15),
             },
           ]}
         >
-          {profile && (
+          {!btn1Disable && profile && (
             <ButtonGroup
               onPress={onPress}
               onPress2={onPress2}
@@ -61,7 +59,9 @@ const VerticalsButton: React.FC<UserProfileProps> = ({
               buttonTitle2="Change Status"
               ContainerStyle={{}}
               buttonCount={buttons}
-            ></ButtonGroup>
+              btn1Disable={btn1Disable}
+              btn2Disable={btn2Disable}
+            />
           )}
         </View>
       </View>

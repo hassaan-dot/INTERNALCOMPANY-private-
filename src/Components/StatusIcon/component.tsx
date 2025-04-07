@@ -1,14 +1,13 @@
 import { PoppinsRegular } from "@/constants/fonts";
-import helpers from "@/src/utils/helpers";
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 
 interface StatusBadgeProps {
   text?: string;
   color?: string;
   backgroundColor?: string;
-  dot: any;
-  textColor: any;
+  dot?: any;
+  textColor?: any;
 }
 
 const StatusBadge: React.FC<StatusBadgeProps> = ({

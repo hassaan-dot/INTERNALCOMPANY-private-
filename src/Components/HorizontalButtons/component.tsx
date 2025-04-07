@@ -21,6 +21,8 @@ type ButtonGroupProps = {
   style1: any;
   style2: any;
   onPress2: any;
+  btn1Disable?: boolean;
+  btn2Disable?: boolean;
 };
 
 export const SingleButton = ({ color, text, onPress, isLoading }: any) => {
@@ -46,7 +48,6 @@ export const SingleButton = ({ color, text, onPress, isLoading }: any) => {
 };
 
 const ButtonGroup: React.FC<ButtonGroupProps> = ({
-  buttonCount,
   onPress,
   onPress2,
   ContainerStyle,
@@ -58,19 +59,22 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
   Color2,
   style1,
   style2,
-  buttonText = "Button",
+  btn1Disable,
+  btn2Disable,
 }) => {
   return (
     <View style={[styles.container, ContainerStyle]}>
       <TouchableOpacity
         style={[styles.button, style1, { backgroundColor: Color1 }]}
         onPress={onPress2}
+        disabled={btn1Disable}
       >
         <Text style={[styles.text, textStyle1]}>{buttonTitle1}</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, style2, { backgroundColor: Color2 }]}
         onPress={onPress}
+        disabled={btn2Disable}
       >
         <Text style={[styles.text, textStyle2]}>{buttonTitle2}</Text>
       </TouchableOpacity>

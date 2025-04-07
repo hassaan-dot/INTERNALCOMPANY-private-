@@ -24,9 +24,12 @@ const StatusModal: React.FC<NewsModalProps> = ({
 }) => {
   const [selected, setSelected] = useState<PO_STATUS>(current_status);
 
-  const handleChange = useCallback((value: PO_STATUS) => {
-    setSelected(value);
-  }, []);
+  const handleChange = useCallback(
+    (value: PO_STATUS) => {
+      setSelected(value);
+    },
+    [setSelected]
+  );
 
   const { id } = useLocalSearchParams();
 
@@ -63,7 +66,7 @@ const StatusModal: React.FC<NewsModalProps> = ({
           <Text style={styles.title}>{title}</Text>
 
           <View>
-            {PO_STATUS_LIST.map((category) => (
+            {PO_STATUS_LIST?.map((category) => (
               <CheckboxField
                 text={category}
                 onSelect={handleChange}

@@ -10,6 +10,13 @@ const handleGetAllUser = async (filters: any) => {
   return res.data;
 };
 
+const handleGetOneUser = async (documentId: string) => {
+  const res = await api.get(
+    `users/${documentId}?populate=role&populate=department`
+  );
+  return res.data;
+};
+
 const handleCreateUser = async (data: any) => {
   const res = await api.post("/users", data);
   return res.data;
@@ -30,6 +37,13 @@ export const useGetUser = () => {
   return useQuery({
     queryKey: ["users", filters],
     queryFn: () => handleGetAllUser(filters),
+  });
+};
+
+export const useGetOneUser = (documentId: string) => {
+  return useQuery({
+    queryKey: ["one-user", documentId],
+    queryFn: () => handleGetOneUser(documentId),
   });
 };
 
@@ -90,7 +104,7 @@ export const useDeleteUser = () => {
         queryKey: ["users"],
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toastError("Oops!", error?.response?.data?.error?.message);
     },
   });

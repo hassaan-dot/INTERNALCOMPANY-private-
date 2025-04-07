@@ -1,3 +1,5 @@
+import { useGetDepartments } from "@/hooks/useDepartments";
+import { useGetuserRole } from "@/hooks/userRole";
 import { useModalStore } from "@/store/useModalStore";
 import { useState } from "react";
 import {
@@ -12,8 +14,6 @@ import { SingleSelectDropDown } from "../..";
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
-import { useGetDepartments } from "@/hooks/useDepartments";
-import { useGetuserRole } from "@/hooks/userRole";
 
 interface ClientModalProps {
   visible: boolean;
@@ -54,35 +54,20 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
   visible,
   onClose,
   onSubmit,
-  Data,
-  user,
   create = false,
-  deleteD = false,
-  update = false,
-  onLogin, // Destructure the new prop
   title,
   desc = false,
-  invoice = false,
   styleContainer,
   First,
   desctext,
   Firstchild,
   Second,
   Third,
-  Fourth,
-  Fifth,
-  Sixth,
-  seventh,
-  eigth,
-  ninth,
   modalContainerprop,
   isLogin = false, // Default to false
 }) => {
   const { data: GetDepartments } = useGetDepartments();
   const { data: getRoles } = useGetuserRole();
-
-  const [Role, SetRole] = useState();
-  const [Dep, SetDep] = useState();
 
   const { rowData } = useModalStore();
   const [formData, setFormData] = useState(
@@ -109,52 +94,18 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     onSubmit(formData);
   };
 
-  // const validateForm = () => {
-  //   if (isLogin) {
-  //     // Validation for login form
-  //     return formData.username.trim() !== "" && formData.password.trim() !== "";
-  //   }
-
-  //   if (create) {
-  //     // Basic validation for create client form
-  //     return (
-  //       formData.first_name.trim() !== "" &&
-  //       formData.email.trim() !== "" &&
-  //       formData.phone_number.trim() !== "" &&
-  //       formData.last_name.trim() !== ""
-  //     );
-  //   }
-  //   // Add other validation logic for different forms if needed
-  //   return true;
-  // };
-
-  type Item = {
-    key: any;
-    value: string;
-  };
-  // const { data } = useUserRole();
-  // const { data } = useGetDepartment();
-
-  const items1: Item[] = [
-    { value: "Admin", key: 1 },
-    { value: "Employee", key: 2 },
-  ];
-  const items2: Item[] = [
-    { value: "anything", key: 1 },
-    // { label: "Employee", value: "2" },
-  ];
   const transformdepsToDropdownItems = (deps: any[]) => {
     if (!deps) return [];
     return deps.map((dep) => ({
       value: `${dep?.name} `,
-      key: dep?.documentId,
+      key: dep?.id,
     }));
   };
   const transformRolesToDropdownItems = (roles: any[]) => {
     if (!roles) return [];
     return roles.map((role) => ({
       value: `${role?.name} `,
-      key: role?.documentId,
+      key: role?.id,
     }));
   };
 
@@ -164,6 +115,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
   const rolesDropdownItems = transformRolesToDropdownItems(
     getRoles?.roles || []
   );
+
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
@@ -240,16 +192,18 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
               />
             </View>
 
-            <View>
-              <InputField
-                title={"Password"}
-                placeholder={"Password"}
-                value={formData.password}
-                onChangeText={(text) => handleInputChange("password", text)}
-                titleStyle={styles.fontSize}
-                style={styles.input}
-              />
-            </View>
+            {!rowData?.isEdit && (
+              <View>
+                <InputField
+                  title={"Password"}
+                  placeholder={"Password"}
+                  value={formData.password}
+                  onChangeText={(text) => handleInputChange("password", text)}
+                  titleStyle={styles.fontSize}
+                  style={styles.input}
+                />
+              </View>
+            )}
 
             <View>
               <InputField
@@ -266,8 +220,8 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
               <SingleSelectDropDown
                 items={rolesDropdownItems}
                 title="Select Role"
-                selected={formData?.role?.name}
-                setSelected={(key) => handleInputChange("roles", key)}
+                selected={rowData?.isEdit ? rowData?.role_name : ""}
+                setSelected={(key) => handleInputChange("role", key)}
               />
             </View>
 
@@ -275,8 +229,8 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
               <SingleSelectDropDown
                 items={depsDropdownItems}
                 title="Select Department"
-                selected={formData?.department?.name}
-                setSelected={SetDep}
+                selected={rowData?.isEdit ? rowData?.department_name : ""}
+                setSelected={(key) => handleInputChange("department", key)}
               />
             </View>
           </ScrollView>
