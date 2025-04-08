@@ -9,7 +9,7 @@ interface NewsModalProps {
   onClose: () => void;
   title: any;
   Activate: any;
-  onPress: () => void;
+  onPress: any;
 }
 
 const Note: React.FC<NewsModalProps> = ({

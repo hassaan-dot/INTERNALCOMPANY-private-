@@ -16,7 +16,7 @@ export const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontWeight: "400",
-    marginBottom: 10,
+    // marginBottom: 10,
     textAlign: "center",
     fontFamily: PoppinsRegular,
   },
@@ -51,14 +51,16 @@ export const styles = StyleSheet.create({
     backgroundColor: "#1E4D42",
   },
   chipUnselected: {
-    // backgroundColor: "#E0E0E0",
-    backgroundColor: "#1E4D42",
+    backgroundColor: "#E0E0E0",
   },
   chipText: {
     color: "white",
     fontWeight: "200",
     fontFamily: PoppinsRegular,
     fontSize: 14,
+  },
+  chipUnselectedText: {
+    color: "#1E4D42",
   },
   sendButton: {
     backgroundColor: "#1E4D42",

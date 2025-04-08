@@ -33,6 +33,7 @@ interface Document {
 
 // Validation schema
 const poSchema = yup.object().shape({
+  isEdit: yup.boolean(),
   po_name: yup
     .string()
     .required("PO name is required")
@@ -54,16 +55,19 @@ const poSchema = yup.object().shape({
     .required("Phone number is required")
     .matches(/^[0-9]+$/, "Phone number can only contain numbers")
     .min(10, "Phone number must be at least 10 digits"),
-  location: yup
-    .string()
-    .required("Location is required")
-    .matches(/^[0-9]+$/, " location can only contain numbers")
-    .min(1, "location is required"),
+  location: yup.string().when("isEdit", (isEdit, schema) => {
+    if (isEdit[0]) {
+      return schema;
+    }
+    return schema
+      .required("Location is required")
+      .min(1, "location is required");
+  }),
   address: yup
     .string()
     .required("Address is required")
     .min(5, "Address must be at least 5 characters"),
-  notes: yup.string().optional(),
+  notes: yup.string().nullable(),
 });
 
 const POForm: React.FC<Props> = ({ onPress }) => {
@@ -82,6 +86,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
     location: rowData?.location?.id || "",
     documentId: rowData?.documentId || "",
     notes: "",
+    isEdit: rowData?.isEdit || false,
   });
   const { mutate: handleUpdate } = useUpdatePO();
 
@@ -91,6 +96,16 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   const router = useRouter();
 
   const onPressUpdatefunction = async () => {
+    setTouched({
+      po_name: true,
+      company_name: true,
+      contact_name: true,
+      email: true,
+      phone_number: true,
+      address: true,
+    });
+    const isValid = await validateForm();
+    if (!isValid) return;
     const data = {
       po_name: formData?.po_name,
       company_name: formData?.company_name,
@@ -154,6 +169,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
         });
         setErrors(newErrors);
       }
+      console.log("invalid", err);
       return false;
     }
   };
@@ -386,7 +402,9 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                     {documents.length > 0 && (
                       <View style={{}}>
                         <FlatList
-                          style={{ width: "60%" }}
+                          style={{
+                            width: helpers.normalize(200),
+                          }}
                           showsHorizontalScrollIndicator={false}
                           horizontal={true}
                           data={documents}
@@ -397,8 +415,11 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                                 flexDirection: "row",
                                 alignItems: "center",
                                 justifyContent: "space-between",
-
-                                borderRadius: 8,
+                                borderWidth: 1,
+                                borderColor: "gray",
+                                borderRadius: 2,
+                                padding: 4,
+                                marginHorizontal: 4,
                               }}
                             >
                               {item.type.startsWith("image/") ? (
@@ -418,7 +439,9 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                                 {item.name}
                               </Text>
                               <TouchableOpacity
-                                onPress={() => removeDocument(item)}
+                                onPress={() =>
+                                  removeDocument(documents?.indexOf(item))
+                                }
                               >
                                 <AntDesign
                                   name="close"

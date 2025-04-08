@@ -1,16 +1,12 @@
-import React, { FC } from "react";
-import { View, Text, TouchableOpacity, Image, Platform } from "react-native";
-import styles from "./styles";
-import ProfileHeader from "../ProfileHeader/component";
-import { icons } from "../../Resources";
-import { useNavigation } from "@react-navigation/native";
-import ButtonGroup, { SingleButton } from "../HorizontalButtons/component";
-import helpers from "../../utils/helpers";
-import { useAuthStore } from "@/store/useAuthStore";
-import { useQueryClient } from "@tanstack/react-query";
+import { DEPARTMENT } from "@/constants/department";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { ROLE } from "@/constants/role";
-import { DEPARTMENT } from "@/constants/department";
+import { useAuthStore } from "@/store/useAuthStore";
+import React, { FC } from "react";
+import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
+import { icons } from "../../Resources";
+import { SingleButton } from "../HorizontalButtons/component";
+import styles from "./styles";
 
 type ScreenHeaderProps = {
   create?: boolean;
@@ -49,7 +45,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
   isRejecting,
   isConfirming,
   isClosing,
-}) => {
+}: any) => {
   const { user } = useAuthStore();
 
   const isMobileView = Platform.OS === "ios";

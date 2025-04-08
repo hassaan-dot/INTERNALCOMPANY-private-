@@ -67,7 +67,7 @@ const UserManagement = () => {
     role,
     department,
   }: any) => {
-    const data = {
+    let data: any = {
       first_name,
       last_name,
       username,
@@ -75,9 +75,13 @@ const UserManagement = () => {
       password,
       phone_number,
       role,
-      department,
     };
-
+    if (department) {
+      data = {
+        ...data,
+        department,
+      };
+    }
     handleAdd(data);
   };
 
@@ -181,10 +185,6 @@ const UserManagement = () => {
         <CreateUserModal
           onClose={onCloseModal}
           onSubmit={handleSubmit}
-          First="First Name"
-          Firstchild="Last name"
-          Second="Email Address"
-          Third="Phone number"
           desc={true}
           desctext="Add your new users details"
           styleContainer={{ flexDirection: "row" }}
@@ -192,7 +192,6 @@ const UserManagement = () => {
           visible={isUserModalOpen}
           title={"Create User"}
           user={true}
-          ninth={"Departmment"}
         />
       )}
     </>

@@ -5,8 +5,8 @@ import React from "react";
 const Home = () => {
   const { token } = useAuthStore();
 
-  if (token) return <Redirect href={"/(auth)/login"} />;
-  if (!token) return <Redirect href={"/(app)/dashboard"} />;
+  if (!token) return <Redirect href={"/(auth)/login"} />;
+  if (token) return <Redirect href={"/(app)/dashboard"} />;
 };
 
 export default Home;

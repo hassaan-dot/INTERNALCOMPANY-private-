@@ -14,6 +14,7 @@ import { SingleSelectDropDown } from "../..";
 import { icons } from "../../../Resources";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
+import * as yup from "yup";
 
 interface ClientModalProps {
   visible: boolean;
@@ -30,24 +31,12 @@ interface ClientModalProps {
     phoneNumber?: string
   ) => void;
   onLogin?: (username: string, password: string) => void;
-  First: string;
-  Firstchild: string;
-  Second: string;
-  Third: string;
-  Fourth: string;
-  Fifth: string;
-  Sixth: string;
-  seventh: string;
-  eigth: string;
-  ninth: string;
   desctext: string;
   user: boolean;
   modalContainerprop: any;
   Data: any;
-  deleteD: boolean;
   update: boolean;
   onPressUpdatefunction: any;
-  isLogin?: boolean; // Flag to indicate if this is a login modal
 }
 
 const CreateUserModal: React.FC<ClientModalProps> = ({
@@ -58,13 +47,8 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
   title,
   desc = false,
   styleContainer,
-  First,
   desctext,
-  Firstchild,
-  Second,
-  Third,
   modalContainerprop,
-  isLogin = false, // Default to false
 }) => {
   const { data: GetDepartments } = useGetDepartments();
   const { data: getRoles } = useGetuserRole();
@@ -83,15 +67,96 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     }
   );
 
+  const userSchema = yup.object().shape({
+    first_name: yup.string().required("required").min(1, "required"),
+    last_name: yup.string().required("required").min(1, "required"),
+    email: yup
+      .string()
+      .email("Please enter a valid email")
+      .required("Email is required"),
+    username: yup
+      .string()
+      .required("Username is required")
+      .min(3, "Username must be at least 3 characters"),
+    password: yup
+      .string()
+      .required("Password is required")
+      .min(6, "Password must be at least 6 characters"),
+    phone_number: yup
+      .string()
+      .required("Phone number is required")
+      .matches(/^[0-9]+$/, "Phone number can only contain numbers")
+      .min(10, "Phone number must be at least 10 digits"),
+    role: yup.string().required("Role is required"),
+  });
+
+  const loginSchema = yup.object().shape({
+    username: yup.string().required("Username is required"),
+    password: yup.string().required("Password is required"),
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const clearError = (field: string) => {
+    if (errors[field]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
     }));
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    clearError(field);
   };
 
-  const handleSubmit = () => {
-    onSubmit(formData);
+  const validateForm = async () => {
+    const schema = create || !rowData?.isEdit ? userSchema : loginSchema;
+
+    try {
+      await schema.validate(formData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const newErrors: Record<string, string> = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            newErrors[error.path] = error.message;
+          }
+        });
+        setErrors(newErrors);
+      }
+      return false;
+    }
+  };
+
+  const handleSubmit = async () => {
+    const allFields = {
+      first_name: true,
+      last_name: true,
+      email: true,
+      username: true,
+      password: true,
+      phone_number: true,
+      role: true,
+      department: true,
+    };
+
+    setTouched(allFields);
+    const isValid = await validateForm();
+
+    console.log("isValid", isValid);
+    if (isValid) {
+      onSubmit(formData);
+    }
   };
 
   const transformdepsToDropdownItems = (deps: any[]) => {
@@ -101,6 +166,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
       key: dep?.id,
     }));
   };
+
   const transformRolesToDropdownItems = (roles: any[]) => {
     if (!roles) return [];
     return roles.map((role) => ({
@@ -121,49 +187,43 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContainer, modalContainerprop]}>
           <View>
-            {create && (
-              <>
-                <Image
-                  source={icons.modalIconOtp}
-                  style={{ width: 60, height: 60 }}
-                />
-                <Text style={styles.title}>{title}</Text>
-              </>
-            )}
-
-            {!create && !isLogin && (
-              <Text style={styles.title}>Send Payment Reminder</Text>
-            )}
-
-            {isLogin && <Text style={styles.title}>Login</Text>}
+            <Image
+              source={icons.modalIconOtp}
+              style={{ width: 60, height: 60 }}
+            />
+            <Text style={styles.title}>{title}</Text>
 
             {desc && <Text style={styles.subtitle}>{desctext}</Text>}
           </View>
 
-          <ScrollView
-            contentContainerStyle={
-              {
-                // backgroundColor: "red",
-              }
-            }
-          >
+          <ScrollView>
             <View style={[styleContainer]}>
               <InputField
-                title={First}
-                placeholder={First}
+                title={"First name"}
+                placeholder={"First name"}
                 value={formData.first_name}
                 onChangeText={(text) => handleInputChange("first_name", text)}
-                style={styles.input}
+                style={[
+                  styles.input,
+                  { borderColor: errors.first_name ? "red" : "#ddd" },
+                ]}
+                error={touched.first_name && errors.first_name}
+                errorMessage={touched.first_name && errors.first_name}
                 titleStyle={styles.fontSize}
               />
 
               <View style={{ marginLeft: 7 }}>
                 <InputField
-                  title={Firstchild}
-                  placeholder={Firstchild}
+                  title={"Last name"}
+                  placeholder={"Last name"}
                   value={formData.last_name}
+                  style={[
+                    styles.input,
+                    { borderColor: errors.last_name ? "red" : "#ddd" },
+                  ]}
+                  error={touched.last_name && errors.first_name}
+                  errorMessage={touched.last_name && errors.last_name}
                   onChangeText={(text) => handleInputChange("last_name", text)}
-                  style={styles.input}
                   titleStyle={styles.fontSize}
                 />
               </View>
@@ -171,12 +231,17 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
 
             <View>
               <InputField
-                title={Second}
-                placeholder={Second}
+                title={"Email Address"}
+                placeholder={"Email Address"}
                 value={formData.email}
+                style={[
+                  styles.input,
+                  { borderColor: errors.email ? "red" : "#ddd" },
+                ]}
+                error={touched.email && errors.first_name}
+                errorMessage={touched.email && errors.email}
                 onChangeText={(text) => handleInputChange("email", text)}
                 titleStyle={styles.fontSize}
-                style={styles.input}
                 keyboardType="email-address"
               />
             </View>
@@ -188,7 +253,12 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
                 value={formData.username}
                 onChangeText={(text) => handleInputChange("username", text)}
                 titleStyle={styles.fontSize}
-                style={styles.input}
+                style={[
+                  styles.input,
+                  { borderColor: errors.username ? "red" : "#ddd" },
+                ]}
+                error={touched.username && errors.first_name}
+                errorMessage={touched.username && errors.username}
               />
             </View>
 
@@ -200,7 +270,12 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
                   value={formData.password}
                   onChangeText={(text) => handleInputChange("password", text)}
                   titleStyle={styles.fontSize}
-                  style={styles.input}
+                  style={[
+                    styles.input,
+                    { borderColor: errors.password ? "red" : "#ddd" },
+                  ]}
+                  error={touched.password && errors.first_name}
+                  errorMessage={touched.password && errors.password}
                 />
               </View>
             )}
@@ -208,20 +283,28 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
             <View>
               <InputField
                 titleStyle={styles.fontSize}
-                title={Third}
+                title={"Phone number"}
+                style={[
+                  styles.input,
+                  { borderColor: errors.phone_number ? "red" : "#ddd" },
+                ]}
+                error={touched.phone_number && errors.first_name}
+                errorMessage={touched.phone_number && errors.phone_number}
                 value={formData.phone_number}
                 onChangeText={(text) => handleInputChange("phone_number", text)}
-                placeholder={Third}
-                style={styles.input}
+                placeholder={"Phone number"}
                 keyboardType="phone-pad"
               />
             </View>
+
             <View style={{ marginBottom: 5 }}>
               <SingleSelectDropDown
                 items={rolesDropdownItems}
                 title="Select Role"
                 selected={rowData?.isEdit ? rowData?.role_name : ""}
                 setSelected={(key) => handleInputChange("role", key)}
+                error={touched.role && errors.role}
+                errorMessage={touched.role && errors.role}
               />
             </View>
 
@@ -231,6 +314,8 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
                 title="Select Department"
                 selected={rowData?.isEdit ? rowData?.department_name : ""}
                 setSelected={(key) => handleInputChange("department", key)}
+                error={touched.department && errors.department}
+                errorMessage={touched.department && errors.department}
               />
             </View>
           </ScrollView>
@@ -239,14 +324,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.addButton,
-                // !validateForm() && styles.disabledButton,
-              ]}
-              onPress={handleSubmit}
-              // disabled={!validateForm()}
-            >
+            <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
               <Text style={styles.addText}>
                 {rowData?.isEdit ? "Edit User" : "Add User"}
               </Text>

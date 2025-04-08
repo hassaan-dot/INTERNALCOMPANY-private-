@@ -5,7 +5,7 @@ import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllUser = async (filters: any) => {
   const res = await api.get(
-    `/user-management/get?populate[1]=role&populate[0]=department&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
+    `/user-management/get?populate[1]=role&populate[0]=department&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}&sort=createdAt:desc`
   );
   return res.data;
 };

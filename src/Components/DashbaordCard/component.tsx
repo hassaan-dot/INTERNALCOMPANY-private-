@@ -8,21 +8,18 @@ import {
   View,
 } from "react-native";
 import Svg, { LinearGradient, Rect, Stop } from "react-native-svg";
-import { icons } from "../../Resources";
+import { icons } from "@/assets/icons/icons";
 import { styles } from "./styles";
+import { useGetNews, useDeleteNews } from "@/hooks/useDashboard";
+import { useAuthStore } from "@/store/useAuthStore";
+import Avatar from "../Avatar/component";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 
 type POItem = {
   id: string;
   name: string;
   actionText: string;
   code: string;
-  avatar: string;
-};
-
-type NewsItem = {
-  id: string;
-  name: string;
-  message: string;
   avatar: string;
 };
 
@@ -36,15 +33,6 @@ const assignedPOs: POItem[] = [
   },
 ];
 
-const newsData: NewsItem[] = [
-  {
-    id: "1",
-    name: "John Doe",
-    message: "Celebrate our 50th anniversary",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-  },
-];
-
 interface CardSectionProps {
   onPress?: () => void;
   OnCancel?: () => void;
@@ -52,6 +40,13 @@ interface CardSectionProps {
 
 const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
   const isMobileView = Platform.OS === "ios";
+  const { user } = useAuthStore();
+
+  const { data, refetch } = useGetNews();
+  useRefreshOnFocus(refetch);
+
+  const { mutate: handleDeleteNews } = useDeleteNews();
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -73,7 +68,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
           renderItem={({ item }) => (
             <View style={styles.row}>
               <View style={styles.profileView}>
-                <Image source={{ uri: item.avatar }} style={styles.avatar} />
+                <Avatar width={40} height={40} borderRadius={20}></Avatar>
                 <Text style={styles.name}>{item.name}</Text>
               </View>
               <View style={styles.customView}>
@@ -96,7 +91,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
       <View style={[styles.card2, isMobileView && styles.card3]}>
         <View style={[styles.newsHeader, isMobileView && styles.newsHeader2]}>
           <Text style={styles.cardTitle}>News Panel</Text>
-          {!isMobileView && (
+          {user?.role?.name === "Admin" && (
             <TouchableOpacity style={styles.addButton} onPress={onPress}>
               <Text style={styles.addButtonText}>Add News</Text>
             </TouchableOpacity>
@@ -113,20 +108,44 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
           </Svg>
         </View>
         <FlatList
-          data={newsData}
+          data={data?.data}
           keyExtractor={(item) => item.id}
           nestedScrollEnabled={false}
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
           renderItem={({ item }) => (
             <View style={styles.row}>
               <View style={styles.profileView}>
-                <Image source={{ uri: item.avatar }} style={styles.avatar} />
-                <Text style={styles.name}>{item.name}</Text>
+                <Image
+                  source={{
+                    uri: "https://randomuser.me/api/portraits/men/1.jpg",
+                  }}
+                  style={styles.avatar}
+                />
+                <Text style={styles.name}>
+                  {item.user?.first_name} {item.user?.last_name}
+                </Text>
               </View>
               <View style={styles.customView2}>
-                <Text style={styles.actionText}>{item.message}</Text>
+                <Text style={styles.actionText}>{item.news}</Text>
               </View>
-              {!isMobileView && <View style={styles.customView3}></View>}
+              {user?.role?.name === "Admin" && (
+                <TouchableOpacity
+                  style={[
+                    styles.customView3,
+                    { alignItems: "flex-end", justifyContent: "flex-end" },
+                  ]}
+                  onPress={() => handleDeleteNews(item?.documentId)}
+                >
+                  <Image
+                    source={icons.tableDeleteIcon}
+                    style={{
+                      width: 20,
+                      height: 20,
+                      marginRight: 6,
+                    }}
+                  />
+                </TouchableOpacity>
+              )}
             </View>
           )}
         />

@@ -41,6 +41,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
+    marginBottom: 20,
   },
   line: { flex: 1, marginTop: 10 },
   avatar: {
@@ -52,6 +53,10 @@ export const styles = StyleSheet.create({
   name: {
     fontWeight: "400",
     fontFamily: RobotoRegular,
+    marginLeft: 3,
+    // textOverflow: "no-wrap",
+
+    textWrap: "no-wrap",
   },
   actionText: {
     color: "#8D6E63",
@@ -89,13 +94,13 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   customView2: {
-    flex: 0.5,
-    alignItems: "center",
+    flex: 0.8,
+    // alignItems: "center",
   },
   customView3: {
-    flex: 0.3,
+    flex: 0.1,
     alignItems: "center",
   },
 
-  profileView: { flexDirection: "row", alignItems: "center", flex: 0.25 },
+  profileView: { flexDirection: "row", alignItems: "center", flex: 0.3 },
 });

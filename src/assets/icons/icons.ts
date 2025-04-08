@@ -40,7 +40,7 @@ export const icons: Record<string, { uri: string }> = {
   tableEditIcon: require("./Edit 1.png"),
   tableReadIcon: require("./Trash can copy.png"),
   tableStatusIcon: require("./_Badge base.png"),
-  tableEyeIcon:require("./Eye.png"),
+  tableEyeIcon: require("./Eye.png"),
   tableDocumentIcon: require("./document-text.png"),
   screenHeaderPlusIcon: require("./Plus.png"),
   screenHeaderFilterIcon: require("./filter.png"),

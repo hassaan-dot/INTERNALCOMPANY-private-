@@ -6,11 +6,8 @@ import { Redirect } from "expo-router";
 export default function AuthLayout() {
   const saveUser = async () => {
     await LocalStorage.get("user");
-    const app = LocalStorage.get("user"); // if you need the result
-    // Or if you don't need the result:
-    // await LocalStorage.save("user", data.user);
+    const app = LocalStorage.get("user");
   };
-
   saveUser();
   const { token } = useAuthStore();
   if (!token) return <Redirect href={"/(auth)/login"} />;

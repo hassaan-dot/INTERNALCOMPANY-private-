@@ -286,7 +286,21 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
               >
                 <Image
                   source={icons.tableEditIcon}
-                  style={{ width: 20, height: 20, marginRight: 6 }}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    marginRight: 6,
+                    tintColor: isPO
+                      ? (user?.role?.name !== ROLE.ADMIN &&
+                          item?.po_created_by?.documentId !==
+                            user?.documentId) ||
+                        item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                        item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                        item?.is_confirmed
+                      : false
+                      ? "#292D32"
+                      : "",
+                  }}
                 />
               </TouchableOpacity>
             )}
@@ -304,7 +318,21 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
               >
                 <Image
                   source={icons.tableDeleteIcon}
-                  style={{ width: 20, height: 20, marginRight: 6 }}
+                  style={{
+                    width: 20,
+                    height: 20,
+                    marginRight: 6,
+                    tintColor: isPO
+                      ? (user?.role?.name !== ROLE.ADMIN &&
+                          item?.po_created_by?.documentId !==
+                            user?.documentId) ||
+                        item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                        item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                        item?.is_confirmed
+                      : false
+                      ? "#292D32"
+                      : "",
+                  }}
                 />
               </TouchableOpacity>
             )}

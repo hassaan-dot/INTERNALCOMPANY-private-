@@ -88,9 +88,8 @@ export const styles = StyleSheet.create({
   detailsItem: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: 4,
-    flex: 0.5,
-    // marginHorizontal: 10,
+    marginBottom: 10,
+    flex: 0.6,
   },
   label: {
     fontSize: 14,
@@ -103,7 +102,7 @@ export const styles = StyleSheet.create({
     fontFamily: PoppinsRegular,
 
     fontSize: 14,
-    marginLeft: 10,
+    marginLeft: 5,
     color: "#07504B",
   },
 });

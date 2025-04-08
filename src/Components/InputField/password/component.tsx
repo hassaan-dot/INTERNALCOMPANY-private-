@@ -20,9 +20,9 @@ const Password = ({
     <View>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
 
-      <View style={[styles.container1, inputStyle]}>
+      <View style={[styles.container2, inputStyle]}>
         <TextInput
-          style={[styles.container2]}
+          style={[styles.container1]}
           placeholder={placeholder}
           secureTextEntry={!showPassword}
           value={password}

@@ -47,7 +47,7 @@ const VerticalsButton: React.FC<UserProfileProps> = ({
             },
           ]}
         >
-          {!btn1Disable && profile && (
+          {(!btn1Disable || !btn2Disable) && profile && (
             <ButtonGroup
               onPress={onPress}
               onPress2={onPress2}

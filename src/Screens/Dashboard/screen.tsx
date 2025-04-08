@@ -1,7 +1,7 @@
+import { Admineader } from "@/src/Components";
+import { useModalStore } from "@/store/useModalStore";
 import React, { useState } from "react";
 import { Platform, ScrollView, View } from "react-native";
-import { MobileScreenHeader } from "@/src/Components";
-import { Admineader } from "@/src/Components";
 import {
   CardSection,
   NewsModal,
@@ -9,15 +9,20 @@ import {
   ScreenHeader,
 } from "../../Components";
 import { styles } from "./styles";
+import { useGetDashboardStats } from "@/hooks/useDashboard";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 
 const Dashboard = () => {
   const isMobileView = Platform.OS == "ios" || Platform.OS == "android";
-  const [isVisisble, setIsVisible] = useState(false);
+  const { data, refetch } = useGetDashboardStats();
+  useRefreshOnFocus(refetch);
+
+  const { isNewsModalOpen, setIsNewsModalOpen } = useModalStore();
   function Activate() {
-    setIsVisible(true);
+    setIsNewsModalOpen(true);
   }
   function deActivate() {
-    setIsVisible(false);
+    setIsNewsModalOpen(false);
   }
   return (
     <>
@@ -28,11 +33,11 @@ const Dashboard = () => {
         <View style={styles.container4}>
           {isMobileView && (
             <View>
-              <Admineader></Admineader>
+              <Admineader />
             </View>
           )}
           <View>
-            <ScreenHeader title={"Dashboard"}></ScreenHeader>
+            <ScreenHeader title="Dashboard" />
           </View>
         </View>
 
@@ -41,30 +46,38 @@ const Dashboard = () => {
             <PredictorCard
               style={styles.container6}
               color={"#38CB89"}
-            ></PredictorCard>
-
+              title={"Total Paid PO"}
+              value={data?.total_paid_po}
+            />
             <PredictorCard
               style={styles.container6}
               color={"#FFA600"}
-            ></PredictorCard>
+              title={"In Progress PO"}
+              value={data?.total_inprogress_po}
+            />
           </View>
-
           <View style={[styles.container5]}>
             <PredictorCard
               style={styles.container6}
               color={"#FF5630"}
-            ></PredictorCard>
+              title={"Over Due PO"}
+              value={data?.total_overdue_po}
+            />
             <PredictorCard
               style={styles.container6}
               color={"#38CB89"}
-            ></PredictorCard>
+              title={"Total PO"}
+              value={data?.total_po}
+            />
           </View>
         </View>
         <View style={styles.container3}>
-          <CardSection onPress={Activate} OnCancel={deActivate}></CardSection>
+          <CardSection onPress={Activate} OnCancel={deActivate} />
         </View>
       </ScrollView>
-      <NewsModal onClose={deActivate} isVisible={isVisisble}></NewsModal>
+      {isNewsModalOpen && (
+        <NewsModal onClose={deActivate} isVisible={isNewsModalOpen} />
+      )}
     </>
   );
 };

@@ -9,6 +9,9 @@ import {
 } from "react-native";
 
 import { styles } from "./styles";
+import { Entypo } from "@expo/vector-icons";
+import { useGetDepartments } from "@/hooks/useDepartments";
+import { useCreateNews } from "@/hooks/useDashboard";
 
 const categories: string[] = [
   "Everyone",
@@ -22,42 +25,47 @@ const categories: string[] = [
 interface NewsModalProps {
   isVisible: boolean;
   onClose: () => void;
-  title: any;
-  Activate: any;
+  title?: any;
+  Activate?: any;
   // OnCancel :() => void;
 }
 
 const NewsModal: React.FC<NewsModalProps> = ({
   isVisible,
   onClose,
-
-  // OnCancel,
-
   title = "News",
 }) => {
-  const [news, setNews] = useState<string>("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const PO_STATUS = [
-    { key: "SALESPERSON", value: "Salesperson" },
-    { key: "PURCHASING_DEPARTMENT", value: "Purchasing Department" },
-    { key: "OPERATION_DEPARTMENT", value: "Operation Department" },
-    { key: "WAREHOUSE_DEPARTMENT", value: "Warehouse Department" },
-    { key: "PLACED_FOR_COLLECTION", value: "Placed For Collection" },
-    { key: "READY_TO_SHIP", value: "Ready To Ship" },
-    { key: "DELIVERY", value: "Delivery" },
-  ];
+  const [formData, setFormData] = useState({
+    news: "",
+    department: "everyone",
+  });
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+  const { data: departments } = useGetDepartments();
+
+  const { mutate: handleAdd } = useCreateNews();
+
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
   };
 
-  // const handleSend = () => {
-  //   OnCancel
-  // };
+  const handleSend = () => {
+    if (!formData?.news) return;
+    let data: any = {
+      news: formData?.news,
+    };
+
+    if (formData?.department != "everyone") {
+      data = {
+        ...data,
+        department: formData?.department,
+      };
+    }
+
+    handleAdd(data);
+  };
 
   return (
     <Modal visible={isVisible} transparent onRequestClose={onClose}>
@@ -72,30 +80,68 @@ const NewsModal: React.FC<NewsModalProps> = ({
       >
         <View style={styles.container}>
           <Text style={styles.title}>{title}</Text>
+          <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
+            <TouchableOpacity onPress={onClose}>
+              <Entypo
+                name="circle-with-cross"
+                size={25}
+                style={{ right: -10, bottom: 30 }}
+                color="red"
+              />
+            </TouchableOpacity>
+          </View>
+
           <TextInput
             style={styles.input}
             placeholder="Write your news here..."
             multiline
-            value={news}
-            onChangeText={setNews}
+            value={formData?.news}
+            onChangeText={(text) => handleInputChange("news", text)}
           />
           <View style={styles.chipContainer}>
-            {PO_STATUS.map((category) => (
+            <TouchableOpacity
+              style={[
+                styles.chip,
+                formData?.department == "everyone"
+                  ? styles.chipSelected
+                  : styles.chipUnselected,
+              ]}
+              onPress={() => handleInputChange("department", "everyone")}
+            >
+              <Text
+                style={[
+                  formData?.department == "everyone"
+                    ? styles.chipText
+                    : styles.chipUnselectedText,
+                ]}
+              >
+                Everyone
+              </Text>
+            </TouchableOpacity>
+            {departments?.data?.map((dep: any) => (
               <TouchableOpacity
-                key={category.key}
+                key={dep.id}
                 style={[
                   styles.chip,
-                  selectedCategories.includes(category.value)
+                  formData?.department == dep?.documentId
                     ? styles.chipSelected
                     : styles.chipUnselected,
                 ]}
-                onPress={() => toggleCategory(category.key)}
+                onPress={() => handleInputChange("department", dep?.documentId)}
               >
-                <Text style={styles.chipText}>{category.value}</Text>
+                <Text
+                  style={[
+                    formData?.department == dep?.documentId
+                      ? styles.chipText
+                      : styles.chipUnselectedText,
+                  ]}
+                >
+                  {dep?.name}
+                </Text>
               </TouchableOpacity>
             ))}
           </View>
-          <TouchableOpacity style={styles.sendButton} onPress={onClose}>
+          <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
             <Text style={styles.sendText}>Send</Text>
           </TouchableOpacity>
         </View>

@@ -154,6 +154,8 @@ const PODetailScreen = () => {
                 profile={true}
                 onPress2={onOpenAssignModal}
                 btn1Disable={
+                  (data?.data?.po_created_by?.documentId !== user?.documentId &&
+                    user?.department?.name != "Sales") ||
                   data?.data?.active_status !== PO_ACTIVE_STATUS.ACCEPTED
                 }
                 btn2Disable={

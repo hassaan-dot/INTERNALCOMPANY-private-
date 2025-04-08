@@ -22,6 +22,7 @@ import {
   default as Header,
   default as MobileScreenHeader,
 } from "./MobileScreenHeader/component";
+import SignoutDropdown from "./SignoutDropdown/component";
 import NewsModal from "./Modals/AddNews/component";
 import AssignEmployee from "./Modals/AssignEmployee/component";
 import AttendenceModal from "./Modals/Attendence/component";
@@ -102,4 +103,5 @@ export {
   useFormValidation,
   UserProfile,
   VerticalsButton,
+  SignoutDropdown,
 };

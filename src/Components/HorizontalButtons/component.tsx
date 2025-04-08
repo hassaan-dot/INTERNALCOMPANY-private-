@@ -65,14 +65,22 @@ const ButtonGroup: React.FC<ButtonGroupProps> = ({
   return (
     <View style={[styles.container, ContainerStyle]}>
       <TouchableOpacity
-        style={[styles.button, style1, { backgroundColor: Color1 }]}
+        style={[
+          styles.button,
+          style1,
+          { backgroundColor: Color1, opacity: btn1Disable ? "0.7" : "1" },
+        ]}
         onPress={onPress2}
         disabled={btn1Disable}
       >
         <Text style={[styles.text, textStyle1]}>{buttonTitle1}</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        style={[styles.button, style2, { backgroundColor: Color2 }]}
+        style={[
+          styles.button,
+          style2,
+          { backgroundColor: Color2, opacity: btn2Disable ? "0.7" : "1" },
+        ]}
         onPress={onPress}
         disabled={btn2Disable}
       >

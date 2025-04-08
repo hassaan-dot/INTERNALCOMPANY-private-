@@ -1,7 +1,13 @@
 import { useLogin } from "@/hooks/useLogin";
 import { string } from "@/src/Resources/strings";
 import React, { useState } from "react";
-import { Platform, Text, TouchableOpacity, View } from "react-native";
+import {
+  Platform,
+  Text,
+  TouchableOpacity,
+  View,
+  useWindowDimensions,
+} from "react-native";
 import * as yup from "yup";
 import {
   CheckBox,
@@ -26,6 +32,13 @@ const loginSchema = yup.object().shape({
 });
 
 const LoginScreen: React.FC = () => {
+  const { width } = useWindowDimensions();
+
+  // Define a breakpoint (e.g., 640 like Tailwind's "sm")
+  const isSmallScreen = width < 640;
+  // Use the breakpoint to conditionally apply styles
+  console.log("isSmallScreen", isSmallScreen);
+
   const { mutate } = useLogin();
   const isMobileView = Platform.OS == "ios";
   const [email, setEmail] = useState("");

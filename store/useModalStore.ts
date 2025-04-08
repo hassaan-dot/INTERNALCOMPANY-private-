@@ -36,6 +36,9 @@ type useModalStore = {
 
   isStatusModalOpen: boolean;
   setIsStatusModalOpen: (isStatusModalOpen: boolean) => void;
+
+  isNewsModalOpen: boolean;
+  setIsNewsModalOpen: (isNewsModalOpen: boolean) => void;
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
@@ -73,4 +76,7 @@ export const useModalStore = create<useModalStore>((set) => ({
   isAssignEmployeeModalOpen: false,
   setisAssignEmployeeModalOpen: (isAssignEmployeeModalOpen) =>
     set({ isAssignEmployeeModalOpen }),
+
+  isNewsModalOpen: false,
+  setIsNewsModalOpen: (isNewsModalOpen) => set({ isNewsModalOpen }),
 }));

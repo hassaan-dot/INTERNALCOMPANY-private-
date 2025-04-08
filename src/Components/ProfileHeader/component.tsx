@@ -4,7 +4,7 @@ import { styles } from "./style";
 import { icons } from "@/src/Resources";
 import helpers from "../../utils/helpers";
 import SearchBar from "../SearchBar/searchBar";
-
+import SignoutDropdown from "../SignoutDropdown/component";
 interface ProfileHeaderProps {
   profileImage: any; // Can be a local image source or a URI string
   name: string;
@@ -13,13 +13,12 @@ interface ProfileHeaderProps {
   onMenuPress: () => void; // Function for the menu button press
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({
-  profileImage,
-  userType,
-  name,
-  desc,
-  onMenuPress,
-}) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({}) => {
+  const [visible, setVisible] = React.useState(false);
+  const onMenuPress = () => {
+    setVisible(!visible);
+  };
+
   return (
     <View
       style={{
@@ -29,13 +28,12 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
         alignItems: "center",
       }}
     >
-      <View style={{marginLeft:30}}>
+      <View style={{ marginLeft: 30 }}>
         <SearchBar></SearchBar>
       </View>
 
-      <View style={{ flexDirection: "row",alignItems:'center' }}>
+      <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ right: helpers.normalize(40) }}>
-         
           <View
             style={{
               backgroundColor: "#FF5630",
@@ -54,10 +52,15 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({
             source={icons.profileHeaderBellIcon}
             style={{ width: 20, height: 20, marginBottom: 6 }}
           ></Image>
-          
         </View>
         <View>
-        <Image source={{ uri:'https://randomuser.me/api/portraits/men/1.jpg'}} style={styles.avatar} />
+          <TouchableOpacity onPress={onMenuPress}>
+            <SignoutDropdown visible={visible} setVisible={setVisible} />
+            <Image
+              source={{ uri: "https://randomuser.me/api/portraits/men/1.jpg" }}
+              style={styles.avatar}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     </View>
