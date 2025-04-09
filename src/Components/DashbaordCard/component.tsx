@@ -1,3 +1,9 @@
+import { icons } from "@/assets/icons/icons";
+import { useDeleteNews, useGetNews } from "@/hooks/useDashboard";
+import { useGetPO } from "@/hooks/usePO";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
   FlatList,
@@ -8,30 +14,9 @@ import {
   View,
 } from "react-native";
 import Svg, { LinearGradient, Rect, Stop } from "react-native-svg";
-import { icons } from "@/assets/icons/icons";
-import { styles } from "./styles";
-import { useGetNews, useDeleteNews } from "@/hooks/useDashboard";
-import { useAuthStore } from "@/store/useAuthStore";
 import Avatar from "../Avatar/component";
-import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
-
-type POItem = {
-  id: string;
-  name: string;
-  actionText: string;
-  code: string;
-  avatar: string;
-};
-
-const assignedPOs: POItem[] = [
-  {
-    id: "1",
-    name: "John Doe",
-    actionText: "Submit New PO",
-    code: "ESN-45321",
-    avatar: "https://randomuser.me/api/portraits/men/1.jpg",
-  },
-];
+import truncateComponentName from "../WordTruncate/component";
+import { styles } from "./styles";
 
 interface CardSectionProps {
   onPress?: () => void;
@@ -41,12 +26,15 @@ interface CardSectionProps {
 const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
   const isMobileView = Platform.OS === "ios";
   const { user } = useAuthStore();
-
   const { data, refetch } = useGetNews();
   useRefreshOnFocus(refetch);
 
   const { mutate: handleDeleteNews } = useDeleteNews();
-
+  const { data: getPo } = useGetPO();
+  const router = useRouter();
+  const handleNavigateToDetails = (documentId: string) => {
+    router.push(`/(app)/po-management/po-details?id=${documentId}`);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.card}>
@@ -63,27 +51,57 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
         </View>
         <FlatList
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
-          data={assignedPOs}
+          data={getPo?.data}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <View style={styles.row}>
-              <View style={styles.profileView}>
-                <Avatar width={40} height={40} borderRadius={20}></Avatar>
-                <Text style={styles.name}>{item.name}</Text>
+            <>
+              <View style={styles.row}>
+                <View style={styles.profileView}>
+                  <Avatar
+                    width={30}
+                    height={30}
+                    borderRadius={15}
+                    marginRight={7}
+                  ></Avatar>
+                  <Text style={styles.name}>
+                    {`${item?.po_created_by?.first_name}  ${item?.po_created_by?.last_name}`}
+                  </Text>
+                </View>
+
+                <View style={styles.customView}>
+                  <Text style={styles.actionText}>
+                    {truncateComponentName(item?.documentId, 10)}
+                  </Text>
+                </View>
+                <View style={styles.customView}>
+                  <Text
+                    style={[
+                      styles.code,
+                      {
+                        color:
+                          item?.active_status == "Accepted"
+                            ? "#07504b"
+                            : item?.active_status == "Rejected"
+                            ? "red"
+                            : "",
+                      },
+                    ]}
+                  >
+                    {item?.active_status}
+                  </Text>
+                </View>
+                <View style={[styles.customView, { alignItems: "center" }]}>
+                  <TouchableOpacity
+                    onPress={() => handleNavigateToDetails(item?.documentId)}
+                  >
+                    <Image
+                      source={icons.dashboardButtonNewscardIcon}
+                      style={{ width: 15, height: 15, marginLeft: 20 }}
+                    ></Image>
+                  </TouchableOpacity>
+                </View>
               </View>
-              <View style={styles.customView}>
-                <Text style={styles.actionText}>{item.actionText}</Text>
-              </View>
-              <View style={styles.customView}>
-                <Text style={styles.code}>{item.code}</Text>
-              </View>
-              <View style={[styles.customView, { alignItems: "center" }]}>
-                <Image
-                  source={icons.dashboardButtonNewscardIcon}
-                  style={{ width: 15, height: 15, marginLeft: 20 }}
-                ></Image>
-              </View>
-            </View>
+            </>
           )}
         />
       </View>
@@ -115,12 +133,12 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
           renderItem={({ item }) => (
             <View style={styles.row}>
               <View style={styles.profileView}>
-                <Image
-                  source={{
-                    uri: "https://randomuser.me/api/portraits/men/1.jpg",
-                  }}
-                  style={styles.avatar}
-                />
+                <Avatar
+                  width={30}
+                  height={30}
+                  borderRadius={15}
+                  marginRight={7}
+                ></Avatar>
                 <Text style={styles.name}>
                   {item.user?.first_name} {item.user?.last_name}
                 </Text>
@@ -138,11 +156,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
                 >
                   <Image
                     source={icons.tableDeleteIcon}
-                    style={{
-                      width: 20,
-                      height: 20,
-                      marginRight: 6,
-                    }}
+                    style={styles.deleteIcon}
                   />
                 </TouchableOpacity>
               )}

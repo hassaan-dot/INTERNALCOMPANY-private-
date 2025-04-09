@@ -1,8 +1,7 @@
 import { PoppinsRegular } from "@/constants/fonts";
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 
 export default function CustomDateTimePicker({
   title = "Select Date & Time",

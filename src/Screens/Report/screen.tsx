@@ -6,7 +6,6 @@ import {
   PredictorCard,
   ScreenHeader,
   TabSelector,
-  Indicator,
 } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
@@ -35,10 +34,10 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
         <View style={{ marginTop: 15 }}>
           <View style={styles.container2}>
             {/* <Ballindicator></Ballindicator> */}
-            <PredictorCard color={"#38CB89"}></PredictorCard>
-            <PredictorCard color={"#FFA600"}></PredictorCard>
-            <PredictorCard color={"#FF5630"}></PredictorCard>
-            <PredictorCard color={"#38CB89"}></PredictorCard>
+            <PredictorCard color="#38CB89" />
+            <PredictorCard color="#FFA600" />
+            <PredictorCard color="#FF5630" />
+            <PredictorCard color="#38CB89" />
           </View>
         </View>
         <View style={{ marginVertical: 15 }}>

@@ -20,6 +20,11 @@ export const styles = StyleSheet.create({
     flex: 1,
     elevation: 3,
   },
+  deleteIcon: {
+    width: 20,
+    height: 20,
+    marginRight: 6,
+  },
   card2: {
     backgroundColor: "#fff",
     padding: 15,
@@ -102,5 +107,5 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  profileView: { flexDirection: "row", alignItems: "center", flex: 0.3 },
+  profileView: { flexDirection: "row", alignItems: "center", flex: 0.355 },
 });
