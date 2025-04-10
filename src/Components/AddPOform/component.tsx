@@ -72,7 +72,7 @@ const poSchema = yup.object().shape({
 
 const POForm: React.FC<Props> = ({ onPress }) => {
   const { rowData } = useModalStore();
-
+  const color = ["#07504B", "#f6eec0", "#383f33"];
   const [documents, setDocuments] = useState<Document[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
@@ -363,7 +363,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                   borderRadius: 6,
                   borderColor: "#ddd",
                   borderWidth: 1,
-                  paddingVertical: 9,
+                  paddingVertical: 7,
                   marginRight: 22,
                 }}
               >
@@ -374,6 +374,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                       style={{
                         backgroundColor: "#f6f6f6",
                         padding: 5,
+                        paddingVertical: 0,
                         marginLeft: 7,
                         borderRadius: 4,
                         justifyContent: "center",
@@ -396,14 +397,18 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                       }}
                     >
                       {documents.length < 1 && (
-                        <Text>Upload your attachments/Documents</Text>
+                        <Text style={{ paddingVertical: 4 }}>
+                          Upload your attachments/Documents
+                        </Text>
                       )}
                     </TouchableOpacity>
+
                     {documents.length > 0 && (
                       <View style={{}}>
                         <FlatList
-                          style={{
+                          contentContainerStyle={{
                             width: helpers.normalize(200),
+                            marginBottom: 2,
                           }}
                           showsHorizontalScrollIndicator={false}
                           horizontal={true}
@@ -415,11 +420,22 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                                 flexDirection: "row",
                                 alignItems: "center",
                                 justifyContent: "space-between",
-                                borderWidth: 1,
-                                borderColor: "gray",
-                                borderRadius: 2,
+                                // borderWidth: 1,
+                                // borderColor: "gray",
+                                borderRadius: 9,
                                 padding: 4,
                                 marginHorizontal: 4,
+                                shadowColor: "#000",
+                                shadowOffset: {
+                                  width: 0,
+                                  height: 1,
+                                },
+                                backgroundColor:
+                                  color[
+                                    Math.floor(Math.random() * color.length)
+                                  ],
+                                shadowOpacity: 0.22,
+                                shadowRadius: 2.22,
                               }}
                             >
                               {item.type.startsWith("image/") ? (
@@ -433,7 +449,12 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                                 />
                               ) : null}
                               <Text
-                                style={{ flex: 1, marginLeft: 7 }}
+                                style={{
+                                  flex: 1,
+                                  marginLeft: 7,
+                                  color: "white",
+                                  fontFamily: PoppinsRegular,
+                                }}
                                 numberOfLines={1}
                               >
                                 {item.name}
@@ -447,7 +468,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                                   name="close"
                                   size={12}
                                   color="red"
-                                  style={{ marginLeft: 10 }}
+                                  style={{ marginHorizontal: 10 }}
                                 />
                               </TouchableOpacity>
                             </View>

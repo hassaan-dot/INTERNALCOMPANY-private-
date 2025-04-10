@@ -71,9 +71,10 @@ const CreateModal: React.FC<ClientModalProps> = ({
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
-  const { data: UserApi, isPending, error } = useGetEmployees();
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const { data: UserApi, isPending, error } = useGetEmployees();
 
   type Item = {
     value: string;

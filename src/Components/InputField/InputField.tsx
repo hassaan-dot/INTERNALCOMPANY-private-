@@ -49,7 +49,7 @@ const InputField: React.FC<InputFieldProps> = ({
     const rtlRegex = /^[\u0600-\u06FF]/;
     return rtlRegex.test(txt);
   };
-  console.log(" is  RDV", isRTL(value));
+
   return (
     <View style={styles.container}>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}

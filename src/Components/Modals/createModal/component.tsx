@@ -195,8 +195,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
 
             <View style={[styleContainer]}>
               <InputField
-                title={First}
-                placeholder={First}
+                title={"Contact Person Name"}
+                placeholder={"Contact Person Name"}
                 value={formData.contact_person_name}
                 onChangeText={(text) =>
                   handleInputChange("contact_person_name", text)
@@ -213,8 +213,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
 
             <View>
               <InputField
-                title={Second}
-                placeholder={Second}
+                title={"Email Address"}
+                placeholder={"email@example.com"}
                 value={formData.email}
                 onChangeText={(text) => handleInputChange("email", text)}
                 onBlur={() => handleBlur("email")}
@@ -231,8 +231,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
 
             <View>
               <InputField
-                title={Third}
-                placeholder={Third}
+                title={"Phone Number"}
+                placeholder={"Phone Number"}
                 value={formData.phone_number}
                 onChangeText={(text) => handleInputChange("phone_number", text)}
                 onBlur={() => handleBlur("phone_number")}
@@ -248,8 +248,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
 
             <View>
               <InputField
-                title={Fourth}
-                placeholder={Fourth}
+                title={"Company Name"}
+                placeholder={"Company Name"}
                 value={formData.company_name}
                 onChangeText={(text) => handleInputChange("company_name", text)}
                 onBlur={() => handleBlur("company_name")}

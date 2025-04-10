@@ -47,13 +47,15 @@ const Dashboard = () => {
               style={styles.container6}
               color={"#38CB89"}
               title={"Total Paid PO"}
-              value={data?.total_paid_po}
+              value={data?.total_paid_po?.count}
+              inc={data?.total_paid_po?.increment}
             />
             <PredictorCard
               style={styles.container6}
               color={"#FFA600"}
               title={"In Progress PO"}
-              value={data?.total_inprogress_po}
+              value={data?.total_inprogress_po?.count}
+              inc={data?.total_inprogress_po?.increment}
             />
           </View>
           <View style={[styles.container5]}>
@@ -61,13 +63,15 @@ const Dashboard = () => {
               style={styles.container6}
               color={"#FF5630"}
               title={"Over Due PO"}
-              value={data?.total_overdue_po}
+              value={data?.total_overdue_po?.count}
+              inc={data?.total_overdue_po?.increment}
             />
             <PredictorCard
               style={styles.container6}
               color={"#38CB89"}
               title={"Total PO"}
-              value={data?.total_po}
+              value={data?.total_po?.count}
+              inc={data?.total_po?.increment}
             />
           </View>
         </View>

@@ -127,7 +127,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
           <View>
             <Text style={styles.cardTitle}>Your Assigned PO</Text>
           </View>
-          {getPo?.data?.length > 6 && (
+          {getPo?.data?.length > 8 && (
             <View>
               <TouchableOpacity
                 style={styles.addButton && styles.addButton1}
@@ -151,7 +151,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
         </View>
         <FlatList
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
-          data={getPo?.data?.slice(0, 10)}
+          data={getPo?.data?.slice(0, 8)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <>

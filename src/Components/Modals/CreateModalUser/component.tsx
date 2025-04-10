@@ -215,7 +215,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
               <View style={{ marginLeft: 7 }}>
                 <InputField
                   title={"Last name"}
-                  placeholder={"Last name"}
+                  placeholder={"last name"}
                   value={formData.last_name}
                   style={[
                     styles.input,
@@ -232,7 +232,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
             <View>
               <InputField
                 title={"Email Address"}
-                placeholder={"Email Address"}
+                placeholder={"email@example.com"}
                 value={formData.email}
                 style={[
                   styles.input,
@@ -249,7 +249,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
             <View>
               <InputField
                 title={"User Name"}
-                placeholder={"Username"}
+                placeholder={"username"}
                 value={formData.username}
                 onChangeText={(text) => handleInputChange("username", text)}
                 titleStyle={styles.fontSize}
@@ -266,7 +266,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
               <View>
                 <InputField
                   title={"Password"}
-                  placeholder={"Password"}
+                  placeholder={"Enter password"}
                   value={formData.password}
                   onChangeText={(text) => handleInputChange("password", text)}
                   titleStyle={styles.fontSize}

@@ -19,15 +19,7 @@ import { styles } from "./styles";
 const Request: React.FC<{ route: any }> = ({ route }) => {
   const { data, refetch } = useGetRequest();
 
-  const {
-    data: UserApi,
-    isPending,
-    error,
-    refetch: handleUserRefetch,
-  } = useGetUser();
-
   useRefreshOnFocus(refetch);
-  useRefreshOnFocus(handleUserRefetch);
 
   const { mutate: handleAdd } = useCreateRequest();
   const { mutate: handleDelete } = useDeleteRequest();
@@ -80,8 +72,6 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
   };
 
   function Create() {
-    // router.push(`/(app)/request/request-details`);
-
     setIsRequestModalOpen(true);
   }
 
@@ -128,21 +118,9 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
     setIsRequestModalOpen(false);
     setRowData(null);
   };
-  // const onClickEye = ({ title, documentId }: any) => {
-  //   const data = {
-  //     data: {
-  //       title,
-  //     },
-  //   };
-  //   setRowData({ title, documentId });
-  //   handleGetOne({ data, documentId });
-
-  //   // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
-  // };
 
   const onClickEye = ({ documentId }: any) => {
     router.push(`/(app)/request/request-details?id=${documentId}`);
-    // router.push(`/(app)/request/request-details?username=${username}&id=${id}`);
   };
   return (
     <>
