@@ -21,7 +21,7 @@ export const useLogin = () => {
       setUser(data.user);
       await LocalStorage.save("token", data.jwt);
       await LocalStorage.save("user", data.user);
-      toastSuccess("Success!", "Your login was completed successfully");
+      toastSuccess("Success!", "login successfully");
       router.replace("/(app)/dashboard");
     },
     onError: (error: any) => {

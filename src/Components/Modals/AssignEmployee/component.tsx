@@ -64,7 +64,7 @@ const AssignEmployee: React.FC<AssignEmployeeProps> = ({
 
   const transformToDropdownItems = (items: any[]): Employee[] =>
     items?.map((item) => ({
-      value: item?.username,
+      value: `${item?.first_name} ${item?.last_name}`,
       key: item?.documentId,
     })) || [];
 

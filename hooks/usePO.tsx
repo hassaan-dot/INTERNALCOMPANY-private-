@@ -5,7 +5,9 @@ import { useRouter } from "expo-router";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllPO = async (filters: any) => {
-  const res = await api.get(`/purchase-orders?populate[7]=po_created_by`);
+  const res = await api.get(
+    `/purchase-orders?populate[7]=po_created_by&sort=createdAt:desc`
+  );
   return res.data;
 };
 

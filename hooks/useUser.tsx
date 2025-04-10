@@ -2,6 +2,7 @@ import api from "@/services/axios";
 import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toastError, toastSuccess } from "../services/toast-messages";
+import { groupHoursByLocalDay } from "@/src/utils";
 
 const handleGetAllUser = async (filters: any) => {
   const res = await api.get(
@@ -36,13 +37,24 @@ const handleGetUserAttendence = async (id: any) => {
   const res = await api.get(`/user-attendance/${id}`);
   return res.data;
 };
-const handlClockInUserAttendence = async (id: any) => {
-  console.log("id", id);
-  const res = await api.get(`/attendance-clockin/${id}`);
+
+const handleGetWorkingHours = async (id: any) => {
+  const res = await api.get(`/daily-hours-worked/${id}`);
   return res.data;
 };
-const handlClockOutUserAttendence = async (documentId: any) => {
-  const res = await api.get(`/attendance-clockout/${documentId}`);
+
+const hanldeGetAssignedPOStats = async (id: any) => {
+  const res = await api.get(`/assigned-po-stats/${id}`);
+  return res.data;
+};
+
+const handlClockInUserAttendence = async (id: any) => {
+  const res = await api.post(`/attendance-clockin/${id}`, {});
+  return res.data;
+};
+
+const handlClockOutUserAttendence = async (id: any) => {
+  const res = await api.post(`/attendance-clockout/${id}`, {});
   return res.data;
 };
 
@@ -56,29 +68,72 @@ export const useGetUser = () => {
 
 export const useGetUserAttendence = (id: any) => {
   return useQuery({
-    queryKey: ["attendence"],
+    queryKey: ["attendence-user", id],
     queryFn: () => handleGetUserAttendence(id),
   });
 };
 
-export const useClockIntUserAttendence = () => {
-  return useMutation({
-    mutationKey: ["checkIn"],
-    mutationFn: (id) => handlClockInUserAttendence(id),
-    onSuccess: async (data) => {
-      toastSuccess("Success!", "User is created successfully");
+export const useGetUserWorkingHours = (id: any) => {
+  return useQuery({
+    queryKey: ["user-working-hours", id],
+    queryFn: () => handleGetWorkingHours(id),
+    select: (data) => {
+      const graph_data = groupHoursByLocalDay(data);
+      return graph_data;
     },
-    onError: (error) => {
-      toastError("Oops!", error.message);
+  });
+};
+
+export const useGetAssignedPOStats = (id: any) => {
+  return useQuery({
+    queryKey: ["user-assigned-po-stats", id],
+    queryFn: () => hanldeGetAssignedPOStats(id),
+    select: (data) => {
+      const colors = ["#4caf50", "#ffeb3b", "#f44336", "#d9d9d9"];
+      const graph_data = data?.data?.map((item: any, index: number) => ({
+        value: item?.value ?? 5,
+        text: item?.label,
+        color: colors[index],
+        percentage: item?.percentage,
+      }));
+      return graph_data;
+    },
+  });
+};
+
+export const useClockIntUserAttendence = (id: any) => {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["checkIn", id],
+    mutationFn: () => handlClockInUserAttendence(id),
+    onSuccess: async (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["attendence-user", id],
+        type: "active",
+      });
+      toastSuccess("Success!", "User Clocked In!");
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error.response?.data?.error?.message);
     },
   });
 };
 
 export const useClockOutUserAttendence = (id: any) => {
-  return useQuery({
-    queryKey: ["checkOut", id],
-    queryFn: () => handlClockOutUserAttendence(id),
-    enabled: !!id, // prevents running the hook if id is null or undefined
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationKey: ["checkOut", id],
+    mutationFn: () => handlClockOutUserAttendence(id),
+    onSuccess: async (data) => {
+      queryClient.invalidateQueries({
+        queryKey: ["attendence-user", id],
+        type: "active",
+      });
+      toastSuccess("Success!", "User Clocked Out!");
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error.response?.data?.error?.message);
+    },
   });
 };
 
@@ -127,7 +182,7 @@ export const useUpdateUser = () => {
         queryKey: ["users"],
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toastError("Oops!", error?.response?.data?.error?.message);
     },
   });

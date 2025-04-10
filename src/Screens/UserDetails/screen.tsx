@@ -8,7 +8,7 @@ import { useGetOneUser } from "@/hooks/useUser";
 import UserDetailHeader from "./header";
 
 const UserDetails = () => {
-  const { id } = useLocalSearchParams();
+  const { id, documentId } = useLocalSearchParams();
 
   const { data } = useGetOneUser(id as string);
 
@@ -16,10 +16,9 @@ const UserDetails = () => {
     <>
       <ScrollView style={styles.container1}>
         <ScreenHeader title={"User Detail"}></ScreenHeader>
-
         <UserDetailHeader item={data} />
         <View style={styles.container2}>
-          <GraphCard />
+          <GraphCard id={documentId} />
         </View>
       </ScrollView>
     </>

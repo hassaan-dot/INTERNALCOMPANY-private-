@@ -14,7 +14,7 @@ export const showToast = ({ type, message, subtitle }: ShowToastParams) => {
     text1: message,
     text2: subtitle,
     position: "Top",
-    visibilityTime: 4000,
+    visibilityTime: 1999,
     autoHide: true,
     topOffset: 30,
     bottomOffset: 40,

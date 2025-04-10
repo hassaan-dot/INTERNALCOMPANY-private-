@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { View, Text, Modal } from "react-native";
 import { styles } from "./styles";
 import ButtonGroup from "../../HorizontalButtons/component";
@@ -14,6 +14,7 @@ import {
   useGetUserAttendence,
 } from "@/hooks/useUser";
 import { useAuthStore } from "@/store/useAuthStore";
+import { formatDate } from "@/src/utils";
 
 interface NewsModalProps {
   isVisible: boolean;
@@ -31,26 +32,28 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
 }) => {
   const { user } = useAuthStore();
 
-  const { data: getAll } = useGetUserAttendence(currentUser.documentId);
-  console.log("getAll", getAll);
-  const ActivateFunction = () => {
-    const { mutate } = useClockIntUserAttendence();
-    return mutate(currentUser.documentId);
-  };
+  const { data: attendance } = useGetUserAttendence(currentUser?.documentId);
 
-  const showClockIn = getAll?.data?.clock_in == null;
-  const showClockOut = getAll?.data?.clock_out == null;
+  const { mutate: handleClockIn } = useClockIntUserAttendence(
+    currentUser?.documentId
+  );
+  const { mutate: handleClockOut } = useClockOutUserAttendence(
+    currentUser?.documentId
+  );
+
+  const isClockedOut = useMemo(() => {
+    if (!attendance?.data) return true;
+    else if (attendance?.data && attendance?.data?.clock_out) return true;
+    else return false;
+  }, [attendance?.data]);
+
+  console.log("isClokedOut", isClockedOut);
 
   const handleAttendence = () => {
-    if (showClockIn) {
-      // ClockIn;
-      ActivateFunction();
-    } else if (showClockOut) {
-      // const { data: clockOutAttendence } = useClockOutUserAttendence({
-      //   id: currentUser,
-      // });
-    }
+    if (isClockedOut) handleClockIn();
+    else handleClockOut();
   };
+
   return (
     <Modal visible={isVisible} transparent onRequestClose={onClose}>
       <View style={styles.container1}>
@@ -59,50 +62,47 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
 
           <View style={{ margin: 15 }}>
             <Text style={styles.chipText2}>
-              {`Name : ${currentUser.first_name} ${currentUser.last_name}`}
+              {`Name : ${currentUser?.first_name} ${currentUser?.last_name}`}
             </Text>
 
             <Text style={styles.chipText}>
-              Check-in:{" "}
-              {/* {`${formatDateForDisplay(getAll?.data?.clock_in || "")} ` || ""} */}
+              Clock-In: {formatDate(attendance?.data?.clock_in) ?? "-"}
             </Text>
             <Text style={styles.chipText}>
-              Check-out: {getAll?.data?.clock_out || ""}
+              Clock-Out: {formatDate(attendance?.data?.clock_out) ?? "-"}
             </Text>
           </View>
 
-          {(showClockIn || showClockOut) && (
-            <ButtonGroup
-              onPress={handleAttendence}
-              onPress2={onClose}
-              ContainerStyle={{ flexDirection: "row", flex: 1 }}
-              Color1={""}
-              textStyle1={{
-                fontWeight: "500",
-                color: "#344054",
-                fontSize: 16,
-                fontFamily: PoppinsRegular,
-              }}
-              style2={{
-                // paddingHorizontal: helpers.normalize(30),
-                paddingHorizontal: 60,
+          <ButtonGroup
+            onPress={handleAttendence}
+            onPress2={onClose}
+            ContainerStyle={{ flexDirection: "row", flex: 1 }}
+            Color1={""}
+            textStyle1={{
+              fontWeight: "500",
+              color: "#344054",
+              fontSize: 16,
+              fontFamily: PoppinsRegular,
+            }}
+            style2={{
+              // paddingHorizontal: helpers.normalize(30),
+              paddingHorizontal: 60,
 
-                // width: "40%",
-                borderRadius: 8,
-                borderWidth: 0,
-              }}
-              style1={{
-                paddingHorizontal: 60,
-                paddingVertical: 5,
-                borderRadius: 8,
-                borderWidth: 1,
-                borderColor: "#D0D5DD",
-              }}
-              Color2={showClockIn ? "#07504B" : "#FF3B30"}
-              buttonTitle1={"Cancel"}
-              buttonTitle2={showClockIn ? "Clock In" : "Clock Out"}
-            />
-          )}
+              // width: "40%",
+              borderRadius: 8,
+              borderWidth: 0,
+            }}
+            style1={{
+              paddingHorizontal: 60,
+              paddingVertical: 5,
+              borderRadius: 8,
+              borderWidth: 1,
+              borderColor: "#D0D5DD",
+            }}
+            Color2={isClockedOut ? "#07504B" : "#FF3B30"}
+            buttonTitle1={"Cancel"}
+            buttonTitle2={isClockedOut ? "Clock In" : "Clock Out"}
+          />
         </View>
       </View>
     </Modal>

@@ -148,8 +148,10 @@ const UserManagement = () => {
     setisAttendenceModalOpen(false);
   };
 
-  const onClickEye = ({ id }: any) => {
-    router.push(`/(app)/user-management/user-details?id=${id}`);
+  const onClickEye = ({ id, documentId }: any) => {
+    router.push(
+      `/(app)/user-management/user-details?id=${id}&documentId=${documentId}`
+    );
   };
   return (
     <>

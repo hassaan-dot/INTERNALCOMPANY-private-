@@ -17,11 +17,93 @@ import Svg, { LinearGradient, Rect, Stop } from "react-native-svg";
 import Avatar from "../Avatar/component";
 import truncateComponentName from "../WordTruncate/component";
 import { styles } from "./styles";
+import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 
 interface CardSectionProps {
   onPress?: () => void;
   OnCancel?: () => void;
 }
+
+const RenderPoStatus = ({
+  active_status,
+  is_confirmed,
+}: {
+  active_status: PO_ACTIVE_STATUS;
+  is_confirmed: boolean;
+}) => {
+  if (active_status === PO_ACTIVE_STATUS.DRAFT) {
+    return (
+      <Text
+        style={[
+          styles.code,
+          {
+            color: "#5A6470",
+          },
+        ]}
+      >
+        Draft
+      </Text>
+    );
+  }
+
+  if (active_status === PO_ACTIVE_STATUS.CLOSED) {
+    return (
+      <Text
+        style={[
+          styles.code,
+          {
+            color: "#EC4746",
+          },
+        ]}
+      >
+        Closed
+      </Text>
+    );
+  }
+
+  if (is_confirmed) {
+    return (
+      <Text
+        style={[
+          styles.code,
+          {
+            color: "#12B76A",
+          },
+        ]}
+      >
+        Confirmed
+      </Text>
+    );
+  } else if (active_status === PO_ACTIVE_STATUS.ACCEPTED) {
+    return (
+      <Text
+        style={[
+          styles.code,
+          {
+            color: "#12B76A",
+          },
+        ]}
+      >
+        Accepted
+      </Text>
+    );
+  }
+
+  if (active_status === PO_ACTIVE_STATUS.REJECTED) {
+    return (
+      <Text
+        style={[
+          styles.code,
+          {
+            color: "#EC4746",
+          },
+        ]}
+      >
+        Rejected
+      </Text>
+    );
+  }
+};
 
 const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
   const isMobileView = Platform.OS === "ios";
@@ -88,25 +170,14 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
 
                 <View style={styles.customView}>
                   <Text style={styles.actionText}>
-                    {truncateComponentName(item?.documentId, 10)}
+                    {truncateComponentName(item?.po_name, 12)}
                   </Text>
                 </View>
                 <View style={styles.customView}>
-                  <Text
-                    style={[
-                      styles.code,
-                      {
-                        color:
-                          item?.active_status == "Accepted"
-                            ? "#07504b"
-                            : item?.active_status == "Rejected"
-                            ? "red"
-                            : "",
-                      },
-                    ]}
-                  >
-                    {item?.active_status}
-                  </Text>
+                  <RenderPoStatus
+                    active_status={item?.active_status}
+                    is_confirmed={item?.is_confirmed}
+                  />
                 </View>
                 <View style={[styles.customView, { alignItems: "center" }]}>
                   <TouchableOpacity
