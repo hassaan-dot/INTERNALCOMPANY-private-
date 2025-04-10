@@ -69,17 +69,23 @@ export const groupHoursByLocalDay = (records: any[]) => {
   }));
 
   records.forEach((record) => {
-    const inTime = new Date(record.clock_in);
-    const outTime = record.clock_out ? new Date(record.clock_out) : new Date(); // Use now if still clocked in
+    let inTime = new Date(record.clock_in);
+    let outTime = record.clock_out ? new Date(record.clock_out) : new Date();
 
-    // Convert to local day index (0 = Monday, 6 = Sunday)
-    const localDayIndex = (inTime.getDay() + 6) % 7;
+    while (inTime < outTime) {
+      // Start of next day
+      const nextDay = new Date(inTime);
+      nextDay.setHours(24, 0, 0, 0);
 
-    const workedMs = outTime.getTime() - inTime.getTime();
-    const workedHrs = workedMs / (1000 * 60 * 60);
+      const intervalEnd = outTime < nextDay ? outTime : nextDay;
+      const workedMs = intervalEnd.getTime() - inTime.getTime();
+      const workedHrs = workedMs / (1000 * 60 * 60);
 
-    dailyHours[localDayIndex].value += parseFloat(workedHrs.toFixed(2));
+      const localDayIndex = (inTime.getDay() + 6) % 7;
+      dailyHours[localDayIndex].value += parseFloat(workedHrs.toFixed(2));
+
+      inTime = intervalEnd;
+    }
   });
-
   return dailyHours;
 };
