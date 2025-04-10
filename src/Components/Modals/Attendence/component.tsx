@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { View, Text, Modal } from "react-native";
-
 import { styles } from "./styles";
 import ButtonGroup from "../../HorizontalButtons/component";
 import helpers from "../../../utils/helpers";
@@ -8,137 +7,102 @@ import { PoppinsRegular } from "../../../Resources/fonts";
 import { Entypo, Feather } from "@expo/vector-icons";
 import { Image } from "react-native";
 import { icons } from "@/assets/icons/icons";
-
-const categories: string[] = [
-  "Everyone",
-  "Management",
-  "Sales",
-  "Warehouse",
-  "Finance",
-  "Other",
-];
+import { formatDateForDisplay } from "@/src/utils";
+import {
+  useClockIntUserAttendence,
+  useClockOutUserAttendence,
+  useGetUserAttendence,
+} from "@/hooks/useUser";
+import { useAuthStore } from "@/store/useAuthStore";
 
 interface NewsModalProps {
   isVisible: boolean;
   onClose: () => void;
   title: any;
-  Activate: any;
-  clockIn: boolean;
-  onSubmit: any;
+  currentUser: any;
+  name: string;
 }
 
 const AttendenceModal: React.FC<NewsModalProps> = ({
   isVisible,
   onClose,
-  clockIn,
-  onSubmit,
-
-  title = "News",
+  currentUser,
+  title = "",
 }) => {
-  const [news, setNews] = useState<string>("");
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const { user } = useAuthStore();
 
-  const toggleCategory = (category: string) => {
-    setSelectedCategories((prev) =>
-      prev.includes(category)
-        ? prev.filter((c) => c !== category)
-        : [...prev, category]
-    );
+  const { data: getAll } = useGetUserAttendence(currentUser.documentId);
+  console.log("getAll", getAll);
+  const ActivateFunction = () => {
+    const { mutate } = useClockIntUserAttendence();
+    return mutate(currentUser.documentId);
   };
 
+  const showClockIn = getAll?.data?.clock_in == null;
+  const showClockOut = getAll?.data?.clock_out == null;
+
+  const handleAttendence = () => {
+    if (showClockIn) {
+      // ClockIn;
+      ActivateFunction();
+    } else if (showClockOut) {
+      // const { data: clockOutAttendence } = useClockOutUserAttendence({
+      //   id: currentUser,
+      // });
+    }
+  };
   return (
     <Modal visible={isVisible} transparent onRequestClose={onClose}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "rgba(0,0,0,0.5)",
-          //   alignContent: "center",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={styles.container1}>
         <View style={styles.container}>
           <Text style={styles.title}>{title}</Text>
 
           <View style={{ margin: 15 }}>
-            <View>
-              <Text
-                style={{
-                  fontWeight: "500",
-                  color: "#000",
-                  fontSize: 18,
-                  fontFamily: PoppinsRegular,
-                  marginVertical: 6,
-                }}
-              >
-                User Name : {"Uzair Ahmed"}
-              </Text>
-              <Text
-                style={{
-                  fontWeight: "400",
-                  color: "#667085",
-                  fontSize: 14,
-                  fontFamily: PoppinsRegular,
-                  marginVertical: 6,
-                }}
-              >
-                Check in details{" "}
-              </Text>
-            </View>
-            <View>
-              <Text
-                style={{
-                  fontWeight: "400",
-                  color: "#667085",
-                  fontSize: 14,
-                  fontFamily: PoppinsRegular,
-                  marginVertical: 6,
-                }}
-              >
-                Check in details{" "}
-              </Text>
-            </View>
-            <View>
-              <Text
-                style={{
-                  fontWeight: "400",
-                  color: "#667085",
-                  fontSize: 14,
-                  fontFamily: PoppinsRegular,
-                  marginVertical: 6,
-                }}
-              >
-                Check in details{" "}
-              </Text>
-            </View>
+            <Text style={styles.chipText2}>
+              {`Name : ${currentUser.first_name} ${currentUser.last_name}`}
+            </Text>
+
+            <Text style={styles.chipText}>
+              Check-in:{" "}
+              {/* {`${formatDateForDisplay(getAll?.data?.clock_in || "")} ` || ""} */}
+            </Text>
+            <Text style={styles.chipText}>
+              Check-out: {getAll?.data?.clock_out || ""}
+            </Text>
           </View>
 
-          <ButtonGroup
-            onPress={onSubmit}
-            ContainerStyle={{ flexDirection: "row", flex: 1 }}
-            Color1={""}
-            textStyle1={{
-              fontWeight: "500",
-              color: "#344054",
-              fontSize: 16,
-              fontFamily: PoppinsRegular,
-            }}
-            style2={{
-              paddingHorizontal: helpers.normalize(30),
-              borderRadius: 8,
-              borderWidth: 0,
-            }}
-            style1={{
-              paddingHorizontal: helpers.normalize(30),
-              paddingVertical: 5,
-              borderRadius: 8,
-              borderWidth: 1,
-              borderColor: "#D0D5DD",
-            }}
-            Color2={clockIn ? "#07504B" : "#FF3B30"}
-            buttonTitle1={"Cancel"}
-            buttonTitle2={clockIn ? "clock in" : "Clock out"}
-          ></ButtonGroup>
+          {(showClockIn || showClockOut) && (
+            <ButtonGroup
+              onPress={handleAttendence}
+              onPress2={onClose}
+              ContainerStyle={{ flexDirection: "row", flex: 1 }}
+              Color1={""}
+              textStyle1={{
+                fontWeight: "500",
+                color: "#344054",
+                fontSize: 16,
+                fontFamily: PoppinsRegular,
+              }}
+              style2={{
+                // paddingHorizontal: helpers.normalize(30),
+                paddingHorizontal: 60,
+
+                // width: "40%",
+                borderRadius: 8,
+                borderWidth: 0,
+              }}
+              style1={{
+                paddingHorizontal: 60,
+                paddingVertical: 5,
+                borderRadius: 8,
+                borderWidth: 1,
+                borderColor: "#D0D5DD",
+              }}
+              Color2={showClockIn ? "#07504B" : "#FF3B30"}
+              buttonTitle1={"Cancel"}
+              buttonTitle2={showClockIn ? "Clock In" : "Clock Out"}
+            />
+          )}
         </View>
       </View>
     </Modal>

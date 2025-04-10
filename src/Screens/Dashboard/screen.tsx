@@ -1,6 +1,8 @@
+import { useGetDashboardStats } from "@/hooks/useDashboard";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { Admineader } from "@/src/Components";
 import { useModalStore } from "@/store/useModalStore";
-import React, { useState } from "react";
+import React from "react";
 import { Platform, ScrollView, View } from "react-native";
 import {
   CardSection,
@@ -9,8 +11,6 @@ import {
   ScreenHeader,
 } from "../../Components";
 import { styles } from "./styles";
-import { useGetDashboardStats } from "@/hooks/useDashboard";
-import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 
 const Dashboard = () => {
   const isMobileView = Platform.OS == "ios" || Platform.OS == "android";

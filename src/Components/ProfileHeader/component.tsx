@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import { styles } from "./style";
-import { icons } from "@/src/Resources";
+import { icons } from "@/assets/icons/icons";
 import helpers from "../../utils/helpers";
 import SearchBar from "../SearchBar/searchBar";
 import SignoutDropdown from "../SignoutDropdown/component";

@@ -12,6 +12,7 @@ import { styles } from "./styles";
 import { Entypo } from "@expo/vector-icons";
 import { useGetDepartments } from "@/hooks/useDepartments";
 import { useCreateNews } from "@/hooks/useDashboard";
+// import { RichEditor } from "../..";
 
 const categories: string[] = [
   "Everyone",
@@ -98,6 +99,7 @@ const NewsModal: React.FC<NewsModalProps> = ({
             value={formData?.news}
             onChangeText={(text) => handleInputChange("news", text)}
           />
+          {/* <RichEditor></RichEditor> */}
           <View style={styles.chipContainer}>
             <TouchableOpacity
               style={[

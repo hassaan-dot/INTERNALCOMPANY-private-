@@ -224,6 +224,10 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
 
   const renderItem = ({ item }: { item: any }) => {
     const isExpanded = expandedEmail === item.id;
+    const isRTL = (text: any) => {
+      const rtlRegex = /^[\u0600-\u06FF]/;
+      return rtlRegex.test(text);
+    };
     return (
       <View style={styles.row}>
         <View style={[styles.customDesign, rowTextStyle]}>
@@ -235,7 +239,17 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
             onPress={() => setExpandedEmail(isExpanded ? null : item.id)}
             style={{ flex: isExpanded && c.key === "email" ? 5 : 2 }}
           >
-            <Text style={[styles.cell, rowTextStyle]}>
+            <Text
+              style={[
+                styles.cell,
+                rowTextStyle,
+                {
+                  textAlign: isRTL(getValueFromKey(item, c?.key))
+                    ? "left"
+                    : "left",
+                },
+              ]}
+            >
               {isExpanded
                 ? getValueFromKey(item, c?.key)
                 : truncateComponentName(getValueFromKey(item, c?.key), 16)}
@@ -346,7 +360,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
               </TouchableOpacity>
             )}
             {showTime && (
-              <TouchableOpacity onPress={onClickTime}>
+              <TouchableOpacity onPress={() => onClickTime(item)}>
                 <Image
                   source={icons.tableTimeIcon}
                   style={{ width: 20, height: 20, tintColor: "#292D32" }}

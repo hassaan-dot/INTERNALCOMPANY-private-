@@ -1,7 +1,7 @@
 import React from "react";
 import { Image, Platform, Text, View } from "react-native";
 import Svg, { Circle, Text as SvgText } from "react-native-svg";
-import { icons } from "../../Resources";
+import { icons } from "@/assets/icons/icons";
 import { styles } from "./styles";
 
 type PredictorCardProps = {

@@ -4,7 +4,7 @@ import { ROLE } from "@/constants/role";
 import { useAuthStore } from "@/store/useAuthStore";
 import React, { FC } from "react";
 import { Image, Platform, Text, TouchableOpacity, View } from "react-native";
-import { icons } from "../../Resources";
+import { icons } from "@/assets/icons/icons";
 import { SingleButton } from "../HorizontalButtons/component";
 import styles from "./styles";
 

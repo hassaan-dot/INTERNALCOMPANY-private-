@@ -33,12 +33,30 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
   const { data: getPo } = useGetPO();
   const router = useRouter();
   const handleNavigateToDetails = (documentId: string) => {
-    router.push(`/(app)/po-management/po-details?id=${documentId}`);
+    return router.push(`/(app)/po-management/po-details?id=${documentId}`);
+  };
+  const handleNavigateToAllPo = () => {
+    return router.push(`/(app)/po-management`);
   };
   return (
     <View style={styles.container}>
       <View style={styles.card}>
-        <Text style={styles.cardTitle}>Your Assigned PO</Text>
+        <View style={styles.container1}>
+          <View>
+            <Text style={styles.cardTitle}>Your Assigned PO</Text>
+          </View>
+          {getPo?.data?.length > 6 && (
+            <View>
+              <TouchableOpacity
+                style={styles.addButton && styles.addButton1}
+                onPress={() => handleNavigateToAllPo()}
+              >
+                <Text style={styles.addButtonText}>See All</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+        </View>
+
         <View style={{ marginVertical: 10 }}>
           <Svg height="1" width="100%">
             <LinearGradient id="grad" x1="0" x2="1" y1="0" y2="0">
@@ -51,7 +69,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
         </View>
         <FlatList
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
-          data={getPo?.data}
+          data={getPo?.data?.slice(0, 10)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
             <>

@@ -10,6 +10,11 @@ export const styles = StyleSheet.create({
     justifyContent: "space-between",
     height: isMobileView ? helpers.hp(41) : helpers.hp(65),
   },
+  container1: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   newsHeader2: { justifyContent: "center" },
   card3: { borderWidth: 5, borderColor: "#CCD9FF" },
   card: {
@@ -89,6 +94,18 @@ export const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 22,
     borderRadius: 5,
+  },
+  addButton1: {
+    backgroundColor: "#3962ff",
+    paddingHorizontal: 30,
+    borderRadius: 5,
+
+    padding: 7,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   addButtonText: {
     color: "#fff",

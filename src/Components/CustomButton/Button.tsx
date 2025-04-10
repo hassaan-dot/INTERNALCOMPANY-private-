@@ -9,7 +9,7 @@ import {
   Image,
   Alert,
 } from "react-native";
-import { icons } from "../../Resources";
+import { icons } from "@/assets/icons/icons";
 // import Ionicon_com from '../Ionicons/Ionicon';
 import { handleDownload } from "@/src/utils";
 

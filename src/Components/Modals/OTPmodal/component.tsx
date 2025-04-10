@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { icons } from "../../../Resources";
+import { icons } from "@/assets/icons/icons";
 import { styles } from "./styles";
 interface OTPModalProps {
   visible: boolean;

@@ -15,16 +15,20 @@ import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 
 const UserManagement = () => {
-  const { isUserModalOpen, setIsUserModalOpen, rowData, setRowData } =
-    useModalStore();
-
-  const [AttendenceModalOpen, setAttendenceModalOpen] = useState(false);
+  const {
+    isUserModalOpen,
+    setIsUserModalOpen,
+    rowData,
+    setRowData,
+    isAttendenceModalOpen,
+    setisAttendenceModalOpen,
+  } = useModalStore();
 
   const { data, isPending, error, refetch } = useGetUser();
   useRefreshOnFocus(refetch);
 
   const router = useRouter();
-
+  const [currentUser, setcurrentUser] = useState<any>(null);
   const { mutate: handleAdd } = useCreateUser();
 
   const { mutate: handleUpdate } = useUpdateUser();
@@ -136,11 +140,12 @@ const UserManagement = () => {
     setIsUserModalOpen(false);
     setRowData(null);
   };
-  const onCliclTimeFunc = () => {
-    setAttendenceModalOpen(true);
+  const onCliclTimeFunc = ({ documentId, first_name, last_name }: any) => {
+    setisAttendenceModalOpen(true);
+    setcurrentUser({ documentId, first_name, last_name });
   };
   const onCliclTimeFuncClose = () => {
-    setAttendenceModalOpen(false);
+    setisAttendenceModalOpen(false);
   };
 
   const onClickEye = ({ id }: any) => {
@@ -174,12 +179,15 @@ const UserManagement = () => {
         </View>
       </View>
 
-      <AttendenceModal
-        onSubmit={onCliclTimeFuncClose}
-        clockIn={true}
-        title={"Attendence"}
-        isVisible={AttendenceModalOpen}
-      />
+      {isAttendenceModalOpen && (
+        <AttendenceModal
+          onClose={onCliclTimeFuncClose}
+          title={"Attendence"}
+          currentUser={currentUser}
+          isVisible={isAttendenceModalOpen}
+          name={``}
+        />
+      )}
 
       {isUserModalOpen && (
         <CreateUserModal

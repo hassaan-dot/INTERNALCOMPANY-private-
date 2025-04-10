@@ -51,9 +51,11 @@ import TitleAndDescription from "./TitleAndDescription/component";
 import TabSelector from "./UsersDetailsTabs/component";
 import VerticalsButton from "./VerticalsButtons/component";
 import truncateComponentName from "./WordTruncate/component";
+// import RichEditor from "./RichEditor//RichTextEditor.web";
 export {
   Admineader,
   AssignEmployee,
+  // RichEditor,
   AttendenceModal,
   Avatar,
   Box,

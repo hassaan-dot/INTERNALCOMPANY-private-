@@ -1,4 +1,4 @@
-import { icons } from "@/src/Resources";
+import { icons } from "@/assets/icons/icons";
 import React from "react";
 import { Image, View } from "react-native";
 import Select, { components, SingleValue } from "react-select"; // Import SingleValue for typing

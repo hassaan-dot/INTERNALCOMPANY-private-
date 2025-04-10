@@ -45,13 +45,26 @@ const InputField: React.FC<InputFieldProps> = ({
   placeholderTextColor = "#757575",
   ...props
 }) => {
+  const isRTL = (txt: any) => {
+    const rtlRegex = /^[\u0600-\u06FF]/;
+    return rtlRegex.test(txt);
+  };
+  console.log(" is  RDV", isRTL(value));
   return (
     <View style={styles.container}>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
       <TextInput
         returnKeyType="done" // Adds a "Done" button
         onSubmitEditing={Keyboard.dismiss}
-        style={[styles.input, inputStyle, { borderColor: error && "red" }]}
+        style={[
+          styles.input,
+          inputStyle,
+          {
+            borderColor: error && "red",
+            textAlign: isRTL(value) ? "right" : "left",
+            writingDirection: isRTL(value) ? "rtl" : "ltr",
+          },
+        ]}
         value={value}
         onChangeText={onChangeText}
         multiline={multiline}

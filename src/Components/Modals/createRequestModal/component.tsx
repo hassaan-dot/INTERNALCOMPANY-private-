@@ -15,7 +15,7 @@ import {
   MultiSelectDropdown,
   SingleSelectDropDown,
 } from "../..";
-import { icons } from "../../../Resources";
+import { icons } from "@/assets/icons/icons";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
 // import { formatISODate } from "@/src/utils";

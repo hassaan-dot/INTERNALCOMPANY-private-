@@ -39,6 +39,9 @@ type useModalStore = {
 
   isNewsModalOpen: boolean;
   setIsNewsModalOpen: (isNewsModalOpen: boolean) => void;
+
+  isAttendenceModalOpen: boolean;
+  setisAttendenceModalOpen: (isAttendenceModalOpen: boolean) => void;
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
@@ -79,4 +82,8 @@ export const useModalStore = create<useModalStore>((set) => ({
 
   isNewsModalOpen: false,
   setIsNewsModalOpen: (isNewsModalOpen) => set({ isNewsModalOpen }),
+
+  isAttendenceModalOpen: false,
+  setisAttendenceModalOpen: (isAttendenceModalOpen) =>
+    set({ isAttendenceModalOpen }),
 }));

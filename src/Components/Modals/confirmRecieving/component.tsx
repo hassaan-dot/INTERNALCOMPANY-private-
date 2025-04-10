@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import { useForm } from "react-hook-form";
 import { styles } from "./styles";
-import { icons, string } from "../../../Resources";
+import { icons } from "@/assets/icons/icons";
 import InputField from "../../InputField/InputField";
 interface ClientModalProps {
   visible: boolean;

@@ -9,7 +9,7 @@ import {
   View,
   Alert,
 } from "react-native";
-import { icons } from "../../../Resources";
+import { icons } from "@/assets/icons/icons";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
 import * as yup from "yup";

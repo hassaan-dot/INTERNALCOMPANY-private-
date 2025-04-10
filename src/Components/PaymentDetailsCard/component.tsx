@@ -1,7 +1,7 @@
 import React from "react";
 import { View, Text, Image } from "react-native";
 import helpers from "../../utils/helpers";
-import { icons } from "../../Resources";
+import { icons } from "@/assets/icons/icons";
 import { styles } from "./styles";
 import { Styles } from "../modalHeader/styles";
 interface UserProfileProps {

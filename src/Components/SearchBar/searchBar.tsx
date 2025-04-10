@@ -1,12 +1,7 @@
-
 import React, { useState, useRef, useEffect } from "react";
-import {
-  View,
-  TextInput,
-  Image,
-} from "react-native";
-import { icons } from "../../Resources";
-import styles from './Styles'
+import { View, TextInput, Image } from "react-native";
+import { icons } from "@/assets/icons/icons";
+import styles from "./Styles";
 interface SearchBarProps {
   placeholder?: string;
   onChangeText: (text: string | null) => void;
@@ -22,7 +17,7 @@ const SearchBar: React.FC<SearchBarProps> = ({
   value,
   style,
 }) => {
-  const [valueHolder,setValueHolder]=useState('Search......')
+  const [valueHolder, setValueHolder] = useState("Search......");
   const [visible, setVisible] = useState<boolean>(false);
   const inputRef = useRef<TextInput>(null);
 
@@ -39,13 +34,13 @@ const SearchBar: React.FC<SearchBarProps> = ({
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <Image
           source={icons.searchBarIcon}
-          style={{ width: 16, height: 16,marginRight:6 }}
+          style={{ width: 16, height: 16, marginRight: 6 }}
         ></Image>
         <TextInput
           // ref={inputRef}
-        
+
           style={styles.searchInput}
-          placeholder={valueHolder ||'Search...'}
+          placeholder={valueHolder || "Search..."}
           placeholderTextColor="#849198"
           // editable={visible}
           onChangeText={(text) => setValueHolder(text)}
@@ -56,7 +51,5 @@ const SearchBar: React.FC<SearchBarProps> = ({
     </View>
   );
 };
-
-
 
 export default SearchBar;

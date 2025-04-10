@@ -32,11 +32,53 @@ const handleUpdateUser = async (data: any, id: any) => {
   return res.data;
 };
 
+const handleGetUserAttendence = async (id: any) => {
+  const res = await api.get(`/user-attendance/${id}`);
+  return res.data;
+};
+const handlClockInUserAttendence = async (id: any) => {
+  console.log("id", id);
+  const res = await api.get(`/attendance-clockin/${id}`);
+  return res.data;
+};
+const handlClockOutUserAttendence = async (documentId: any) => {
+  const res = await api.get(`/attendance-clockout/${documentId}`);
+  return res.data;
+};
+
 export const useGetUser = () => {
   const { filters } = useModalStore();
   return useQuery({
     queryKey: ["users", filters],
     queryFn: () => handleGetAllUser(filters),
+  });
+};
+
+export const useGetUserAttendence = (id: any) => {
+  return useQuery({
+    queryKey: ["attendence"],
+    queryFn: () => handleGetUserAttendence(id),
+  });
+};
+
+export const useClockIntUserAttendence = () => {
+  return useMutation({
+    mutationKey: ["checkIn"],
+    mutationFn: (id) => handlClockInUserAttendence(id),
+    onSuccess: async (data) => {
+      toastSuccess("Success!", "User is created successfully");
+    },
+    onError: (error) => {
+      toastError("Oops!", error.message);
+    },
+  });
+};
+
+export const useClockOutUserAttendence = (id: any) => {
+  return useQuery({
+    queryKey: ["checkOut", id],
+    queryFn: () => handlClockOutUserAttendence(id),
+    enabled: !!id, // prevents running the hook if id is null or undefined
   });
 };
 
@@ -70,9 +112,8 @@ export const useCreateUser = () => {
 };
 
 export const useUpdateUser = () => {
-  const { setIsUserModalOpen } = useModalStore();
+  const { setIsUserModalOpen, setRowData } = useModalStore();
   const queryUser = useQueryClient();
-  const { setRowData } = useModalStore();
   return useMutation({
     mutationKey: ["updateUser"],
     mutationFn: async ({ data, id }: any) => handleUpdateUser(data, id),

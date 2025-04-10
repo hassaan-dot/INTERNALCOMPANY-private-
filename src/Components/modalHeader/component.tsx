@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, TouchableOpacity, Image } from "react-native";
 import { Styles } from "./styles";
-import { icons } from "../../Resources";
+import { icons } from "@/assets/icons/icons";
 
 type ModalHeaderProps = {
   title: string;
@@ -20,15 +20,10 @@ const ModalHeader: React.FC<ModalHeaderProps> = ({
     <View style={Styles.container}>
       <View style={Styles.rowContainer}>
         {ShowBackIcon && (
-          <TouchableOpacity
-            onPress={() => handleFunction()}
-          >
+          <TouchableOpacity onPress={() => handleFunction()}>
             <Image
               source={icons.arrowBack_Icon}
-              style={[
-                Styles.ArrowBackIcon,
-                { tintColor: "#E22691" },
-              ]}
+              style={[Styles.ArrowBackIcon, { tintColor: "#E22691" }]}
             ></Image>
           </TouchableOpacity>
         )}
