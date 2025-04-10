@@ -11,6 +11,7 @@ interface CustomCheckboxFieldProps {
   isRequired?: boolean;
   isReadOnly?: boolean;
   bgColor?: string;
+  textstyle: any;
   // check?: boolean;
   value: boolean; // Controlled component
   handleInputChange?: (
@@ -26,6 +27,7 @@ const CustomCheckboxField: React.FC<CustomCheckboxFieldProps> = ({
   value,
   text,
   style,
+  textstyle,
   // check,
   handleInputChange,
 }) => {
@@ -57,12 +59,15 @@ const CustomCheckboxField: React.FC<CustomCheckboxFieldProps> = ({
         </TouchableOpacity>
         {text && (
           <Text
-            style={{
-              marginLeft: 5,
-              color: "#000000",
-              fontSize: 12,
-              fontFamily: PoppinsRegular,
-            }}
+            style={[
+              {
+                marginLeft: 5,
+                color: "#000000",
+                fontSize: 12,
+                fontFamily: PoppinsRegular,
+              },
+              textstyle,
+            ]}
           >
             {text}
           </Text>

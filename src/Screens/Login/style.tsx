@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
     width: 15,
     height: 15,
     marginHorizontal: 0,
-    marginRight: 8,
+
+    marginRight: 0,
     borderRadius: 3,
   },
   forget: {
@@ -106,9 +107,10 @@ const styles = StyleSheet.create({
   inputError: { borderColor: "red" },
   login_desc2: {
     flex: 1,
-    margin: 25,
+    // margin: 25,
     // paddingHorizontal: helpers.normalize(40),
     justifyContent: "center",
+    alignItems: "center",
   },
   login_desc22: {
     flex: 1,
@@ -118,9 +120,10 @@ const styles = StyleSheet.create({
   logincontainer: { marginTop: 10 },
   logincontainer2: { marginTop: 20 },
   container3: {
-    margin: helpers.normalize(20),
-    marginTop: helpers.normalize(50),
-    marginHorizontal: helpers.normalize(50),
+    // margin: helpers.normalize(20),
+    // marginTop: helpers.normalize(50),
+    // marginHorizontal: helpers.normalize(50),
+    width: "65%",
   },
 });
 export default styles;

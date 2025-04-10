@@ -1,12 +1,5 @@
 import { StyleSheet } from "react-native";
-import helpers from "../../utils/helpers";
-import {
-  PoppinsBold,
-  PoppinsLight,
-  PoppinsMedium,
-  PoppinsRegular,
-  PoppinsSemiBold,
-} from "../../Resources/fonts";
+import { PoppinsMedium } from "../../Resources/fonts";
 export const styles = StyleSheet.create({
   descContainer: {},
   title: {

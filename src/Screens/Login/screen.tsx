@@ -35,7 +35,7 @@ const LoginScreen: React.FC = () => {
   const { width } = useWindowDimensions();
 
   // Define a breakpoint (e.g., 640 like Tailwind's "sm")
-  const isSmallScreen = width < 640;
+  const isSmallScreen = width < 850;
   // Use the breakpoint to conditionally apply styles
   console.log("isSmallScreen", isSmallScreen);
 
@@ -135,16 +135,28 @@ const LoginScreen: React.FC = () => {
   return (
     <>
       <View style={[styles.container, isMobileView && styles.container2]}>
-        <View style={styles.login_desc1}>
-          <View style={styles.container1}>
-            <View style={{ alignSelf: "flex-end" }}>
-              <TitleAndDescription title={string.login2} desc={string.login3} />
+        {!isSmallScreen && (
+          <View style={styles.login_desc1}>
+            <View style={styles.container1}>
+              <View style={{ alignSelf: "flex-end", flex: 1 }}>
+                {!isSmallScreen && (
+                  <TitleAndDescription
+                    title={string.login2}
+                    desc={string.login3}
+                  />
+                )}
+              </View>
             </View>
           </View>
-        </View>
+        )}
 
         <View style={[styles.login_desc2, isMobileView && styles.login_desc22]}>
-          <View style={styles.container3}>
+          <View
+            style={[
+              styles.container3,
+              { width: isSmallScreen ? "85%" : "65%" },
+            ]}
+          >
             <View>
               <TitleAndDescription
                 titleTextStyle={[
@@ -211,7 +223,11 @@ const LoginScreen: React.FC = () => {
             </View>
             <View style={[styles.section, isMobileView && styles.section2]}>
               {!isMobileView && (
-                <CheckBox style={styles.checkbox} text={string.RememberMe} />
+                <CheckBox
+                  style={styles.checkbox}
+                  textstyle={{ marginLeft: 0 }}
+                  text={string.RememberMe}
+                />
               )}
               <TouchableOpacity>
                 <Text style={[styles.forget, isMobileView && styles.forget2]}>
