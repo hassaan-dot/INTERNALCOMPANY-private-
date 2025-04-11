@@ -10,8 +10,10 @@ import {
 import CreateModal from "../../Components/Modals/createModal/component";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import { styles } from "./styles";
+import { useAuthStore } from "@/store/useAuthStore";
 const Report: React.FC<{ route: any }> = ({ route }) => {
   const DATA = generateData();
+  const { user } = useAuthStore();
 
   const [ModalOpen, setModalOpen] = useState(false);
   function CreatClient() {
@@ -26,6 +28,7 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
   let showStatus = useState<boolean>(
     selectedTab !== "Purchasing Order List" ? true : false
   );
+
   return (
     <>
       <ScrollView style={styles.container1}>
@@ -34,17 +37,37 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
         <View style={{ marginTop: 15 }}>
           <View style={styles.container2}>
             {/* <Ballindicator></Ballindicator> */}
-            <PredictorCard color="#38CB89" />
-            <PredictorCard color="#FFA600" />
-            <PredictorCard color="#FF5630" />
-            <PredictorCard color="#38CB89" />
+            <PredictorCard
+              title="Total Applications"
+              color="#38CB89"
+              value={3}
+              inc={"+100"}
+            />
+            <PredictorCard
+              title="Assigned"
+              color="#FFA600"
+              value={100}
+              inc={"+100"}
+            />
+            <PredictorCard
+              title="Total Payments"
+              color="#FF5630"
+              value={20}
+              inc={"+100"}
+            />
+            <PredictorCard
+              title="Total User Active"
+              color="#38CB89"
+              value={1}
+              inc={"+100"}
+            />
           </View>
         </View>
         <View style={{ marginVertical: 15 }}>
-          <GraphCard></GraphCard>
+          <GraphCard id={user?.documentId}></GraphCard>
         </View>
         <View style={{ marginTop: 10 }}>
-          <TabSelector
+          {/* <TabSelector
             containerStyle={styles.container3}
             dropDownButton={true}
             barColor={"#07504B"}
@@ -53,16 +76,16 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
             tabs={["PO reports", "payment reports", "User active reports"]}
             onSelect={(tab) => setSelectedTab(tab)}
             selectedTab={selectedTab}
-          />
+          /> */}
         </View>
         <View style={{ marginTop: 5 }}>
           {/* <Indicator></Indicator> */}
-          <CompanyTable
+          {/* <CompanyTable
             showActions={true}
             checkbox={true}
             pagination={true}
             DATA={DATA}
-          ></CompanyTable>
+          ></CompanyTable> */}
         </View>
       </ScrollView>
       <CreateModal create={true} visible={ModalOpen}></CreateModal>

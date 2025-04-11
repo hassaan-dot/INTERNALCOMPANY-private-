@@ -70,8 +70,8 @@ const Dashboard = () => {
               style={styles.container6}
               color={"#38CB89"}
               title={"Total PO"}
-              value={data?.total_po?.count}
-              inc={data?.total_po?.increment}
+                value={data?.total_po?.count}
+                inc={data?.total_po?.increment}
             />
           </View>
         </View>

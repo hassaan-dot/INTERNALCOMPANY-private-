@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { View } from "react-native";
 import { CompanyTable, ScreenHeader } from "../../Components";
 // import Add_PO from "../../Screens/PO_Add/screen";
@@ -16,10 +16,21 @@ import { useModalStore } from "@/store/useModalStore";
 import { useRouter } from "expo-router";
 import { Requests_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
-const Request: React.FC<{ route: any }> = ({ route }) => {
-  const { data, refetch } = useGetRequest();
+import { formatDate } from "@/src/utils";
 
+const Request = () => {
+  const { data, refetch } = useGetRequest();
   useRefreshOnFocus(refetch);
+
+  const requestData = useMemo(() => {
+    return {
+      data: data?.data?.map((item: any) => ({
+        ...item,
+        perform_on: formatDate(item?.perform_on),
+      })),
+      meta: data?.meta,
+    };
+  }, [data]);
 
   const { mutate: handleAdd } = useCreateRequest();
   const { mutate: handleDelete } = useDeleteRequest();
@@ -138,10 +149,12 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
             checkbox={true}
             onPressUpdate={onPressEdit}
             onPressDelete={onPressDelete}
-            DATA={data}
+            DATA={requestData}
             showActions={true}
             pagination={true}
             showEye={true}
+            showDel={true}
+            showEdit={true}
             showDocument={true}
             onClickEye={onClickEye}
           ></CompanyTable>
@@ -150,7 +163,10 @@ const Request: React.FC<{ route: any }> = ({ route }) => {
       {isRequestModalOpen && (
         <CreateRequestModal
           onSubmit={handleSubmit}
-          onClose={() => setIsRequestModalOpen(false)}
+          onClose={() => {
+            setIsRequestModalOpen(false);
+            setRowData(null);
+          }}
           // onPressUpdatefunction={onPressUpdatefunction}
           desc={true}
           styleContainer={{ flexDirection: "row" }}

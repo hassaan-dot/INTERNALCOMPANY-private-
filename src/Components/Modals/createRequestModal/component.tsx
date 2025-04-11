@@ -186,17 +186,17 @@ const CreateModal: React.FC<ClientModalProps> = ({
               {create && (
                 <>
                   <Image source={icons.modalIconOtp} style={styles.modalIcon} />
-                  <Text style={styles.title}>Create Request</Text>
+                  <Text style={styles.title}>
+                    {rowData?.isEdit ? "Edit Request" : "Create Request"}
+                  </Text>
                 </>
-              )}
-
-              {!create && (
-                <Text style={styles.title}>Send Payment Reminder</Text>
               )}
 
               {desc && (
                 <Text style={styles.subtitle}>
-                  {"Add your new request as new details"}
+                  {!rowData?.isEdit
+                    ? "Add your new request as new details"
+                    : "Edit your request"}
                 </Text>
               )}
             </View>
@@ -289,7 +289,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
               // disabled={Object.keys(errors).length > 0}
             >
               <Text style={styles.addText}>
-                {create ? "Create Request" : "Send Reminder"}
+                {rowData?.isEdit ? "Edit Request" : "Create Request"}
               </Text>
             </TouchableOpacity>
           </View>

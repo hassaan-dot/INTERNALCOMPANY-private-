@@ -3,19 +3,37 @@ import { BarChart, PieChart } from "react-native-gifted-charts";
 import helpers from "../../../utils/helpers";
 import { PoppinsRegular } from "../../../Resources/fonts";
 import { useGetUserWorkingHours, useGetAssignedPOStats } from "@/hooks/useUser";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 
 const GraphCards = ({ id }: any) => {
-  const { data: working_hours } = useGetUserWorkingHours(id);
-  const { data: po_stats } = useGetAssignedPOStats(id);
-  console.log("po_stats", po_stats);
+  const { data: working_hours = [], refetch: refetch_hours } =
+    useGetUserWorkingHours(id);
+  const { data: po_stats, refetch: refetchStats } = useGetAssignedPOStats(id);
+  useRefreshOnFocus(refetch_hours);
+  useRefreshOnFocus(refetchStats);
+
+  const maxValue = Math.min(
+    24,
+    Math.max(...working_hours.map((item) => item.value || 0))
+  );
+
+  const roundTo = maxValue > 10 ? 5 : 1;
+  const roundedMax = Math.ceil(maxValue / roundTo) * roundTo;
+  let noOfSections = 5;
+  let stepValue = Math.ceil(roundedMax / noOfSections);
+  if (stepValue * noOfSections < roundedMax) {
+    stepValue += 1;
+  }
+  noOfSections = Math.ceil(roundedMax / stepValue);
+
   return (
     <View style={styles.container}>
       <View style={styles.barChartContainer}>
         <Text style={styles.chartTitle}>Daily Total Hours Works</Text>
         <View style={styles.chartWrapper}>
           <BarChart
-            noOfSections={4}
-            stepValue={2}
+            noOfSections={noOfSections}
+            stepValue={stepValue}
             formatYLabel={(label: string) => parseInt(label).toString()}
             data={working_hours}
             barWidth={14}
@@ -23,15 +41,20 @@ const GraphCards = ({ id }: any) => {
               return (
                 <View
                   style={{
-                    marginBottom: 20,
+                    // marginBottom: 20,
                     marginLeft: -6,
+                    position: "relative",
+                    // margin: 10,
+
                     backgroundColor: item?.frontColor,
                     paddingHorizontal: 6,
-                    paddingVertical: 4,
+                    paddingVertical: 2,
                     borderRadius: 4,
                   }}
                 >
-                  <Text>{item.value}</Text>
+                  <Text style={{ color: "#fff", fontSize: 12 }}>
+                    {item?.value?.toFixed(1)}
+                  </Text>
                 </View>
               );
             }}
@@ -125,10 +148,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 16,
-    // shadowOpacity: 0.1,
-
     flex: 0.5,
-    // marginHorizontal: 10,
     marginRight: 20,
   },
   pieChartContainer: {
@@ -136,7 +156,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     padding: 20,
     borderRadius: 16,
-    // shadowOpacity: 0.1,
   },
   chartTitle: {
     fontSize: 16,
@@ -154,7 +173,6 @@ const styles = StyleSheet.create({
     fontWeight: "400",
     margin: 0,
     top: -10,
-    // paddingRight: 25,
     fontFamily: PoppinsRegular,
   },
   xAxisLabelTextStyle: {
