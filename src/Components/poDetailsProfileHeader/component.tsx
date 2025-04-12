@@ -76,7 +76,7 @@ const PoDetailProfile: React.FC<PoDetailProfileProps> = ({
                 {data?.data?.po_items?.length}
               </Text>
             </View>
-            <View style={[styles.detailsItem, {}]}>
+            <View style={[styles.detailsItem, { flex: 0.4 }]}>
               <Text style={[styles.label, style]}>Creation Date: </Text>
               <Text style={[styles.link, style]}>
                 {formatDate(data?.data?.createdAt)}

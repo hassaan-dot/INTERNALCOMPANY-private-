@@ -59,10 +59,8 @@ const invoiceSchema = yup.object().shape({
 
 const InvoiceModal: React.FC<ClientModalProps> = ({
   visible,
-
   onClose,
   onSubmit,
-
   desc = false,
   styleContainer,
   desctext,
@@ -99,6 +97,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
       amount: "",
       payment_method: "",
       payment_status: "",
+      documentId: rowData?.documentId,
       purchase_order: "",
     }
   );
@@ -178,7 +177,9 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
                 source={icons.invoiceModalIcon}
                 style={{ width: 40, height: 40 }}
               />
-              <Text style={styles.title}>Add Invoice</Text>
+              <Text style={styles.title}>{`${
+                rowData?.isEdit ? "Update Invoice" : "Create Invoice"
+              }`}</Text>
 
               {desc && <Text style={styles.subtitle}>{desctext}</Text>}
             </View>
@@ -267,7 +268,9 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
               onPress={handleSubmit}
               disabled={Object.keys(errors).length > 0}
             >
-              <Text style={styles.addText}>Add invoice</Text>
+              <Text style={styles.addText}>{`${
+                rowData?.isEdit ? "Update" : "Create"
+              }`}</Text>
             </TouchableOpacity>
           </View>
         </View>

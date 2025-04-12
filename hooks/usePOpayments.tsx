@@ -19,8 +19,9 @@ const handleDeletePOInvoice = async (data: any) => {
   return res.data;
 };
 
-const handleUpdateInvoice = async (data: any, id: string) => {
-  const res = await api.put(`/invoices/${id}`, data);
+const handleUpdateInvoice = async (data: any, documentId: any) => {
+  console.log("data", documentId);
+  const res = await api.put(`/invoices/${documentId}`, data);
   return res.data;
 };
 // sko38f7f6mv0gi1havb75f7f
@@ -50,6 +51,27 @@ export const useCreateInvoice = () => {
         queryKey: ["getonePO"],
         type: "active",
       });
+      queryPO.invalidateQueries({
+        queryKey: ["invoice"],
+        type: "active",
+      });
+    },
+    onError: (error) => {
+      toastError("Failed!", error.message);
+    },
+  });
+};
+export const useUpdateInvoice = () => {
+  const { setisInvoicePoModalOpen } = useModalStore();
+
+  const queryPO = useQueryClient();
+  return useMutation({
+    mutationKey: ["udpateInvoice"],
+    mutationFn: ({ data, documentId }: any) =>
+      handleUpdateInvoice(data, documentId),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "Invoice Update successfully");
+      setisInvoicePoModalOpen(false);
       queryPO.invalidateQueries({
         queryKey: ["invoice"],
         type: "active",

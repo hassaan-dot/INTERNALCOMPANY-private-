@@ -3,15 +3,17 @@ import {
   useCreateInvoice,
   useDeleteInvoice,
   useGetInvoice,
+  useUpdateInvoice,
 } from "@/hooks/usePOpayments";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
-import { CompanyTable, ScreenHeader } from "../../Components";
+import { CompanyTable, InvoiceModal, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { Invoice_Schema } from "../ClientManagement/_schema";
 import styles from "./styles";
+import { useModalStore } from "@/store/useModalStore";
 const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   const [ModalOpen, setModalOpen] = useState(false);
 
@@ -19,18 +21,21 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   const onClickEye = ({ documentId }: any) => {
     router.push(`/(app)/payment/payment-details?id=${documentId}`);
   };
-  const { mutate: handleAddInvoice } = useCreateInvoice();
+  const { mutate: handleUpdateInvoice } = useUpdateInvoice();
   const { mutate: handleDelete } = useDeleteInvoice();
 
   const { data: InvoiceData, refetch } = useGetInvoice();
   useRefreshOnFocus(refetch);
-
-  const onPressAddInvoicefunction = ({
+  const { rowData, setRowData, setisInvoicePoModalOpen, isInvoicePoModalOpen } =
+    useModalStore();
+  const onPressUpdateInvoicefunction = ({
     date_of_payment,
     payer,
     amount,
     payment_method,
     payment_status,
+    purchase_order,
+    documentId,
   }: any) => {
     const data = {
       data: {
@@ -39,11 +44,35 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
         amount: amount,
         payment_method: payment_method,
         payment_status: payment_status,
-        purchase_order: 60,
+        purchase_order: purchase_order,
       },
     };
-    handleAddInvoice(data);
+
+    handleUpdateInvoice({ data, documentId });
   };
+  const onPressEdit = ({
+    date_of_payment,
+    payer,
+    amount,
+    payment_method,
+    payment_status,
+    purchase_order,
+    documentId,
+  }: any) => {
+    const data = {
+      date_of_payment,
+      payer,
+      amount,
+      payment_method,
+      payment_status,
+      documentId: documentId,
+      purchase_order: purchase_order?.id,
+      isEdit: true,
+    };
+    setRowData(data);
+    setisInvoicePoModalOpen(true);
+  };
+  console.log("rowData", rowData);
   const onPressDelete = (documentId: string) => {
     const data = {
       data: {
@@ -61,6 +90,7 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
           <CompanyTable
             showActions={true}
             onPressDelete={onPressDelete}
+            onPressUpdate={onPressEdit}
             rowTextStyle={{ marginLeft: 10, fontFamily: PoppinsRegular }}
             headerTextStyle={{ left: 10 }}
             pagination={true}
@@ -69,11 +99,19 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
             showEye={true}
             showDocument={true}
             showStatus={true}
+            showEdit={true}
             onClickEye={onClickEye}
           ></CompanyTable>
         </View>
       </View>
-      <CreateModal create={true} visible={ModalOpen}></CreateModal>
+      {isInvoicePoModalOpen && (
+        <InvoiceModal
+          create={true}
+          onSubmit={onPressUpdateInvoicefunction}
+          onClose={() => setisInvoicePoModalOpen(false)}
+          visible={isInvoicePoModalOpen}
+        ></InvoiceModal>
+      )}
     </>
   );
 };
