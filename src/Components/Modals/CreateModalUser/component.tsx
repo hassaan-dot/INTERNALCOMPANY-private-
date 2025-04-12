@@ -87,7 +87,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
       .required("Phone number is required")
       .matches(/^[0-9]+$/, "Phone number can only contain numbers")
       .min(10, "Phone number must be at least 10 digits"),
-    role: yup.string().required("Role is required"),
+    role: yup.string().required("Required").min(1, "required"),
   });
 
   const loginSchema = yup.object().shape({
@@ -153,31 +153,37 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     setTouched(allFields);
     const isValid = await validateForm();
 
-    console.log("isValid", isValid);
     if (isValid) {
-      onSubmit(formData);
+      const finalData = {
+        ...formData,
+        department: formData.department === "" ? null : formData.department,
+      };
+
+      onSubmit(finalData);
     }
   };
 
   const transformdepsToDropdownItems = (deps: any[]) => {
-    if (!deps) return [];
-    return deps.map((dep) => ({
-      value: `${dep?.name} `,
+    const items = (deps || []).map((dep) => ({
+      value: `${dep?.name}`,
       key: dep?.id,
     }));
+    items.push({ value: "No option", key: "" });
+    return items;
   };
 
   const transformRolesToDropdownItems = (roles: any[]) => {
-    if (!roles) return [];
-    return roles.map((role) => ({
-      value: `${role?.name} `,
+    const items = (roles || []).map((role) => ({
+      value: `${role?.name}`,
       key: role?.id,
     }));
+    return items;
   };
 
   const depsDropdownItems = transformdepsToDropdownItems(
     GetDepartments?.data || []
   );
+
   const rolesDropdownItems = transformRolesToDropdownItems(
     getRoles?.roles || []
   );

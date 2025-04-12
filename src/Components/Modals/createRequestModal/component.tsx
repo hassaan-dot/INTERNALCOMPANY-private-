@@ -242,16 +242,6 @@ const CreateModal: React.FC<ClientModalProps> = ({
             </View>
 
             <View style={{ marginBottom: 5 }}>
-              <SingleSelectDropDown
-                title={"Select Priority"}
-                selected={formData.standing}
-                setSelected={(val) => handleInputChange("standing", val)}
-                items={items}
-                error={touched.standing && errors.standing}
-              />
-            </View>
-
-            <View style={{ marginBottom: 5 }}>
               <MultiSelectDropdown
                 title="Select Users"
                 items={userDropdownItems}
@@ -273,6 +263,15 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 title={"Select Date/Time:"}
                 error={touched.perform_on && errors.perform_on}
                 selectedDate={date}
+              />
+            </View>
+            <View style={{ marginBottom: 15 }}>
+              <SingleSelectDropDown
+                title={"Select Priority"}
+                selected={formData.standing}
+                setSelected={(val) => handleInputChange("standing", val)}
+                items={items}
+                error={touched.standing && errors.standing}
               />
             </View>
           </ScrollView>

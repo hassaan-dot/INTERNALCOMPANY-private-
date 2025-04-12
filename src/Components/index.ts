@@ -1,4 +1,4 @@
-import Indicator from "./ActivityIndicator/Indicator";
+// import Indicator from "./ActivityIndicator/Indicator";
 import POForm from "./AddPOform/component";
 import Admineader from "./adminHeader/component";
 import Avatar from "./Avatar/component";
@@ -76,7 +76,7 @@ export {
   GraphCard,
   Header,
   HorizontalLine,
-  Indicator,
+  // Indicator,
   InformationContainer,
   InputField,
   InvoiceModal,

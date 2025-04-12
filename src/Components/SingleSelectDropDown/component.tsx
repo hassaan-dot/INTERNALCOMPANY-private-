@@ -1,19 +1,39 @@
-import { SelectList } from "react-native-dropdown-select-list";
-import { StyleSheet, View, Text } from "react-native";
 import React from "react";
+import { SelectList } from "react-native-dropdown-select-list";
+import {
+  StyleSheet,
+  View,
+  Text,
+  StyleProp,
+  ViewStyle,
+  TextStyle,
+} from "react-native";
 import { PoppinsRegular } from "@/constants/fonts";
 
-const SingleSelectDropDown = ({
+type DropDownItem = {
+  key: string;
+  value: string;
+};
+
+type Props = {
+  items: DropDownItem[];
+  selected?: string;
+  setSelected: (value: string) => void;
+  title?: string;
+  error?: boolean;
+  errorMessage?: string;
+  containerStyle?: StyleProp<ViewStyle>;
+};
+
+const SingleSelectDropDown: React.FC<Props> = ({
   items,
-  error,
+  error = false,
   selected = "",
   setSelected,
   errorMessage,
   title,
   containerStyle,
-}: any) => {
-  // const [selected, setSelected] = React.useState("");
-
+}) => {
   return (
     <View style={[styles.container, containerStyle]}>
       <Text style={styles.label}>{title}</Text>

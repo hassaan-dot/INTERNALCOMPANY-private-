@@ -1,19 +1,19 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  Modal,
-  Pressable,
-} from "react-native";
+import React from "react";
+import { View, Text, TouchableOpacity, Modal, StyleSheet } from "react-native";
 import { styles } from "./styles";
 import LocalStorage from "@/services/local-storage";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "expo-router";
 
-const SignoutDropdown = ({ visible, setVisible }: any) => {
+type SignoutDropdownProps = {
+  visible: boolean;
+  setVisible: (value: boolean) => void;
+};
+
+const SignoutDropdown: React.FC<SignoutDropdownProps> = ({
+  visible,
+  setVisible,
+}: any) => {
   const { setUser, setToken } = useAuthStore();
   const router = useRouter();
 

@@ -11,7 +11,6 @@ import {
 import * as yup from "yup";
 import {
   CheckBox,
-  Indicator,
   InputField,
   OTPmodal,
   Password,
