@@ -32,6 +32,7 @@ interface CompanyTableProps {
   onClickTime: any;
   onClickEye?: (item: any) => void;
   isPO?: boolean;
+  onClickDoc?: any;
 }
 
 const TableHeader: React.FC<CompanyTableProps> = ({
@@ -83,6 +84,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   showTime = false,
   onClickTime,
   onClickEye,
+  onClickDoc,
   isPO = false,
 }) => {
   const { user } = useAuthStore();
@@ -352,7 +354,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
             )}
 
             {showDocument && (
-              <TouchableOpacity>
+              <TouchableOpacity onPress={() => onClickDoc(item)}>
                 <Image
                   source={icons.tableDocumentIcon}
                   style={{ width: 20, height: 20, tintColor: "#292D32" }}
@@ -394,7 +396,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         <View style={styles.paginationContainer}>
           <TouchableOpacity
             disabled={filters.page == 1}
-            onPress={() => setFilters({ ...filters, page: filters.page - 1 })}
+            onPress={() => setFilters({ ...filters, page: filters?.page - 1 })}
           >
             <Image
               source={icons.tablepaginationleftarrowIcon}
@@ -422,7 +424,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
           ))}
           <TouchableOpacity
             disabled={filters.page == totalPages}
-            onPress={() => setFilters({ ...filters, page: filters.page + 1 })}
+            onPress={() => setFilters({ ...filters, page: filters?.page + 1 })}
           >
             <Image
               source={icons.tablepaginationrightarrowIcon}

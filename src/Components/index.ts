@@ -51,10 +51,14 @@ import TitleAndDescription from "./TitleAndDescription/component";
 import TabSelector from "./UsersDetailsTabs/component";
 import VerticalsButton from "./VerticalsButtons/component";
 import truncateComponentName from "./WordTruncate/component";
+import CreatePaymentReminderUser from "./Modals/Payments/UserPaymentModal/component";
+import CreatePaymentReminderClient from "./Modals/Payments/ClientPaymentModal/component";
 // import RichEditor from "./RichEditor//RichTextEditor.web";
 export {
   Admineader,
   AssignEmployee,
+  CreatePaymentReminderUser,
+  CreatePaymentReminderClient,
   // RichEditor,
   AttendenceModal,
   Avatar,

@@ -39,17 +39,25 @@ const LoginScreen: React.FC = () => {
   console.log("isSmallScreen", isSmallScreen);
 
   const { mutate } = useLogin();
+
   const isMobileView = Platform.OS == "ios";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [modalVisible, setModalVisible] = useState(false);
+
   const [isVisible, setIsVisible] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
-  const { isActivityIndicator, setisActivityIndicator } = useModalStore();
+
+  const {
+    isActivityIndicator,
+    setisActivityIndicator,
+    isOtpModalOpen,
+    setIsOtpModalOpen,
+  } = useModalStore();
+
   const {
     values,
     errors: errorsForm,
@@ -70,10 +78,6 @@ const LoginScreen: React.FC = () => {
       mutate(data);
     },
   });
-
-  function onSubmitFunction() {
-    setModalVisible(false);
-  }
 
   const validateForm = async () => {
     try {
@@ -108,6 +112,11 @@ const LoginScreen: React.FC = () => {
       mutate(data);
     }
   };
+
+  function onSubmitFunction() {
+    handlePressLogin();
+    // setModalVisible(false);
+  }
 
   const handleInputChange = async (
     field: "email" | "password",
@@ -250,10 +259,15 @@ const LoginScreen: React.FC = () => {
               </TouchableOpacity>
             </View>
           </View>
-          <OTPmodal visible={modalVisible} onSubmit={onSubmitFunction} />
+          {isOtpModalOpen && (
+            <OTPmodal
+              visible={isOtpModalOpen}
+              onSubmit={onSubmitFunction}
+              onClose={() => setIsOtpModalOpen(false)}
+            />
+          )}
         </View>
       </View>
-      {/* {isActivityIndicator && <Indicator></Indicator>} */}
     </>
   );
 };

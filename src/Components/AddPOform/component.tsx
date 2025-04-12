@@ -1,5 +1,4 @@
 import { PoppinsRegular } from "@/constants/fonts";
-import { useLocations } from "@/hooks/useLocation";
 import { useCreatePO, useUpdatePO } from "@/hooks/usePO";
 import { useModalStore } from "@/store/useModalStore";
 import { AntDesign, Feather } from "@expo/vector-icons";
@@ -20,6 +19,7 @@ import { ButtonRow } from "../CncelAddButtons/component";
 import InputField from "../InputField/InputField";
 import SingleSelectDropDown from "../SingleSelectDropDown/component";
 import styles from "./styles";
+import { useGetAllClients } from "@/hooks/useClient";
 
 interface Props {
   onPress: () => void;
@@ -38,81 +38,45 @@ const poSchema = yup.object().shape({
     .string()
     .required("PO name is required")
     .min(2, "PO name must be at least 2 characters"),
-  company_name: yup
+  client: yup
     .string()
-    .required("Company name is required")
-    .min(2, "Company name must be at least 2 characters"),
-  contact_name: yup
-    .string()
-    .required("Contact name is required")
-    .min(2, "Contact name must be at least 2 characters"),
-  email: yup
-    .string()
-    .email("Please enter a valid email")
-    .required("Email is required"),
-  phone_number: yup
-    .string()
-    .required("Phone number is required")
-    .matches(/^[0-9]+$/, "Phone number can only contain numbers")
-    .min(10, "Phone number must be at least 10 digits"),
-  location: yup.string().when("isEdit", (isEdit, schema) => {
-    if (isEdit[0]) {
-      return schema;
-    }
-    return schema
-      .required("Location is required")
-      .min(1, "location is required");
-  }),
-  address: yup
-    .string()
-    .required("Address is required")
-    .min(5, "Address must be at least 5 characters"),
+    .required("selection is required")
+    .min(1, "Client must be at least 1 selecton"),
+
   notes: yup.string().nullable(),
 });
 
 const POForm: React.FC<Props> = ({ onPress }) => {
   const { rowData } = useModalStore();
-  const color = ["#07504B", "#f6eec0", "#383f33"];
+  const color = ["#07504B"];
   const [documents, setDocuments] = useState<Document[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [formData, setFormData] = useState({
     po_name: rowData?.po_name || "",
-    company_name: rowData?.company_name || "",
-    contact_name: rowData?.contact_name || "",
-    email: rowData?.email || "",
-    phone_number: rowData?.phone_number || "",
-    address: rowData?.address || "",
-    location: rowData?.location?.id || "",
+    client: rowData?.client?.documentId || "",
     documentId: rowData?.documentId || "",
     notes: "",
     isEdit: rowData?.isEdit || false,
   });
   const { mutate: handleUpdate } = useUpdatePO();
 
-  const { data: locations } = useLocations();
-
   const { mutate: handleAdd } = useCreatePO(setFormData);
+
+  const { data: allClientList } = useGetAllClients();
+
   const router = useRouter();
 
   const onPressUpdatefunction = async () => {
     setTouched({
       po_name: true,
-      company_name: true,
-      contact_name: true,
-      email: true,
-      phone_number: true,
-      address: true,
+      client: true,
     });
     const isValid = await validateForm();
     if (!isValid) return;
     const data = {
       po_name: formData?.po_name,
-      company_name: formData?.company_name,
-      contact_name: formData?.contact_name,
-      email: formData?.email,
-      phone_number: formData?.phone_number,
-      address: formData?.address,
+      client: formData?.client,
     };
 
     handleUpdate({ data, id: formData?.documentId });
@@ -125,11 +89,6 @@ const POForm: React.FC<Props> = ({ onPress }) => {
       onPressAddfunction();
     }
   };
-
-  const locationItems = locations?.data?.map((location: any) => ({
-    key: location?.id,
-    value: location?.location_name,
-  }));
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
@@ -182,11 +141,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
       });
 
       if (!result.canceled) {
-        const newDocs = result.assets.map((file) => ({
-          uri: file.uri,
-          name: file.name || "Document",
-          type: file.mimeType || "application/octet-stream",
-        }));
+        const newDocs = result.assets.map((file) => file);
         setDocuments((prev) => [...prev, ...newDocs]);
       }
     } catch (err) {
@@ -201,24 +156,14 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   const onPressAddfunction = async () => {
     setTouched({
       po_name: true,
-      company_name: true,
-      contact_name: true,
-      email: true,
-      phone_number: true,
-      address: true,
-      location: true,
+      client: true,
       notes: true,
     });
     const isValid = await validateForm();
     if (!isValid) return;
     const data = {
       po_name: formData?.po_name,
-      company_name: formData?.company_name,
-      contact_name: formData?.contact_name,
-      email: formData?.email,
-      phone_number: formData?.phone_number,
-      address: formData?.address,
-      location: formData?.location,
+      client: formData?.client,
       note: formData?.notes,
     };
 
@@ -241,7 +186,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
         <View style={styles.row}>
           <View style={styles.inputContainer}>
             <InputField
-              placeholder="Reference Name"
+              placeholder="PO Name"
               title="PO Name"
               inputStyle={styles.input1}
               value={formData.po_name}
@@ -254,87 +199,18 @@ const POForm: React.FC<Props> = ({ onPress }) => {
             />
           </View>
           <View style={styles.inputContainer}>
-            <InputField
-              placeholder="Company Name"
-              title="Company Name"
-              inputStyle={styles.input1}
-              value={formData.company_name}
-              onChangeText={(text) => handleInputChange("company_name", text)}
-              onBlur={() =>
-                setTouched((prev) => ({ ...prev, company_name: true }))
+            <SingleSelectDropDown
+              items={allClientList}
+              containerStyle={{ marginRight: 20 }}
+              setSelected={(client) => handleInputChange("client", client)}
+              title="Select Client"
+              selected={
+                rowData?.isEdit &&
+                `${rowData?.client?.contact_person_name} (${rowData?.client?.company_name})`
               }
-              error={touched.company_name && errors.company_name}
-              errorMessage={touched.company_name && errors.company_name}
-              multiline={false}
-              ispassword={false}
-            />
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.inputContainer}>
-            <InputField
-              placeholder="Contact Name"
-              title="Contact Name"
-              inputStyle={styles.input1}
-              value={formData.contact_name}
-              onChangeText={(text) => handleInputChange("contact_name", text)}
-              onBlur={() =>
-                setTouched((prev) => ({ ...prev, contact_name: true }))
-              }
-              error={touched.contact_name && errors.contact_name}
-              errorMessage={touched.contact_name && errors.contact_name}
-              multiline={false}
-              ispassword={false}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <InputField
-              placeholder="Enter Email Address"
-              title="Email Address"
-              inputStyle={styles.input1}
-              value={formData.email}
-              onChangeText={(text) => handleInputChange("email", text)}
-              onBlur={() => setTouched((prev) => ({ ...prev, email: true }))}
-              keyboardType="email-address"
-              autoCapitalize="none"
-              error={touched.email && errors.email}
-              errorMessage={touched.email && errors.email}
-              multiline={false}
-              ispassword={false}
-            />
-          </View>
-        </View>
-        <View style={styles.row}>
-          <View style={styles.inputContainer}>
-            <InputField
-              placeholder="Phone number"
-              title="Phone Number"
-              inputStyle={styles.input1}
-              value={formData.phone_number}
-              onChangeText={(text) => handleInputChange("phone_number", text)}
-              onBlur={() =>
-                setTouched((prev) => ({ ...prev, phone_number: true }))
-              }
-              keyboardType="phone-pad"
-              error={touched.phone_number && errors.phone_number}
-              errorMessage={touched.phone_number && errors.phone_number}
-              multiline={false}
-              ispassword={false}
-            />
-          </View>
-          <View style={styles.inputContainer}>
-            <InputField
-              placeholder="Enter Home Address"
-              title="Address"
-              inputStyle={styles.input1}
-              value={formData.address}
-              onChangeText={(text) => handleInputChange("address", text)}
-              onBlur={() => setTouched((prev) => ({ ...prev, address: true }))}
-              error={touched.address && errors.address}
-              errorMessage={touched.address && errors.address}
-              multiline={false}
-              ispassword={false}
-            />
+              error={touched.client && errors.client}
+              errorMessage={touched.client && errors.client}
+            ></SingleSelectDropDown>
           </View>
         </View>
         {!rowData?.isEdit && (
@@ -438,16 +314,6 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                                 shadowRadius: 2.22,
                               }}
                             >
-                              {item.type.startsWith("image/") ? (
-                                <Image
-                                  source={{ uri: item.uri }}
-                                  style={{
-                                    width: 20,
-                                    height: 20,
-                                    marginRight: 8,
-                                  }}
-                                />
-                              ) : null}
                               <Text
                                 style={{
                                   flex: 1,
@@ -481,18 +347,6 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                   </View>
                 </View>
               </View>
-            </View>
-            <View style={[styles.inputContainer, { marginRight: 60 }]}>
-              <SingleSelectDropDown
-                items={locationItems}
-                containerStyle={{ marginRight: 20 }}
-                setSelected={(location) =>
-                  handleInputChange("location", location)
-                }
-                title="Enter Location"
-                error={touched.location && errors.location}
-                errorMessage={touched.location && errors.location}
-              ></SingleSelectDropDown>
             </View>
           </View>
         )}

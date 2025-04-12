@@ -9,6 +9,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
+  inputContainer: { marginBottom: 10 },
   modalContainer: {
     width: "28%",
     backgroundColor: "white",

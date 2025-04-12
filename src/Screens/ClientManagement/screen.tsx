@@ -7,7 +7,11 @@ import {
 import { useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, View } from "react-native";
-import { CompanyTable, ScreenHeader } from "../../Components";
+import {
+  CompanyTable,
+  CreatePaymentReminderClient,
+  ScreenHeader,
+} from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { columns_schema } from "./_schema";
 import { styles } from "./styles";
@@ -16,8 +20,14 @@ import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useModalStore } from "@/store/useModalStore";
 
 const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
-  const { isClientModalOpen, setIsClientModalOpen, setRowData, rowData } =
-    useModalStore();
+  const {
+    isClientModalOpen,
+    setIsClientModalOpen,
+    setRowData,
+    rowData,
+    isClientPaymentReminderModalOpen,
+    setisClientPaymentReminderModalOpen,
+  } = useModalStore();
 
   const router = useRouter();
 
@@ -35,6 +45,8 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     contact_person_name,
     phone_number,
     documentId,
+    address,
+    location,
   }: any) => {
     if (!documentId) return;
 
@@ -44,6 +56,8 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
         email: email,
         contact_person_name: contact_person_name,
         phone_number: phone_number,
+        address,
+        location,
       },
     };
     handleUpdate({ data, id: documentId });
@@ -54,6 +68,8 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     email,
     contact_person_name,
     phone_number,
+    address,
+    location,
   }: any) => {
     if (!company_name) return;
     if (!email) return;
@@ -65,6 +81,8 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
         email: email,
         contact_person_name: contact_person_name,
         phone_number: phone_number,
+        address,
+        location,
       },
     };
     console.log("Data is from client", data);
@@ -82,6 +100,8 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     contact_person_name,
     phone_number,
     documentId,
+    address,
+    location,
   }: any) => {
     const data = {
       company_name,
@@ -89,6 +109,9 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
       contact_person_name,
       phone_number,
       documentId,
+      address,
+      location: location?.documentId,
+      location_name: location?.location_name,
       isEdit: true,
     };
     setRowData(data);
@@ -115,6 +138,11 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     router.push(`/(app)/client-management/client-details?id=${documentId}`);
   };
 
+  const onClickDocfunction = (item: any) => {
+    setRowData(item);
+    setisClientPaymentReminderModalOpen(true);
+  };
+
   return (
     <>
       <ScrollView style={styles.container}>
@@ -122,12 +150,13 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
           create={true}
           title={"Client Management"}
           onPress={onOpenModal}
-        ></ScreenHeader>
+        />
 
         <View>
           <CompanyTable
             onPressDelete={onPressDelete}
             onPressUpdate={onPressEdit}
+            onClickDoc={onClickDocfunction}
             columns_schema={columns_schema}
             checkbox={true}
             showActions={true}
@@ -138,9 +167,24 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
             showEdit={true}
             showDel={true}
             showDocument={true}
-          ></CompanyTable>
+          />
         </View>
       </ScrollView>
+
+      {isClientPaymentReminderModalOpen && (
+        <CreatePaymentReminderClient
+          onClose={() => {
+            setRowData(null);
+            setisClientPaymentReminderModalOpen(false);
+          }}
+          onSubmit={handleSubmit}
+          desc={true}
+          desctext="Add your new payment details"
+          create={true}
+          visible={isClientPaymentReminderModalOpen}
+          title={"Send Payment Reminder"}
+        />
+      )}
 
       {isClientModalOpen && (
         <CreateModal

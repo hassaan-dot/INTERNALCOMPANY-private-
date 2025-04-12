@@ -73,12 +73,19 @@ export const Po_Schema = [
     header: "Name",
   },
   {
-    key: "email",
+    key: "client.company_name",
+    header: "Company Name",
+  },
+  {
+    key: "client.contact_person_name",
+    header: "Contact Person",
+  },
+  {
+    key: "client.email",
     header: "Email",
   },
-
   {
-    key: "phone_number",
+    key: "client.phone_number",
     header: "Phone number",
   },
 ];

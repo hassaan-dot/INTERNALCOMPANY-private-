@@ -2,9 +2,9 @@ import { format } from "date-fns";
 
 export function formatDate(input: any) {
   if (!input) return "";
-  const date = new Date(input);
+  const date = new Date(input).toLocaleString();
 
-  const formatedDate = format(date.toLocaleString(), "yyyy-MM-dd HH:mm:ss");
+  const formatedDate = format(date, "yyyy-MM-dd HH:mm:ss");
   return formatedDate;
 }
 

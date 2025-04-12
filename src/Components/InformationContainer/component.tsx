@@ -90,18 +90,20 @@ const InformationContainer: React.FC<UserProfileProps> = ({
                 Contact Person Name{" "}
               </Text>
               <Text style={[styles.link, style]}>
-                {Data?.data?.contact_name}
+                {Data?.data?.client?.contact_person_name}
               </Text>
             </View>
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Company Name </Text>
               <Text style={[styles.link, style]}>
-                {Data?.data?.company_name}
+                {Data?.data?.client?.company_name}
               </Text>
             </View>
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Address </Text>
-              <Text style={[styles.link, style]}>{Data?.data?.address}</Text>
+              <Text style={[styles.link, style]}>
+                {Data?.data?.client?.address}
+              </Text>
             </View>
           </View>
 
@@ -116,85 +118,17 @@ const InformationContainer: React.FC<UserProfileProps> = ({
           >
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Email </Text>
-              <Text style={[styles.link, style]}>{Data?.data?.email}</Text>
+              <Text style={[styles.link, style]}>
+                {Data?.data?.client?.email}
+              </Text>
             </View>
             <View style={[styles.detailsItem]}>
               <Text style={[styles.label, style]}>Phone Number: </Text>
               <Text style={[styles.link, style]}>
-                {Data?.data?.phone_number}
+                {Data?.data?.client?.phone_number}
               </Text>
             </View>
-            <View style={[styles.detailsItem]}>
-              {/* <Text style={[styles.label, style,{flex:2}]}>Role: </Text>
-              <Text style={[styles.link, style,{flex:2}]}>{contact}</Text> */}
-            </View>
           </View>
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              flex: 1,
-              marginTop: 10,
-              margin: 25,
-            }}
-          >
-            <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Name: </Text>
-              <Text style={[styles.link, style]}>{name}</Text>
-            </View>
-            <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Contact: </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
-            </View> */}
-          {/* <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Role: </Text>
-              <Text style={[styles.link, style]}>{contact}</Text>
-            </View> */}
-          {/* </View> */}
-
-          {/* <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              marginTop: 10,
-              flex: 1,
-            }}
-            // style={styles.customStyle}
-          >
-            <View style={styles.detailsItem}>
-              <Text style={[styles.label, style]}>Email: </Text>
-              <Text style={[styles.link, style]}>{email}</Text>
-            </View>
-
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Country: </Text>
-              <Text style={styles.link}>{country}</Text>
-            </View>
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Department: </Text>
-              <Text style={styles.link}>{country}</Text>
-            </View>
-          </View> */}
-
-          {/* <View
-            // style={{
-            //   flexDirection: "row",
-            //   justifyContent: "space-between",
-            //   marginTop: 10,
-            // }}
-            style={styles.customStyle}
-
-          >
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Email: </Text>
-              <Text style={styles.link}>{email}</Text>
-            </View>
-
-            <View style={styles.detailsItem}>
-              <Text style={styles.label}>Country: </Text>
-              <Text style={styles.link}>{country}</Text>
-            </View>
-          </View> */}
         </View>
       </View>
     </View>

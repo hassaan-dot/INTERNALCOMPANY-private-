@@ -13,6 +13,8 @@ import { icons } from "@/assets/icons/icons";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
 import * as yup from "yup";
+import SingleSelectDropDown from "../../SingleSelectDropDown/component";
+import { useLocations } from "@/hooks/useLocation";
 
 interface ClientModalProps {
   visible: boolean;
@@ -54,11 +56,12 @@ const clientSchema = yup.object().shape({
   email: yup
     .string()
     .email("Please enter a valid email address")
-    .required("Email address is required")
-    .matches(
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-      "Email must be in format: user@example.com"
-    ),
+    .required("Email address is required"),
+  address: yup
+    .string()
+    .required("Address is required")
+    .min(2, "Addresss must be at least 2 characters"),
+  location: yup.string().required("Location is required"),
   contact_person_name: yup
     .string()
     .required("Contact person name is required")
@@ -78,11 +81,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
   create = false,
   desc = false,
   styleContainer,
-  First,
   desctext,
-  Second,
-  Third,
-  Fourth,
+
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
@@ -92,10 +92,18 @@ const CreateModal: React.FC<ClientModalProps> = ({
       contact_person_name: "",
       company_name: "",
       phone_number: "",
+      address: "",
+      location: "",
     }
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const { data: locations } = useLocations();
+  const locationItems = locations?.data?.map((location: any) => ({
+    key: location?.documentId,
+    value: location?.location_name,
+  }));
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
@@ -160,6 +168,8 @@ const CreateModal: React.FC<ClientModalProps> = ({
       email: true,
       contact_person_name: true,
       phone_number: true,
+      location: true,
+      address: true,
     });
 
     const isValid = await validateForm();
@@ -175,7 +185,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
         <View style={[styles.modalContainer, modalContainerprop]}>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            contentContainerStyle={styles.scrollContainer}
+            contentContainerStyle={{ flex: 1 }}
           >
             <View>
               {create && (
@@ -260,6 +270,36 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 multiline={false}
                 ispassword={false}
               />
+            </View>
+            <View>
+              <InputField
+                placeholder="Enter Home Address"
+                title="Address"
+                inputStyle={styles.input}
+                value={formData?.address}
+                onChangeText={(text) => handleInputChange("address", text)}
+                onBlur={() => handleBlur("address")}
+                error={errors.address}
+                errorMessage={errors.address}
+                multiline={false}
+                ispassword={false}
+              />
+            </View>
+
+            {console.log(rowData?.location_name)}
+
+            <View style={[styles.inputContainer]}>
+              <SingleSelectDropDown
+                items={locationItems}
+                containerStyle={{}}
+                setSelected={(location) =>
+                  handleInputChange("location", location)
+                }
+                selected={rowData?.location_name}
+                title="Enter Location"
+                error={!!errors.location}
+                errorMessage={errors.location}
+              ></SingleSelectDropDown>
             </View>
           </ScrollView>
           <View style={styles.buttonContainer}>

@@ -5,8 +5,20 @@ import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllClient = async (filters: any) => {
   const res = await api.get(
-    `/clients?pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
+    `/clients?populate=*&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
   );
+  return res.data;
+};
+
+const handleGetClientList = async () => {
+  const res = await api.get(
+    `/clients?populate=*&pagination[page]=1&pagination[pageSize]=10000`
+  );
+  return res.data;
+};
+
+const handleSendReminder = async (data: any, id: string) => {
+  const res = await api.post(`/send-payment-reminder/${id}`, data);
   return res.data;
 };
 
@@ -35,6 +47,40 @@ export const useGetClient = () => {
   return useQuery({
     queryKey: ["clients", filters],
     queryFn: () => handleGetAllClient(filters),
+  });
+};
+
+export const useGetAllClients = () => {
+  return useQuery({
+    queryKey: ["all-clients"],
+    queryFn: () => handleGetClientList(),
+    select: (data) => {
+      return data?.data?.map((item: any) => ({
+        key: item?.documentId,
+        value: `${item?.contact_person_name} (${item?.company_name})`,
+      }));
+    },
+  });
+};
+
+export const useSendReminder = (id: string) => {
+  const { setisClientPaymentReminderModalOpen, setRowData } = useModalStore();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["send-reminder"],
+    mutationFn: (data: any) => handleSendReminder(data, id),
+    onSuccess: async (data) => {
+      toastSuccess("Success!", "Payment Reminder Sent");
+      setRowData(null);
+      setisClientPaymentReminderModalOpen(false);
+      queryClient.invalidateQueries({
+        queryKey: ["clients"],
+      });
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
   });
 };
 

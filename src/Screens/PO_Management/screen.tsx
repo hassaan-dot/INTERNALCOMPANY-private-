@@ -12,20 +12,6 @@ import CreateModal from "../../Components/Modals/createModal/component";
 import { Po_Schema } from "../ClientManagement/_schema";
 import Styles from "./styles";
 
-interface POData {
-  documentId?: string;
-  id?: number;
-  company_name?: string;
-  email?: string;
-  contact_person_name?: string;
-  phone_number?: string;
-  po_name?: string;
-  contact_name?: string;
-  address?: string;
-  location?: string;
-  note?: string;
-}
-
 const PO_Management = () => {
   const router = useRouter();
   const { user } = useAuthStore();
@@ -33,9 +19,9 @@ const PO_Management = () => {
 
   const { setRowData, rowData } = useModalStore();
 
-  // Data fetching
   const { data, refetch } = useGetPO();
   useRefreshOnFocus(refetch);
+
   const { mutate: deletePO } = useDeletePO();
 
   // Navigation handlers
@@ -48,28 +34,14 @@ const PO_Management = () => {
   };
 
   // Action handlers
-
   const handleDelete = (documentId: string) => {
     deletePO({ data: { documentId } });
   };
-  const onPressEdit = ({
-    po_name,
-    company_name,
-    contact_name,
-    email,
-    phone_number,
-    address,
-    location,
-    po_notes,
-    documentId,
-  }: any) => {
+
+  const onPressEdit = ({ po_name, client, po_notes, documentId }: any) => {
     const data = {
       po_name,
-      company_name,
-      contact_name,
-      email,
-      phone_number,
-      address,
+      client,
       location,
       po_notes,
       documentId,

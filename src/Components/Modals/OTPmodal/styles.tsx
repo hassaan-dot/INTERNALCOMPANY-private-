@@ -11,12 +11,12 @@ export const styles = StyleSheet.create({
   },
   modalContainer: {
     //   width: 320,
-    width: helpers.wp(31),
+    width: "32%",
     backgroundColor: "#fff",
     borderRadius: 10,
     padding: 20,
     // paddingHorizontal: 25,
-   
+
     //   alignItems: "center",
   },
   iconContainer: {
@@ -27,7 +27,7 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontFamily:PoppinsRegular,
+    fontFamily: PoppinsRegular,
     //   textAlign: "center",
     //   marginBottom: 20,
     color: "#333",
@@ -35,9 +35,9 @@ export const styles = StyleSheet.create({
 
   otpContainer: {
     flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingRight:50,
+    // alignItems: "center",
+    // justifyContent: "space-between",
+    paddingRight: 50,
     marginBottom: 25,
   },
   otpInput: {
@@ -47,14 +47,16 @@ export const styles = StyleSheet.create({
     borderColor: "#ccc",
     textAlign: "center",
     fontSize: 18,
+    flex: 1,
+    marginRight: 25,
     //   marginRight:2,
     borderRadius: 8,
   },
   resendText: {
     color: "#e74c3c",
     fontSize: 14,
-    textAlign:'center',
-    fontFamily:PoppinsRegular,
+    textAlign: "center",
+    fontFamily: PoppinsRegular,
 
     // marginBottom: 20,
   },
@@ -69,7 +71,6 @@ export const styles = StyleSheet.create({
     color: "#fff",
     fontSize: 16,
     fontWeight: "500",
-    fontFamily:PoppinsRegular
+    fontFamily: PoppinsRegular,
   },
-  
 });

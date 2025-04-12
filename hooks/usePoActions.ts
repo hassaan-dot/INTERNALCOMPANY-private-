@@ -18,8 +18,13 @@ const handleClosePO = async (id: string) => {
   return res.data;
 };
 
-const handleConfirmPO = async (id: string) => {
-  const res = await api.post(`/purchase-orders/${id}/confirm-receiving`);
+const handleConfirmPO = async (data: any, id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/confirm-receiving`, data);
+  return res.data;
+};
+
+const handleSendConfirmCode = async (id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/send-confirmation`);
   return res.data;
 };
 
@@ -36,8 +41,11 @@ const handleChangePOStatus = async (data: any, id: string) => {
 
 export const usePOActions = (id: string) => {
   const queryPO = useQueryClient();
-  const { setIsStatusModalOpen, setisAssignEmployeeModalOpen } =
-    useModalStore();
+  const {
+    setIsStatusModalOpen,
+    setisAssignEmployeeModalOpen,
+    setConfirmRecievingModalOpen,
+  } = useModalStore();
 
   const { mutate: handleAccept, isPending: isAccepting } = useMutation({
     mutationKey: ["accept-po", id],
@@ -88,8 +96,9 @@ export const usePOActions = (id: string) => {
   const { mutate: handleConfirmRecieving, isPending: isConfirming } =
     useMutation({
       mutationKey: ["confirm-po", id],
-      mutationFn: () => handleConfirmPO(id),
+      mutationFn: (data: any) => handleConfirmPO(data, id),
       onSuccess: (data) => {
+        setConfirmRecievingModalOpen(false);
         toastSuccess("Success!", "PO Confirmed Successfully");
         queryPO.invalidateQueries({
           queryKey: ["getonePO", id],
@@ -100,6 +109,21 @@ export const usePOActions = (id: string) => {
         toastError("Oops!", error?.response?.data?.error?.message);
       },
     });
+
+  const { mutate: handleSendCode, isPending: isSendingCode } = useMutation({
+    mutationKey: ["send-confirm-code", id],
+    mutationFn: () => handleSendConfirmCode(id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "Code Sent To Client Successfully");
+      // queryPO.invalidateQueries({
+      //   queryKey: ["getonePO", id],
+      //   type: "active",
+      // });
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
+  });
 
   const { mutate: handlePOAssign, isPending: isAssigning } = useMutation({
     mutationKey: ["assign-po", id],
@@ -143,6 +167,8 @@ export const usePOActions = (id: string) => {
     isClosing,
     handleConfirmRecieving,
     isConfirming,
+    handleSendCode,
+    isSendingCode,
     handlePOAssign,
     isAssigning,
     handleChangeStatus,

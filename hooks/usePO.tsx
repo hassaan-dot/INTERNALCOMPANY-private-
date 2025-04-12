@@ -6,7 +6,7 @@ import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllPO = async (filters: any) => {
   const res = await api.get(
-    `/purchase-orders?populate[7]=po_created_by&sort=createdAt:desc`
+    `/purchase-orders?populate[7]=po_created_by&populate[8]=client&sort=createdAt:desc&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
   );
   return res.data;
 };
@@ -28,7 +28,7 @@ const handleUpdatePO = async (data: any, id: string) => {
 
 const handleGetOnePO = async (documentId: string) => {
   const res = await api.get(
-    `/purchase-orders/${documentId}?populate[0]=invoices&populate[1]=po_notes&populate[2]=po_notes.user&populate[3]=po_items&populate[4]=location&populate[5]=po_documents&populate[6]=po_created_by`
+    `/purchase-orders/${documentId}?populate[0]=invoices&populate[1]=po_notes&populate[2]=po_notes.user&populate[3]=po_items&populate[5]=po_documents&populate[6]=po_created_by&populate[7]=client`
   );
   return res.data;
 };

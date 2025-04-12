@@ -34,8 +34,19 @@ type useModalStore = {
     pageSize: string | number;
   }) => void;
 
+  confirmRecievingModalOpen: boolean;
+  setConfirmRecievingModalOpen: (confirmRecievingModalOpen: boolean) => void;
+
   isStatusModalOpen: boolean;
   setIsStatusModalOpen: (isStatusModalOpen: boolean) => void;
+
+  isOtpModalOpen: boolean;
+  setIsOtpModalOpen: (isOtpModalOpen: boolean) => void;
+
+  isClientPaymentReminderModalOpen: boolean;
+  setisClientPaymentReminderModalOpen: (
+    isClientPaymentReminderModalOpen: boolean
+  ) => void;
 
   isNewsModalOpen: boolean;
   setIsNewsModalOpen: (isNewsModalOpen: boolean) => void;
@@ -45,6 +56,10 @@ type useModalStore = {
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
+  confirmRecievingModalOpen: false,
+  setConfirmRecievingModalOpen: (confirmRecievingModalOpen) =>
+    set({ confirmRecievingModalOpen }),
+
   isClientModalOpen: false,
   setIsClientModalOpen: (isClientModalOpen) => set({ isClientModalOpen }),
 
@@ -86,4 +101,11 @@ export const useModalStore = create<useModalStore>((set) => ({
   isAttendenceModalOpen: false,
   setisAttendenceModalOpen: (isAttendenceModalOpen) =>
     set({ isAttendenceModalOpen }),
+
+  isOtpModalOpen: false,
+  setIsOtpModalOpen: (isOtpModalOpen) => set({ isOtpModalOpen }),
+
+  isClientPaymentReminderModalOpen: false,
+  setisClientPaymentReminderModalOpen: (isClientPaymentReminderModalOpen) =>
+    set({ isClientPaymentReminderModalOpen }),
 }));

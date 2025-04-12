@@ -1,28 +1,27 @@
-import React, { useRef, useState } from "react";
+import { icons } from "@/assets/icons/icons";
+import InputField from "@/src/Components/InputField/InputField";
+import { useModalStore } from "@/store/useModalStore";
+import { useState } from "react";
 import {
-  View,
-  Text,
-  TextInput,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
+  FlatList,
   Image,
+  Modal,
   ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import * as DocumentPicker from "expo-document-picker";
 
-import { useForm } from "react-hook-form";
+import * as yup from "yup";
 import { styles } from "./styles";
-import { icons } from "@/assets/icons/icons";
-import InputField from "../../InputField/InputField";
+import { AntDesign, Feather } from "@expo/vector-icons";
 import { PoppinsRegular } from "@/constants/fonts";
 import helpers from "@/src/utils/helpers";
-import { AntDesign, Feather } from "@expo/vector-icons";
-import { FlatList } from "react-native";
-import { usePOActions } from "@/hooks/usePoActions";
-import { useLocalSearchParams } from "expo-router";
 
-interface ClientModalProps {
+import { useSendReminder } from "@/hooks/useClient";
+
+interface CreatePaymentReminderProps {
   visible: boolean;
   create?: boolean;
   desc?: boolean;
@@ -30,66 +29,105 @@ interface ClientModalProps {
   styleContainer: any;
   title: string;
   onClose: () => void;
-  onSubmit: (data: ClientFormData) => void;
-  First: string;
-  Firstchild: string;
-  Second: string;
+  onSubmit: (
+    companyName?: string,
+    email?: string,
+    contactPerson?: string,
+    phoneNumber?: string
+  ) => void;
+  onLogin?: (username: string, password: string) => void;
+  desctext: string;
+  user: boolean;
+  modalContainerprop: any;
+  Data: any;
+  update: boolean;
+  onPressUpdatefunction: any;
 }
 
-interface ClientFormData {
-  contactPerson: string;
-  email: string;
-  phone: string;
-  companyName: string;
-}
-
-const ConfirmRecieving: React.FC<ClientModalProps> = ({
+const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   visible,
   onClose,
-  create = false,
   onSubmit,
+  create = false,
   title,
+
+  modalContainerprop,
 }) => {
-  const { id } = useLocalSearchParams();
-  const color = ["#07504B"];
-
-  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
-
+  const { rowData } = useModalStore();
   const [documents, setDocuments] = useState<Document[]>([]);
-  const inputRefs = useRef<Array<TextInput | null>>([]);
-  const {
-    handleSendCode,
-    isSendingCode,
-    handleConfirmRecieving,
-    isConfirming,
-  } = usePOActions(id as string);
+  const color = ["#07504B"];
+  const {} = useSendReminder(rowData?.documentId);
 
-  const handleChangeText = (index: number, value: string) => {
-    if (value.length <= 1) {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
+  const [formData, setFormData] = useState(
+    rowData ?? {
+      amount: "",
+      documents: "",
+    }
+  );
 
-      if (value && index < otp.length - 1) {
-        inputRefs.current[index + 1]?.focus();
+  const userSchema = yup.object().shape({
+    amount: yup.string().required("Amount is required"),
+  });
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
+
+  const clearError = (field: string) => {
+    if (errors[field]) {
+      setErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+  };
+
+  const handleInputChange = (field: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      [field]: value,
+    }));
+    setTouched((prev) => ({ ...prev, [field]: true }));
+    clearError(field);
+  };
+
+  const validateForm = async () => {
+    const schema = userSchema;
+
+    try {
+      await schema.validate(formData, { abortEarly: false });
+      setErrors({});
+      return true;
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const newErrors: Record<string, string> = {};
+        err.inner.forEach((error) => {
+          if (error.path) {
+            newErrors[error.path] = error.message;
+          }
+        });
+        setErrors(newErrors);
       }
+      return false;
     }
   };
-  const handleKeyPress = (e: any, index: number) => {
-    if (e.nativeEvent.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
+
+  const handleSubmit = async () => {
+    const allFields = {
+      amount: true,
+    };
+
+    setTouched(allFields);
+    const isValid = await validateForm();
+
+    if (isValid) {
+      const finalData = {
+        ...formData,
+        department: formData.department === "" ? null : formData.department,
+      };
+
+      onSubmit(finalData);
     }
-  };
-  const handleFormSubmit = () => {
-    const form_data = new FormData();
-    form_data.append("code", otp?.join()?.split(",")?.join(""));
-
-    // Append documents to form data
-    documents?.forEach((doc, index) => {
-      form_data.append(`proof_of_confirmation[${index}]`, doc as any);
-    });
-
-    handleConfirmRecieving(form_data);
   };
 
   const pickDocument = async () => {
@@ -111,36 +149,46 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
   const removeDocument = (index: number) => {
     setDocuments((prev) => prev.filter((_, i) => i !== index));
   };
-
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
-        <View style={styles.modalContainer}>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{ marginVertical: 5 }}>
-              <>
-                <Image
-                  source={icons.modalIconOtp}
-                  style={{ width: 60, height: 60 }}
-                ></Image>
-                <Text style={styles.title}>{title}</Text>
-              </>
+        <View style={[styles.modalContainer, modalContainerprop]}>
+          <View>
+            <Text style={styles.title}>{title}</Text>{" "}
+          </View>
+
+          <ScrollView>
+            <View>
+              <InputField
+                titleStyle={styles.fontSize}
+                title={"Amount"}
+                style={[
+                  styles.input,
+                  { borderColor: errors.amount ? "red" : "#ddd" },
+                ]}
+                error={touched.amount && errors.amount}
+                errorMessage={touched.amount && errors.amount}
+                value={formData.phone_number}
+                onChangeText={(text) => handleInputChange("amount", text)}
+                placeholder={"Enter Amount"}
+                keyboardType="phone-pad"
+              />
             </View>
 
-            <View>
+            <View style={{ marginVertical: 10 }}>
               <View
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
                 }}
               >
-                <View style={[styles.inputContainer]}>
+                <View style={[styles.inputContainer, { width: "100%" }]}>
                   <Text
                     style={{
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: "400",
+                      marginBottom: 4,
                       fontFamily: PoppinsRegular,
-                      bottom: 3,
                     }}
                   >
                     {"upload proof of received"}
@@ -186,14 +234,14 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
                             marginLeft: 7,
                           }}
                         >
-                          {documents.length < 1 && (
+                          {documents?.length < 1 && (
                             <Text style={{ paddingVertical: 4 }}>
                               Upload your attachments/Documents
                             </Text>
                           )}
                         </TouchableOpacity>
 
-                        {documents.length > 0 && (
+                        {documents?.length > 0 && (
                           <View style={{}}>
                             <FlatList
                               contentContainerStyle={{
@@ -262,52 +310,14 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
                 </View>
               </View>
             </View>
-
-            <View>
-              <View
-                style={{ marginBottom: 20, marginTop: 16, paddingRight: 50 }}
-              >
-                <Text style={styles.title1}>
-                  Enter the OTP confirmation code from client
-                </Text>
-              </View>
-
-              <View style={styles.otpContainer}>
-                {otp.map((digit, index) => (
-                  <TextInput
-                    key={index}
-                    style={styles.otpInput}
-                    keyboardType="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onKeyPress={(e) => handleKeyPress(e, index)}
-                    onChangeText={(text) => handleChangeText(index, text)}
-                  />
-                ))}
-                <TouchableOpacity
-                  onPress={handleSendCode}
-                  disabled={isSendingCode}
-                >
-                  <Text style={styles.resendText}>
-                    {isSendingCode ? "Sending" : "Send Code"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
           </ScrollView>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={handleFormSubmit}
-              disabled={isConfirming}
-            >
-              <Text style={styles.addText}>
-                {isConfirming ? "Confirming" : "Confirm"}
-              </Text>
+            <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+              <Text style={styles.addText}>{"Send Reminder"}</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -316,4 +326,4 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
   );
 };
 
-export default ConfirmRecieving;
+export default CreatePaymentReminder;

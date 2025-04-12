@@ -190,7 +190,6 @@ const UserManagement = () => {
           name={``}
         />
       )}
-
       {isUserModalOpen && (
         <CreateUserModal
           onClose={onCloseModal}

@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
-import helpers from "../../../utils/helpers";
-import { PoppinsRegular } from "../../../Resources/fonts";
+import helpers from "@/src/utils/helpers";
+import { PoppinsRegular } from "@/constants/fonts";
 
 export const styles = StyleSheet.create({
   modalOverlay: {
@@ -9,15 +9,16 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
-  inputContainer: { width: "100%" },
-
   modalContainer: {
-    width: "30%",
+    // width:helpers.wp(28),
+    // flex: 1,
+    width: "32%",
     backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
 
-    marginVertical: 10,
+    marginHorizontal: 20,
+    marginVertical: 30,
   },
   fontSize: { fontSize: 14 },
   icon: {
@@ -45,13 +46,12 @@ export const styles = StyleSheet.create({
     marginBottom: 20,
   },
   input: {
-    // width: "100%",
-    flex: 1,
+    width: "100%",
     padding: 9,
     borderWidth: 1,
     borderColor: "#ddd",
     borderRadius: 5,
-    marginBottom: 5,
+    // marginBottom: 5,
   },
   buttonContainer: {
     flexDirection: "row",
@@ -79,32 +79,5 @@ export const styles = StyleSheet.create({
   },
   addText: {
     color: "white",
-  },
-  title1: {
-    fontSize: 16,
-    fontFamily: PoppinsRegular,
-    color: "#333",
-  },
-  otpContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingRight: 50,
-    marginBottom: 25,
-  },
-  otpInput: {
-    width: 50,
-    height: 50,
-    borderWidth: 1,
-    borderColor: "#ccc",
-    textAlign: "center",
-    fontSize: 18,
-    borderRadius: 8,
-  },
-  resendText: {
-    color: "#07504B",
-    fontSize: 14,
-    textAlign: "center",
-    fontFamily: PoppinsRegular,
   },
 });

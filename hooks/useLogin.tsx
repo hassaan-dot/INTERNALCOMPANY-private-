@@ -4,19 +4,46 @@ import { useAuthStore } from "@/store/useAuthStore";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "expo-router";
 import { toastError, toastSuccess } from "../services/toast-messages";
+import { useModalStore } from "@/store/useModalStore";
+
 const handleLogin = async (data: any) => {
   const res = await api.post("/login", data);
   return res.data;
 };
 
+const handleOtp = async (data: any) => {
+  const res = await api.post("/verify-otp", data);
+  return res.data;
+};
+
 export const useLogin = () => {
-  const { setToken, setUser } = useAuthStore();
-  const router = useRouter();
+  const { setIsOtpModalOpen, setRowData } = useModalStore();
 
   return useMutation({
     mutationKey: ["login"],
     mutationFn: (data: any) => handleLogin(data),
     onSuccess: async (data) => {
+      setRowData(data);
+      setIsOtpModalOpen(true);
+      toastSuccess("Success!", "Otp Send successfully");
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
+  });
+};
+
+export const useOtpLogin = () => {
+  const { setIsOtpModalOpen, setRowData } = useModalStore();
+  const { setUser, setToken } = useAuthStore();
+  const router = useRouter();
+
+  return useMutation({
+    mutationKey: ["login"],
+    mutationFn: (data: any) => handleOtp(data),
+    onSuccess: async (data) => {
+      setRowData(null);
+      setIsOtpModalOpen(false);
       setToken(data.jwt);
       setUser(data.user);
       await LocalStorage.save("token", data.jwt);

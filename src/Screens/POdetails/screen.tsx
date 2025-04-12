@@ -38,6 +38,8 @@ const PODetailScreen = () => {
     setIsStatusModalOpen,
     isAssignEmployeeModalOpen,
     setisAssignEmployeeModalOpen,
+    confirmRecievingModalOpen,
+    setConfirmRecievingModalOpen,
   } = useModalStore();
   const { user } = useAuthStore();
   const { id } = useLocalSearchParams();
@@ -117,7 +119,9 @@ const PODetailScreen = () => {
     };
     handleAddInvoice(data);
   };
-
+  const handleConfirmRecievingfunc = () => {
+    setConfirmRecievingModalOpen(true);
+  };
   return (
     <>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -128,7 +132,7 @@ const PODetailScreen = () => {
             data={data?.data}
             handleAccept={handleAccept}
             handleReject={handleReject}
-            handleConfirm={handleConfirmRecieving}
+            handleConfirm={handleConfirmRecievingfunc}
             handleClosePO={handlePOClose}
             isAccepting={isAccepting}
             isRejecting={isRejecting}
@@ -175,7 +179,7 @@ const PODetailScreen = () => {
               title={"Client Information"}
               horizontalwidth={helpers.wp(75.9)}
               detailscreenContainer={styles.container4}
-            ></InformationContainer>
+            />
           </View>
           <View style={styles.container5}>
             <View style={{ flex: 1 }}>
@@ -248,15 +252,15 @@ const PODetailScreen = () => {
           visible={isInvoicePoModalOpen}
         ></InvoiceModal>
       )}
-      {/* <ConfirmRecieving
-        title={"Confirm Client Recieving"}
-        create={true}
-        styleContainer={{ flexDirection: "row" }}
-        First="Client Name"
-        Firstchild="PO Number"
-        Second="upload proof of received "
-        visible={false}
-      /> */}
+      {confirmRecievingModalOpen && (
+        <ConfirmRecieving
+          title={"Confirm Client Recieving"}
+          styleContainer={{ flexDirection: "row" }}
+          Second="upload proof of received "
+          onClose={() => setConfirmRecievingModalOpen(false)}
+          visible={confirmRecievingModalOpen}
+        />
+      )}
       {isNoteModalOpen && (
         <Note
           onClose={handleNoteModalClose}
