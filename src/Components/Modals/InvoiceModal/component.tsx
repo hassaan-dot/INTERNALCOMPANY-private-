@@ -1,5 +1,4 @@
 import { icons } from "@/assets/icons/icons";
-import { formatDate } from "@/src/utils";
 import { useModalStore } from "@/store/useModalStore";
 import React, { useEffect, useState } from "react";
 import {
@@ -14,12 +13,7 @@ import { DateTimeSelector, SingleSelectDropDown } from "../..";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
 import * as yup from "yup";
-import { formatDateForAPI } from "@/services/dateFormatter";
-import {
-  useCreateInvoice,
-  useDeleteInvoice,
-  useUpdateInvoice,
-} from "@/hooks/usePOpayments";
+import { useCreateInvoice, useUpdateInvoice } from "@/hooks/usePOpayments";
 import { useLocalSearchParams } from "expo-router";
 
 interface ClientModalProps {
@@ -74,7 +68,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
 }) => {
   const { id } = useLocalSearchParams();
   const { rowData } = useModalStore();
-  const [date, setDate] = useState<any>("");
+
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
@@ -108,7 +102,16 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
     }
   );
 
-  const handleInputChange = (field: keyof typeof formData, value: string) => {
+  const [date, setDate] = useState<Date | null>(
+    rowData?.isEdit ? new Date(rowData?.date_of_payment) : null
+  );
+
+  console.log("date", date);
+
+  const handleInputChange = (
+    field: keyof typeof formData,
+    value: string | undefined
+  ) => {
     setFormData((prev) => ({
       ...prev,
       [field]: value,
@@ -126,17 +129,6 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
       });
     }
   };
-
-  useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      date_of_payment: date ? date : rowData?.date_of_payment || "",
-    }));
-    if (date) {
-      setTouched((prev) => ({ ...prev, date_of_payment: true }));
-      clearError("date_of_payment");
-    }
-  }, [date]);
 
   const validateForm = async () => {
     try {
@@ -170,7 +162,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
   }: any) => {
     const data = {
       data: {
-        date_of_payment: date_of_payment,
+        date_of_payment: new Date(date_of_payment),
         payer: payer,
         amount: amount,
         payment_method: payment_method,
@@ -191,7 +183,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
   }: any) => {
     const data = {
       data: {
-        date_of_payment: formatDateForAPI(date_of_payment),
+        date_of_payment: new Date(date_of_payment),
         payer: payer,
         amount: amount,
         payment_method: payment_method,
@@ -301,8 +293,14 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
 
             <View style={{ marginBottom: 13 }}>
               <DateTimeSelector
-                selectedDate={formData.date_of_payment}
-                onDateChange={(date) => setDate(date)}
+                selectedDate={date}
+                onDateChange={(date) => {
+                  handleInputChange("date_of_payment", date?.toISOString());
+                  setDate(date);
+                  setTouched((prev) => ({ ...prev, date_of_payment: true }));
+                  clearError("date_of_payment");
+                }}
+                showTime={false}
                 error={touched.date_of_payment && errors.date_of_payment}
               />
             </View>

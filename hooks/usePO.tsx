@@ -6,7 +6,7 @@ import { toastError, toastSuccess } from "../services/toast-messages";
 
 const handleGetAllPO = async (filters: any) => {
   const res = await api.get(
-    `/purchase-orders?populate[7]=po_created_by&populate[8]=client&sort=createdAt:desc&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
+    `/purchase-orders?populate[7]=po_created_by&populate[8]=client&sort=${filters.sort}&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}`
   );
   return res.data;
 };
@@ -26,6 +26,11 @@ const handleUpdatePO = async (data: any, id: string) => {
   return res.data;
 };
 
+const handleDeleteDoc = async (data: any, id: string) => {
+  const res = await api.post(`/purchase-orders/${id}/document`, data);
+  return res.data;
+};
+
 const handleGetOnePO = async (documentId: string) => {
   const res = await api.get(
     `/purchase-orders/${documentId}?populate[0]=invoices&populate[1]=po_notes&populate[2]=po_notes.user&populate[3]=po_items&populate[5]=po_documents&populate[6]=po_created_by&populate[7]=client`
@@ -36,7 +41,7 @@ const handleGetOnePO = async (documentId: string) => {
 export const useGetPO = () => {
   const { filters } = useModalStore();
   return useQuery({
-    queryKey: ["po"],
+    queryKey: ["po", filters],
     queryFn: () => handleGetAllPO(filters),
   });
 };
@@ -69,9 +74,9 @@ export const useGetOnePO = (document_id: string) => {
   });
 };
 
-export const useUpdatePO = () => {
+export const useUpdatePO = (isUpdate: boolean = true) => {
   const router = useRouter();
-  const { setRowData } = useModalStore();
+  const { setRowData, setDocumentModalOpen } = useModalStore();
   const queryPO = useQueryClient();
 
   return useMutation({
@@ -79,10 +84,38 @@ export const useUpdatePO = () => {
     mutationFn: ({ data, id }: any) => handleUpdatePO(data, id),
     onSuccess: (data) => {
       toastSuccess("Success!", "Your PO is updated successfully");
-      router.back();
       setRowData(null);
+      setDocumentModalOpen(false);
       queryPO.invalidateQueries({
         queryKey: ["po"],
+        type: "active",
+      });
+      queryPO.invalidateQueries({
+        queryKey: ["getonePO"],
+        type: "active",
+      });
+      if (isUpdate) router.back();
+    },
+    onError: (error: any) => {
+      toastError("Oops!", error?.response?.data?.error?.message);
+    },
+  });
+};
+
+export const useDeleteDoc = () => {
+  const { setRowData, setDocumentModalOpen } = useModalStore();
+  const queryPO = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["delete-doc"],
+    mutationFn: ({ data, id }: any) => handleDeleteDoc(data, id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "Document deleted Successfully");
+      setRowData(null);
+      setDocumentModalOpen(false);
+      queryPO.invalidateQueries({
+        queryKey: ["getonePO"],
+        type: "active",
       });
     },
     onError: (error: any) => {

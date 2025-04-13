@@ -96,6 +96,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     item_status,
     active_status,
     is_confirmed,
+    request_status,
   }: any) => {
     if (is_active === true) {
       return (
@@ -111,6 +112,44 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         </View>
       );
     }
+
+    if (request_status === "Rejected") {
+      return (
+        <StatusBadge
+          text="Rejected"
+          textColor={"#EC4746"}
+          dot={"#EC4746"}
+          color="#FECACA"
+        />
+      );
+    }
+
+    if (request_status === "To do") {
+      return (
+        <StatusBadge
+          text="To do"
+          dot={"#ECFDF3"}
+          textColor={"#ECFDF3"}
+          color="#5A6470"
+        />
+      );
+    }
+
+    if (request_status === "In Progress") {
+      return (
+        <StatusBadge
+          text="In progress"
+          textColor={"white"}
+          dot={"#ECFDF3"}
+          color="#A47C60"
+        />
+      );
+    }
+
+    if (request_status === "Done") {
+      return <StatusBadge text="Done" dot={"#12B76A"} color="#ECFDF3" />;
+    }
+
     if (payment_status === "Pending") {
       return (
         <StatusBadge
@@ -124,6 +163,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     if (payment_status === "Completed") {
       return <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />;
     }
+
     if (payment_status === "Failed") {
       return (
         <StatusBadge

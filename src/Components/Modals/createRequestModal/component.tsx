@@ -60,6 +60,7 @@ const requestSchema = yup.object().shape({
   standing: yup.string().required("Priority selection is required"),
   users: yup.array().min(0, "At least one user must be selected"),
   perform_on: yup.string().required("Date/time selection is required"),
+  request_status: yup.string().required("Status is required"),
 });
 
 const CreateModal: React.FC<ClientModalProps> = ({
@@ -78,15 +79,24 @@ const CreateModal: React.FC<ClientModalProps> = ({
 
   type Item = {
     value: string;
-    label: any;
+    key: any;
   };
 
   const items: Item[] = [
-    { value: "Priority", label: "Priority" },
-    { value: "Normal", label: "Normal" },
+    { value: "Priority", key: "Priority" },
+    { value: "Normal", key: "Normal" },
+  ];
+  const statusItems: Item[] = [
+    { value: "To do", key: "To do" },
+    { value: "In Progress", key: "In Progress" },
+    { value: "Rejected", key: "Rejected" },
+    { value: "Done", key: "Done" },
   ];
 
-  const [date, setDate] = useState<any>(rowData?.perform_on ?? "");
+  const [date, setDate] = useState<Date | null>(
+    rowData?.isEdit ? new Date(rowData?.perform_on) : null
+  );
+
   const [selectedUsers, setSelectedUsers] = useState<any[]>(
     rowData?.users || []
   );
@@ -97,6 +107,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
       perform_on: "",
       standing: "",
       users: [],
+      request_status: "",
     }
   );
 
@@ -106,13 +117,6 @@ const CreateModal: React.FC<ClientModalProps> = ({
       users: selectedUsers ? selectedUsers : rowData?.users || [],
     }));
   }, [selectedUsers]);
-
-  useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      perform_on: date ? date : rowData?.perform_on || "",
-    }));
-  }, [date]);
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
     setFormData((prev) => ({
@@ -159,11 +163,16 @@ const CreateModal: React.FC<ClientModalProps> = ({
       standing: true,
       users: true,
       perform_on: true,
+      request_status: true,
     });
 
     const isValid = await validateForm();
     if (isValid) {
-      onSubmit(formData);
+      const data = {
+        ...formData,
+        perform_on: date,
+      };
+      onSubmit(data);
     }
   };
 
@@ -257,6 +266,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
               <DateTimeSelector
                 onDateChange={(date) => {
                   setDate(date);
+                  handleInputChange("perform_on", date?.toISOString());
                   setTouched((prev) => ({ ...prev, perform_on: true }));
                   clearError("perform_on");
                 }}
@@ -272,6 +282,15 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 setSelected={(val) => handleInputChange("standing", val)}
                 items={items}
                 error={touched.standing && errors.standing}
+              />
+            </View>
+            <View style={{ marginBottom: 15 }}>
+              <SingleSelectDropDown
+                title={"Status"}
+                selected={formData?.request_status}
+                setSelected={(val) => handleInputChange("request_status", val)}
+                items={statusItems}
+                error={touched.request_status && errors.request_status}
               />
             </View>
           </ScrollView>

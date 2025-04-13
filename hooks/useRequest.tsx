@@ -5,16 +5,16 @@ import { useRouter } from "expo-router";
 import { Link } from "expo-router";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
-const handleGetAllRequest = async () => {
+const handleGetAllRequest = async (filters: any) => {
   const res = await api.get(
-    "/requests?populate[0]=users&populate[1]=users.role"
+    `/requests?populate[0]=users&populate[1]=users.role&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}&sort=${filters?.sort}`
   );
   return res.data;
 };
 
 const handleGetOneRequest = async (documentId: any) => {
   const res = await api.get(
-    `/requests/${documentId}?populate[0]=users&populate[1]=users.role`
+    `/requests/${documentId}?populate[0]=users&populate[1]=users.role&populate[2]=documents`
   );
   return res.data;
 };
@@ -34,10 +34,21 @@ const handleUpdateRequest = async (data: any, id: any) => {
   return res.data;
 };
 
+const handleUploadDocument = async (data: any, id: any) => {
+  const res = await api.post(`/requests/${id}/upload-document`, data);
+  return res.data;
+};
+
+const handleDeleteDocument = async (data: any, id: any) => {
+  const res = await api.post(`/requests/${id}/remove-document`, data);
+  return res.data;
+};
+
 export const useGetRequest = () => {
+  const { filters } = useModalStore();
   return useQuery({
-    queryKey: ["Requests"],
-    queryFn: () => handleGetAllRequest(),
+    queryKey: ["Requests", filters],
+    queryFn: () => handleGetAllRequest(filters),
   });
 };
 
@@ -82,6 +93,42 @@ export const useUpdateRequest = () => {
       setIsRequestModalOpen(false);
       queryRequest.invalidateQueries({
         queryKey: ["Requests"],
+      });
+    },
+    onError: (error) => {
+      toastError("Oops!", error.message);
+    },
+  });
+};
+
+export const useUploadDocument = () => {
+  const queryRequest = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["upload-request-doc"],
+    mutationFn: ({ data, id }: any) => handleUploadDocument(data, id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "File Added Successfully");
+      queryRequest.invalidateQueries({
+        queryKey: ["Requests Details"],
+      });
+    },
+    onError: (error) => {
+      toastError("Oops!", error.message);
+    },
+  });
+};
+
+export const useRemoveDocument = () => {
+  const queryRequest = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["remove-request-doc"],
+    mutationFn: ({ data, id }: any) => handleDeleteDocument(data, id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "File Deleted Successfully");
+      queryRequest.invalidateQueries({
+        queryKey: ["Requests Details"],
       });
     },
     onError: (error) => {

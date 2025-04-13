@@ -6,7 +6,7 @@ import { groupHoursByLocalDay } from "@/src/utils";
 
 const handleGetAllUser = async (filters: any) => {
   const res = await api.get(
-    `/user-management/get?populate[1]=role&populate[0]=department&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}&sort=createdAt:desc`
+    `/user-management/get?populate[1]=role&populate[0]=department&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}&sort=${filters?.sort}`
   );
   return res.data;
 };

@@ -17,17 +17,17 @@ import {
 import { useGetPO } from "@/hooks/usePO";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useGetInvoice } from "@/hooks/usePOpayments";
+import { ActivityIndicator } from "react-native";
 
 const ClientDetails = () => {
   const { id } = useLocalSearchParams();
   const router = useRouter();
-  const { data } = useGetOneClient(id as string);
+  const { data, isPending } = useGetOneClient(id as string);
   const [selectedTab, setSelectedTab] = useState<number>(0);
 
   const { data: InvoiceData } = useGetInvoice(id as string);
 
-  // const { data: GetData, refetch } = useGetPO();
-  // useRefreshOnFocus(refetch);
+  if (isPending) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <>

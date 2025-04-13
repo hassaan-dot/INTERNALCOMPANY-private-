@@ -28,10 +28,11 @@ type useModalStore = {
   UserData: any;
   setUserData: (UserData: any) => void;
 
-  filters: { page: string | number; pageSize: string | number };
+  filters: { page: string | number; pageSize: string | number; sort: string };
   setFilters: (filters: {
     page: string | number;
     pageSize: string | number;
+    sort: string;
   }) => void;
 
   confirmRecievingModalOpen: boolean;
@@ -56,6 +57,9 @@ type useModalStore = {
 
   isPoItemsModalOpen: boolean;
   setIsPoItemsModalOpen: (isPoItemsModalOpen: boolean) => void;
+
+  documentModalOpen: boolean;
+  setDocumentModalOpen: (documentModalOpen: boolean) => void;
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
@@ -85,7 +89,7 @@ export const useModalStore = create<useModalStore>((set) => ({
   UserData: null,
   setUserData: (UserData) => set({ UserData }),
 
-  filters: { page: "1", pageSize: "25" },
+  filters: { page: "1", pageSize: "25", sort: "createdAt:desc" },
   setFilters: (filters) => set({ filters }),
 
   isStatusModalOpen: false,
@@ -114,4 +118,7 @@ export const useModalStore = create<useModalStore>((set) => ({
 
   isPoItemsModalOpen: false,
   setIsPoItemsModalOpen: (isPoItemsModalOpen) => set({ isPoItemsModalOpen }),
+
+  documentModalOpen: false,
+  setDocumentModalOpen: (documentModalOpen) => set({ documentModalOpen }),
 }));

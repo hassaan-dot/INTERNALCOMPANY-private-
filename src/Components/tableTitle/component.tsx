@@ -34,6 +34,8 @@ interface UserProfileProps {
   rowTextStyle: any;
   onPressEdit?: any;
   onPressDel?: any;
+  onClickEye?: any;
+  showEye?: boolean;
 }
 
 const TableTitle: React.FC<UserProfileProps> = ({
@@ -51,6 +53,8 @@ const TableTitle: React.FC<UserProfileProps> = ({
   onPressEdit,
   onPressDel,
   schema,
+  onClickEye,
+  showEye = true,
 }) => {
   return (
     <View style={[styles.card, cardContainer]}>
@@ -120,9 +124,10 @@ const TableTitle: React.FC<UserProfileProps> = ({
               showDel={true}
               showEdit={true}
               showActions={true}
-              showEye={true}
+              showEye={showEye}
               onPressUpdate={onPressEdit}
               onPressDelete={onPressDel}
+              onClickEye={onClickEye}
               headerTextStyle={{
                 color: "#2E2E2E",
                 fontSize: 13.4,

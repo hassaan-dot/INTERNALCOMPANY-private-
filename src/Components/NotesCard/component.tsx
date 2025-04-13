@@ -5,6 +5,7 @@ import helpers from "../../utils/helpers";
 import FilledButton from "../Buttons/FilledButton/FilledButton";
 import CustomButton from "../CustomButton/Button";
 import { styles } from "./styles";
+import { useDeleteDoc } from "@/hooks/usePO";
 
 interface UserProfileProps {
   name: string;
@@ -180,6 +181,7 @@ const NotesCard: React.FC<UserProfileProps> = ({
                         desc={doc?.size}
                         title={doc?.name}
                         url={doc?.url}
+                        doc_id={doc?.id}
                       />
                     </View>
                   ))}

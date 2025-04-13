@@ -59,7 +59,7 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   return (
     <>
       <View style={styles.container}>
-        <ScreenHeader title={"Payment History"}></ScreenHeader>
+        <ScreenHeader title={"Payment History"} filter={true}></ScreenHeader>
 
         <View style={styles.container1}>
           <CompanyTable
@@ -72,12 +72,12 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
             DATA={InvoiceData}
             columns_schema={Invoice_Schema}
             showEye={true}
-            showDocument={true}
+            showDocument={false}
             showStatus={true}
             showEdit={true}
             showDel={true}
             onClickEye={onClickEye}
-          ></CompanyTable>
+          />
         </View>
       </View>
       {isInvoicePoModalOpen && (

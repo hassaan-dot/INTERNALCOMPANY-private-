@@ -8,7 +8,7 @@ export function useRefreshOnFocus<T>(refetch: () => Promise<T>) {
 
   useFocusEffect(
     React.useCallback(() => {
-      setFilters({ page: 1, pageSize: 25 });
+      setFilters({ page: 1, pageSize: 25, sort: "createdAt:desc" });
       if (firstTimeRef.current) {
         firstTimeRef.current = false;
         return;

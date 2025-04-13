@@ -3,8 +3,8 @@ import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
-const handleGetAllInvoices = async (id_based_filter?: string) => {
-  let url = "/invoices?populate=*&";
+const handleGetAllInvoices = async (filters: any, id_based_filter?: string) => {
+  let url = `/invoices?populate=*&pagination[page]=${filters.page}&pagination[pageSize]=${filters.pageSize}&sort=${filters?.sort}`;
 
   if (id_based_filter) {
     url = url + id_based_filter;
@@ -35,12 +35,13 @@ const handleGetOneInvoice = async (documentId: string) => {
 };
 
 export const useGetInvoice = (id?: string) => {
+  const { filters } = useModalStore();
   const id_based_filter = id
     ? `filters[purchase_order][client][documentId][$eq]=${id}`
     : undefined;
   return useQuery({
-    queryKey: ["invoice", id],
-    queryFn: () => handleGetAllInvoices(id_based_filter),
+    queryKey: ["invoice", id, filters],
+    queryFn: () => handleGetAllInvoices(filters, id_based_filter),
   });
 };
 

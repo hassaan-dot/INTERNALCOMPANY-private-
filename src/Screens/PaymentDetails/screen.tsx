@@ -1,30 +1,20 @@
 import { useGetOneInvoice } from "@/hooks/usePOpayments";
 import { useLocalSearchParams } from "expo-router";
-import React, { useState } from "react";
-import { ScrollView, View } from "react-native";
-import {
-  CreatetModal,
-  Note,
-  PaymentDetailsCard,
-  ScreenHeader,
-  StatusModal,
-} from "../../Components";
-import ConfirmRecieving from "../../Components/Modals/confirmRecieving/component";
-import CreateModal from "../../Components/Modals/createModal/component";
+import React from "react";
+import { ActivityIndicator, ScrollView, View } from "react-native";
+import { PaymentDetailsCard, ScreenHeader } from "../../Components";
 import styles from "./styles";
 const PaymentDetails: React.FC<{ route: any }> = ({ route }) => {
   const { id } = useLocalSearchParams();
-  const { data } = useGetOneInvoice(id);
-  const [ModalOpen, setModalOpen] = useState(false);
-  function Create() {}
+  const { data, isPending } = useGetOneInvoice(id);
+
+  if (isPending) return <ActivityIndicator style={{ flex: 1 }} />;
+
   return (
     <>
       <ScrollView style={styles.container}>
         <View style={styles.container2}>
-          <ScreenHeader
-            title={"Payment Details"}
-            onPress={Create}
-          ></ScreenHeader>
+          <ScreenHeader title={"Payment Details"}></ScreenHeader>
         </View>
         <View style={styles.container3}>
           <View style={styles.LoginBox}>
@@ -40,34 +30,6 @@ const PaymentDetails: React.FC<{ route: any }> = ({ route }) => {
           </View>
         </View>
       </ScrollView>
-
-      <StatusModal title={"Change status"} isVisible={false}></StatusModal>
-      <CreatetModal
-        First="First Name"
-        Firstchild="Last name"
-        Second="Email Address"
-        Third="Phone number"
-        Fifth="Amount"
-        Sixth="Invoice type"
-        seventh="Add notes"
-        eigth="Add document/Document"
-        invoice={true}
-        styleContainer={{ flexDirection: "row" }}
-        create={true}
-        visible={false}
-        title={"Add Invoice"}
-      ></CreatetModal>
-      <ConfirmRecieving
-        title={"Confirm Client Recieving"}
-        create={true}
-        styleContainer={{ flexDirection: "row" }}
-        First="Client Name"
-        Firstchild="PO Number"
-        Second="upload proof of received "
-        visible={false}
-      ></ConfirmRecieving>
-      <Note title={"Note"} isVisible={false}></Note>
-      <CreateModal create={false} visible={ModalOpen}></CreateModal>
     </>
   );
 };

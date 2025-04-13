@@ -131,7 +131,15 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: "*/*",
+        type: [
+          "image/*", // All image types (jpeg, png, etc.)
+          "application/pdf", // PDF files
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+          "application/msword", // .doc
+          "application/vnd.ms-excel", // .xls
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+          "text/csv", // .csv
+        ],
         multiple: true,
       });
 
@@ -369,6 +377,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
             />
           </View>
         )}
+        <View></View>
         <View style={styles.buttonRow}>
           <ButtonRow
             onCancel={handleClose}

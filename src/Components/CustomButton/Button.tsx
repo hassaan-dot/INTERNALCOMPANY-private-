@@ -12,6 +12,9 @@ import {
 import { icons } from "@/assets/icons/icons";
 // import Ionicon_com from '../Ionicons/Ionicon';
 import { handleDownload } from "@/src/utils";
+import { useDeleteDoc } from "@/hooks/usePO";
+import { useLocalSearchParams } from "expo-router";
+import { ActivityIndicator } from "react-native";
 
 // Define types for the component's props
 interface CustomButtonProps {
@@ -39,34 +42,34 @@ interface CustomButtonProps {
   descTextprop: any;
   Imagecontainer?: any;
   Imagecontainer2?: any;
+  doc_id: number;
 }
 
 const CustomButton: React.FC<CustomButtonProps> = ({
-  text,
   Imagecontainer,
   title,
   desc,
   url,
   style,
   textStyle,
-  onPress,
   Color,
-  disabled = false,
   leftIcon = true,
-  leftIconType,
-  leftIconName,
-  leftIconColor,
-  leftIconSize = 20,
-  leftIconStyle,
   rightIcon = true,
-  rightIconType,
-  rightIconName,
-  rightIconColor,
-  rightIconSize = 20,
-  rightIconStyle,
   descTextprop,
   Imagecontainer2,
+  doc_id,
 }) => {
+  const { id } = useLocalSearchParams();
+  const { mutate: handleDeleteDoc, isPending: isDeleting } = useDeleteDoc();
+
+  const handleDelete = () => {
+    const data = {
+      doc_id,
+    };
+
+    handleDeleteDoc({ data, id });
+  };
+
   return (
     <TouchableOpacity
       style={[styles.button, style, { backgroundColor: Color }]}
@@ -101,11 +104,21 @@ const CustomButton: React.FC<CustomButtonProps> = ({
           </View>
         </View>
         {rightIcon && (
-          <View>
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
             <Image
               source={icons.documentDownloadIcon}
               style={[styles.image1, Imagecontainer2]}
             />
+            <TouchableOpacity onPress={handleDelete}>
+              {isDeleting ? (
+                <ActivityIndicator style={{ marginLeft: 20 }} />
+              ) : (
+                <Image
+                  source={icons.tableDeleteIcon}
+                  style={[styles.image1, Imagecontainer2, { tintColor: "red" }]}
+                />
+              )}
+            </TouchableOpacity>
           </View>
         )}
       </View>

@@ -1,7 +1,7 @@
 import React from "react";
 import RequestDetailsScreen from "@/src/Screens/RequestDetails/screen";
 const RequestDetails = () => {
-  return <RequestDetailsScreen></RequestDetailsScreen>
+  return <RequestDetailsScreen />;
 };
 
 export default RequestDetails;

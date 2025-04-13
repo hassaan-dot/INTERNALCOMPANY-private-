@@ -160,6 +160,7 @@ const UserManagement = () => {
           create={true}
           title={"User Management"}
           onPress={onOpenModal}
+          filter={true}
         />
 
         <View>

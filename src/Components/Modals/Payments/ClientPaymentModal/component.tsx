@@ -135,7 +135,15 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   const pickDocument = async () => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
-        type: "*/*",
+        type: [
+          "image/*", // All image types (jpeg, png, etc.)
+          "application/pdf", // PDF files
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
+          "application/msword", // .doc
+          "application/vnd.ms-excel", // .xls
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
+          "text/csv", // .csv
+        ],
         multiple: true,
       });
 

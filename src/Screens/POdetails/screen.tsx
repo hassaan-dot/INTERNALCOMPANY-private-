@@ -7,10 +7,11 @@ import { formatDateForAPI } from "@/services/dateFormatter";
 import LocalStorage from "@/services/local-storage";
 import PoDetailProfile from "@/src/Components/poDetailsProfileHeader/component";
 import { useModalStore } from "@/store/useModalStore";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { ScrollView, View } from "react-native";
 import {
+  AddDocumentModal,
   AssignEmployee,
   InformationContainer,
   InvoiceModal,
@@ -29,6 +30,7 @@ import styles from "./styles";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useDeleteItem } from "@/hooks/usePOitems";
+import { ActivityIndicator } from "react-native";
 
 const PODetailScreen = () => {
   const {
@@ -45,12 +47,14 @@ const PODetailScreen = () => {
     setRowData,
     setIsPoItemsModalOpen,
     isPoItemsModalOpen,
+    setDocumentModalOpen,
+    documentModalOpen,
   } = useModalStore();
   const { user } = useAuthStore();
   const { id } = useLocalSearchParams();
   const { mutate: handleAddNote } = useCreateNote();
 
-  const { data } = useGetOnePO(id as string);
+  const { data, isPending } = useGetOnePO(id as string);
 
   const {
     handleAccept,
@@ -86,6 +90,9 @@ const PODetailScreen = () => {
   const handleNoteModalClose = () => {
     setRowData(null);
     setIsNoteModalOpen(false);
+  };
+  const handleDocumentModalOpenfunc = () => {
+    setDocumentModalOpen(true);
   };
 
   function AddInvoiceModalOpenfunc() {
@@ -161,6 +168,7 @@ const PODetailScreen = () => {
     setRowData(data);
     setIsPoItemsModalOpen(true);
   };
+  const router = useRouter();
   const { mutate: delInvoice } = useDeleteInvoice();
   const { mutate: delItem } = useDeleteItem();
 
@@ -170,6 +178,12 @@ const PODetailScreen = () => {
   const handleItemsDelete = (documentId: number) => {
     delItem(documentId);
   };
+
+  const onClickPaymentEye = ({ documentId }) => {
+    router.push(`/(app)/payment/payment-details?id=${documentId}`);
+  };
+
+  if (isPending) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <>
@@ -244,7 +258,7 @@ const PODetailScreen = () => {
                 ButtonTitle="Add notes"
                 onPress={NoteModalOpenfunc}
                 horizontalwidth={helpers.wp(39.9)}
-              ></NotesCard>
+              />
             </View>
             <View style={{ flex: 1, marginLeft: 15 }}>
               <NotesCard
@@ -253,10 +267,13 @@ const PODetailScreen = () => {
                 titleStyle={styles.Text}
                 Document={true}
                 Data={data?.data}
+                titleIcon={true}
                 title="Documents"
+                onPress={handleDocumentModalOpenfunc}
+                ButtonTitle="Upload file"
                 TextEnable={false}
                 horizontalwidth={helpers.wp(35)}
-              ></NotesCard>
+              />
             </View>
           </View>
           <View style={{ margin: 20 }}>
@@ -270,6 +287,7 @@ const PODetailScreen = () => {
               title="Payment History"
               onPressEdit={onPressEdit}
               onPressDel={handleInvoiceDelete}
+              onClickEye={onClickPaymentEye}
             />
           </View>
           <View style={{ margin: 20 }}>
@@ -279,13 +297,14 @@ const PODetailScreen = () => {
               rowTextStyle={{ marginLeft: 10, fontFamily: PoppinsRegular }}
               schema={Item_Schema}
               titleIcon={true}
-              titleIcon2={true}
+              // titleIcon2={true}
               onPressEdit={onPressEditItems}
               onPressDel={handleItemsDelete}
               onPress={AddItemModalOpenfunc}
               ButtonTitle="Add New item"
-              ButtonTitle2="Filter"
-            ></TableTitle>
+              showEye={false}
+              // ButtonTitle2="Filter"
+            />
           </View>
         </View>
       </ScrollView>
@@ -329,6 +348,14 @@ const PODetailScreen = () => {
           desc={true}
           visible={isAssignEmployeeModalOpen}
           title={"Assign Employee"}
+        />
+      )}
+      {documentModalOpen && (
+        <AddDocumentModal
+          onClose={() => {
+            setDocumentModalOpen(false);
+          }}
+          visible={documentModalOpen}
         />
       )}
       {isPoItemsModalOpen && (

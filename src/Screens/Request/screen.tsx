@@ -48,6 +48,7 @@ const Request = () => {
     standing,
     users,
     documentId,
+    request_status,
   }: any) => {
     if (!standing) return;
 
@@ -55,9 +56,10 @@ const Request = () => {
       data: {
         title: title,
         description: description,
-        perform_on: perform_on,
+        perform_on: new Date(perform_on),
         standing: standing,
         users: users,
+        request_status: request_status,
       },
     };
     handleUpdate({ data, id: documentId });
@@ -69,6 +71,7 @@ const Request = () => {
     perform_on,
     standing,
     users,
+    request_status,
   }: any) => {
     const data = {
       data: {
@@ -77,14 +80,11 @@ const Request = () => {
         perform_on: formatDateForAPI(perform_on),
         standing,
         users,
+        request_status,
       },
     };
     handleAdd(data);
   };
-
-  function Create() {
-    setIsRequestModalOpen(true);
-  }
 
   const onPressEdit = ({
     title,
@@ -93,6 +93,7 @@ const Request = () => {
     standing,
     users,
     documentId,
+    request_status,
   }: any) => {
     const data = {
       title,
@@ -105,6 +106,7 @@ const Request = () => {
         label: `${u.first_name}${u.last_name}  `,
       })),
       documentId,
+      request_status,
       isEdit: true,
     };
     setRowData(data);
@@ -118,12 +120,14 @@ const Request = () => {
     };
     handleDelete(data);
   };
-  const onOpenModal = () => {
-    setIsRequestModalOpen(true);
-  };
+
   const handleSubmit = (formData: any) => {
     if (rowData?.isEdit) onPressUpdatefunction(formData);
     else onPressAddfunction(formData);
+  };
+  const onOpenModal = () => {
+    setIsRequestModalOpen(true);
+    setRowData(null);
   };
   const onCloseModal = () => {
     setIsRequestModalOpen(false);
@@ -138,9 +142,9 @@ const Request = () => {
       <View style={styles.container}>
         <ScreenHeader
           create={true}
-          // filter={true}
           title={"Request List"}
-          onPress={Create}
+          onPress={onOpenModal}
+          filter={true}
         />
 
         <View>
@@ -155,19 +159,16 @@ const Request = () => {
             showEye={true}
             showDel={true}
             showEdit={true}
-            showDocument={true}
+            showStatus={true}
+            showDocument={false}
             onClickEye={onClickEye}
-          ></CompanyTable>
+          />
         </View>
       </View>
       {isRequestModalOpen && (
         <CreateRequestModal
           onSubmit={handleSubmit}
-          onClose={() => {
-            setIsRequestModalOpen(false);
-            setRowData(null);
-          }}
-          // onPressUpdatefunction={onPressUpdatefunction}
+          onClose={onCloseModal}
           desc={true}
           styleContainer={{ flexDirection: "row" }}
           create={true}

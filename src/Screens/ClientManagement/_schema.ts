@@ -63,7 +63,7 @@ export const Requests_columns_schema = [
   },
   {
     key: "standing",
-    header: "Invoice Type",
+    header: "Standing",
   },
 ];
 

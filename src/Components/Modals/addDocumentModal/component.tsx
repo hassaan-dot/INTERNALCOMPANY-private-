@@ -1,28 +1,16 @@
-import React, { useRef, useState } from "react";
-import {
-  View,
-  Text,
-  TextInput,
-  Modal,
-  TouchableOpacity,
-  StyleSheet,
-  Image,
-  ScrollView,
-} from "react-native";
 import * as DocumentPicker from "expo-document-picker";
+import React, { useState } from "react";
+import { Modal, ScrollView, Text, TouchableOpacity, View } from "react-native";
 
-import { useForm } from "react-hook-form";
-import { styles } from "./styles";
-import { icons } from "@/assets/icons/icons";
-import InputField from "../../InputField/InputField";
 import { PoppinsRegular } from "@/constants/fonts";
+import { useDeleteDoc, useUpdatePO } from "@/hooks/usePO";
 import helpers from "@/src/utils/helpers";
 import { AntDesign, Feather } from "@expo/vector-icons";
-import { FlatList } from "react-native";
-import { usePOActions } from "@/hooks/usePoActions";
 import { useLocalSearchParams } from "expo-router";
+import { ActivityIndicator, FlatList } from "react-native";
+import { styles } from "./styles";
 
-interface ClientModalProps {
+interface addDocumentModalProps {
   visible: boolean;
   create?: boolean;
   desc?: boolean;
@@ -43,53 +31,16 @@ interface ClientFormData {
   companyName: string;
 }
 
-const ConfirmRecieving: React.FC<ClientModalProps> = ({
+const AddDocumentModal: React.FC<addDocumentModalProps> = ({
   visible,
   onClose,
-  create = false,
-  onSubmit,
-  title,
 }) => {
   const { id } = useLocalSearchParams();
   const color = ["#07504B"];
 
-  const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
-
   const [documents, setDocuments] = useState<any[]>([]);
-  const inputRefs = useRef<Array<TextInput | null>>([]);
-  const {
-    handleSendCode,
-    isSendingCode,
-    handleConfirmRecieving,
-    isConfirming,
-  } = usePOActions(id as string);
 
-  const handleChangeText = (index: number, value: string) => {
-    if (value.length <= 1) {
-      const newOtp = [...otp];
-      newOtp[index] = value;
-      setOtp(newOtp);
-
-      if (value && index < otp.length - 1) {
-        inputRefs.current[index + 1]?.focus();
-      }
-    }
-  };
-  const handleKeyPress = (e: any, index: number) => {
-    if (e.nativeEvent.key === "Backspace" && !otp[index] && index > 0) {
-      inputRefs.current[index - 1]?.focus();
-    }
-  };
-  const handleFormSubmit = () => {
-    const form_data = new FormData();
-    form_data.append("code", otp?.join()?.split(",")?.join(""));
-
-    documents.forEach((doc) => {
-      form_data.append("proof_of_confirmation", doc.blob, doc.name);
-    });
-
-    handleConfirmRecieving(form_data);
-  };
+  const { mutate: handleUpdatePo, isPending: isUpdating } = useUpdatePO(false);
 
   const pickDocument = async () => {
     try {
@@ -131,70 +82,38 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
     setDocuments((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const handleUpload = () => {
+    const formData = new FormData();
+    documents.forEach((doc) => {
+      formData.append("po_documents", doc.blob, doc.name);
+    });
+
+    handleUpdatePo({ data: formData, id });
+  };
+
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
         <View style={styles.modalContainer}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <View style={{ marginVertical: 5 }}>
-              <>
-                <Image
-                  source={icons.modalIconOtp}
-                  style={{ width: 60, height: 60 }}
-                ></Image>
-                <Text style={styles.title}>{title}</Text>
-              </>
-            </View>
-
             <View>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
+              <View style={styles.container1}>
                 <View style={[styles.inputContainer]}>
-                  <Text
-                    style={{
-                      fontSize: 16,
-                      fontWeight: "400",
-                      fontFamily: PoppinsRegular,
-                      bottom: 3,
-                    }}
-                  >
-                    {"upload proof of received"}
-                  </Text>
+                  <Text style={styles.filetext}>{"upload file"}</Text>
 
-                  <View
-                    style={{
-                      borderRadius: 6,
-                      borderColor: "#ddd",
-                      borderWidth: 1,
-                      paddingVertical: 7,
-                      width: "100%",
-                    }}
-                  >
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
+                  <View style={styles.container2}>
+                    <View style={styles.container4}>
                       <View>
                         <TouchableOpacity
                           onPress={pickDocument}
-                          style={{
-                            backgroundColor: "#f6f6f6",
-                            padding: 5,
-                            paddingVertical: 0,
-                            marginLeft: 7,
-                            borderRadius: 4,
-                            justifyContent: "center",
-                          }}
+                          style={styles.pickdocument}
                         >
                           <Feather
                             name="paperclip"
                             color={"#07504B"}
                             style={{}}
                             size={12}
-                          ></Feather>
+                          />
                         </TouchableOpacity>
                       </View>
 
@@ -281,38 +200,6 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
                 </View>
               </View>
             </View>
-
-            <View>
-              <View
-                style={{ marginBottom: 20, marginTop: 16, paddingRight: 50 }}
-              >
-                <Text style={styles.title1}>
-                  Enter the OTP confirmation code from client
-                </Text>
-              </View>
-
-              <View style={styles.otpContainer}>
-                {otp.map((digit, index) => (
-                  <TextInput
-                    key={index}
-                    style={styles.otpInput}
-                    keyboardType="numeric"
-                    maxLength={1}
-                    value={digit}
-                    onKeyPress={(e) => handleKeyPress(e, index)}
-                    onChangeText={(text) => handleChangeText(index, text)}
-                  />
-                ))}
-                <TouchableOpacity
-                  onPress={handleSendCode}
-                  disabled={isSendingCode}
-                >
-                  <Text style={styles.resendText}>
-                    {isSendingCode ? "Sending" : "Send Code"}
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
           </ScrollView>
 
           <View style={styles.buttonContainer}>
@@ -321,11 +208,11 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.addButton}
-              onPress={handleFormSubmit}
-              disabled={isConfirming}
+              onPress={handleUpload}
+              disabled={isUpdating}
             >
               <Text style={styles.addText}>
-                {isConfirming ? "Confirming" : "Confirm"}
+                {isUpdating ? <ActivityIndicator /> : "Upload"}
               </Text>
             </TouchableOpacity>
           </View>
@@ -335,4 +222,4 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
   );
 };
 
-export default ConfirmRecieving;
+export default AddDocumentModal;

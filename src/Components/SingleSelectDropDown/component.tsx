@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     // maxWidth: 400,
   },
   label: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: "400",
     marginBottom: 4,
     color: "#000",

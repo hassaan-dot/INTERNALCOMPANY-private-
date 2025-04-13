@@ -10,7 +10,7 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { DateTimeSelector, SingleSelectDropDown } from "../..";
+import { SingleSelectDropDown } from "../..";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
 import * as yup from "yup";

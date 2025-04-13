@@ -150,6 +150,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
           create={true}
           title={"Client Management"}
           onPress={onOpenModal}
+          filter={true}
         />
 
         <View>

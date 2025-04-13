@@ -191,12 +191,13 @@ export const customStyles = {
   input: (provided: any) => ({
     ...provided,
     color: "#333",
+    //dropdown
     margin: 0,
     padding: 0,
   }),
   placeholder: (provided: any) => ({
     ...provided,
-    color: "#000",
+    color: "#07504b",
     fontSize: 14,
   }),
   singleValue: (provided: any) => ({

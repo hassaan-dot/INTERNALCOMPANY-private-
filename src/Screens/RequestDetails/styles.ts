@@ -16,10 +16,37 @@ export const styles = StyleSheet.create({
 
     //   marginHorizontal: 30,
   },
+  buttonfile: {
+    padding: 10,
+    paddingHorizontal: 17,
+    flexDirection: "row",
+    borderRadius: 8,
+    alignItems: "center",
+    backgroundColor: "#F9F9F9",
+    width: "12%",
+  },
+  desc1: {
+    fontWeight: "500",
+    fontSize: 16,
+    fontFamily: PoppinsRegular,
+  },
+  desc: {
+    fontWeight: "300",
+    fontSize: 14,
+    fontFamily: PoppinsRegular,
+    color: "#2C2C2D",
+  },
+  files: {
+    fontWeight: "500",
+    fontSize: 14,
+    color: "#2C2C2D",
+    fontFamily: PoppinsRegular,
+  },
   inputContainer: {
     padding: 13,
     borderRadius: 8,
     marginLeft: 5,
+    fontSize: 18,
     // paddingHorizontal: 15,
     backgroundColor: "#F9F9F9",
     flex: 1,
@@ -72,7 +99,7 @@ export const styles = StyleSheet.create({
     // height: helpers.hp(0),
     padding: 15,
     paddingBottom: helpers.normalize(50),
-    backgroundColor: "#F9F9F9",
+    backgroundColor: "#f9f9f9",
     borderRadius: 8,
     fontFamily: PoppinsRegular,
     fontWeight: "500",
@@ -80,11 +107,12 @@ export const styles = StyleSheet.create({
     // textAlignVertical:'top'
   },
   sectionTitle: {
-    fontSize: 20,
+    fontSize: 22,
     fontWeight: "500",
     marginBottom: 8,
     marginLeft: 5,
-    fontFamily: MontserratRegular,
+    color: "#2C2C2D",
+    fontFamily: PoppinsRegular,
   },
   card: {
     marginBottom: 12,
@@ -93,7 +121,7 @@ export const styles = StyleSheet.create({
     marginBottom: 16,
   },
   date: {
-    color: "#2C2C2B",
+    color: "#2C2C2D",
     fontWeight: "100",
     fontSize: 14,
     fontFamily: PoppinsRegular,
@@ -113,9 +141,9 @@ export const styles = StyleSheet.create({
   },
 
   customText: {
-    fontFamily: MontserratRegular,
+    fontFamily: PoppinsRegular,
     fontWeight: "100",
-    fontSize: 16,
+    fontSize: 14,
   },
   custom1: { backgroundColor: "#fff", flex: 1, margin: 25, marginTop: 15 },
   custom2: { flexDirection: "row" },
@@ -137,10 +165,12 @@ export const styles = StyleSheet.create({
   custom6: { margin: 5, marginTop: 20, marginRight: helpers.normalize(80) },
   custom7: { marginHorizontal: 30, margin: 10 },
   custom8: {
-    padding: 20,
-    backgroundColor: "grey",
+    padding: 10,
+    backgroundColor: "#F9F9F9",
     borderRadius: 8,
-    marginRight: 20,
+    // marginRight: 20,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  custom9: { flexDirection: "row", alignItems: "center" },
+  custom9: { flexDirection: "row", alignItems: "center", marginVertical: 15 },
 });
