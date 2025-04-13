@@ -1,14 +1,33 @@
 import { useGetOneClient } from "@/hooks/useClient";
-import { useLocalSearchParams } from "expo-router";
-import React from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
-import { ClientDetailsHeader, ScreenHeader } from "../../Components";
+import {
+  ClientDetailsHeader,
+  CompanyTable,
+  ScreenHeader,
+  TabSelector,
+} from "../../Components";
 import { styles } from "./styles";
+import {
+  Invoice_Schema,
+  Po_Schema,
+  Po_Schema_Client,
+} from "../ClientManagement/_schema";
+import { useGetPO } from "@/hooks/usePO";
+import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
+import { useGetInvoice } from "@/hooks/usePOpayments";
 
 const ClientDetails = () => {
   const { id } = useLocalSearchParams();
-
+  const router = useRouter();
   const { data } = useGetOneClient(id as string);
+  const [selectedTab, setSelectedTab] = useState<number>(0);
+
+  const { data: InvoiceData } = useGetInvoice(id as string);
+
+  // const { data: GetData, refetch } = useGetPO();
+  // useRefreshOnFocus(refetch);
 
   return (
     <>
@@ -20,20 +39,40 @@ const ClientDetails = () => {
         <View>
           <ClientDetailsHeader item={data} profile={true} />
         </View>
-        {/* <View style={styles.container3}>
+        <View style={styles.container3}>
           <TabSelector
             tabs={["Purchasing Order List", "Invoice List"]}
-            onSelect={(tab) => setSelectedTab(tab)}
             selectedTab={selectedTab}
+            setSelectedTab={setSelectedTab}
           />
         </View>
         <View style={styles.container4}>
           <CompanyTable
-            showActions={true}
+            columns_schema={
+              selectedTab === 0 ? Po_Schema_Client : Invoice_Schema
+            }
             checkbox={true}
-            DATA={DATA}
-          ></CompanyTable>
-        </View> */}
+            showActions={true}
+            showEye={true}
+            showDel={false}
+            showEdit={false}
+            isPO={true}
+            showStatus={true}
+            DATA={selectedTab === 0 ? data?.data?.purchase_orders : InvoiceData}
+            pagination={true}
+            // onPressUpdate={onPressEdit}
+            // onPressDelete={handleDelete}
+            onClickEye={({ documentId }) => {
+              if (selectedTab === 0) {
+                router.push(`/(app)/payment/payment-details`);
+              } else {
+                router.push(`/(app)/payment/payment-details?id=${documentId}`);
+              }
+            }}
+          />
+
+          {/* <CompanyTable showActions={true} checkbox={true} DATA={[]} /> */}
+        </View>
       </ScrollView>
     </>
   );

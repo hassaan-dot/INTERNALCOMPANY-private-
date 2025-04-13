@@ -53,6 +53,9 @@ type useModalStore = {
 
   isAttendenceModalOpen: boolean;
   setisAttendenceModalOpen: (isAttendenceModalOpen: boolean) => void;
+
+  isPoItemsModalOpen: boolean;
+  setIsPoItemsModalOpen: (isPoItemsModalOpen: boolean) => void;
 };
 
 export const useModalStore = create<useModalStore>((set) => ({
@@ -108,4 +111,7 @@ export const useModalStore = create<useModalStore>((set) => ({
   isClientPaymentReminderModalOpen: false,
   setisClientPaymentReminderModalOpen: (isClientPaymentReminderModalOpen) =>
     set({ isClientPaymentReminderModalOpen }),
+
+  isPoItemsModalOpen: false,
+  setIsPoItemsModalOpen: (isPoItemsModalOpen) => set({ isPoItemsModalOpen }),
 }));

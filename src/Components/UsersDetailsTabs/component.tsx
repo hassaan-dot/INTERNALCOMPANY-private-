@@ -1,31 +1,30 @@
-import React, { useState } from "react";
+import React, { Dispatch, SetStateAction, useState } from "react";
 import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { styles } from "./styles";
 import DropDownTitleView from "../DropdownWithTitle/Component";
 interface TabSelectorProps {
   tabs: [string, string];
-  onSelect: (tab: string) => void;
   style: any;
   textStyle: any;
   barColor: any;
   dropDownButton: boolean;
   containerStyle: any;
+  selectedTab: number;
+  setSelectedTab: Dispatch<SetStateAction<number>>;
 }
 
 const TabSelector: React.FC<TabSelectorProps> = ({
   tabs,
   style,
-  onSelect,
+  selectedTab,
+  setSelectedTab,
   containerStyle,
   textStyle,
   barColor,
   dropDownButton = false,
 }) => {
-  const [selectedTab, setSelectedTab] = useState<string>(tabs[0]);
-
-  const handleTabPress = (tab: string) => {
-    setSelectedTab(tab);
-    onSelect(tab);
+  const handleTabPress = (tabIndex: number) => {
+    setSelectedTab(tabIndex);
   };
 
   return (
@@ -37,11 +36,11 @@ const TabSelector: React.FC<TabSelectorProps> = ({
       }}
     >
       <View style={[styles.container, style]}>
-        {tabs?.map((tab) => (
+        {tabs?.map((tab: any, index: number) => (
           <TouchableOpacity
             key={tab}
-            onPress={() => handleTabPress(tab)}
-            style={[styles.tab, selectedTab === tab && styles.activeTab]}
+            onPress={() => handleTabPress(index)}
+            style={[styles.tab]}
           >
             <Text
               style={[
@@ -52,26 +51,24 @@ const TabSelector: React.FC<TabSelectorProps> = ({
             >
               {tab}
             </Text>
-            {selectedTab === tab && (
+            {selectedTab === index && (
               <View style={[styles.underline, { backgroundColor: barColor }]} />
             )}
           </TouchableOpacity>
         ))}
       </View>
       {dropDownButton && (
-      <View style={{marginRight:10}}>
-      
+        <View style={{ marginRight: 10 }}>
           <DropDownTitleView
-          placeholder={'Export as'}
+            placeholder={"Export as"}
             containerStyle={{
               borderColor: "#07504B",
               borderWidth: 1,
               borderRadius: 6,
             }}
           ></DropDownTitleView>
-
-      </View>
-    )}
+        </View>
+      )}
     </View>
   );
 };

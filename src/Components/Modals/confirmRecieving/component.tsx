@@ -55,7 +55,7 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
 
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
 
-  const [documents, setDocuments] = useState<Document[]>([]);
+  const [documents, setDocuments] = useState<any[]>([]);
   const inputRefs = useRef<Array<TextInput | null>>([]);
   const {
     handleSendCode,
@@ -84,9 +84,8 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
     const form_data = new FormData();
     form_data.append("code", otp?.join()?.split(",")?.join(""));
 
-    // Append documents to form data
-    documents?.forEach((doc, index) => {
-      form_data.append(`proof_of_confirmation[${index}]`, doc as any);
+    documents.forEach((doc) => {
+      form_data.append("proof_of_confirmation", doc.blob, doc.name);
     });
 
     handleConfirmRecieving(form_data);
@@ -100,7 +99,19 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
       });
 
       if (!result.canceled) {
-        const newDocs = result.assets.map((file) => file);
+        const newDocsPromises = result.assets.map(async (file) => {
+          const response = await fetch(file.uri);
+          const blob = await response.blob();
+
+          return {
+            uri: file.uri,
+            name: file.name,
+            type: file.mimeType || "application/octet-stream",
+            blob: blob,
+          };
+        });
+
+        const newDocs = await Promise.all(newDocsPromises);
         setDocuments((prev) => [...prev, ...newDocs]);
       }
     } catch (err) {

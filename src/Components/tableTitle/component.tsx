@@ -32,6 +32,8 @@ interface UserProfileProps {
   DATA: any;
   schema: any;
   rowTextStyle: any;
+  onPressEdit?: any;
+  onPressDel?: any;
 }
 
 const TableTitle: React.FC<UserProfileProps> = ({
@@ -46,6 +48,8 @@ const TableTitle: React.FC<UserProfileProps> = ({
   titleIcon2,
   ButtonTitle2,
   onPress,
+  onPressEdit,
+  onPressDel,
   schema,
 }) => {
   return (
@@ -113,6 +117,12 @@ const TableTitle: React.FC<UserProfileProps> = ({
               columns_schema={schema}
               DATA={DATA}
               checkbox={false}
+              showDel={true}
+              showEdit={true}
+              showActions={true}
+              showEye={true}
+              onPressUpdate={onPressEdit}
+              onPressDelete={onPressDel}
               headerTextStyle={{
                 color: "#2E2E2E",
                 fontSize: 13.4,

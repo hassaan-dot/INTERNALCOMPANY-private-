@@ -53,6 +53,7 @@ import VerticalsButton from "./VerticalsButtons/component";
 import truncateComponentName from "./WordTruncate/component";
 import CreatePaymentReminderUser from "./Modals/Payments/UserPaymentModal/component";
 import CreatePaymentReminderClient from "./Modals/Payments/ClientPaymentModal/component";
+import PoItemModal from "./Modals/ItemModal/component";
 // import RichEditor from "./RichEditor//RichTextEditor.web";
 export {
   Admineader,
@@ -61,6 +62,7 @@ export {
   CreatePaymentReminderClient,
   // RichEditor,
   AttendenceModal,
+  PoItemModal,
   Avatar,
   Box,
   ButtonGroup,

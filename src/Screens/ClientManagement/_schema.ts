@@ -90,6 +90,21 @@ export const Po_Schema = [
   },
 ];
 
+export const Po_Schema_Client = [
+  {
+    key: "po_name",
+    header: "Name",
+  },
+  {
+    key: "client.email",
+    header: "Email",
+  },
+  {
+    key: "client.phone_number",
+    header: "Phone number",
+  },
+];
+
 export const Invoice_Schema = [
   {
     key: "date_of_payment",

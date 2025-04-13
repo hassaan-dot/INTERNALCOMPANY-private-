@@ -3,8 +3,13 @@ import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { toastError, toastSuccess } from "../services/toast-messages";
 
-const handleGetAllInvoices = async () => {
-  const res = await api.get("/invoices?populate=*");
+const handleGetAllInvoices = async (id_based_filter?: string) => {
+  let url = "/invoices?populate=*&";
+
+  if (id_based_filter) {
+    url = url + id_based_filter;
+  }
+  const res = await api.get(url);
   return res.data;
 };
 
@@ -14,31 +19,33 @@ const handleCreatePOInvoice = async (data: any) => {
   return res.data;
 };
 
-const handleDeletePOInvoice = async (data: any) => {
-  const res = await api.delete(`/invoices/${data.data.documentId}`);
+const handleDeletePOInvoice = async (id: any) => {
+  const res = await api.delete(`/invoices/${id}`);
   return res.data;
 };
 
 const handleUpdateInvoice = async (data: any, documentId: any) => {
-  console.log("data", documentId);
   const res = await api.put(`/invoices/${documentId}`, data);
   return res.data;
 };
-// sko38f7f6mv0gi1havb75f7f
+
 const handleGetOneInvoice = async (documentId: string) => {
   const res = await api.get(`/invoices/${documentId}?populate=*`);
   return res.data;
 };
 
-export const useGetInvoice = () => {
+export const useGetInvoice = (id?: string) => {
+  const id_based_filter = id
+    ? `filters[purchase_order][client][documentId][$eq]=${id}`
+    : undefined;
   return useQuery({
-    queryKey: ["invoice"],
-    queryFn: () => handleGetAllInvoices(),
+    queryKey: ["invoice", id],
+    queryFn: () => handleGetAllInvoices(id_based_filter),
   });
 };
 
 export const useCreateInvoice = () => {
-  const { setisInvoicePoModalOpen } = useModalStore();
+  const { setisInvoicePoModalOpen, setRowData } = useModalStore();
 
   const queryPO = useQueryClient();
   return useMutation({
@@ -47,6 +54,7 @@ export const useCreateInvoice = () => {
     onSuccess: (data) => {
       toastSuccess("Success!", "Invoice has been Added successfully");
       setisInvoicePoModalOpen(false);
+      setRowData(null);
       queryPO.invalidateQueries({
         queryKey: ["getonePO"],
         type: "active",
@@ -62,7 +70,7 @@ export const useCreateInvoice = () => {
   });
 };
 export const useUpdateInvoice = () => {
-  const { setisInvoicePoModalOpen } = useModalStore();
+  const { setisInvoicePoModalOpen, setRowData } = useModalStore();
 
   const queryPO = useQueryClient();
   return useMutation({
@@ -72,8 +80,13 @@ export const useUpdateInvoice = () => {
     onSuccess: (data) => {
       toastSuccess("Success!", "Invoice Update successfully");
       setisInvoicePoModalOpen(false);
+      setRowData(null);
       queryPO.invalidateQueries({
         queryKey: ["invoice"],
+        type: "active",
+      });
+      queryPO.invalidateQueries({
+        queryKey: ["getonePO"],
         type: "active",
       });
     },
@@ -86,7 +99,7 @@ export const useDeleteInvoice = () => {
   const queryPO = useQueryClient();
   return useMutation({
     mutationKey: ["deleteInvoice"],
-    mutationFn: (data: any) => handleDeletePOInvoice(data),
+    mutationFn: (id: any) => handleDeletePOInvoice(id),
     onSuccess: (data) => {
       toastSuccess("Success!", "Invoice has been Deleted successfully");
 

@@ -1,39 +1,85 @@
 import api from "@/services/axios";
-import { useQuery } from "@tanstack/react-query";
-
-const handleGetAllItems = async () => {
-  const res = await api.get("/po-items?populate=*");
-  return res.data;
-};
+import { toastError, toastSuccess } from "@/services/toast-messages";
+import { useModalStore } from "@/store/useModalStore";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const handleCreatePOItems = async (data: any) => {
-  try {
-    const res = await api.post("/purchase-orders", data);
+  const res = await api.post("/po-items", data);
 
-    return res.data;
-  } catch (error) {
-    console.log("method errro", error);
-  }
-};
-
-const handleDeletePOItems = async (data: any) => {
-  const res = await api.delete(`/purchase-orders/${data.data.documentId}`);
   return res.data;
 };
 
 const handleUpdatePOItems = async (data: any, id: string) => {
-  const res = await api.put(`/purchase-orders/${id}`, data);
-  return res.data;
-};
-// sko38f7f6mv0gi1havb75f7f
-const handleGetOnePOItems = async (documentId: string) => {
-  const res = await api.get(`/purchase-orders/${documentId}?populate=*`);
+  const res = await api.put(`/po-items/${id}`, data);
   return res.data;
 };
 
-export const useGetItems = () => {
-  return useQuery({
-    queryKey: ["items"],
-    queryFn: () => handleGetAllItems(),
+const handleDeletePOItems = async (id: string) => {
+  const res = await api.delete(`/po-items/${id}`);
+  return res.data;
+};
+
+export const useCreateItems = () => {
+  const { setIsPoItemsModalOpen, setRowData } = useModalStore();
+
+  const queryPO = useQueryClient();
+  return useMutation({
+    mutationKey: ["create-items"],
+    mutationFn: (data: any) => handleCreatePOItems(data),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "Item has been Added successfully");
+      setIsPoItemsModalOpen(false);
+      setRowData(null);
+      queryPO.invalidateQueries({
+        queryKey: ["getonePO"],
+        type: "active",
+      });
+    },
+    onError: (error) => {
+      toastError("Failed!", error.message);
+    },
+  });
+};
+
+export const useUpdateItems = () => {
+  const { setIsPoItemsModalOpen, setRowData } = useModalStore();
+
+  const queryPO = useQueryClient();
+  return useMutation({
+    mutationKey: ["update-items"],
+    mutationFn: ({ data, documentId }: any) =>
+      handleUpdatePOItems(data, documentId),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "Item Update successfully");
+      setIsPoItemsModalOpen(false);
+      setRowData(null);
+      queryPO.invalidateQueries({
+        queryKey: ["getonePO"],
+        type: "active",
+      });
+    },
+    onError: (error) => {
+      toastError("Failed!", error.message);
+    },
+  });
+};
+
+export const useDeleteItem = () => {
+  const queryPO = useQueryClient();
+
+  return useMutation({
+    mutationKey: ["delete-items"],
+    mutationFn: (id: any) => handleDeletePOItems(id),
+    onSuccess: (data) => {
+      toastSuccess("Success!", "Invoice has been Deleted successfully");
+
+      queryPO.invalidateQueries({
+        queryKey: ["getonePO"],
+        type: "active",
+      });
+    },
+    onError: (error) => {
+      toastError("Failed!", error.message);
+    },
   });
 };

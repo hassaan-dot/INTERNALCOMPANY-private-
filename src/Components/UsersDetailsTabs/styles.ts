@@ -6,7 +6,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "#fff",
     paddingVertical: 10,
-    flex:1,
+    flex: 1,
     padding: 10,
     // marginVertical: 10,
     paddingHorizontal: 15,
@@ -22,14 +22,12 @@ export const styles = StyleSheet.create({
     paddingBottom: 5,
     marginRight: 15,
   },
-  activeTab: {
-    color: "#000",
-  },
+  activeTab: {},
   text: {
     fontSize: 22,
     fontWeight: "100",
     fontFamily: PoppinsRegular,
-    color: "#333",  
+    color: "#333",
   },
   activeText: {
     fontWeight: "200",

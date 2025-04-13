@@ -38,7 +38,9 @@ const handleUpdateClient = async (data: any, id: string) => {
 };
 
 const handleGetOneClient = async (documentId: string) => {
-  const res = await api.get(`/clients/${documentId}`);
+  const res = await api.get(
+    `/clients/${documentId}?populate[0]=purchase_orders.client&populate[1]=purchase_orders.invoices`
+  );
   return res.data;
 };
 

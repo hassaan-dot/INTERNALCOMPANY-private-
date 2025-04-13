@@ -292,11 +292,11 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                 onPress={() => onPressUpdate(item)}
                 disabled={
                   isPO
-                    ? (user?.role?.name !== ROLE.ADMIN &&
-                        item?.po_created_by?.documentId !== user?.documentId) ||
-                      item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
-                      item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
-                      item?.is_confirmed
+                    ? user?.role?.name !== ROLE.ADMIN &&
+                      (item?.po_created_by?.documentId !== user?.documentId ||
+                        item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                        item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                        item?.is_confirmed)
                     : false
                 }
               >
@@ -307,14 +307,13 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                     height: 20,
                     marginRight: 6,
                     tintColor: isPO
-                      ? (user?.role?.name !== ROLE.ADMIN &&
-                          item?.po_created_by?.documentId !==
-                            user?.documentId) ||
-                        item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
-                        item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
-                        item?.is_confirmed
-                      : false
-                      ? "#292D32"
+                      ? user?.role?.name !== ROLE.ADMIN &&
+                        (item?.po_created_by?.documentId !== user?.documentId ||
+                          item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                          item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                          item?.is_confirmed)
+                        ? "#292D32"
+                        : ""
                       : "",
                   }}
                 />
@@ -325,10 +324,10 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                 onPress={() => onPressDelete(item.documentId, item.id)}
                 disabled={
                   isPO
-                    ? (user?.role?.name !== ROLE.ADMIN &&
-                        item?.po_created_by?.documentId !== user?.documentId) ||
-                      item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
-                      item?.is_confirmed
+                    ? user?.role?.name !== ROLE.ADMIN &&
+                      (item?.po_created_by?.documentId !== user?.documentId ||
+                        item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
+                        item?.is_confirmed)
                     : false
                 }
               >
@@ -339,14 +338,12 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                     height: 20,
                     marginRight: 6,
                     tintColor: isPO
-                      ? (user?.role?.name !== ROLE.ADMIN &&
-                          item?.po_created_by?.documentId !==
-                            user?.documentId) ||
-                        item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
-                        item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
-                        item?.is_confirmed
-                      : false
-                      ? "#292D32"
+                      ? user?.role?.name !== ROLE.ADMIN &&
+                        (item?.po_created_by?.documentId !== user?.documentId ||
+                          item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
+                          item?.is_confirmed)
+                        ? "#292D32"
+                        : ""
                       : "",
                   }}
                 />
@@ -374,6 +371,8 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
       </View>
     );
   };
+
+  console.log("Data", DATA);
 
   return (
     <View style={styles.container}>

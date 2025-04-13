@@ -1,7 +1,7 @@
 import { PoppinsRegular } from "@/constants/fonts";
 import { useCreateNote } from "@/hooks/useNotes";
 import { useGetOnePO } from "@/hooks/usePO";
-import { useCreateInvoice } from "@/hooks/usePOpayments";
+import { useCreateInvoice, useDeleteInvoice } from "@/hooks/usePOpayments";
 import { usePOActions } from "@/hooks/usePoActions";
 import { formatDateForAPI } from "@/services/dateFormatter";
 import LocalStorage from "@/services/local-storage";
@@ -16,6 +16,7 @@ import {
   InvoiceModal,
   Note,
   NotesCard,
+  PoItemModal,
   ScreenHeader,
   StatusModal,
   TableTitle,
@@ -27,6 +28,7 @@ import { Invoice_Schema, Item_Schema } from "../ClientManagement/_schema";
 import styles from "./styles";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useDeleteItem } from "@/hooks/usePOitems";
 
 const PODetailScreen = () => {
   const {
@@ -40,17 +42,19 @@ const PODetailScreen = () => {
     setisAssignEmployeeModalOpen,
     confirmRecievingModalOpen,
     setConfirmRecievingModalOpen,
+    setRowData,
+    setIsPoItemsModalOpen,
+    isPoItemsModalOpen,
   } = useModalStore();
   const { user } = useAuthStore();
   const { id } = useLocalSearchParams();
   const { mutate: handleAddNote } = useCreateNote();
-  const { mutate: handleAddInvoice } = useCreateInvoice();
+
   const { data } = useGetOnePO(id as string);
 
   const {
     handleAccept,
     handleReject,
-    handleConfirmRecieving,
     handlePOClose,
     isAccepting,
     isRejecting,
@@ -71,6 +75,7 @@ const PODetailScreen = () => {
   };
 
   const handleCloseStatusModal = () => {
+    setRowData(null);
     setIsStatusModalOpen(false);
   };
 
@@ -79,49 +84,93 @@ const PODetailScreen = () => {
   }
 
   const handleNoteModalClose = () => {
+    setRowData(null);
     setIsNoteModalOpen(false);
   };
 
   function AddInvoiceModalOpenfunc() {
+    setRowData(null);
     setisInvoicePoModalOpen(true);
+  }
+  function AddItemModalOpenfunc() {
+    setRowData(null);
+    setIsPoItemsModalOpen(true);
   }
 
   function onCloseAssignModal() {
+    setRowData(null);
     setisAssignEmployeeModalOpen(false);
   }
   function onOpenAssignModal() {
+    setRowData(null);
     setisAssignEmployeeModalOpen(true);
   }
   function AddInvoiceModalClosefunc() {
+    setRowData(null);
     setisInvoicePoModalOpen(false);
   }
   const { handlePOAssign } = usePOActions(id as string);
-
   const handleSubmit = ({ users }: any) => {
     handlePOAssign({ users: { users } });
   };
-  const onPressAddInvoicefunction = ({
+
+  const handleConfirmRecievingfunc = () => {
+    setConfirmRecievingModalOpen(true);
+  };
+
+  const onPressEdit = ({
     date_of_payment,
     payer,
     amount,
     payment_method,
     payment_status,
+    documentId,
   }: any) => {
     const data = {
-      data: {
-        date_of_payment: formatDateForAPI(date_of_payment),
-        payer: payer,
-        amount: amount,
-        payment_method: payment_method,
-        payment_status: payment_status,
-        purchase_order: id,
-      },
+      date_of_payment,
+      payer,
+      amount,
+      payment_method,
+      payment_status,
+      documentId: documentId,
+      purchase_order: id,
+      isEdit: true,
     };
-    handleAddInvoice(data);
+    setRowData(data);
+    setisInvoicePoModalOpen(true);
   };
-  const handleConfirmRecievingfunc = () => {
-    setConfirmRecievingModalOpen(true);
+
+  const onPressEditItems = ({
+    item_number,
+    item_name,
+    price,
+    company,
+    item_status,
+    documentId,
+  }: any) => {
+    const data = {
+      item_number,
+      item_name,
+      price,
+      company,
+      item_status,
+      purchase_order: id,
+      documentId,
+      isEdit: true,
+    };
+    setRowData(data);
+    setIsPoItemsModalOpen(true);
   };
+  const { mutate: delInvoice } = useDeleteInvoice();
+  const { mutate: delItem } = useDeleteItem();
+
+  const handleInvoiceDelete = (documentId: number) => {
+    delInvoice(documentId);
+  };
+  const handleItemsDelete = (documentId: number) => {
+    delItem(documentId);
+  };
+
   return (
     <>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -219,7 +268,9 @@ const PODetailScreen = () => {
               ButtonTitle="Add Invoice"
               titleIcon={true}
               title="Payment History"
-            ></TableTitle>
+              onPressEdit={onPressEdit}
+              onPressDel={handleInvoiceDelete}
+            />
           </View>
           <View style={{ margin: 20 }}>
             <TableTitle
@@ -229,6 +280,9 @@ const PODetailScreen = () => {
               schema={Item_Schema}
               titleIcon={true}
               titleIcon2={true}
+              onPressEdit={onPressEditItems}
+              onPressDel={handleItemsDelete}
+              onPress={AddItemModalOpenfunc}
               ButtonTitle="Add New item"
               ButtonTitle2="Filter"
             ></TableTitle>
@@ -248,7 +302,6 @@ const PODetailScreen = () => {
       {isInvoicePoModalOpen && (
         <InvoiceModal
           onClose={AddInvoiceModalClosefunc}
-          onSubmit={onPressAddInvoicefunction}
           visible={isInvoicePoModalOpen}
         ></InvoiceModal>
       )}
@@ -276,6 +329,15 @@ const PODetailScreen = () => {
           desc={true}
           visible={isAssignEmployeeModalOpen}
           title={"Assign Employee"}
+        />
+      )}
+      {isPoItemsModalOpen && (
+        <PoItemModal
+          visible={isPoItemsModalOpen}
+          onClose={() => {
+            setIsPoItemsModalOpen(false);
+            setRowData(null);
+          }}
         />
       )}
     </>

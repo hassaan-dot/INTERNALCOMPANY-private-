@@ -21,6 +21,11 @@ import {
   useUpdateInvoice,
 } from "@/hooks/usePOpayments";
 import { useLocalSearchParams } from "expo-router";
+import {
+  useCreateItems,
+  useDeleteItem,
+  useUpdateItems,
+} from "@/hooks/usePOitems";
 
 interface ClientModalProps {
   visible: boolean;
@@ -50,21 +55,15 @@ interface ClientModalProps {
 }
 
 // Validation schema
-const invoiceSchema = yup.object().shape({
-  payer: yup
-    .string()
-    .required("Payer name is required")
-    .min(2, "Payer name must be at least 2 characters"),
-  amount: yup
-    .number()
-    .min(1, "Amount must be greater than 0")
-    .required("Amount is required"),
-  payment_method: yup.string().required("Payment method is required"),
-  payment_status: yup.string().required("Payment status is required"),
-  date_of_payment: yup.string().required("Payment date is required"),
+const itemModalSchema = yup.object().shape({
+  item_number: yup.string().required("Item number is required"),
+  item_name: yup.string().required("Item name  is required"),
+  price: yup.number().required("Price is required"),
+  company: yup.string().required("Company is required"),
+  item_status: yup.string().required("Status is required"),
 });
 
-const InvoiceModal: React.FC<ClientModalProps> = ({
+const ItemModal: React.FC<ClientModalProps> = ({
   visible,
   onClose,
   desc = false,
@@ -74,7 +73,6 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
 }) => {
   const { id } = useLocalSearchParams();
   const { rowData } = useModalStore();
-  const [date, setDate] = useState<any>("");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
@@ -83,28 +81,19 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
     key: any;
   };
 
-  const items: Item[] = [
-    { value: "Bank Transfer", key: "Bank Transfer" },
-    { value: "Cash", key: "Cash" },
-    { value: "Credit Card", key: "Credit Card" },
-    { value: "Other", key: "Other" },
-  ];
-
   const itemsStatus: Item[] = [
-    { value: "Completed", key: "Completed" },
-    { value: "Pending", key: "Pending" },
-    { value: "Failed", key: "Failed" },
+    { value: "Delivered", key: "Delivered" },
+    { value: "Processing", key: "Processing" },
   ];
 
   const [formData, setFormData] = useState(
     rowData ?? {
-      date_of_payment: "",
-      payer: "",
-      amount: "",
-      payment_method: "",
-      payment_status: "",
-      documentId: rowData?.documentId,
-      purchase_order: "",
+      item_number: "",
+      item_name: "",
+      price: "",
+      company: "",
+      item_status: "",
+      purchase_order: id,
     }
   );
 
@@ -127,20 +116,9 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
     }
   };
 
-  useEffect(() => {
-    setFormData((prev) => ({
-      ...prev,
-      date_of_payment: date ? date : rowData?.date_of_payment || "",
-    }));
-    if (date) {
-      setTouched((prev) => ({ ...prev, date_of_payment: true }));
-      clearError("date_of_payment");
-    }
-  }, [date]);
-
   const validateForm = async () => {
     try {
-      await invoiceSchema.validate(formData, { abortEarly: false });
+      await itemModalSchema.validate(formData, { abortEarly: false });
       setErrors({});
       return true;
     } catch (err) {
@@ -156,66 +134,65 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
       return false;
     }
   };
-  const { mutate: handleAddInvoice } = useCreateInvoice();
-  const { mutate: handleUpdateInvoice } = useUpdateInvoice();
+  const { mutate: handleAddItems } = useCreateItems();
+  const { mutate: handleUpdateItems } = useUpdateItems();
 
-  const onPressUpdateInvoicefunction = ({
-    date_of_payment,
-    payer,
-    amount,
-    payment_method,
-    payment_status,
+  const onPressUpdateItemsfunction = ({
+    item_number,
+    item_name,
+    price,
+    company,
+    item_status,
     purchase_order,
-    documentId,
   }: any) => {
     const data = {
       data: {
-        date_of_payment: date_of_payment,
-        payer: payer,
-        amount: amount,
-        payment_method: payment_method,
-        payment_status: payment_status,
+        item_number: item_number,
+        item_name: item_name,
+        price: price,
+        company: company,
+        item_status: item_status,
         purchase_order: purchase_order,
       },
     };
 
-    handleUpdateInvoice({ data, documentId });
+    handleUpdateItems({ data, documentId: rowData?.documentId });
   };
 
-  const onPressAddInvoicefunction = ({
-    date_of_payment,
-    payer,
-    amount,
-    payment_method,
-    payment_status,
+  const onPressAddItemsfunction = ({
+    item_number,
+    item_name,
+    price,
+    company,
+    item_status,
   }: any) => {
     const data = {
       data: {
-        date_of_payment: formatDateForAPI(date_of_payment),
-        payer: payer,
-        amount: amount,
-        payment_method: payment_method,
-        payment_status: payment_status,
+        item_number: item_number,
+        item_name: item_name,
+        price: price,
+        company: company,
+        item_status: item_status,
         purchase_order: id,
       },
     };
-    handleAddInvoice(data);
+    handleAddItems(data);
   };
 
   const handleSubmit = async () => {
     // Mark all fields as touched
     setTouched({
-      payer: true,
-      amount: true,
-      payment_method: true,
-      payment_status: true,
-      date_of_payment: true,
+      item_number: true,
+      item_name: true,
+      price: true,
+      company: true,
+      item_status: true,
     });
 
     const isValid = await validateForm();
     if (isValid) {
-      if (rowData?.isEdit) onPressUpdateInvoicefunction(formData);
-      else onPressAddInvoicefunction(formData);
+      if (rowData?.isEdit) onPressUpdateItemsfunction(formData);
+      else onPressAddItemsfunction(formData);
     }
   };
 
@@ -230,7 +207,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
                 style={{ width: 40, height: 40 }}
               />
               <Text style={styles.title}>{`${
-                rowData?.isEdit ? "Update Invoice" : "Create Invoice"
+                rowData?.isEdit ? "Update Item" : "Create Item"
               }`}</Text>
 
               {desc && <Text style={styles.subtitle}>{desctext}</Text>}
@@ -238,15 +215,17 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
 
             <View style={[styleContainer]}>
               <InputField
-                title={"Name"}
-                placeholder={"Enter Invoice Name"}
-                value={formData.payer}
-                onChangeText={(text) => handleInputChange("payer", text)}
-                onBlur={() => setTouched((prev) => ({ ...prev, payer: true }))}
+                title={"Item Number"}
+                placeholder={"Enter Item Number"}
+                value={formData.item_number}
+                onChangeText={(text) => handleInputChange("item_number", text)}
+                onBlur={() =>
+                  setTouched((prev) => ({ ...prev, item_number: true }))
+                }
                 style={styles.input}
                 titleStyle={styles.fontSize}
-                error={touched.payer && errors.payer}
-                errorMessage={touched.payer && errors.payer}
+                error={touched.item_number && errors.item_number}
+                errorMessage={touched.item_number && errors.item_number}
                 multiline={false}
                 ispassword={false}
               />
@@ -254,60 +233,69 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
 
             <View style={{ marginBottom: 6 }}>
               <InputField
-                title={"Amount"}
-                placeholder={"Enter Amount"}
-                value={formData.amount}
-                onChangeText={(text) => handleInputChange("amount", text)}
-                onBlur={() => setTouched((prev) => ({ ...prev, amount: true }))}
+                title={"Item Name"}
+                placeholder={"Enter Item Name"}
+                value={formData.item_name}
+                onChangeText={(text) => handleInputChange("item_name", text)}
+                onBlur={() =>
+                  setTouched((prev) => ({ ...prev, item_name: true }))
+                }
                 titleStyle={styles.fontSize}
                 style={styles.input}
                 keyboardType="numeric"
-                error={touched.amount && errors.amount}
-                errorMessage={touched.amount && errors.amount}
+                error={touched.item_name && errors.item_name}
+                errorMessage={touched.item_name && errors.item_name}
                 multiline={false}
                 ispassword={false}
               />
             </View>
-
             <View style={{ marginBottom: 6 }}>
-              <SingleSelectDropDown
-                title="Payment Method"
-                selected={formData.payment_method}
-                setSelected={(text) =>
-                  handleInputChange("payment_method", text)
-                }
-                items={items}
-                error={touched.payment_method && errors.payment_method}
-                onBlur={() =>
-                  setTouched((prev) => ({ ...prev, payment_method: true }))
-                }
+              <InputField
+                title={"Price"}
+                placeholder={"Enter Price"}
+                value={formData.price}
+                onChangeText={(text) => handleInputChange("price", text)}
+                onBlur={() => setTouched((prev) => ({ ...prev, price: true }))}
+                titleStyle={styles.fontSize}
+                style={styles.input}
+                keyboardType="numeric"
+                error={touched.price && errors.price}
+                errorMessage={touched.price && errors.price}
+                multiline={false}
+                ispassword={false}
               />
             </View>
-
             <View style={{ marginBottom: 6 }}>
-              <SingleSelectDropDown
-                title="Payment Status"
-                selected={formData.payment_status}
-                setSelected={(text) =>
-                  handleInputChange("payment_status", text)
+              <InputField
+                title={"Company Name"}
+                placeholder={"Enter Company Name"}
+                value={formData.company}
+                onChangeText={(text) => handleInputChange("company", text)}
+                onBlur={() =>
+                  setTouched((prev) => ({ ...prev, company: true }))
                 }
+                titleStyle={styles.fontSize}
+                style={styles.input}
+                keyboardType="numeric"
+                error={touched.company && errors.company}
+                errorMessage={touched.company && errors.company}
+                multiline={false}
+                ispassword={false}
+              />
+            </View>
+            <View style={{ marginBottom: 10 }}>
+              <SingleSelectDropDown
+                title="Status"
+                selected={formData.item_status}
+                setSelected={(text) => handleInputChange("item_status", text)}
                 items={itemsStatus}
-                error={touched.payment_status && errors.payment_status}
+                error={touched.item_status && errors.item_status}
                 onBlur={() =>
-                  setTouched((prev) => ({ ...prev, payment_status: true }))
+                  setTouched((prev) => ({ ...prev, item_status: true }))
                 }
-              />
-            </View>
-
-            <View style={{ marginBottom: 13 }}>
-              <DateTimeSelector
-                selectedDate={formData.date_of_payment}
-                onDateChange={(date) => setDate(date)}
-                error={touched.date_of_payment && errors.date_of_payment}
               />
             </View>
           </ScrollView>
-
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelText}>Cancel</Text>
@@ -331,4 +319,4 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
   );
 };
 
-export default InvoiceModal;
+export default ItemModal;

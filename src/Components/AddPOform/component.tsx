@@ -25,12 +25,6 @@ interface Props {
   onPress: () => void;
 }
 
-interface Document {
-  uri: string;
-  name: string;
-  type: string;
-}
-
 // Validation schema
 const poSchema = yup.object().shape({
   isEdit: yup.boolean(),
@@ -47,9 +41,9 @@ const poSchema = yup.object().shape({
 });
 
 const POForm: React.FC<Props> = ({ onPress }) => {
-  const { rowData } = useModalStore();
+  const { rowData, setRowData } = useModalStore();
   const color = ["#07504B"];
-  const [documents, setDocuments] = useState<Document[]>([]);
+  const [documents, setDocuments] = useState<any[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [formData, setFormData] = useState({
@@ -110,6 +104,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   };
 
   const handleClose = () => {
+    setRowData(null);
     router.back();
   };
 
@@ -141,7 +136,19 @@ const POForm: React.FC<Props> = ({ onPress }) => {
       });
 
       if (!result.canceled) {
-        const newDocs = result.assets.map((file) => file);
+        const newDocsPromises = result.assets.map(async (file) => {
+          const response = await fetch(file.uri);
+          const blob = await response.blob();
+
+          return {
+            uri: file.uri,
+            name: file.name,
+            type: file.mimeType || "application/octet-stream",
+            blob: blob,
+          };
+        });
+
+        const newDocs = await Promise.all(newDocsPromises);
         setDocuments((prev) => [...prev, ...newDocs]);
       }
     } catch (err) {
@@ -172,9 +179,8 @@ const POForm: React.FC<Props> = ({ onPress }) => {
       form_data.append(key, value as any);
     });
 
-    // Append documents to form data
-    documents.forEach((doc, index) => {
-      form_data.append(`po_documents[${index}]`, doc as any);
+    documents.forEach((doc) => {
+      form_data.append("po_documents", doc.blob, doc.name);
     });
 
     handleAdd(form_data);
@@ -278,8 +284,8 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                         </Text>
                       )}
                     </TouchableOpacity>
-
-                    {documents.length > 0 && (
+                    {console.log("docs", documents)}
+                    {documents?.length > 0 && (
                       <View style={{}}>
                         <FlatList
                           contentContainerStyle={{

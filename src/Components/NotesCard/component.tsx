@@ -165,7 +165,13 @@ const NotesCard: React.FC<UserProfileProps> = ({
             )}
             {Document && !TextEnable && (
               <View style={{ paddingBottom: helpers.normalize(5) }}>
-                <View style={{ marginVertical: 10, flexDirection: "row" }}>
+                <View
+                  style={{
+                    marginVertical: 10,
+                    flexDirection: "row",
+                    flexWrap: "wrap",
+                  }}
+                >
                   {docs?.map((doc: any, index: number) => (
                     <View>
                       <CustomButton

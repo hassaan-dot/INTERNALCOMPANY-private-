@@ -54,16 +54,16 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
-  const [documents, setDocuments] = useState<Document[]>([]);
+  const [documents, setDocuments] = useState<any[]>([]);
   const color = ["#07504B"];
-  const {} = useSendReminder(rowData?.documentId);
-
-  const [formData, setFormData] = useState(
-    rowData ?? {
-      amount: "",
-      documents: "",
-    }
+  const { mutate: handleSend, isPending: isSending } = useSendReminder(
+    rowData?.documentId
   );
+
+  const [formData, setFormData] = useState({
+    amount: "",
+    documents: "",
+  });
 
   const userSchema = yup.object().shape({
     amount: yup.string().required("Amount is required"),
@@ -120,14 +120,16 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
     setTouched(allFields);
     const isValid = await validateForm();
 
-    if (isValid) {
-      const finalData = {
-        ...formData,
-        department: formData.department === "" ? null : formData.department,
-      };
+    if (!isValid) return;
 
-      onSubmit(finalData);
-    }
+    const form_data = new FormData();
+    form_data.append("amount", formData?.amount);
+
+    documents.forEach((doc) => {
+      form_data.append("docs", doc.blob, doc.name);
+    });
+
+    handleSend(form_data);
   };
 
   const pickDocument = async () => {
@@ -138,7 +140,19 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
       });
 
       if (!result.canceled) {
-        const newDocs = result.assets.map((file) => file);
+        const newDocsPromises = result.assets.map(async (file) => {
+          const response = await fetch(file.uri);
+          const blob = await response.blob();
+
+          return {
+            uri: file.uri,
+            name: file.name,
+            type: file.mimeType || "application/octet-stream",
+            blob: blob,
+          };
+        });
+
+        const newDocs = await Promise.all(newDocsPromises);
         setDocuments((prev) => [...prev, ...newDocs]);
       }
     } catch (err) {
@@ -168,7 +182,7 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
                 ]}
                 error={touched.amount && errors.amount}
                 errorMessage={touched.amount && errors.amount}
-                value={formData.phone_number}
+                value={formData?.amount}
                 onChangeText={(text) => handleInputChange("amount", text)}
                 placeholder={"Enter Amount"}
                 keyboardType="phone-pad"

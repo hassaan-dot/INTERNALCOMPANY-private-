@@ -15,41 +15,20 @@ import { Invoice_Schema } from "../ClientManagement/_schema";
 import styles from "./styles";
 import { useModalStore } from "@/store/useModalStore";
 const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
-  const [ModalOpen, setModalOpen] = useState(false);
-
   const router = useRouter();
+
   const onClickEye = ({ documentId }: any) => {
     router.push(`/(app)/payment/payment-details?id=${documentId}`);
   };
-  const { mutate: handleUpdateInvoice } = useUpdateInvoice();
+
   const { mutate: handleDelete } = useDeleteInvoice();
 
   const { data: InvoiceData, refetch } = useGetInvoice();
   useRefreshOnFocus(refetch);
+
   const { rowData, setRowData, setisInvoicePoModalOpen, isInvoicePoModalOpen } =
     useModalStore();
-  const onPressUpdateInvoicefunction = ({
-    date_of_payment,
-    payer,
-    amount,
-    payment_method,
-    payment_status,
-    purchase_order,
-    documentId,
-  }: any) => {
-    const data = {
-      data: {
-        date_of_payment: date_of_payment,
-        payer: payer,
-        amount: amount,
-        payment_method: payment_method,
-        payment_status: payment_status,
-        purchase_order: purchase_order,
-      },
-    };
 
-    handleUpdateInvoice({ data, documentId });
-  };
   const onPressEdit = ({
     date_of_payment,
     payer,
@@ -66,21 +45,17 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
       payment_method,
       payment_status,
       documentId: documentId,
-      purchase_order: purchase_order?.id,
+      purchase_order: purchase_order?.documentId,
       isEdit: true,
     };
     setRowData(data);
     setisInvoicePoModalOpen(true);
   };
-  console.log("rowData", rowData);
+
   const onPressDelete = (documentId: string) => {
-    const data = {
-      data: {
-        documentId: documentId,
-      },
-    };
-    handleDelete(data);
+    handleDelete(documentId);
   };
+
   return (
     <>
       <View style={styles.container}>
@@ -100,17 +75,19 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
             showDocument={true}
             showStatus={true}
             showEdit={true}
+            showDel={true}
             onClickEye={onClickEye}
           ></CompanyTable>
         </View>
       </View>
       {isInvoicePoModalOpen && (
         <InvoiceModal
-          create={true}
-          onSubmit={onPressUpdateInvoicefunction}
-          onClose={() => setisInvoicePoModalOpen(false)}
+          onClose={() => {
+            setRowData(null);
+            setisInvoicePoModalOpen(false);
+          }}
           visible={isInvoicePoModalOpen}
-        ></InvoiceModal>
+        />
       )}
     </>
   );
