@@ -1,20 +1,14 @@
-import React, { useMemo, useState } from "react";
-import { View, Text, Modal } from "react-native";
-import { styles } from "./styles";
-import ButtonGroup from "../../HorizontalButtons/component";
-import helpers from "../../../utils/helpers";
-import { PoppinsRegular } from "../../../Resources/fonts";
-import { Entypo, Feather } from "@expo/vector-icons";
-import { Image } from "react-native";
-import { icons } from "@/assets/icons/icons";
-import { formatDateForDisplay } from "@/src/utils";
 import {
   useClockIntUserAttendence,
   useClockOutUserAttendence,
   useGetUserAttendence,
 } from "@/hooks/useUser";
-import { useAuthStore } from "@/store/useAuthStore";
 import { formatDate } from "@/src/utils";
+import React, { useMemo } from "react";
+import { ActivityIndicator, Modal, Text, View } from "react-native";
+import { PoppinsRegular } from "../../../Resources/fonts";
+import ButtonGroup from "../../HorizontalButtons/component";
+import { styles } from "./styles";
 
 interface NewsModalProps {
   isVisible: boolean;
@@ -30,9 +24,9 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
   currentUser,
   title = "",
 }) => {
-  const { user } = useAuthStore();
-
-  const { data: attendance } = useGetUserAttendence(currentUser?.documentId);
+  const { data: attendance, isPending } = useGetUserAttendence(
+    currentUser?.documentId
+  );
 
   const { mutate: handleClockIn } = useClockIntUserAttendence(
     currentUser?.documentId
@@ -60,18 +54,26 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
         <View style={styles.container}>
           <Text style={styles.title}>{title}</Text>
 
-          <View style={{ margin: 15 }}>
-            <Text style={styles.chipText2}>
-              {`Name : ${currentUser?.first_name} ${currentUser?.last_name}`}
-            </Text>
+          {isPending && (
+            <View style={{ marginVertical: 15 }}>
+              <ActivityIndicator />{" "}
+            </View>
+          )}
 
-            <Text style={styles.chipText}>
-              Clock-In: {formatDate(attendance?.data?.clock_in) ?? "-"}
-            </Text>
-            <Text style={styles.chipText}>
-              Clock-Out: {formatDate(attendance?.data?.clock_out) ?? "-"}
-            </Text>
-          </View>
+          {!isPending && (
+            <View style={{ margin: 15 }}>
+              <Text style={styles.chipText2}>
+                {`Name : ${currentUser?.first_name} ${currentUser?.last_name}`}
+              </Text>
+
+              <Text style={styles.chipText}>
+                Clock-In: {formatDate(attendance?.data?.clock_in) ?? "-"}
+              </Text>
+              <Text style={styles.chipText}>
+                Clock-Out: {formatDate(attendance?.data?.clock_out) ?? "-"}
+              </Text>
+            </View>
+          )}
 
           <ButtonGroup
             onPress={handleAttendence}

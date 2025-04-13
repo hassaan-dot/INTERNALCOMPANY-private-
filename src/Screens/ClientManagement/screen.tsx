@@ -12,12 +12,12 @@ import {
   CreatePaymentReminderClient,
   ScreenHeader,
 } from "../../Components";
-import CreateModal from "../../Components/Modals/createModal/component";
 import { columns_schema } from "./_schema";
 import { styles } from "./styles";
 
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useModalStore } from "@/store/useModalStore";
+import CreateClientModal from "../../Components/Modals/createModal/component";
 
 const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   const {
@@ -35,8 +35,8 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
 
   useRefreshOnFocus(refetch);
 
-  const { mutate: handleAdd } = useCreateClient();
-  const { mutate: handleUpdate } = useUpdateClient();
+  const { mutate: handleAdd, isPending: isAdding } = useCreateClient();
+  const { mutate: handleUpdate, isPending: isUpdating } = useUpdateClient();
   const { mutate: handleDelete } = useDeleteClient();
 
   const onPressUpdatefunction = ({
@@ -188,7 +188,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
       )}
 
       {isClientModalOpen && (
-        <CreateModal
+        <CreateClientModal
           onClose={onCloseModal}
           onSubmit={handleSubmit}
           First="Contact person name"
@@ -200,6 +200,7 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
           create={true}
           visible={isClientModalOpen}
           title={"Create Client"}
+          isPending={isAdding || isUpdating}
         />
       )}
     </>

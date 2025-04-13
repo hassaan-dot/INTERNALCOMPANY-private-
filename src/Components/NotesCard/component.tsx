@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { Image, ScrollView, Text, View } from "react-native";
 import { PoppinsRegular } from "../../Resources/fonts";
 import helpers from "../../utils/helpers";
 import FilledButton from "../Buttons/FilledButton/FilledButton";
 import CustomButton from "../CustomButton/Button";
 import { styles } from "./styles";
-import { useDeleteDoc } from "@/hooks/usePO";
 
 interface UserProfileProps {
   name: string;
@@ -50,15 +49,16 @@ const NotesCard: React.FC<UserProfileProps> = ({
   const verticalScrollRef = useRef<ScrollView>(null);
   const horizontalScrollRef = useRef<ScrollView>(null);
 
-  useEffect(() => {
-    // For iOS, we need to trigger a small scroll to make indicators appear
-    if (verticalScrollRef.current) {
-      verticalScrollRef.current.scrollTo({ y: 1, animated: false });
-    }
-    if (horizontalScrollRef.current) {
-      horizontalScrollRef.current.scrollTo({ x: 1, animated: false });
-    }
-  }, []);
+  // useEffect(() => {
+  //   // For iOS, we need to trigger a small scroll to make indicators appear
+  //   if (verticalScrollRef.current) {
+  //     verticalScrollRef.current.scrollTo({ y: 1, animated: false });
+  //   }
+  //   if (horizontalScrollRef.current) {
+  //     horizontalScrollRef.current.scrollTo({ x: 1, animated: false });
+  //   }
+  // }, []);
+
   return (
     <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>
@@ -99,9 +99,7 @@ const NotesCard: React.FC<UserProfileProps> = ({
             style={{
               marginLeft: 20,
               marginTop: 10,
-              // backgroundColor: "red",
               height: helpers.normalize(115),
-              // paddingBottom: helpers.normalize(20),
             }}
           >
             {TextEnable && null}
@@ -121,11 +119,9 @@ const NotesCard: React.FC<UserProfileProps> = ({
                         }}
                         style={styles.avatar}
                       />
-                      <Text style={styles.name}>{note?.user?.username}</Text>
-                      {/* <Image
-                        source={icons.editPencilicon}
-                        style={styles.avatar1}
-                      /> */}
+                      <Text style={styles.name}>
+                        {note?.user?.first_name} {note?.user?.last_name}
+                      </Text>
                     </View>
                     <View
                       style={{
@@ -174,7 +170,7 @@ const NotesCard: React.FC<UserProfileProps> = ({
                   }}
                 >
                   {docs?.map((doc: any, index: number) => (
-                    <View>
+                    <View key={index}>
                       <CustomButton
                         key={index}
                         Color="#F3F6FF"

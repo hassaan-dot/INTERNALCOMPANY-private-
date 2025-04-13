@@ -1,8 +1,10 @@
+import { icons } from "@/assets/icons/icons";
 import { useGetDepartments } from "@/hooks/useDepartments";
 import { useGetuserRole } from "@/hooks/userRole";
 import { useModalStore } from "@/store/useModalStore";
 import { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Modal,
   ScrollView,
@@ -10,11 +12,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as yup from "yup";
 import { SingleSelectDropDown } from "../..";
-import { icons } from "@/assets/icons/icons";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
-import * as yup from "yup";
 
 interface ClientModalProps {
   visible: boolean;
@@ -37,18 +38,19 @@ interface ClientModalProps {
   Data: any;
   update: boolean;
   onPressUpdatefunction: any;
+  isPending: boolean;
 }
 
 const CreateUserModal: React.FC<ClientModalProps> = ({
   visible,
   onClose,
   onSubmit,
-  create = false,
   title,
   desc = false,
   styleContainer,
   desctext,
   modalContainerprop,
+  isPending,
 }) => {
   const { data: GetDepartments } = useGetDepartments();
   const { data: getRoles } = useGetuserRole();
@@ -90,11 +92,6 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     role: yup.string().required("Required").min(1, "required"),
   });
 
-  const loginSchema = yup.object().shape({
-    username: yup.string().required("Username is required"),
-    password: yup.string().required("Password is required"),
-  });
-
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
 
@@ -118,7 +115,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
   };
 
   const validateForm = async () => {
-    const schema = create || !rowData?.isEdit ? userSchema : loginSchema;
+    const schema = userSchema;
 
     try {
       await schema.validate(formData, { abortEarly: false });
@@ -330,9 +327,14 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={handleSubmit}
+              disabled={isPending}
+            >
               <Text style={styles.addText}>
-                {rowData?.isEdit ? "Edit User" : "Add User"}
+                {isPending && <ActivityIndicator />}
+                {!isPending && (rowData?.isEdit ? "Edit User" : "Add User")}
               </Text>
             </TouchableOpacity>
           </View>

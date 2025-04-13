@@ -382,8 +382,6 @@ const POForm: React.FC<Props> = ({ onPress }) => {
           <ButtonRow
             onCancel={handleClose}
             onAdd={handleSubmit}
-            edit={rowData?.isEdit}
-            addDisabled={Object.keys(errors).length > 0}
             isLoading={isAdding || isUpdating}
           />
         </View>

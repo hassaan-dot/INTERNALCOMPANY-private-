@@ -91,7 +91,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
   isClosing,
 }: any) => {
   const { user } = useAuthStore();
-  const { setFilters, filters } = useModalStore();
+  const { setFilters, filters, setRowData } = useModalStore();
 
   const isMobileView = Platform.OS === "ios";
   return (
@@ -103,11 +103,17 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
 
         <View style={styles.buttonContainer}>
           {showButton && create && (
-            <TouchableOpacity style={styles.createButton} onPress={onPress}>
+            <TouchableOpacity
+              style={styles.createButton}
+              onPress={() => {
+                setRowData(null);
+                onPress();
+              }}
+            >
               <Image
                 source={icons.screenHeaderPlusIcon}
                 style={{ width: 14, height: 14, marginRight: 7 }}
-              ></Image>
+              />
               <Text style={styles.createText}>create</Text>
             </TouchableOpacity>
           )}

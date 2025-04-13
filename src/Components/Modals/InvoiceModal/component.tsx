@@ -1,7 +1,10 @@
 import { icons } from "@/assets/icons/icons";
+import { useCreateInvoice, useUpdateInvoice } from "@/hooks/usePOpayments";
 import { useModalStore } from "@/store/useModalStore";
-import React, { useEffect, useState } from "react";
+import { useLocalSearchParams } from "expo-router";
+import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Modal,
   ScrollView,
@@ -9,12 +12,10 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import * as yup from "yup";
 import { DateTimeSelector, SingleSelectDropDown } from "../..";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
-import * as yup from "yup";
-import { useCreateInvoice, useUpdateInvoice } from "@/hooks/usePOpayments";
-import { useLocalSearchParams } from "expo-router";
 
 interface ClientModalProps {
   visible: boolean;
@@ -148,8 +149,9 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
       return false;
     }
   };
-  const { mutate: handleAddInvoice } = useCreateInvoice();
-  const { mutate: handleUpdateInvoice } = useUpdateInvoice();
+  const { mutate: handleAddInvoice, isPending: isAdding } = useCreateInvoice();
+  const { mutate: handleUpdateInvoice, isPending: isUpdating } =
+    useUpdateInvoice();
 
   const onPressUpdateInvoicefunction = ({
     date_of_payment,
@@ -316,11 +318,16 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
                 Object.keys(errors).length > 0 && styles.disabledButton,
               ]}
               onPress={handleSubmit}
-              disabled={Object.keys(errors).length > 0}
+              disabled={
+                Object.keys(errors).length > 0 || isAdding || isUpdating
+              }
             >
-              <Text style={styles.addText}>{`${
-                rowData?.isEdit ? "Update" : "Create"
-              }`}</Text>
+              <Text style={styles.addText}>
+                {(isAdding || isUpdating) && <ActivityIndicator />}
+                {!isAdding &&
+                  !isUpdating &&
+                  (rowData?.isEdit ? "Update" : "Create")}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

@@ -1,20 +1,20 @@
+import { icons } from "@/assets/icons/icons";
+import { useLocations } from "@/hooks/useLocation";
 import { useModalStore } from "@/store/useModalStore";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Modal,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
-  Alert,
 } from "react-native";
-import { icons } from "@/assets/icons/icons";
-import InputField from "../../InputField/InputField";
-import { styles } from "./styles";
 import * as yup from "yup";
+import InputField from "../../InputField/InputField";
 import SingleSelectDropDown from "../../SingleSelectDropDown/component";
-import { useLocations } from "@/hooks/useLocation";
+import { styles } from "./styles";
 
 interface ClientModalProps {
   visible: boolean;
@@ -46,6 +46,7 @@ interface ClientModalProps {
   Data: any;
   deleteD: boolean;
   update: boolean;
+  isPending: boolean;
 }
 
 const clientSchema = yup.object().shape({
@@ -74,7 +75,7 @@ const clientSchema = yup.object().shape({
     .max(15, "Phone number can't be longer than 15 digits"),
 });
 
-const CreateModal: React.FC<ClientModalProps> = ({
+const CreateClientModal: React.FC<ClientModalProps> = ({
   visible,
   onClose,
   onSubmit,
@@ -82,7 +83,7 @@ const CreateModal: React.FC<ClientModalProps> = ({
   desc = false,
   styleContainer,
   desctext,
-
+  isPending,
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
@@ -312,14 +313,12 @@ const CreateModal: React.FC<ClientModalProps> = ({
                 Object.keys(errors).length > 0 && styles.disabledButton,
               ]}
               onPress={handleSubmit}
-              disabled={Object.keys(errors).length > 0}
+              disabled={Object.keys(errors).length > 0 || isPending}
             >
               <Text style={styles.addText}>
-                {create
-                  ? rowData?.isEdit
-                    ? "Update Client"
-                    : "Add Client"
-                  : "Update Client"}
+                {isPending && <ActivityIndicator />}
+                {!isPending &&
+                  (rowData?.isEdit ? "Update Client" : "Add Client")}
               </Text>
             </TouchableOpacity>
           </View>
@@ -329,4 +328,4 @@ const CreateModal: React.FC<ClientModalProps> = ({
   );
 };
 
-export default CreateModal;
+export default CreateClientModal;

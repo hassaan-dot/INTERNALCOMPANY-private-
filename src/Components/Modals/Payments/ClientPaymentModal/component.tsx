@@ -1,23 +1,22 @@
-import { icons } from "@/assets/icons/icons";
 import InputField from "@/src/Components/InputField/InputField";
 import { useModalStore } from "@/store/useModalStore";
+import * as DocumentPicker from "expo-document-picker";
 import { useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
-  Image,
   Modal,
   ScrollView,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import * as DocumentPicker from "expo-document-picker";
 
-import * as yup from "yup";
-import { styles } from "./styles";
-import { AntDesign, Feather } from "@expo/vector-icons";
 import { PoppinsRegular } from "@/constants/fonts";
 import helpers from "@/src/utils/helpers";
+import { AntDesign, Feather } from "@expo/vector-icons";
+import * as yup from "yup";
+import { styles } from "./styles";
 
 import { useSendReminder } from "@/hooks/useClient";
 
@@ -47,10 +46,7 @@ interface CreatePaymentReminderProps {
 const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   visible,
   onClose,
-  onSubmit,
-  create = false,
   title,
-
   modalContainerprop,
 }) => {
   const { rowData } = useModalStore();
@@ -338,8 +334,15 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelText}>Cancel</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.addButton} onPress={handleSubmit}>
-              <Text style={styles.addText}>{"Send Reminder"}</Text>
+            <TouchableOpacity
+              style={styles.addButton}
+              onPress={handleSubmit}
+              disabled={isSending}
+            >
+              <Text style={styles.addText}>
+                {!isSending && "Send Reminder"}
+                {isSending && <ActivityIndicator />}
+              </Text>
             </TouchableOpacity>
           </View>
         </View>

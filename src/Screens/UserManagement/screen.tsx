@@ -31,9 +31,9 @@ const UserManagement = () => {
   const [currentUser, setcurrentUser] = useState<any>(null);
   const { mutate: handleAdd } = useCreateUser();
 
-  const { mutate: handleUpdate } = useUpdateUser();
+  const { mutate: handleUpdate, isPending: isAdding } = useUpdateUser();
 
-  const { mutate: handleDelete } = useDeleteUser();
+  const { mutate: handleDelete, isPending: isUpdating } = useDeleteUser();
 
   const onPressUpdatefunction = ({
     first_name,
@@ -202,6 +202,7 @@ const UserManagement = () => {
           visible={isUserModalOpen}
           title={"Create User"}
           user={true}
+          isPending={isAdding || isUpdating}
         />
       )}
     </>
