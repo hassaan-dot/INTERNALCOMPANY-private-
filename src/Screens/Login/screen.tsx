@@ -2,6 +2,7 @@ import { useLogin } from "@/hooks/useLogin";
 import { string } from "@/src/Resources/strings";
 import React, { useState } from "react";
 import {
+  ActivityIndicator,
   Platform,
   Text,
   TouchableOpacity,
@@ -38,25 +39,19 @@ const LoginScreen: React.FC = () => {
   // Use the breakpoint to conditionally apply styles
   console.log("isSmallScreen", isSmallScreen);
 
-  const { mutate } = useLogin();
+  const { mutate, isPending } = useLogin();
 
   const isMobileView = Platform.OS == "ios";
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const [isVisible, setIsVisible] = useState(false);
   const [submitAttempted, setSubmitAttempted] = useState(false);
   const [errors, setErrors] = useState({
     email: "",
     password: "",
   });
 
-  const {
-    isActivityIndicator,
-    setisActivityIndicator,
-    isOtpModalOpen,
-    setIsOtpModalOpen,
-  } = useModalStore();
+  const { isOtpModalOpen, setIsOtpModalOpen } = useModalStore();
 
   const {
     values,
@@ -103,8 +98,6 @@ const LoginScreen: React.FC = () => {
     const isValid = await validateForm();
 
     if (isValid) {
-      setIsVisible(true);
-      setisActivityIndicator(true);
       const data = {
         identifier: email,
         password: password,
@@ -250,11 +243,12 @@ const LoginScreen: React.FC = () => {
                   styles.loginButton,
                   isMobileView && styles.loginButton2,
                 ]}
+                disabled={isPending}
               >
                 <Text
                   style={[styles.loginText, isMobileView && styles.loginText2]}
                 >
-                  {string.Login}
+                  {isPending ? <ActivityIndicator /> : string.Login}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -73,7 +73,7 @@ const PoDetailProfile: React.FC<PoDetailProfileProps> = ({
             <View style={styles.detailsItem}>
               <Text style={[styles.label, style]}>Items Number: </Text>
               <Text style={[styles.link, style]}>
-                {data?.data?.po_items?.length}
+                {data?.data?.po_items?.length ?? 0}
               </Text>
             </View>
             <View style={[styles.detailsItem, { flex: 0.5 }]}>

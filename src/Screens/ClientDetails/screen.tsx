@@ -64,7 +64,7 @@ const ClientDetails = () => {
             // onPressDelete={handleDelete}
             onClickEye={({ documentId }) => {
               if (selectedTab === 0) {
-                router.push(`/(app)/payment/payment-details`);
+                router.push(`/(app)/po-management/po-details?id=${documentId}`);
               } else {
                 router.push(`/(app)/payment/payment-details?id=${documentId}`);
               }

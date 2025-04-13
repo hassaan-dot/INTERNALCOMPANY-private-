@@ -53,9 +53,9 @@ const POForm: React.FC<Props> = ({ onPress }) => {
     notes: "",
     isEdit: rowData?.isEdit || false,
   });
-  const { mutate: handleUpdate } = useUpdatePO();
+  const { mutate: handleUpdate, isPending: isUpdating } = useUpdatePO();
 
-  const { mutate: handleAdd } = useCreatePO(setFormData);
+  const { mutate: handleAdd, isPending: isAdding } = useCreatePO(setFormData);
 
   const { data: allClientList } = useGetAllClients();
 
@@ -384,6 +384,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
             onAdd={handleSubmit}
             edit={rowData?.isEdit}
             addDisabled={Object.keys(errors).length > 0}
+            isLoading={isAdding || isUpdating}
           />
         </View>
       </View>

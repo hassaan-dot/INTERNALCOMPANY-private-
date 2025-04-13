@@ -4,17 +4,17 @@ import { useModalStore } from "@/store/useModalStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const handleAcceptPO = async (id: string) => {
-  const res = await api.post(`/purchase-orders/${id}/accept`);
+  const res = await api.post(`/purchase-orders/${id}/accept`, {});
   return res.data;
 };
 
 const handleRejectPO = async (id: string) => {
-  const res = await api.post(`/purchase-orders/${id}/reject`);
+  const res = await api.post(`/purchase-orders/${id}/reject`, {});
   return res.data;
 };
 
 const handleClosePO = async (id: string) => {
-  const res = await api.post(`/purchase-orders/${id}/close`);
+  const res = await api.post(`/purchase-orders/${id}/close`, {});
   return res.data;
 };
 
@@ -24,7 +24,7 @@ const handleConfirmPO = async (data: any, id: string) => {
 };
 
 const handleSendConfirmCode = async (id: string) => {
-  const res = await api.post(`/purchase-orders/${id}/send-confirmation`);
+  const res = await api.post(`/purchase-orders/${id}/send-confirmation`, {});
   return res.data;
 };
 

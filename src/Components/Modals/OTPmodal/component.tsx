@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import {
+  ActivityIndicator,
   Image,
   Modal,
   Text,
@@ -23,7 +24,7 @@ const OTPModal: React.FC<OTPModalProps> = ({ visible, onClose, onSubmit }) => {
   const { rowData } = useModalStore();
   const [otp, setOtp] = useState<string[]>(["", "", "", ""]);
 
-  const { mutate } = useOtpLogin();
+  const { mutate, isPending } = useOtpLogin();
 
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
@@ -94,7 +95,9 @@ const OTPModal: React.FC<OTPModalProps> = ({ visible, onClose, onSubmit }) => {
           </View>
 
           <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
-            <Text style={styles.submitText}>Submit</Text>
+            <Text style={styles.submitText}>
+              {isPending ? <ActivityIndicator /> : "Submit"}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
