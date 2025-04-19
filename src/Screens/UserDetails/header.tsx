@@ -61,7 +61,11 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
               // backgroundColor: "red",
             }}
           >
-            <View style={{ flexDirection: "row" }}>
+            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+              <View style={styles.detailsItem}>
+                <Text style={[styles.label, style]}>Id: </Text>
+                <Text style={[styles.link, style]}>{item?.id}</Text>
+              </View>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Name: </Text>
                 <Text style={[styles.link, style]}>
@@ -81,7 +85,9 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
                 </Text>
               </View>
             </View>
-            <View style={{ flexDirection: "row", marginTop: 6 }}>
+            <View
+              style={{ flexDirection: "row", marginTop: 6, flexWrap: "wrap" }}
+            >
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>Email: </Text>
                 <Text style={[styles.link, style]}>{item?.email}</Text>

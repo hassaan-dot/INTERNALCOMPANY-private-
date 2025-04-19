@@ -89,7 +89,7 @@ export const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginBottom: 10,
-    flex: 0.6,
+    marginRight: 32,
   },
   label: {
     fontSize: 14,

@@ -18,6 +18,7 @@ import Avatar from "../Avatar/component";
 import truncateComponentName from "../WordTruncate/component";
 import { styles } from "./styles";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
+import { formatDate } from "@/src/utils";
 
 interface CardSectionProps {
   onPress?: () => void;
@@ -178,6 +179,11 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
                     active_status={item?.active_status}
                     is_confirmed={item?.is_confirmed}
                   />
+                </View>
+                <View>
+                  <Text style={styles.actionText}>
+                    {formatDate(item?.createdAt)}
+                  </Text>
                 </View>
                 <View style={[styles.customView, { alignItems: "center" }]}>
                   <TouchableOpacity
