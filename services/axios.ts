@@ -2,7 +2,7 @@ import axios from "axios";
 import LocalStorage from "./local-storage";
 
 const api = axios.create({
-  baseURL: process.env.EXPO_PUBLIC_API_URL!,
+  baseURL: "https://hcapi.abdullahkimrigh.sa/api",
 });
 
 api.interceptors.request.use(
