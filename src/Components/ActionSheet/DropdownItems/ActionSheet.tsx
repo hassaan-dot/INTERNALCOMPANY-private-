@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { FontAwesome6, Entypo } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next";
 import style from "./style";
 
 interface Option {
@@ -33,6 +34,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const styles = style.getSheet();
+  const { t } = useTranslation();
 
   const hide = useCallback(() => {
     setIsVisible(false);
@@ -54,7 +56,6 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
     >
       <TouchableOpacity
         style={styles.overlay}
-        //  onPress={dragHandlePress}
         disabled={true}
         onPress={onButtonPress}
       >
@@ -66,7 +67,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
             <TouchableOpacity onPress={onButtonPress}>
               <FontAwesome6 name="arrow-left" size={23} />
             </TouchableOpacity>
-            <Text style={styles.headerText}>Confirm Amount</Text>
+            <Text style={styles.headerText}>{t("confirmAmount")}</Text>
           </View>
           <View style={styles.container3}>
             {options?.map((option, index) => (
@@ -76,15 +77,15 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                   styles.optionRow,
                   {
                     backgroundColor:
-                      option.status == "completed" ? "#34C759" : "#FF9500",
+                      option.status === "completed" ? "#34C759" : "#FF9500",
                   },
                 ]}
               >
                 <View>
-                  <Text style={styles.option}>{option.name}</Text>
+                  <Text style={styles.option}>{t(`roles.${option.name}`)}</Text>
                 </View>
                 <View>
-                  <Text style={styles.option}>{option.status}</Text>
+                  <Text style={styles.option}>{t(`status.${option.status}`)}</Text>
                 </View>
               </TouchableOpacity>
             ))}

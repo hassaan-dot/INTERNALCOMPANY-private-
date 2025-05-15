@@ -11,19 +11,18 @@ import {
   ScreenHeader,
 } from "../../Components";
 import { styles } from "./styles";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
-  const isMobileView = Platform.OS == "ios" || Platform.OS == "android";
+  const { t } = useTranslation();
+  const isMobileView = Platform.OS === "ios" || Platform.OS === "android";
   const { data, refetch } = useGetDashboardStats();
   useRefreshOnFocus(refetch);
 
   const { isNewsModalOpen, setIsNewsModalOpen } = useModalStore();
-  function Activate() {
-    setIsNewsModalOpen(true);
-  }
-  function deActivate() {
-    setIsNewsModalOpen(false);
-  }
+  const Activate = () => setIsNewsModalOpen(true);
+  const deActivate = () => setIsNewsModalOpen(false);
+
   return (
     <>
       <ScrollView
@@ -37,7 +36,7 @@ const Dashboard = () => {
             </View>
           )}
           <View>
-            <ScreenHeader title="Dashboard" />
+            <ScreenHeader title={t("dashboard.title")} />
           </View>
         </View>
 
@@ -46,14 +45,14 @@ const Dashboard = () => {
             <PredictorCard
               style={styles.container6}
               color={"#38CB89"}
-              title={"Total Paid PO"}
+              title={t("dashboard.total_paid_po")}
               value={data?.total_paid_po?.count}
               inc={data?.total_paid_po?.increment}
             />
             <PredictorCard
               style={styles.container6}
               color={"#FFA600"}
-              title={"In Progress PO"}
+              title={t("dashboard.in_progress_po")}
               value={data?.total_inprogress_po?.count}
               inc={data?.total_inprogress_po?.increment}
             />
@@ -62,23 +61,25 @@ const Dashboard = () => {
             <PredictorCard
               style={styles.container6}
               color={"#FF5630"}
-              title={"Over Due PO"}
+              title={t("dashboard.over_due_po")}
               value={data?.total_overdue_po?.count}
               inc={data?.total_overdue_po?.increment}
             />
             <PredictorCard
               style={styles.container6}
               color={"#38CB89"}
-              title={"Total PO"}
-                value={data?.total_po?.count}
-                inc={data?.total_po?.increment}
+              title={t("dashboard.total_po")}
+              value={data?.total_po?.count}
+              inc={data?.total_po?.increment}
             />
           </View>
         </View>
+
         <View style={styles.container3}>
           <CardSection onPress={Activate} OnCancel={deActivate} />
         </View>
       </ScrollView>
+
       {isNewsModalOpen && (
         <NewsModal onClose={deActivate} isVisible={isNewsModalOpen} />
       )}

@@ -13,8 +13,11 @@ import { View } from "react-native";
 import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
 import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
+import { useTranslation } from "react-i18next";
 
 const UserManagement = () => {
+  const { t } = useTranslation();
+
   const {
     isUserModalOpen,
     setIsUserModalOpen,
@@ -30,9 +33,7 @@ const UserManagement = () => {
   const router = useRouter();
   const [currentUser, setcurrentUser] = useState<any>(null);
   const { mutate: handleAdd } = useCreateUser();
-
   const { mutate: handleUpdate, isPending: isAdding } = useUpdateUser();
-
   const { mutate: handleDelete, isPending: isUpdating } = useDeleteUser();
 
   const onPressUpdatefunction = ({
@@ -140,10 +141,12 @@ const UserManagement = () => {
     setIsUserModalOpen(false);
     setRowData(null);
   };
+
   const onCliclTimeFunc = ({ documentId, first_name, last_name }: any) => {
     setisAttendenceModalOpen(true);
     setcurrentUser({ documentId, first_name, last_name });
   };
+
   const onCliclTimeFuncClose = () => {
     setisAttendenceModalOpen(false);
   };
@@ -153,12 +156,13 @@ const UserManagement = () => {
       `/(app)/user-management/user-details?id=${id}&documentId=${documentId}`
     );
   };
+
   return (
     <>
       <View style={styles.container1}>
         <ScreenHeader
           create={true}
-          title={"User Management"}
+          title={t("user_management.title")}
           onPress={onOpenModal}
           filter={true}
         />
@@ -185,7 +189,7 @@ const UserManagement = () => {
       {isAttendenceModalOpen && (
         <AttendenceModal
           onClose={onCliclTimeFuncClose}
-          title={"Attendence"}
+          title={t("user_management.attendance")}
           currentUser={currentUser}
           isVisible={isAttendenceModalOpen}
           name={``}
@@ -196,11 +200,11 @@ const UserManagement = () => {
           onClose={onCloseModal}
           onSubmit={handleSubmit}
           desc={true}
-          desctext="Add your new users details"
+          desctext={t("user_management.add_user_desc")}
           styleContainer={{ flexDirection: "row" }}
           create={true}
           visible={isUserModalOpen}
-          title={"Create User"}
+          title={t("user_management.create_user")}
           user={true}
           isPending={isAdding || isUpdating}
         />

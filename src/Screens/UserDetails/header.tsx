@@ -3,6 +3,7 @@ import React from "react";
 import { Text, View } from "react-native";
 import helpers from "../../utils/helpers";
 import { styles } from "./header_style";
+import { useTranslation } from "react-i18next";
 
 interface UserProfileProps {
   contact_person_name: string;
@@ -29,6 +30,8 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
   item,
   horizontalwidth = "50%",
 }) => {
+  const { t } = useTranslation();
+
   return (
     <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>
@@ -46,40 +49,40 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
               justifyContent: "space-between",
             }}
           >
-            <View style={{}}>
-              <Text style={[styles.detailsTitle, titleStyle]}>Details</Text>
+            <View>
+              <Text style={[styles.detailsTitle, titleStyle]}>
+                {t("user_detail.details")}
+              </Text>
               <HorizontalLine color="#B0C4DE" width={horizontalwidth} />
             </View>
           </View>
 
           <View
             style={{
-              // flexDirection: "row",
               justifyContent: "space-between",
               flex: 1,
               marginTop: 12,
-              // backgroundColor: "red",
             }}
           >
             <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Id: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.id")}: </Text>
                 <Text style={[styles.link, style]}>{item?.id}</Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Name: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.name")}: </Text>
                 <Text style={[styles.link, style]}>
                   {item?.first_name} {item?.last_name}
                 </Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Contact: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.contact")}: </Text>
                 <Text style={[styles.link, style]}>
                   {item?.phone_number ?? "-"}
                 </Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Role: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.role")}: </Text>
                 <Text style={[styles.link, style]}>
                   {item?.role?.name ?? "-"}
                 </Text>
@@ -89,15 +92,15 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
               style={{ flexDirection: "row", marginTop: 6, flexWrap: "wrap" }}
             >
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Email: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.email")}: </Text>
                 <Text style={[styles.link, style]}>{item?.email}</Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Username: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.username")}: </Text>
                 <Text style={[styles.link, style]}>{item?.username}</Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>Department: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.department")}: </Text>
                 <Text style={[styles.link, style]}>
                   {item?.department?.name}
                 </Text>

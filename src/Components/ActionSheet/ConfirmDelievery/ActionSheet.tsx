@@ -1,7 +1,7 @@
-
 import React, { useState, useCallback } from "react";
 import { View, Text, TouchableOpacity, Modal } from "react-native";
 import { FontAwesome6, Entypo } from "@expo/vector-icons";
+import { useTranslation } from "react-i18next"; // ✅ Import translation
 import style from "./style";
 import CustomButton from "../../CustomButton/Button";
 
@@ -35,6 +35,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const styles = style.getSheet();
+  const { t } = useTranslation(); // ✅ use translation
 
   const hide = useCallback(() => {
     setIsVisible(false);
@@ -56,7 +57,6 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
     >
       <TouchableOpacity
         style={styles.overlay}
-        //  onPress={dragHandlePress}
         disabled={true}
         onPress={onButtonPress}
       >
@@ -68,40 +68,46 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
             <TouchableOpacity onPress={onButtonPress}>
               <FontAwesome6 name="arrow-left" size={23} />
             </TouchableOpacity>
-            <Text style={styles.headerText}>Confirmation Delivery</Text>
+            <Text style={styles.headerText}>{t("confirmationDelivery")}</Text>
           </View>
+
           <View style={styles.container3}>
             <View style={styles.optionRow}>
-            <Text style={styles.optionText2}>
-             Enter the OTP recieved code here
-            </Text>
-           <TouchableOpacity style={{paddingVertical:13,paddingHorizontal:20 ,backgroundColor:'#07504B',borderRadius:8}}>
-               <Text style={styles.optionText} >
-                Resend
-               </Text>
-           </TouchableOpacity>
-
+              <Text style={styles.optionText2}>
+                {t("enterOtpCode")}
+              </Text>
+              <TouchableOpacity
+                style={{
+                  paddingVertical: 13,
+                  paddingHorizontal: 20,
+                  backgroundColor: "#07504B",
+                  borderRadius: 8,
+                }}
+              >
+                <Text style={styles.optionText}>{t("resend")}</Text>
+              </TouchableOpacity>
             </View>
+
             <View>
-          <CustomButton
-          style={{flex:0,marginRight:0,paddingVertical:15}}
-         Color="#CCD9FF"
-         desc={''}
-         Imagecontainer={{width:40,height:40}}
-         Imagecontainer2={{width:25,height:25}}
-         textStyle={{fontSize:14,fontWeight:'600'}}
-         title={'Upload Picture'}
-          ></CustomButton>
+              <CustomButton
+                style={{ flex: 0, marginRight: 0, paddingVertical: 15 }}
+                Color="#CCD9FF"
+                desc=""
+                Imagecontainer={{ width: 40, height: 40 }}
+                Imagecontainer2={{ width: 25, height: 25 }}
+                textStyle={{ fontSize: 14, fontWeight: "600" }}
+                title={t("uploadPicture")}
+              />
+            </View>
           </View>
-          </View>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.lastButton} onPress={onButtonPress}>
               <View style={styles.buttonTextStyle}>
-                <Text style={styles.buttonText}>{'Submit'}</Text>
+                <Text style={styles.buttonText}>{t("submit")}</Text>
               </View>
             </TouchableOpacity>
           </View>
-       
         </View>
       </TouchableOpacity>
     </Modal>

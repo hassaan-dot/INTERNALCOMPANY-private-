@@ -3,6 +3,7 @@ import { useDeleteNews, useGetNews } from "@/hooks/useDashboard";
 import { useGetPO } from "@/hooks/usePO";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useAuthStore } from "@/store/useAuthStore";
+import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { useRouter } from "expo-router";
 import React from "react";
 import {
@@ -17,8 +18,8 @@ import Svg, { LinearGradient, Rect, Stop } from "react-native-svg";
 import Avatar from "../Avatar/component";
 import truncateComponentName from "../WordTruncate/component";
 import { styles } from "./styles";
-import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { formatDate } from "@/src/utils";
+import { useTranslation } from "react-i18next";
 
 interface CardSectionProps {
   onPress?: () => void;
@@ -32,81 +33,29 @@ const RenderPoStatus = ({
   active_status: PO_ACTIVE_STATUS;
   is_confirmed: boolean;
 }) => {
+  const { t } = useTranslation();
+
   if (active_status === PO_ACTIVE_STATUS.DRAFT) {
-    return (
-      <Text
-        style={[
-          styles.code,
-          {
-            color: "#5A6470",
-          },
-        ]}
-      >
-        Draft
-      </Text>
-    );
+    return <Text style={[styles.code, { color: "#5A6470" }]}>{t("po_status.draft")}</Text>;
   }
 
   if (active_status === PO_ACTIVE_STATUS.CLOSED) {
-    return (
-      <Text
-        style={[
-          styles.code,
-          {
-            color: "#EC4746",
-          },
-        ]}
-      >
-        Closed
-      </Text>
-    );
+    return <Text style={[styles.code, { color: "#EC4746" }]}>{t("po_status.closed")}</Text>;
   }
 
   if (is_confirmed) {
-    return (
-      <Text
-        style={[
-          styles.code,
-          {
-            color: "#12B76A",
-          },
-        ]}
-      >
-        Confirmed
-      </Text>
-    );
+    return <Text style={[styles.code, { color: "#12B76A" }]}>{t("po_status.confirmed")}</Text>;
   } else if (active_status === PO_ACTIVE_STATUS.ACCEPTED) {
-    return (
-      <Text
-        style={[
-          styles.code,
-          {
-            color: "#12B76A",
-          },
-        ]}
-      >
-        Accepted
-      </Text>
-    );
+    return <Text style={[styles.code, { color: "#12B76A" }]}>{t("po_status.accepted")}</Text>;
   }
 
   if (active_status === PO_ACTIVE_STATUS.REJECTED) {
-    return (
-      <Text
-        style={[
-          styles.code,
-          {
-            color: "#EC4746",
-          },
-        ]}
-      >
-        Rejected
-      </Text>
-    );
+    return <Text style={[styles.code, { color: "#EC4746" }]}>{t("po_status.rejected")}</Text>;
   }
 };
 
 const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
+  const { t } = useTranslation();
   const isMobileView = Platform.OS === "ios";
   const { user } = useAuthStore();
   const { data, refetch } = useGetNews();
@@ -115,18 +64,21 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
   const { mutate: handleDeleteNews } = useDeleteNews();
   const { data: getPo } = useGetPO();
   const router = useRouter();
+
   const handleNavigateToDetails = (documentId: string) => {
     return router.push(`/(app)/po-management/po-details?id=${documentId}`);
   };
+
   const handleNavigateToAllPo = () => {
     return router.push(`/(app)/po-management`);
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.card}>
         <View style={styles.container1}>
           <View>
-            <Text style={styles.cardTitle}>Your Assigned PO</Text>
+            <Text style={styles.cardTitle}>{t("po_section.title")}</Text>
           </View>
           {getPo?.data?.length > 8 && (
             <View>
@@ -134,7 +86,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
                 style={styles.addButton && styles.addButton1}
                 onPress={() => handleNavigateToAllPo()}
               >
-                <Text style={styles.addButtonText}>See All</Text>
+                <Text style={styles.addButtonText}>{t("po_section.see_all")}</Text>
               </TouchableOpacity>
             </View>
           )}
@@ -150,63 +102,62 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
             <Rect x="0" y="0" width="100%" height="1" fill="url(#grad)" />
           </Svg>
         </View>
+
         <FlatList
           contentContainerStyle={{ marginHorizontal: 15, marginTop: 5 }}
           data={getPo?.data?.slice(0, 8)}
           keyExtractor={(item) => item.id}
           renderItem={({ item }) => (
-            <>
-              <View style={styles.row}>
-                <View style={styles.profileView}>
-                  <Avatar
-                    width={30}
-                    height={30}
-                    borderRadius={15}
-                    marginRight={7}
-                  ></Avatar>
-                  <Text style={styles.name}>
-                    {`${item?.po_created_by?.first_name}  ${item?.po_created_by?.last_name}`}
-                  </Text>
-                </View>
-
-                <View style={styles.customView}>
-                  <Text style={styles.actionText}>
-                    {truncateComponentName(item?.po_name, 12)}
-                  </Text>
-                </View>
-                <View style={styles.customView}>
-                  <RenderPoStatus
-                    active_status={item?.active_status}
-                    is_confirmed={item?.is_confirmed}
-                  />
-                </View>
-                <View>
-                  <Text style={styles.actionText}>
-                    {formatDate(item?.createdAt)}
-                  </Text>
-                </View>
-                <View style={[styles.customView, { alignItems: "center" }]}>
-                  <TouchableOpacity
-                    onPress={() => handleNavigateToDetails(item?.documentId)}
-                  >
-                    <Image
-                      source={icons.dashboardButtonNewscardIcon}
-                      style={{ width: 15, height: 15, marginLeft: 20 }}
-                    ></Image>
-                  </TouchableOpacity>
-                </View>
+            <View style={styles.row}>
+              <View style={styles.profileView}>
+                <Avatar
+                  width={30}
+                  height={30}
+                  borderRadius={15}
+                  marginRight={7}
+                />
+                <Text style={styles.name}>
+                  {`${item?.po_created_by?.first_name}  ${item?.po_created_by?.last_name}`}
+                </Text>
               </View>
-            </>
+
+              <View style={styles.customView}>
+                <Text style={styles.actionText}>
+                  {truncateComponentName(item?.po_name, 12)}
+                </Text>
+              </View>
+              <View style={styles.customView}>
+                <RenderPoStatus
+                  active_status={item?.active_status}
+                  is_confirmed={item?.is_confirmed}
+                />
+              </View>
+              <View>
+                <Text style={styles.actionText}>
+                  {formatDate(item?.createdAt)}
+                </Text>
+              </View>
+              <View style={[styles.customView, { alignItems: "center" }]}>
+                <TouchableOpacity
+                  onPress={() => handleNavigateToDetails(item?.documentId)}
+                >
+                  <Image
+                    source={icons.dashboardButtonNewscardIcon}
+                    style={{ width: 15, height: 15, marginLeft: 20 }}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
           )}
         />
       </View>
 
       <View style={[styles.card2, isMobileView && styles.card3]}>
         <View style={[styles.newsHeader, isMobileView && styles.newsHeader2]}>
-          <Text style={styles.cardTitle}>News Panel</Text>
+          <Text style={styles.cardTitle}>{t("news_panel.title")}</Text>
           {user?.role?.name === "Admin" && (
             <TouchableOpacity style={styles.addButton} onPress={onPress}>
-              <Text style={styles.addButtonText}>Add News</Text>
+              <Text style={styles.addButtonText}>{t("news_panel.add_news")}</Text>
             </TouchableOpacity>
           )}
         </View>
@@ -233,7 +184,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
                   height={30}
                   borderRadius={15}
                   marginRight={7}
-                ></Avatar>
+                />
                 <Text style={styles.name}>
                   {item.user?.first_name} {item.user?.last_name}
                 </Text>

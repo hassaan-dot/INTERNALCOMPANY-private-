@@ -7,6 +7,7 @@ import {
   Modal,
   Pressable,
 } from "react-native";
+import { useTranslation } from "react-i18next"; // ✅ Translation hook
 import { styles } from "./style";
 import helpers from "../../../utils/helpers";
 import { icons } from "@/assets/icons/icons";
@@ -29,6 +30,7 @@ const Component: React.FC<ComponentProps> = ({
   onViewReceipt,
   onContributeAgain,
 }) => {
+  const { t } = useTranslation(); // ✅ use hook
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const iconRef = useRef<TouchableOpacity | null>(null);
@@ -37,8 +39,8 @@ const Component: React.FC<ComponentProps> = ({
     if (iconRef.current) {
       iconRef.current.measure((fx, fy, width, height, px, py) => {
         setModalPosition({
-          x: px + width / 2, // Center the modal horizontally
-          y: py + height + 10, // Position below the icon with some margin
+          x: px + width / 2,
+          y: py + height + 10,
         });
         setIsModalVisible(true);
       });
@@ -48,6 +50,7 @@ const Component: React.FC<ComponentProps> = ({
   const closeModal = () => {
     setIsModalVisible(false);
   };
+
   const handleButtonPress = () => {
     closeModal();
     navigate("ReportProblem");
@@ -77,6 +80,7 @@ const Component: React.FC<ComponentProps> = ({
             />
           </TouchableOpacity>
         </View>
+
         <View style={[styles.rowFlex, { marginTop: helpers.normalize(10) }]}>
           <Text
             style={[
@@ -84,24 +88,27 @@ const Component: React.FC<ComponentProps> = ({
               { marginVertical: helpers.normalize(5) },
             ]}
           >
-            Amount:
+            {t("payment.amount")}
           </Text>
           <Text style={styles.cardAmountText}>${amount}</Text>
         </View>
+
         <View style={styles.rowFlex}>
-          <Text style={styles.cardAmountlabelText}>Payment Status:</Text>
+          <Text style={styles.cardAmountlabelText}>
+            {t("payment.statusLabel")}
+          </Text>
           <Text
             style={[
               styles.paymentStatus,
               paymentStatus === "Successful" ? styles.success : styles.failed,
             ]}
           >
-            {paymentStatus}
+            {t(`payment.status.${paymentStatus.toLowerCase()}`)}
           </Text>
         </View>
 
         {paymentStatus === "Failed" && (
-          <Text style={styles.failedReason}>Why did my payment fail?</Text>
+          <Text style={styles.failedReason}>{t("payment.failedReason")}</Text>
         )}
 
         <View style={styles.buttonContainer}>
@@ -109,14 +116,16 @@ const Component: React.FC<ComponentProps> = ({
             style={styles.viewReceiptButton}
             onPress={onViewReceipt}
           >
-            <Text style={styles.viewReceiptButtonText}>View Receipt</Text>
+            <Text style={styles.viewReceiptButtonText}>
+              {t("payment.viewReceipt")}
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.contributeAgainButton}
             onPress={onContributeAgain}
           >
             <Text style={styles.contributeAgainButtonText}>
-              Contribute Again
+              {t("payment.contributeAgain")}
             </Text>
           </TouchableOpacity>
         </View>
@@ -136,21 +145,19 @@ const Component: React.FC<ComponentProps> = ({
               {
                 position: "absolute",
                 top: modalPosition.y - helpers.normalize(22),
-                left: modalPosition.x - helpers.normalize(150), // Adjust horizontal alignment
+                left: modalPosition.x - helpers.normalize(150),
               },
             ]}
             onPress={handleButtonPress}
           >
             <View style={styles.modalHeader}>
-              <View>
-                <Image
-                  source={icons.report_sign_icon}
-                  style={styles.reportSignIcon}
-                />
-              </View>
-              <View>
-                <Text style={styles.modalText}>Report a Problem</Text>
-              </View>
+              <Image
+                source={icons.report_sign_icon}
+                style={styles.reportSignIcon}
+              />
+              <Text style={styles.modalText}>
+                {t("payment.reportProblem")}
+              </Text>
             </View>
           </TouchableOpacity>
         </Pressable>

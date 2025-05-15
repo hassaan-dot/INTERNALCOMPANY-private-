@@ -2,6 +2,7 @@ import * as Font from "expo-font";
 import React, { useEffect, useState } from "react";
 import { LogBox, StyleSheet, View } from "react-native";
 import App from "./root/index"; // Your main App component
+import './src/i18n';
 // Define all your custom fonts
 
 // FontLoader component

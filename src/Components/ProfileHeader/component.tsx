@@ -5,6 +5,7 @@ import { icons } from "@/assets/icons/icons";
 import helpers from "../../utils/helpers";
 import SearchBar from "../SearchBar/searchBar";
 import SignoutDropdown from "../SignoutDropdown/component";
+import LanguageSwitcher from "../Language/LanguageSwitcher";
 interface ProfileHeaderProps {
   profileImage: any; // Can be a local image source or a URI string
   name: string;
@@ -13,7 +14,7 @@ interface ProfileHeaderProps {
   onMenuPress: () => void; // Function for the menu button press
 }
 
-const ProfileHeader: React.FC<ProfileHeaderProps> = ({}) => {
+const ProfileHeader: React.FC<ProfileHeaderProps> = ({ }) => {
   const [visible, setVisible] = React.useState(false);
   const onMenuPress = () => {
     setVisible(!visible);
@@ -29,10 +30,13 @@ const ProfileHeader: React.FC<ProfileHeaderProps> = ({}) => {
       }}
     >
       <View style={{ marginLeft: 30 }}>
-        <SearchBar></SearchBar>
+        {/* <SearchBar></SearchBar> */}
       </View>
 
       <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={{ marginRight: 100 }}>
+          <LanguageSwitcher />
+        </View>
         <View style={{ right: helpers.normalize(40) }}>
           <View
             style={{

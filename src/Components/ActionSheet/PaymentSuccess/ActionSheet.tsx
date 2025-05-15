@@ -1,4 +1,4 @@
-import React, {useState, useCallback} from 'react';
+import React, { useState, useCallback } from 'react';
 import {
   View,
   Text,
@@ -8,7 +8,7 @@ import {
   ImageSourcePropType,
 } from 'react-native';
 import style from './style';
-import {images} from '../../../Resources';
+import { images } from '../../../Resources';
 import helpers from '../../../utils/helpers';
 
 // Define types for the options
@@ -95,9 +95,8 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
                         options.length - 1 === index ? '#F5169C' : '#333333',
                       fontWeight: options.length - 1 === index ? 'bold' : '400',
                     }}>
-                    {`${options.length - 2 === index ? ' + ' : ' '}$${
-                      option.Amount
-                    }`}
+                    {`${options.length - 2 === index ? ' + ' : ' '}$${option.Amount
+                      }`}
                   </Text>
                 </View>
               </View>

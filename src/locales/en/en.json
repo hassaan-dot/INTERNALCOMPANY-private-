@@ -1,0 +1,72 @@
+{
+    "sidebar": {
+        "dashboard": "Dashboard",
+        "userManagement": "User Management",
+        "clientManagement": "Client Management",
+        "poManagement": "PO Management",
+        "payment": "Payment",
+        "requests": "Requests",
+        "reports": "Reports"
+    },
+    "adminHeader": {
+        "title": "Admin user"
+    },
+    "drawer": {
+        "dashboard": "Dashboard",
+        "userManagement": "User Management",
+        "clientManagement": "Client Management",
+        "payment": "Payment History",
+        "poManagement": "PO Management",
+        "request": "Request",
+        "report": "Report"
+    },
+    "po_status": {
+        "draft": "Draft",
+        "closed": "Closed",
+        "confirmed": "Confirmed",
+        "accepted": "Accepted",
+        "rejected": "Rejected"
+    },
+    "po_section": {
+        "title": "Your Assigned PO",
+        "see_all": "See All"
+    },
+    "news_panel": {
+        "title": "News Panel",
+        "add_news": "Add News"
+    },
+    "dashboard": {
+        "title": "Dashboard",
+        "total_paid_po": "Total Paid PO",
+        "in_progress_po": "In Progress PO",
+        "over_due_po": "Over Due PO",
+        "total_po": "Total PO"
+    },
+    "user_management": {
+        "title": "User Management",
+        "create_user": "Create User",
+        "attendance": "Attendance",
+        "add_user_desc": "Add your new users details"
+    },
+    "user_detail": {
+        "details": "Details",
+        "id": "Id",
+        "name": "Name",
+        "contact": "Contact",
+        "role": "Role",
+        "email": "Email",
+        "username": "Username",
+        "department": "Department"
+    },
+    "User_Detail": "User Detail",
+    "request_details": {
+        "title": "Request Details",
+        "enter_title": "Enter a request title",
+        "perform_on": "Date to perform:",
+        "description": "Request description",
+        "user": "User",
+        "users": "Users",
+        "files": "Files",
+        "add_file": "Add File"
+    }
+}

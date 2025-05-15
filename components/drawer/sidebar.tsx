@@ -10,10 +10,12 @@ import { icons } from "@/assets/icons/icons";
 import { useAuthStore } from "@/store/useAuthStore";
 import { ROLE } from "@/constants/role";
 import { drawerIconProps } from "@/constants/types";
+import { useTranslation } from "react-i18next";
 
 const Sidebar = () => {
   const { user } = useAuthStore();
   const { width } = useWindowDimensions();
+  const { t } = useTranslation();
 
   const getDrawerWidth = () => {
     if (Platform.OS === "web") {
@@ -39,7 +41,7 @@ const Sidebar = () => {
     () => [
       {
         name: "dashboard",
-        label: "Dashboard",
+        label: t("drawer.dashboard"),
         href: "/(app)/dashboard",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
@@ -51,7 +53,7 @@ const Sidebar = () => {
       },
       {
         name: "user-management",
-        label: "User Management",
+        label: t("drawer.userManagement"),
         href: "/(app)/user-management",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
@@ -59,11 +61,11 @@ const Sidebar = () => {
             style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
           />
         ),
-        show: user?.role?.name == ROLE.ADMIN,
+        show: user?.role?.name === ROLE.ADMIN,
       },
       {
         name: "client-management",
-        label: "Client Management",
+        label: t("drawer.clientManagement"),
         href: "/(app)/client-management",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
@@ -71,11 +73,11 @@ const Sidebar = () => {
             style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
           />
         ),
-        show: user?.role?.name == ROLE.ADMIN,
+        show: user?.role?.name === ROLE.ADMIN,
       },
       {
         name: "payment",
-        label: "Payment History",
+        label: t("drawer.payment"),
         href: "/(app)/payment",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
@@ -87,7 +89,7 @@ const Sidebar = () => {
       },
       {
         name: "po-management",
-        label: "PO Management",
+        label: t("drawer.poManagement"),
         href: "/(app)/po-management",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
@@ -99,7 +101,7 @@ const Sidebar = () => {
       },
       {
         name: "request",
-        label: "Request",
+        label: t("drawer.request"),
         href: "/(app)/request",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
@@ -111,7 +113,7 @@ const Sidebar = () => {
       },
       {
         name: "report",
-        label: "Report",
+        label: t("drawer.report"),
         href: "/(app)/report",
         drawerIcon: ({ color, size, focused }: drawerIconProps) => (
           <Image
@@ -119,11 +121,12 @@ const Sidebar = () => {
             style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
           />
         ),
-        show: user?.role?.name == ROLE.ADMIN,
+        show: user?.role?.name === ROLE.ADMIN,
       },
     ],
-    []
+    [t, user?.role?.name] // ensure translations and role updates trigger update
   );
+
 
   return (
     <Drawer

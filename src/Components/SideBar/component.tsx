@@ -3,61 +3,63 @@ import { View, Text, TouchableOpacity, Image } from "react-native";
 import styles from "./styles";
 import { icons } from "@/assets/icons/icons";
 import { useNavigation, useNavigationState } from "@react-navigation/native";
+import { useTranslation } from "react-i18next";
 
 const Sidebar: React.FC = () => {
   const navigation = useNavigation();
   const currentRoute = useNavigationState(
     (state) => state?.routes?.[state.index]?.name
   );
-  return currentRoute === "Login" ? null : (
+  const { t } = useTranslation();
+
+  if (currentRoute === "Login") return null;
+
+  const items = [
+    {
+      label: t("sidebar.dashboard"),
+      screen: "Dashboard",
+      source: icons.drawertabdashboardIcon,
+    },
+    {
+      label: t("sidebar.userManagement"),
+      screen: "User Management",
+      source: icons.drawertabUsersIcon,
+    },
+    {
+      label: t("sidebar.clientManagement"),
+      screen: "Client Management",
+      source: icons.drawertabUsersIcon,
+    },
+    {
+      label: t("sidebar.poManagement"),
+      screen: "PO Management",
+      source: icons.drawertabLawIcon,
+    },
+    {
+      label: t("sidebar.payment"),
+      screen: "Payment",
+      source: icons.drawertabUsersIcon,
+    },
+    {
+      label: t("sidebar.requests"),
+      screen: "Request",
+      source: icons.drawertabUsersIcon,
+    },
+    {
+      label: t("sidebar.reports"),
+      screen: "Reports",
+      source: icons.drawertabUsersIcon,
+    },
+  ];
+
+  return (
     <View style={styles.sidebar}>
       <View style={styles.childView}>
-        {[
-          {
-            label: "Dashboard",
-            screen: "Dashboard",
-            source: icons.drawertabdashboardIcon,
-          },
-          {
-            label: "User Management",
-            screen: "User Management",
-            source: icons.drawertabUsersIcon,
-          },
-
-          {
-            label: "Client Management",
-            screen: "Client Management",
-            source: icons.drawertabUsersIcon,
-          },
-
-          {
-            label: "PO Management",
-            screen: "PO Management",
-            source: icons.drawertabLawIcon,
-          },
-          {
-            label: "Payment",
-            screen: "Payment",
-            source: icons.drawertabUsersIcon,
-          },
-
-          {
-            label: "Requests",
-            screen: "Request",
-            source: icons.drawertabUsersIcon,
-          },
-
-          {
-            label: "Reports",
-            screen: "Reports",
-            source: icons.drawertabUsersIcon,
-          },
-        ].map((item) => {
+        {items.map((item) => {
           const isActive = currentRoute === item.screen;
-
           return (
             <TouchableOpacity
-              key={item.label}
+              key={item.screen}
               style={isActive ? styles.active : styles.item}
               onPress={() => navigation.navigate(item.screen)}
             >

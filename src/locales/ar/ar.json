@@ -1,0 +1,72 @@
+{
+    "sidebar": {
+        "dashboard": "الرئيسية",
+        "userManagement": "إدارة المستخدمين",
+        "clientManagement": "إدارة العملاء",
+        "poManagement": "إدارة طلبات الشراء",
+        "payment": "المدفوعات",
+        "requests": "الطلبات",
+        "reports": "التقارير"
+    },
+    "adminHeader": {
+        "title": "المستخدم الإداري"
+    },
+    "drawer": {
+        "dashboard": "لوحة التحكم",
+        "userManagement": "إدارة المستخدمين",
+        "clientManagement": "إدارة العملاء",
+        "payment": "سجل المدفوعات",
+        "poManagement": "إدارة أوامر الشراء",
+        "request": "الطلبات",
+        "report": "التقارير"
+    },
+    "po_status": {
+        "draft": "مسودة",
+        "closed": "مغلق",
+        "confirmed": "مؤكد",
+        "accepted": "مقبول",
+        "rejected": "مرفوض"
+    },
+    "po_section": {
+        "title": "طلبات الشراء المسندة إليك",
+        "see_all": "عرض الكل"
+    },
+    "news_panel": {
+        "title": "لوحة الأخبار",
+        "add_news": "إضافة خبر"
+    },
+    "dashboard": {
+        "title": "لوحة التحكم",
+        "total_paid_po": "طلبات الشراء المدفوعة",
+        "in_progress_po": "طلبات الشراء قيد التنفيذ",
+        "over_due_po": "طلبات الشراء المتأخرة",
+        "total_po": "إجمالي طلبات الشراء"
+    },
+    "user_management": {
+        "title": "إدارة المستخدمين",
+        "create_user": "إنشاء مستخدم",
+        "attendance": "الحضور",
+        "add_user_desc": "أضف تفاصيل المستخدمين الجدد"
+    },
+    "user_detail": {
+        "details": "التفاصيل",
+        "id": "المعرف",
+        "name": "الاسم",
+        "contact": "رقم التواصل",
+        "role": "الدور",
+        "email": "البريد الإلكتروني",
+        "username": "اسم المستخدم",
+        "department": "القسم"
+    },
+    "User_Detail": "تفاصيل المستخدم",
+    "request_details": {
+        "title": "تفاصيل الطلب",
+        "enter_title": "أدخل عنوان الطلب",
+        "perform_on": "تاريخ التنفيذ:",
+        "description": "وصف الطلب",
+        "user": "مستخدم",
+        "users": "مستخدمين",
+        "files": "الملفات",
+        "add_file": "إضافة ملف"
+    }
+}

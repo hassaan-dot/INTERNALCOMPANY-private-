@@ -6,18 +6,21 @@ import { styles } from "./styles";
 import { useLocalSearchParams } from "expo-router";
 import { useGetOneUser } from "@/hooks/useUser";
 import UserDetailHeader from "./header";
+import { useTranslation } from "react-i18next";
 
 const UserDetails = () => {
   const { id, documentId } = useLocalSearchParams();
 
   const { data, isPending } = useGetOneUser(id as string);
 
+  const { t } = useTranslation();
+
   if (isPending) return <ActivityIndicator style={{ flex: 1 }} />;
 
   return (
     <>
       <ScrollView style={styles.container1}>
-        <ScreenHeader title={"User Detail"} />
+        <ScreenHeader title={t("User_Detail")} />
         <UserDetailHeader item={data} />
         <View style={styles.container2}>
           <GraphCard id={documentId} />

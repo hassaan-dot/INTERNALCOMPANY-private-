@@ -20,27 +20,28 @@ import InputField from "../InputField/InputField";
 import SingleSelectDropDown from "../SingleSelectDropDown/component";
 import styles from "./styles";
 import { useGetAllClients } from "@/hooks/useClient";
+import { useTranslation } from "react-i18next";
 
 interface Props {
   onPress: () => void;
 }
 
-// Validation schema
-const poSchema = yup.object().shape({
-  isEdit: yup.boolean(),
-  po_name: yup
-    .string()
-    .required("PO name is required")
-    .min(2, "PO name must be at least 2 characters"),
-  client: yup
-    .string()
-    .required("selection is required")
-    .min(1, "Client must be at least 1 selecton"),
-
-  notes: yup.string().nullable(),
-});
-
 const POForm: React.FC<Props> = ({ onPress }) => {
+  const { t } = useTranslation();
+
+  const poSchema = yup.object().shape({
+    isEdit: yup.boolean(),
+    po_name: yup
+      .string()
+      .required(t("form.validation.poRequired"))
+      .min(2, t("form.validation.poMin")),
+    client: yup
+      .string()
+      .required(t("form.validation.clientRequired"))
+      .min(1, t("form.validation.clientMin")),
+    notes: yup.string().nullable(),
+  });
+
   const { rowData, setRowData } = useModalStore();
   const color = ["#07504B"];
   const [documents, setDocuments] = useState<any[]>([]);
@@ -53,27 +54,23 @@ const POForm: React.FC<Props> = ({ onPress }) => {
     notes: "",
     isEdit: rowData?.isEdit || false,
   });
+
   const { mutate: handleUpdate, isPending: isUpdating } = useUpdatePO();
-
   const { mutate: handleAdd, isPending: isAdding } = useCreatePO(setFormData);
-
   const { data: allClientList } = useGetAllClients();
-
   const router = useRouter();
 
   const onPressUpdatefunction = async () => {
-    setTouched({
-      po_name: true,
-      client: true,
-    });
+    setTouched({ po_name: true, client: true });
     const isValid = await validateForm();
     if (!isValid) return;
+
     const data = {
-      po_name: formData?.po_name,
-      client: formData?.client,
+      po_name: formData.po_name,
+      client: formData.client,
     };
 
-    handleUpdate({ data, id: formData?.documentId });
+    handleUpdate({ data, id: formData.documentId });
   };
 
   const handleSubmit = () => {
@@ -85,10 +82,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   };
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+    setFormData((prev) => ({ ...prev, [field]: value }));
     setTouched((prev) => ({ ...prev, [field]: true }));
     clearError(field);
   };
@@ -132,13 +126,13 @@ const POForm: React.FC<Props> = ({ onPress }) => {
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: [
-          "image/*", // All image types (jpeg, png, etc.)
-          "application/pdf", // PDF files
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
-          "application/msword", // .doc
-          "application/vnd.ms-excel", // .xls
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
-          "text/csv", // .csv
+          "image/*",
+          "application/pdf",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/msword",
+          "application/vnd.ms-excel",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "text/csv",
         ],
         multiple: true,
       });
@@ -169,17 +163,14 @@ const POForm: React.FC<Props> = ({ onPress }) => {
   };
 
   const onPressAddfunction = async () => {
-    setTouched({
-      po_name: true,
-      client: true,
-      notes: true,
-    });
+    setTouched({ po_name: true, client: true, notes: true });
     const isValid = await validateForm();
     if (!isValid) return;
+
     const data = {
-      po_name: formData?.po_name,
-      client: formData?.client,
-      note: formData?.notes,
+      po_name: formData.po_name,
+      client: formData.client,
+      note: formData.notes,
     };
 
     const form_data = new FormData();
@@ -200,8 +191,8 @@ const POForm: React.FC<Props> = ({ onPress }) => {
         <View style={styles.row}>
           <View style={styles.inputContainer}>
             <InputField
-              placeholder="PO Name"
-              title="PO Name"
+              placeholder={t("form.poName")}
+              title={t("form.poName")}
               inputStyle={styles.input1}
               value={formData.po_name}
               onChangeText={(text) => handleInputChange("po_name", text)}
@@ -217,16 +208,17 @@ const POForm: React.FC<Props> = ({ onPress }) => {
               items={allClientList}
               containerStyle={{ marginRight: 20 }}
               setSelected={(client) => handleInputChange("client", client)}
-              title="Select Client"
+              title={t("form.selectClient")}
               selected={
                 rowData?.isEdit &&
                 `${rowData?.client?.contact_person_name} (${rowData?.client?.company_name})`
               }
               error={touched.client && errors.client}
               errorMessage={touched.client && errors.client}
-            ></SingleSelectDropDown>
+            />
           </View>
         </View>
+
         {!rowData?.isEdit && (
           <View
             style={{
@@ -241,11 +233,10 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                   fontSize: 16,
                   fontWeight: "400",
                   fontFamily: PoppinsRegular,
-                  // marginTop: -5,
                   bottom: 3,
                 }}
               >
-                Documents
+                {t("form.documents")}
               </Text>
 
               <View
@@ -270,93 +261,72 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                         justifyContent: "center",
                       }}
                     >
-                      <Feather
-                        name="paperclip"
-                        color={"#07504B"}
-                        style={{}}
-                        size={12}
-                      ></Feather>
+                      <Feather name="paperclip" color="#07504B" size={12} />
                     </TouchableOpacity>
                   </View>
 
                   <View>
-                    <TouchableOpacity
-                      onPress={pickDocument}
-                      style={{
-                        marginLeft: 7,
-                      }}
-                    >
+                    <TouchableOpacity onPress={pickDocument} style={{ marginLeft: 7 }}>
                       {documents.length < 1 && (
                         <Text style={{ paddingVertical: 4 }}>
-                          Upload your attachments/Documents
+                          {t("form.uploadAttachments")}
                         </Text>
                       )}
                     </TouchableOpacity>
-                    {console.log("docs", documents)}
-                    {documents?.length > 0 && (
-                      <View style={{}}>
-                        <FlatList
-                          contentContainerStyle={{
-                            width: helpers.normalize(200),
-                            marginBottom: 2,
-                          }}
-                          showsHorizontalScrollIndicator={false}
-                          horizontal={true}
-                          data={documents}
-                          keyExtractor={(_, index) => index.toString()}
-                          renderItem={({ item }) => (
-                            <View
-                              style={{
-                                flexDirection: "row",
-                                alignItems: "center",
-                                justifyContent: "space-between",
-                                // borderWidth: 1,
-                                // borderColor: "gray",
-                                borderRadius: 9,
-                                padding: 4,
-                                marginHorizontal: 4,
-                                shadowColor: "#000",
-                                shadowOffset: {
-                                  width: 0,
-                                  height: 1,
-                                },
-                                backgroundColor:
-                                  color[
-                                    Math.floor(Math.random() * color.length)
-                                  ],
-                                shadowOpacity: 0.22,
-                                shadowRadius: 2.22,
-                              }}
-                            >
-                              <Text
-                                style={{
-                                  flex: 1,
-                                  marginLeft: 7,
-                                  color: "white",
-                                  fontFamily: PoppinsRegular,
-                                }}
-                                numberOfLines={1}
-                              >
-                                {item.name}
-                              </Text>
-                              <TouchableOpacity
-                                onPress={() =>
-                                  removeDocument(documents?.indexOf(item))
-                                }
-                              >
-                                <AntDesign
-                                  name="close"
-                                  size={12}
-                                  color="red"
-                                  style={{ marginHorizontal: 10 }}
-                                />
-                              </TouchableOpacity>
-                            </View>
-                          )}
-                        />
 
-                        {documents.map((doc, index) => null)}
-                      </View>
+                    {documents.length > 0 && (
+                      <FlatList
+                        contentContainerStyle={{
+                          width: helpers.normalize(200),
+                          marginBottom: 2,
+                        }}
+                        showsHorizontalScrollIndicator={false}
+                        horizontal
+                        data={documents}
+                        keyExtractor={(_, index) => index.toString()}
+                        renderItem={({ item }) => (
+                          <View
+                            style={{
+                              flexDirection: "row",
+                              alignItems: "center",
+                              justifyContent: "space-between",
+                              borderRadius: 9,
+                              padding: 4,
+                              marginHorizontal: 4,
+                              shadowColor: "#000",
+                              shadowOffset: { width: 0, height: 1 },
+                              backgroundColor:
+                                color[Math.floor(Math.random() * color.length)],
+                              shadowOpacity: 0.22,
+                              shadowRadius: 2.22,
+                            }}
+                          >
+                            <Text
+                              style={{
+                                flex: 1,
+                                marginLeft: 7,
+                                color: "white",
+                                fontFamily: PoppinsRegular,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {item.name}
+                            </Text>
+                            <TouchableOpacity
+                              onPress={() =>
+                                removeDocument(documents.indexOf(item))
+                              }
+                            >
+                              <AntDesign
+                                name="close"
+                                size={12}
+                                color="red"
+                                style={{ marginHorizontal: 10 }}
+                              />
+                            </TouchableOpacity>
+                          </View>
+                        )}
+                      />
                     )}
                   </View>
                 </View>
@@ -364,20 +334,21 @@ const POForm: React.FC<Props> = ({ onPress }) => {
             </View>
           </View>
         )}
+
         {!rowData?.isEdit && (
-          <View style={[{ marginRight: helpers.normalize(10) }]}>
+          <View style={{ marginRight: helpers.normalize(10) }}>
             <InputField
               inputStyle={styles.input}
-              title="Add notes"
-              multiline={true}
-              placeholder="Add your notes"
+              title={t("form.notes")}
+              multiline
+              placeholder={t("form.addNotes")}
               value={formData?.notes}
               onChangeText={(text) => handleInputChange("notes", text)}
               ispassword={false}
             />
           </View>
         )}
-        <View></View>
+
         <View style={styles.buttonRow}>
           <ButtonRow
             onCancel={handleClose}
