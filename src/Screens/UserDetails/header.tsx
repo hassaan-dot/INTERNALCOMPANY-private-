@@ -1,9 +1,9 @@
-import { Avatar, HorizontalLine } from "@/src/Components";
 import React from "react";
-import { Text, View } from "react-native";
-import helpers from "../../utils/helpers";
-import { styles } from "./header_style";
+import { Text, View, I18nManager } from "react-native";
 import { useTranslation } from "react-i18next";
+import { styles } from "./header_style";
+import { HorizontalLine } from "@/src/Components";
+import helpers from "../../utils/helpers";
 
 interface UserProfileProps {
   contact_person_name: string;
@@ -31,24 +31,13 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
   horizontalwidth = "50%",
 }) => {
   const { t } = useTranslation();
+  const isRTL = I18nManager.isRTL;
 
   return (
     <View style={[styles.card, cardContainer]}>
-      <View style={styles.row}>
-        <View style={styles.profileSection}>
-          <Avatar />
-          <View style={{ marginLeft: 0, marginRight: helpers.normalize(20) }}>
-            <Text style={styles.name}>{item?.first_name}</Text>
-          </View>
-        </View>
+      <View style={[styles.row, { flexDirection: isRTL ? "row-reverse" : "row" }]}>
         <View style={[styles.detailsSection, detailscreenContainer]}>
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between",
-            }}
-          >
+          <View style={{ flexDirection: isRTL ? "row-reverse" : "row", justifyContent: "space-between" }}>
             <View>
               <Text style={[styles.detailsTitle, titleStyle]}>
                 {t("user_detail.details")}
@@ -57,50 +46,43 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
             </View>
           </View>
 
-          <View
-            style={{
-              justifyContent: "space-between",
-              flex: 1,
-              marginTop: 12,
-            }}
-          >
-            <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
+          <View style={{ flex: 1, marginTop: 12 }}>
+            <View style={{ flexDirection: isRTL ? "row-reverse" : "row", flexWrap: "wrap" }}>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>{t("user_detail.id")}: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.id")}:</Text>
                 <Text style={[styles.link, style]}>{item?.id}</Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>{t("user_detail.name")}: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.name")}:</Text>
                 <Text style={[styles.link, style]}>
                   {item?.first_name} {item?.last_name}
                 </Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>{t("user_detail.contact")}: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.contact")}:</Text>
                 <Text style={[styles.link, style]}>
                   {item?.phone_number ?? "-"}
                 </Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>{t("user_detail.role")}: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.role")}:</Text>
                 <Text style={[styles.link, style]}>
                   {item?.role?.name ?? "-"}
                 </Text>
               </View>
             </View>
-            <View
-              style={{ flexDirection: "row", marginTop: 6, flexWrap: "wrap" }}
-            >
+
+            <View style={{ flexDirection: isRTL ? "row-reverse" : "row", flexWrap: "wrap", marginTop: 6 }}>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>{t("user_detail.email")}: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.email")}:</Text>
                 <Text style={[styles.link, style]}>{item?.email}</Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>{t("user_detail.username")}: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.username")}:</Text>
                 <Text style={[styles.link, style]}>{item?.username}</Text>
               </View>
               <View style={styles.detailsItem}>
-                <Text style={[styles.label, style]}>{t("user_detail.department")}: </Text>
+                <Text style={[styles.label, style]}>{t("user_detail.department")}:</Text>
                 <Text style={[styles.link, style]}>
                   {item?.department?.name}
                 </Text>

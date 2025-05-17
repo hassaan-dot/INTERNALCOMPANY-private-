@@ -33,7 +33,8 @@
     },
     "news_panel": {
         "title": "لوحة الأخبار",
-        "add_news": "إضافة خبر"
+        "add_news": "إضافة خبر",
+        "confirm_delete": "Are you sure you want to delete this news?"
     },
     "dashboard": {
         "title": "لوحة التحكم",
@@ -93,5 +94,81 @@
         "Accounting": "المحاسبة",
         "Human Resources": "الموارد البشرية",
         "Sales persons coordinator": "منسق مندوبي المبيعات"
+    },
+    "Are you sure you want to delete this news?": "هل أنت متأكد من أنك تريد حذف هذا الإعلان؟",
+    "Delete": "حذف",
+    "Cancel": "إلغاء",
+    "Name": "الاسم",
+    "Clock-In": "وقت الدخول",
+    "Clock-Out": "وقت الخروج",
+    "Clock In": "تسجيل الدخول",
+    "Clock Out": "تسجيل الخروج",
+    "title_add": "إضافة مستخدم",
+    "title_edit": "تعديل المستخدم",
+    "desc": "يرجى إدخال معلومات المستخدم",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "username": "اسم المستخدم",
+    "password": "كلمة المرور",
+    "phone_number": "رقم الهاتف",
+    "select_role": "اختر الدور",
+    "select_department": "اختر القسم",
+    "add_user": "إضافة مستخدم",
+    "edit_user": "تعديل المستخدم",
+    "cancel": "إلغاء",
+    "placeholder_first_name": "الاسم الأول",
+    "placeholder_last_name": "اسم العائلة",
+    "email_placeholder": "email@example.com",
+    "placeholder_username": "اسم المستخدم",
+    "placeholder_password": "أدخل كلمة المرور",
+    "placeholder_phone": "رقم الهاتف",
+    "validation": {
+        "required": "هذا الحقل مطلوب",
+        "email": "يرجى إدخال بريد إلكتروني صالح",
+        "username_length": "يجب أن يكون اسم المستخدم 3 أحرف على الأقل",
+        "password_length": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+        "phone_numeric": "يمكن أن يحتوي رقم الهاتف على أرقام فقط",
+        "phone_length": "يجب أن يكون رقم الهاتف 10 أرقام على الأقل"
+    },
+    "confirmation": {
+        "title": "تأكيد الحذف",
+        "delete_user": "هل أنت متأكد أنك تريد حذف هذا المستخدم؟",
+        "delete_client": "هل أنت متأكد أنك تريد حذف هذا العميل؟",
+        "delete_request": "هل تريد حذف هذا الطلب؟",
+        "po": "هل أنت متأكد أنك تريد حذف أمر الشراء هذا؟",
+        "confirm": "حذف",
+        "cancel": "إلغاء"
+    },
+    "client_management": {
+        "title": "إدارة العملاء",
+        "contact_person": "اسم الشخص المسؤول",
+        "email": "البريد الإلكتروني",
+        "phone": "رقم الجوال",
+        "company": "اسم الشركة",
+        "add_desc": "أضف تفاصيل العميل الجديد",
+        "create_title": "إضافة عميل",
+        "reminder_title": "إرسال تذكير دفع",
+        "reminder_desc": "أضف تفاصيل الدفع الجديدة"
+    },
+    "request": {
+        "title": "قائمة الطلبات"
+    },
+    "po": {
+        "title": "طلبات الشراء"
+    },
+    "form": {
+        "poName": "اسم أمر الشراء",
+        "selectClient": "اختر العميل",
+        "documents": "المرفقات",
+        "uploadAttachments": "ارفع المرفقات",
+        "notes": "ملاحظات",
+        "addNotes": "أضف أي ملاحظات إضافية هنا...",
+        "validation": {
+            "poRequired": "اسم أمر الشراء مطلوب",
+            "poMin": "يجب أن يحتوي اسم أمر الشراء على حرفين على الأقل",
+            "clientRequired": "اختيار العميل مطلوب",
+            "clientMin": "يرجى اختيار عميل صالح"
+        }
     }
 }

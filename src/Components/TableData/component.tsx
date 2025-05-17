@@ -272,9 +272,6 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     };
     return (
       <View style={styles.row}>
-        <View style={[styles.customDesign, rowTextStyle]}>
-          {checkbox && <CheckBox />}
-        </View>
         {columns_schema?.map((c, index) => (
           <TouchableOpacity
             key={index}

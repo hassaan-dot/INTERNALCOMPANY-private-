@@ -9,6 +9,7 @@ import { ActivityIndicator, Modal, Text, View } from "react-native";
 import { PoppinsRegular } from "../../../Resources/fonts";
 import ButtonGroup from "../../HorizontalButtons/component";
 import { styles } from "./styles";
+import { useTranslation } from "react-i18next";
 
 interface NewsModalProps {
   isVisible: boolean;
@@ -24,6 +25,8 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
   currentUser,
   title = "",
 }) => {
+  const { t } = useTranslation();
+
   const { data: attendance, isPending } = useGetUserAttendence(
     currentUser?.documentId
   );
@@ -63,14 +66,15 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
           {!isPending && (
             <View style={{ margin: 15 }}>
               <Text style={styles.chipText2}>
-                {`Name : ${currentUser?.first_name} ${currentUser?.last_name}`}
+                {`${t("Name")} : ${currentUser?.first_name} ${currentUser?.last_name}`}
               </Text>
 
               <Text style={styles.chipText}>
-                Clock-In: {formatDate(attendance?.data?.clock_in) ?? "-"}
+                {t("Clock-In")}: {formatDate(attendance?.data?.clock_in) ?? "-"}
               </Text>
+
               <Text style={styles.chipText}>
-                Clock-Out: {formatDate(attendance?.data?.clock_out) ?? "-"}
+                {t("Clock-Out")}: {formatDate(attendance?.data?.clock_out) ?? "-"}
               </Text>
             </View>
           )}
@@ -102,8 +106,8 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
               borderColor: "#D0D5DD",
             }}
             Color2={isClockedOut ? "#07504B" : "#FF3B30"}
-            buttonTitle1={"Cancel"}
-            buttonTitle2={isClockedOut ? "Clock In" : "Clock Out"}
+            buttonTitle1={t("Cancel")}
+            buttonTitle2={isClockedOut ? t("Clock In") : t("Clock Out")}
           />
         </View>
       </View>

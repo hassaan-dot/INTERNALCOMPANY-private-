@@ -11,12 +11,16 @@ import { CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
 import { Po_Schema } from "../ClientManagement/_schema";
 import Styles from "./styles";
+import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
+import { useTranslation } from "react-i18next";
 
 const PO_Management = () => {
   const router = useRouter();
   const { user } = useAuthStore();
+  const { t } = useTranslation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedPOId, setSelectedPOId] = useState<string | null>(null);
   const { setRowData, rowData } = useModalStore();
 
   const { data, refetch } = useGetPO();
@@ -24,7 +28,6 @@ const PO_Management = () => {
 
   const { mutate: deletePO } = useDeletePO();
 
-  // Navigation handlers
   const handleNavigateToDetails = (documentId: string) => {
     router.push(`/(app)/po-management/po-details?id=${documentId}`);
   };
@@ -33,16 +36,28 @@ const PO_Management = () => {
     router.push(`/(app)/po-management/po-add`);
   };
 
-  // Action handlers
   const handleDelete = (documentId: string) => {
-    deletePO({ data: { documentId } });
+    setSelectedPOId(documentId);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedPOId) {
+      deletePO({ data: { documentId: selectedPOId } });
+      setShowConfirmModal(false);
+      setSelectedPOId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmModal(false);
+    setSelectedPOId(null);
   };
 
   const onPressEdit = ({ po_name, client, po_notes, documentId }: any) => {
     const data = {
       po_name,
       client,
-      location,
       po_notes,
       documentId,
       isEdit: true,
@@ -50,9 +65,9 @@ const PO_Management = () => {
     setRowData(data);
     handleNavigateToAdd();
   };
+
   const shouldShowButton =
-    (user?.role?.name === ROLE.EMPLOYEE &&
-      user.department.name === DEPARTMENT.SALES) ||
+    (user?.role?.name === ROLE.EMPLOYEE && user.department.name === DEPARTMENT.SALES) ||
     user?.role?.name === ROLE.ADMIN;
 
   return (
@@ -60,7 +75,7 @@ const PO_Management = () => {
       <ScreenHeader
         create={true}
         filter={true}
-        title="Purchasing Orders"
+        title={t("po.title")}
         onPress={handleNavigateToAdd}
         showButton={shouldShowButton}
       />
@@ -77,7 +92,7 @@ const PO_Management = () => {
         DATA={data}
         pagination={true}
         onPressUpdate={onPressEdit}
-        onPressDelete={handleDelete}
+        onPressDelete={(docId: string) => handleDelete(docId)}
         onClickEye={({ documentId }) =>
           documentId && handleNavigateToDetails(documentId)
         }
@@ -87,6 +102,16 @@ const PO_Management = () => {
         create={true}
         visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+      />
+
+      <ConfirmModal
+        visible={showConfirmModal}
+        onCancel={cancelDelete}
+        onConfirm={confirmDelete}
+        title={t("confirmation.title")}
+        message={t("confirmation.po")}
+        confirmText={t("confirmation.confirm")}
+        cancelText={t("confirmation.cancel")}
       />
     </View>
   );

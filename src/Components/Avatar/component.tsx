@@ -10,7 +10,7 @@ interface AvatarProps {
 }
 
 const Avatar: React.FC<AvatarProps> = ({
-  uri = "https://randomuser.me/api/portraits/men/1.jpg",
+  uri = "https://hcapi.abdullahkimrigh.sa/uploads/profile_icon_design_free_vector_29decaa99c.jpg",
   width = 80,
   height = 80,
   borderRadius = 40,

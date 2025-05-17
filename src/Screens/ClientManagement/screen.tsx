@@ -5,7 +5,7 @@ import {
   useUpdateClient,
 } from "@/hooks/useClient";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import { ScrollView, View } from "react-native";
 import {
   CompanyTable,
@@ -14,12 +14,14 @@ import {
 } from "../../Components";
 import { columns_schema } from "./_schema";
 import { styles } from "./styles";
-
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useModalStore } from "@/store/useModalStore";
 import CreateClientModal from "../../Components/Modals/createModal/component";
+import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
+import { useTranslation } from "react-i18next";
 
-const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
+const ClientManagement: React.FC = () => {
+  const { t } = useTranslation();
   const {
     isClientModalOpen,
     setIsClientModalOpen,
@@ -30,62 +32,42 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
   } = useModalStore();
 
   const router = useRouter();
-
-  const { data, isPending, error, refetch } = useGetClient();
-
+  const { data, refetch } = useGetClient();
   useRefreshOnFocus(refetch);
 
   const { mutate: handleAdd, isPending: isAdding } = useCreateClient();
   const { mutate: handleUpdate, isPending: isUpdating } = useUpdateClient();
   const { mutate: handleDelete } = useDeleteClient();
 
-  const onPressUpdatefunction = ({
-    company_name,
-    email,
-    contact_person_name,
-    phone_number,
-    documentId,
-    address,
-    location,
-  }: any) => {
-    if (!documentId) return;
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedClientId, setSelectedClientId] = useState<string | null>(null);
 
+  const onPressUpdatefunction = (formData: any) => {
+    if (!formData?.documentId) return;
     const data = {
       data: {
-        company_name: company_name,
-        email: email,
-        contact_person_name: contact_person_name,
-        phone_number: phone_number,
-        address,
-        location,
+        company_name: formData.company_name,
+        email: formData.email,
+        contact_person_name: formData.contact_person_name,
+        phone_number: formData.phone_number,
+        address: formData.address,
+        location: formData.location,
       },
     };
-    handleUpdate({ data, id: documentId });
+    handleUpdate({ data, id: formData.documentId });
   };
 
-  const onPressAddfunction = ({
-    company_name,
-    email,
-    contact_person_name,
-    phone_number,
-    address,
-    location,
-  }: any) => {
-    if (!company_name) return;
-    if (!email) return;
-    if (!contact_person_name) return;
-
+  const onPressAddfunction = (formData: any) => {
     const data = {
       data: {
-        company_name: company_name,
-        email: email,
-        contact_person_name: contact_person_name,
-        phone_number: phone_number,
-        address,
-        location,
+        company_name: formData.company_name,
+        email: formData.email,
+        contact_person_name: formData.contact_person_name,
+        phone_number: formData.phone_number,
+        address: formData.address,
+        location: formData.location,
       },
     };
-    console.log("Data is from client", data);
     handleAdd(data);
   };
 
@@ -94,41 +76,37 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     else onPressAddfunction(formData);
   };
 
-  const onPressEdit = ({
-    company_name,
-    email,
-    contact_person_name,
-    phone_number,
-    documentId,
-    address,
-    location,
-  }: any) => {
+  const onPressEdit = (item: any) => {
     const data = {
-      company_name,
-      email,
-      contact_person_name,
-      phone_number,
-      documentId,
-      address,
-      location: location?.documentId,
-      location_name: location?.location_name,
+      ...item,
+      location: item?.location?.documentId,
+      location_name: item?.location?.location_name,
       isEdit: true,
     };
     setRowData(data);
     setIsClientModalOpen(true);
   };
+
   const onPressDelete = (documentId: string) => {
-    const data = {
-      data: {
-        documentId: documentId,
-      },
-    };
-    handleDelete(data);
-  };
-  const onOpenModal = () => {
-    setIsClientModalOpen(true);
+    setSelectedClientId(documentId);
+    setShowConfirmModal(true);
   };
 
+  const confirmDelete = () => {
+    if (selectedClientId) {
+      const data = { data: { documentId: selectedClientId } };
+      handleDelete(data);
+      setShowConfirmModal(false);
+      setSelectedClientId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmModal(false);
+    setSelectedClientId(null);
+  };
+
+  const onOpenModal = () => setIsClientModalOpen(true);
   const onCloseModal = () => {
     setIsClientModalOpen(false);
     setRowData(null);
@@ -147,29 +125,26 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
     <>
       <ScrollView style={styles.container}>
         <ScreenHeader
-          create={true}
-          title={"Client Management"}
+          create
+          title={t("client_management.title")}
           onPress={onOpenModal}
-          filter={true}
+          filter
         />
-
-        <View>
-          <CompanyTable
-            onPressDelete={onPressDelete}
-            onPressUpdate={onPressEdit}
-            onClickDoc={onClickDocfunction}
-            columns_schema={columns_schema}
-            checkbox={true}
-            showActions={true}
-            showEye={true}
-            onClickEye={onClickEye}
-            pagination={true}
-            DATA={data}
-            showEdit={true}
-            showDel={true}
-            showDocument={true}
-          />
-        </View>
+        <CompanyTable
+          onPressDelete={onPressDelete}
+          onPressUpdate={onPressEdit}
+          onClickDoc={onClickDocfunction}
+          columns_schema={columns_schema}
+          checkbox
+          showActions
+          showEye
+          onClickEye={onClickEye}
+          pagination
+          DATA={data}
+          showEdit
+          showDel
+          showDocument
+        />
       </ScrollView>
 
       {isClientPaymentReminderModalOpen && (
@@ -179,11 +154,11 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
             setisClientPaymentReminderModalOpen(false);
           }}
           onSubmit={handleSubmit}
-          desc={true}
-          desctext="Add your new payment details"
-          create={true}
+          desc
+          desctext={t("client_management.payment_reminder_desc")}
+          create
           visible={isClientPaymentReminderModalOpen}
-          title={"Send Payment Reminder"}
+          title={t("client_management.send_payment_reminder")}
         />
       )}
 
@@ -191,18 +166,28 @@ const ClientManagement: React.FC<{ route: any }> = ({ route }) => {
         <CreateClientModal
           onClose={onCloseModal}
           onSubmit={handleSubmit}
-          First="Contact person name"
-          Second="Email Address"
-          Third="Phone number"
-          Fourth="Company name"
-          desc={true}
-          desctext="Add your new client details"
-          create={true}
+          First={t("client_management.contact_person")}
+          Second={t("client_management.email")}
+          Third={t("client_management.phone")}
+          Fourth={t("client_management.company_name")}
+          desc
+          desctext={t("client_management.create_client_desc")}
+          create
           visible={isClientModalOpen}
-          title={"Create Client"}
+          title={t("client_management.create_client")}
           isPending={isAdding || isUpdating}
         />
       )}
+
+      <ConfirmModal
+        visible={showConfirmModal}
+        onCancel={cancelDelete}
+        onConfirm={confirmDelete}
+        title={t("confirmation.title")}
+        message={t("confirmation.delete_client")}
+        confirmText={t("confirmation.confirm")}
+        cancelText={t("confirmation.cancel")}
+      />
     </>
   );
 };

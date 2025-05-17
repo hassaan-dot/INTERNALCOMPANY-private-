@@ -66,7 +66,7 @@ export const styles = StyleSheet.create({
     marginLeft: 3,
     // textOverflow: "no-wrap",
 
-    textWrap: "no-wrap",
+    // textWrap: "no-wrap",
   },
   actionText: {
     color: "#8D6E63",
@@ -125,4 +125,40 @@ export const styles = StyleSheet.create({
   },
 
   profileView: { flexDirection: "row", alignItems: "center", flex: 0.355 },
+
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalBox: {
+    backgroundColor: "#fff",
+    padding: 24,
+    borderRadius: 10,
+    alignItems: "center",
+    width: 280,
+    maxWidth: "100%",
+  },
+  modalText: {
+    fontSize: 16,
+    marginBottom: 16,
+    textAlign: "center",
+  },
+  modalActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+  },
+  modalButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+  },
+  modalCancel: {
+    color: "#999",
+  },
+  modalConfirm: {
+    color: "#f44336",
+    fontWeight: "bold",
+  },
 });

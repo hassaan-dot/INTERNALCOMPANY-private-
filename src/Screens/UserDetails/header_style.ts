@@ -1,6 +1,8 @@
-import { StyleSheet } from "react-native";
+import { I18nManager, StyleSheet } from "react-native";
 import { PoppinsRegular } from "../../Resources/fonts";
 import helpers from "../../utils/helpers";
+import i18n from "@/src/i18n";
+const isRTL = i18n.language === "ar";
 
 export const styles = StyleSheet.create({
   container: {
@@ -22,6 +24,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 30,
     borderRadius: 8,
     backgroundColor: "#fff",
+    direction: isRTL ? "rtl" : "ltr",
 
     // shadowColor: "#000",
     // shadowOffset: { width: 0, height: 2 },
@@ -86,10 +89,10 @@ export const styles = StyleSheet.create({
     fontFamily: PoppinsRegular,
   },
   detailsItem: {
-    flexDirection: "row",
+    flexDirection: isRTL ? "row-reverse" : "row",
     alignItems: "center",
     marginBottom: 10,
-    marginRight: 32,
+    marginHorizontal: 16,
   },
   label: {
     fontSize: 14,
@@ -100,9 +103,9 @@ export const styles = StyleSheet.create({
   link: {
     fontWeight: "100",
     fontFamily: PoppinsRegular,
-
     fontSize: 14,
-    marginLeft: 5,
     color: "#07504B",
+    marginLeft: isRTL ? 0 : 5,
+    marginRight: isRTL ? 5 : 0,
   },
 });

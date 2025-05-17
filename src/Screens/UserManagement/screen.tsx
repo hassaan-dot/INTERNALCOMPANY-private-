@@ -15,6 +15,7 @@ import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
+import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
 
 const UserManagement = () => {
   const { t } = useTranslation();
@@ -33,61 +34,22 @@ const UserManagement = () => {
 
   const router = useRouter();
   const [currentUser, setcurrentUser] = useState<any>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+
   const { mutate: handleAdd } = useCreateUser();
   const { mutate: handleUpdate, isPending: isAdding } = useUpdateUser();
   const { mutate: handleDelete, isPending: isUpdating } = useDeleteUser();
 
-  const onPressUpdatefunction = ({
-    first_name,
-    last_name,
-    username,
-    email,
-    phone_number,
-    password,
-    role,
-    department,
-    id,
-  }: any) => {
-    if (!id) return;
-
-    const data = {
-      first_name,
-      last_name,
-      username,
-      email,
-      phone_number,
-      role,
-      department,
-    };
-
-    handleUpdate({ data, id });
+  const onPressUpdatefunction = (formData: any) => {
+    if (!formData.id) return;
+    const data = { ...formData };
+    handleUpdate({ data, id: formData.id });
   };
 
-  const onPressAddfunction = ({
-    first_name,
-    last_name,
-    username,
-    email,
-    phone_number,
-    password,
-    role,
-    department,
-  }: any) => {
-    let data: any = {
-      first_name,
-      last_name,
-      username,
-      email,
-      password,
-      phone_number,
-      role,
-    };
-    if (department) {
-      data = {
-        ...data,
-        department,
-      };
-    }
+  const onPressAddfunction = (formData: any) => {
+    let data = { ...formData };
+    if (data.department === "") delete data.department;
     handleAdd(data);
   };
 
@@ -96,42 +58,35 @@ const UserManagement = () => {
     else onPressAddfunction(formData);
   };
 
-  const onPressEdit = ({
-    first_name,
-    last_name,
-    username,
-    email,
-    password,
-    phone_number,
-    role,
-    department,
-    id,
-  }: any) => {
+  const onPressEdit = (user: any) => {
     const data = {
-      first_name,
-      last_name,
-      username,
-      email,
-      password,
-      phone_number,
-      role: role?.id,
-      role_name: role?.name,
-      department: department?.id,
-      department_name: department?.name,
-      id,
+      ...user,
+      role: user?.role?.id,
+      role_name: user?.role?.name,
+      department: user?.department?.id,
+      department_name: user?.department?.name,
       isEdit: true,
     };
     setRowData(data);
     setIsUserModalOpen(true);
   };
 
-  const onPressDelete = (documentId: string, id: any) => {
-    const data = {
-      data: {
-        documentId: id,
-      },
-    };
-    handleDelete(data);
+  const onPressDelete = (documentId: string) => {
+    setSelectedUserId(documentId);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedUserId) {
+      handleDelete({ data: { documentId: selectedUserId } });
+      setShowConfirmModal(false);
+      setSelectedUserId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmModal(false);
+    setSelectedUserId(null);
   };
 
   const onOpenModal = () => {
@@ -193,6 +148,7 @@ const UserManagement = () => {
           name={``}
         />
       )}
+
       {isUserModalOpen && (
         <CreateUserModal
           onClose={onCloseModal}
@@ -207,6 +163,17 @@ const UserManagement = () => {
           isPending={isAdding || isUpdating}
         />
       )}
+
+      <ConfirmModal
+        visible={showConfirmModal}
+        title={t("confirmation.title")}
+        message={t("confirmation.delete_user")}
+        confirmText={t("confirmation.confirm")}
+        cancelText={t("confirmation.cancel")}
+        onConfirm={confirmDelete}
+        onCancel={cancelDelete}
+        confirmColor="#f44336"
+      />
     </>
   );
 };

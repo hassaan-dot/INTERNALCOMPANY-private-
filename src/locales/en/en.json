@@ -33,7 +33,8 @@
     },
     "news_panel": {
         "title": "News Panel",
-        "add_news": "Add News"
+        "add_news": "Add News",
+        "confirm_delete": "Are you sure you want to delete this news?"
     },
     "dashboard": {
         "title": "Dashboard",
@@ -93,5 +94,81 @@
         "Accounting": "Accounting",
         "Human Resources": "Human Resources",
         "Sales persons coordinator": "Sales persons coordinator"
+    },
+    "Are you sure you want to delete this news?": "Are you sure you want to delete this news?",
+    "Delete": "Delete",
+    "Cancel": "Cancel",
+    "Name": "Name",
+    "Clock-In": "Clock-In",
+    "Clock-Out": "Clock-Out",
+    "Clock In": "Clock In",
+    "Clock Out": "Clock Out",
+    "title_add": "Add User",
+    "title_edit": "Edit User",
+    "desc": "Please enter user information",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "email": "Email Address",
+    "username": "User Name",
+    "password": "Password",
+    "phone_number": "Phone Number",
+    "select_role": "Select Role",
+    "select_department": "Select Department",
+    "add_user": "Add User",
+    "edit_user": "Edit User",
+    "cancel": "Cancel",
+    "placeholder_first_name": "First name",
+    "placeholder_last_name": "Last name",
+    "email_placeholder": "email@example.com",
+    "placeholder_username": "username",
+    "placeholder_password": "Enter password",
+    "placeholder_phone": "Phone number",
+    "validation": {
+        "required": "This field is required",
+        "email": "Please enter a valid email",
+        "username_length": "Username must be at least 3 characters",
+        "password_length": "Password must be at least 6 characters",
+        "phone_numeric": "Phone number can only contain numbers",
+        "phone_length": "Phone number must be at least 10 digits"
+    },
+    "confirmation": {
+        "title": "Confirm Deletion",
+        "delete_user": "Are you sure you want to delete this user?",
+        "delete_client": "Are you sure you want to delete this client?",
+        "po": "Are you sure you want to delete this Purchase Order?",
+        "delete_request": "Do you want to delete this request?",
+        "confirm": "Delete",
+        "cancel": "Cancel"
+    },
+    "client_management": {
+        "title": "Client Management",
+        "contact_person": "Contact Person Name",
+        "email": "Email Address",
+        "phone": "Phone Number",
+        "company_name": "Company Name",
+        "create_client": "Create Client",
+        "create_client_desc": "Add your new client details",
+        "send_payment_reminder": "Send Payment Reminder",
+        "payment_reminder_desc": "Add your new payment details"
+    },
+    "request": {
+        "title": "Request List"
+    },
+    "po": {
+        "title": "Purchasing Orders"
+    },
+    "form": {
+        "poName": "PO Name",
+        "selectClient": "Select Client",
+        "documents": "Documents",
+        "uploadAttachments": "Upload Attachments",
+        "notes": "Notes",
+        "addNotes": "Add any extra notes here...",
+        "validation": {
+            "poRequired": "PO name is required",
+            "poMin": "PO name must be at least 2 characters",
+            "clientRequired": "Client selection is required",
+            "clientMin": "Please select a valid client"
+        }
     }
 }

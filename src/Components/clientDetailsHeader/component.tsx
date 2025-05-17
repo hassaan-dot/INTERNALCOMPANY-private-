@@ -36,14 +36,14 @@ const ClientDetailsHeader: React.FC<UserProfileProps> = ({
   return (
     <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>
-        {profile && (
+        {/* {profile && (
           <View style={styles.profileSection}>
             <Avatar />
             <View style={{ marginLeft: 0, marginRight: helpers.normalize(20) }}>
               <Text style={styles.name}>{item?.data?.contact_person_name}</Text>
             </View>
           </View>
-        )}
+        )} */}
         <View style={[styles.detailsSection, detailscreenContainer]}>
           <View
             style={{

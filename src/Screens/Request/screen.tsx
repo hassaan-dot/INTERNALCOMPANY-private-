@@ -1,7 +1,8 @@
-import React, { useMemo } from "react";
+// Request.tsx
+import React, { useMemo, useState } from "react";
 import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CompanyTable, ScreenHeader } from "../../Components";
-// import Add_PO from "../../Screens/PO_Add/screen";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import {
   useCreateRequest,
@@ -9,7 +10,6 @@ import {
   useGetRequest,
   useUpdateRequest,
 } from "@/hooks/useRequest";
-import { useGetUser } from "@/hooks/useUser";
 import { formatDateForAPI } from "@/services/dateFormatter";
 import CreateRequestModal from "@/src/Components/Modals/createRequestModal/component";
 import { useModalStore } from "@/store/useModalStore";
@@ -17,8 +17,11 @@ import { useRouter } from "expo-router";
 import { Requests_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { formatDate } from "@/src/utils";
+import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
 
 const Request = () => {
+  const { t } = useTranslation();
+  const router = useRouter();
   const { data, refetch } = useGetRequest();
   useRefreshOnFocus(refetch);
 
@@ -34,12 +37,12 @@ const Request = () => {
 
   const { mutate: handleAdd } = useCreateRequest();
   const { mutate: handleDelete } = useDeleteRequest();
-
-  const router = useRouter();
-  const { setIsRequestModalOpen, isRequestModalOpen, setRowData, rowData } =
-    useModalStore();
-
   const { mutate: handleUpdate } = useUpdateRequest();
+
+  const { setIsRequestModalOpen, isRequestModalOpen, setRowData, rowData } = useModalStore();
+
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
+  const [selectedRequestId, setSelectedRequestId] = useState<string | null>(null);
 
   const onPressUpdatefunction = ({
     title,
@@ -50,16 +53,14 @@ const Request = () => {
     documentId,
     request_status,
   }: any) => {
-    if (!standing) return;
-
     const data = {
       data: {
-        title: title,
-        description: description,
+        title,
+        description,
         perform_on: new Date(perform_on),
-        standing: standing,
-        users: users,
-        request_status: request_status,
+        standing,
+        users,
+        request_status,
       },
     };
     handleUpdate({ data, id: documentId });
@@ -103,7 +104,7 @@ const Request = () => {
       users: users?.map((u: any) => u.documentId),
       userSelection: users?.map((u: any) => ({
         key: u.documentId,
-        label: `${u.first_name}${u.last_name}  `,
+        label: `${u.first_name}${u.last_name}`,
       })),
       documentId,
       request_status,
@@ -112,23 +113,40 @@ const Request = () => {
     setRowData(data);
     setIsRequestModalOpen(true);
   };
+
   const onPressDelete = (documentId: string) => {
-    const data = {
-      data: {
-        documentId: documentId,
-      },
-    };
-    handleDelete(data);
+    setSelectedRequestId(documentId);
+    setShowConfirmModal(true);
+  };
+
+  const confirmDelete = () => {
+    if (selectedRequestId) {
+      const data = {
+        data: {
+          documentId: selectedRequestId,
+        },
+      };
+      handleDelete(data);
+      setShowConfirmModal(false);
+      setSelectedRequestId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmModal(false);
+    setSelectedRequestId(null);
   };
 
   const handleSubmit = (formData: any) => {
     if (rowData?.isEdit) onPressUpdatefunction(formData);
     else onPressAddfunction(formData);
   };
+
   const onOpenModal = () => {
     setIsRequestModalOpen(true);
     setRowData(null);
   };
+
   const onCloseModal = () => {
     setIsRequestModalOpen(false);
     setRowData(null);
@@ -137,34 +155,34 @@ const Request = () => {
   const onClickEye = ({ documentId }: any) => {
     router.push(`/(app)/request/request-details?id=${documentId}`);
   };
+
   return (
     <>
       <View style={styles.container}>
         <ScreenHeader
           create={true}
-          title={"Request List"}
+          title={t("request.title")}
           onPress={onOpenModal}
           filter={true}
         />
 
-        <View>
-          <CompanyTable
-            columns_schema={Requests_columns_schema}
-            checkbox={true}
-            onPressUpdate={onPressEdit}
-            onPressDelete={onPressDelete}
-            DATA={requestData}
-            showActions={true}
-            pagination={true}
-            showEye={true}
-            showDel={true}
-            showEdit={true}
-            showStatus={true}
-            showDocument={false}
-            onClickEye={onClickEye}
-          />
-        </View>
+        <CompanyTable
+          columns_schema={Requests_columns_schema}
+          checkbox={true}
+          onPressUpdate={onPressEdit}
+          onPressDelete={onPressDelete}
+          DATA={requestData}
+          showActions={true}
+          pagination={true}
+          showEye={true}
+          showDel={true}
+          showEdit={true}
+          showStatus={true}
+          showDocument={false}
+          onClickEye={onClickEye}
+        />
       </View>
+
       {isRequestModalOpen && (
         <CreateRequestModal
           onSubmit={handleSubmit}
@@ -176,6 +194,16 @@ const Request = () => {
           user={true}
         />
       )}
+
+      <ConfirmModal
+        visible={showConfirmModal}
+        onCancel={cancelDelete}
+        onConfirm={confirmDelete}
+        title={t("confirmation.title")}
+        message={t("confirmation.delete_request")}
+        confirmText={t("confirmation.confirm")}
+        cancelText={t("confirmation.cancel")}
+      />
     </>
   );
 };

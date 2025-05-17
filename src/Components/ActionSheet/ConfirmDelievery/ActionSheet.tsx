@@ -35,7 +35,7 @@ const ActionSheet: React.FC<ActionSheetProps> = ({
 }) => {
   const [isVisible, setIsVisible] = useState(true);
   const styles = style.getSheet();
-  const { t } = useTranslation(); // ✅ use translation
+  const { t } = useTranslation();
 
   const hide = useCallback(() => {
     setIsVisible(false);

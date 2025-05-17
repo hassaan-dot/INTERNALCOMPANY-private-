@@ -16,32 +16,9 @@ import * as yup from "yup";
 import { SingleSelectDropDown } from "../..";
 import InputField from "../../InputField/InputField";
 import { styles } from "./styles";
+import { useTranslation } from "react-i18next";
 
-interface ClientModalProps {
-  visible: boolean;
-  create?: boolean;
-  desc?: boolean;
-  invoice: boolean;
-  styleContainer: any;
-  title: string;
-  onClose: () => void;
-  onSubmit: (
-    companyName?: string,
-    email?: string,
-    contactPerson?: string,
-    phoneNumber?: string
-  ) => void;
-  onLogin?: (username: string, password: string) => void;
-  desctext: string;
-  user: boolean;
-  modalContainerprop: any;
-  Data: any;
-  update: boolean;
-  onPressUpdatefunction: any;
-  isPending: boolean;
-}
-
-const CreateUserModal: React.FC<ClientModalProps> = ({
+const CreateUserModal = ({
   visible,
   onClose,
   onSubmit,
@@ -52,10 +29,11 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
   modalContainerprop,
   isPending,
 }) => {
+  const { t } = useTranslation();
   const { data: GetDepartments } = useGetDepartments();
   const { data: getRoles } = useGetuserRole();
-
   const { rowData } = useModalStore();
+
   const [formData, setFormData] = useState(
     rowData ?? {
       first_name: "",
@@ -70,32 +48,23 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
   );
 
   const userSchema = yup.object().shape({
-    first_name: yup.string().required("required").min(1, "required"),
-    last_name: yup.string().required("required").min(1, "required"),
-    email: yup
-      .string()
-      .email("Please enter a valid email")
-      .required("Email is required"),
-    username: yup
-      .string()
-      .required("Username is required")
-      .min(3, "Username must be at least 3 characters"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .min(6, "Password must be at least 6 characters"),
+    first_name: yup.string().required(t("required")),
+    last_name: yup.string().required(t("required")),
+    email: yup.string().email(t("invalid_email")).required(t("required")),
+    username: yup.string().required(t("required")),
+    password: yup.string().min(6, t("min_password")).required(t("required")),
     phone_number: yup
       .string()
-      .required("Phone number is required")
-      .matches(/^[0-9]+$/, "Phone number can only contain numbers")
-      .min(10, "Phone number must be at least 10 digits"),
-    role: yup.string().required("Required").min(1, "required"),
+      .required(t("required"))
+      .matches(/^[0-9]+$/, t("phone_numbers_only"))
+      .min(10, t("min_phone")),
+    role: yup.string().required(t("required")),
   });
 
-  const [errors, setErrors] = useState<Record<string, string>>({});
-  const [touched, setTouched] = useState<Record<string, boolean>>({});
+  const [errors, setErrors] = useState({});
+  const [touched, setTouched] = useState({});
 
-  const clearError = (field: string) => {
+  const clearError = (field) => {
     if (errors[field]) {
       setErrors((prev) => {
         const newErrors = { ...prev };
@@ -105,29 +74,22 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
     }
   };
 
-  const handleInputChange = (field: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const handleInputChange = (field, value) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
     setTouched((prev) => ({ ...prev, [field]: true }));
     clearError(field);
   };
 
   const validateForm = async () => {
-    const schema = userSchema;
-
     try {
-      await schema.validate(formData, { abortEarly: false });
+      await userSchema.validate(formData, { abortEarly: false });
       setErrors({});
       return true;
     } catch (err) {
       if (err instanceof yup.ValidationError) {
-        const newErrors: Record<string, string> = {};
+        const newErrors = {};
         err.inner.forEach((error) => {
-          if (error.path) {
-            newErrors[error.path] = error.message;
-          }
+          if (error.path) newErrors[error.path] = error.message;
         });
         setErrors(newErrors);
       }
@@ -149,67 +111,41 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
 
     setTouched(allFields);
     const isValid = await validateForm();
-
     if (isValid) {
       const finalData = {
         ...formData,
         department: formData.department === "" ? null : formData.department,
       };
-
       onSubmit(finalData);
     }
   };
 
-  const transformdepsToDropdownItems = (deps: any[]) => {
-    const items = (deps || []).map((dep) => ({
-      value: `${dep?.name}`,
-      key: dep?.id,
-    }));
-    items.push({ value: "No option", key: "" });
-    return items;
-  };
+  const depsDropdownItems = (GetDepartments?.data || []).map((dep) => ({
+    value: dep.name,
+    key: dep.id,
+  }));
 
-  const transformRolesToDropdownItems = (roles: any[]) => {
-    const items = (roles || []).map((role) => ({
-      value: `${role?.name}`,
-      key: role?.id,
-    }));
-    return items;
-  };
-
-  const depsDropdownItems = transformdepsToDropdownItems(
-    GetDepartments?.data || []
-  );
-
-  const rolesDropdownItems = transformRolesToDropdownItems(
-    getRoles?.roles || []
-  );
+  const rolesDropdownItems = (getRoles?.roles || []).map((role) => ({
+    value: role.name,
+    key: role.id,
+  }));
 
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContainer, modalContainerprop]}>
-          <View>
-            <Image
-              source={icons.modalIconOtp}
-              style={{ width: 60, height: 60 }}
-            />
-            <Text style={styles.title}>{title}</Text>
-
-            {desc && <Text style={styles.subtitle}>{desctext}</Text>}
-          </View>
+          <Image source={icons.modalIconOtp} style={{ width: 60, height: 60 }} />
+          <Text style={styles.title}>{t(title)}</Text>
+          {desc && <Text style={styles.subtitle}>{t(desctext)}</Text>}
 
           <ScrollView>
-            <View style={[styleContainer]}>
+            <View style={styleContainer}>
               <InputField
-                title={"First name"}
-                placeholder={"First name"}
+                title={t("first_name")}
+                placeholder={t("first_name")}
                 value={formData.first_name}
                 onChangeText={(text) => handleInputChange("first_name", text)}
-                style={[
-                  styles.input,
-                  { borderColor: errors.first_name ? "red" : "#ddd" },
-                ]}
+                style={[styles.input, { borderColor: errors.first_name ? "red" : "#ddd" }]}
                 error={touched.first_name && errors.first_name}
                 errorMessage={touched.first_name && errors.first_name}
                 titleStyle={styles.fontSize}
@@ -217,115 +153,88 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
 
               <View style={{ marginLeft: 7 }}>
                 <InputField
-                  title={"Last name"}
-                  placeholder={"last name"}
+                  title={t("last_name")}
+                  placeholder={t("last_name")}
                   value={formData.last_name}
-                  style={[
-                    styles.input,
-                    { borderColor: errors.last_name ? "red" : "#ddd" },
-                  ]}
-                  error={touched.last_name && errors.first_name}
-                  errorMessage={touched.last_name && errors.last_name}
                   onChangeText={(text) => handleInputChange("last_name", text)}
+                  style={[styles.input, { borderColor: errors.last_name ? "red" : "#ddd" }]}
+                  error={touched.last_name && errors.last_name}
+                  errorMessage={touched.last_name && errors.last_name}
                   titleStyle={styles.fontSize}
                 />
               </View>
             </View>
 
-            <View>
-              <InputField
-                title={"Email Address"}
-                placeholder={"email@example.com"}
-                value={formData.email}
-                style={[
-                  styles.input,
-                  { borderColor: errors.email ? "red" : "#ddd" },
-                ]}
-                error={touched.email && errors.first_name}
-                errorMessage={touched.email && errors.email}
-                onChangeText={(text) => handleInputChange("email", text)}
-                titleStyle={styles.fontSize}
-                keyboardType="email-address"
-              />
-            </View>
+            <InputField
+              title={t("email")}
+              placeholder={t("email_placeholder")}
+              value={formData.email}
+              onChangeText={(text) => handleInputChange("email", text)}
+              style={[styles.input, { borderColor: errors.email ? "red" : "#ddd" }]}
+              error={touched.email && errors.email}
+              errorMessage={touched.email && errors.email}
+              keyboardType="email-address"
+              titleStyle={styles.fontSize}
+            />
 
-            <View>
-              <InputField
-                title={"User Name"}
-                placeholder={"username"}
-                value={formData.username}
-                onChangeText={(text) => handleInputChange("username", text)}
-                titleStyle={styles.fontSize}
-                style={[
-                  styles.input,
-                  { borderColor: errors.username ? "red" : "#ddd" },
-                ]}
-                error={touched.username && errors.first_name}
-                errorMessage={touched.username && errors.username}
-              />
-            </View>
+            <InputField
+              title={t("username")}
+              placeholder={t("username")}
+              value={formData.username}
+              onChangeText={(text) => handleInputChange("username", text)}
+              style={[styles.input, { borderColor: errors.username ? "red" : "#ddd" }]}
+              error={touched.username && errors.username}
+              errorMessage={touched.username && errors.username}
+              titleStyle={styles.fontSize}
+            />
 
             {!rowData?.isEdit && (
-              <View>
-                <InputField
-                  title={"Password"}
-                  placeholder={"Enter password"}
-                  value={formData.password}
-                  onChangeText={(text) => handleInputChange("password", text)}
-                  titleStyle={styles.fontSize}
-                  style={[
-                    styles.input,
-                    { borderColor: errors.password ? "red" : "#ddd" },
-                  ]}
-                  error={touched.password && errors.first_name}
-                  errorMessage={touched.password && errors.password}
-                />
-              </View>
+              <InputField
+                title={t("password")}
+                placeholder={t("password")}
+                value={formData.password}
+                onChangeText={(text) => handleInputChange("password", text)}
+                style={[styles.input, { borderColor: errors.password ? "red" : "#ddd" }]}
+                error={touched.password && errors.password}
+                errorMessage={touched.password && errors.password}
+                titleStyle={styles.fontSize}
+              />
             )}
 
-            <View>
-              <InputField
-                titleStyle={styles.fontSize}
-                title={"Phone number"}
-                style={[
-                  styles.input,
-                  { borderColor: errors.phone_number ? "red" : "#ddd" },
-                ]}
-                error={touched.phone_number && errors.first_name}
-                errorMessage={touched.phone_number && errors.phone_number}
-                value={formData.phone_number}
-                onChangeText={(text) => handleInputChange("phone_number", text)}
-                placeholder={"Phone number"}
-                keyboardType="phone-pad"
-              />
-            </View>
+            <InputField
+              title={t("phone_number")}
+              placeholder={t("phone_number")}
+              value={formData.phone_number}
+              onChangeText={(text) => handleInputChange("phone_number", text)}
+              style={[styles.input, { borderColor: errors.phone_number ? "red" : "#ddd" }]}
+              error={touched.phone_number && errors.phone_number}
+              errorMessage={touched.phone_number && errors.phone_number}
+              keyboardType="phone-pad"
+              titleStyle={styles.fontSize}
+            />
 
-            <View style={{ marginBottom: 5 }}>
-              <SingleSelectDropDown
-                items={rolesDropdownItems}
-                title="Select Role"
-                selected={rowData?.isEdit ? rowData?.role_name : ""}
-                setSelected={(key) => handleInputChange("role", key)}
-                error={touched.role && errors.role}
-                errorMessage={touched.role && errors.role}
-              />
-            </View>
+            <SingleSelectDropDown
+              items={rolesDropdownItems}
+              title={t("select_role")}
+              selected={rowData?.isEdit ? rowData?.role_name : ""}
+              setSelected={(key) => handleInputChange("role", key)}
+              error={touched.role && errors.role}
+              errorMessage={touched.role && errors.role}
+            />
 
-            <View style={{ marginBottom: 10 }}>
-              <SingleSelectDropDown
-                items={depsDropdownItems}
-                title="Select Department"
-                selected={rowData?.isEdit ? rowData?.department_name : ""}
-                setSelected={(key) => handleInputChange("department", key)}
-                error={touched.department && errors.department}
-                errorMessage={touched.department && errors.department}
-              />
-            </View>
+            <SingleSelectDropDown
+              items={depsDropdownItems}
+              title={t("select_department")}
+              selected={rowData?.isEdit ? rowData?.department_name : ""}
+              setSelected={(key) => handleInputChange("department", key)}
+              error={touched.department && errors.department}
+              errorMessage={touched.department && errors.department}
+            />
           </ScrollView>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-              <Text style={styles.cancelText}>Cancel</Text>
+              <Text style={styles.cancelText}>{t("Cancel")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.addButton}
@@ -333,8 +242,7 @@ const CreateUserModal: React.FC<ClientModalProps> = ({
               disabled={isPending}
             >
               <Text style={styles.addText}>
-                {isPending && <ActivityIndicator />}
-                {!isPending && (rowData?.isEdit ? "Edit User" : "Add User")}
+                {isPending ? <ActivityIndicator /> : t(rowData?.isEdit ? "edit_user" : "add_user")}
               </Text>
             </TouchableOpacity>
           </View>

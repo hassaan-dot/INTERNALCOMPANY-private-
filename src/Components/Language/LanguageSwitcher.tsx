@@ -11,6 +11,7 @@ import { router } from 'expo-router';
 const LanguageSwitcher = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedLang, setSelectedLang] = useState(i18n.language);
+    const isRTL = i18n.language === "ar";
 
     const handleLanguageChange = async (lang: string) => {
         setSelectedLang(lang);
@@ -20,7 +21,7 @@ const LanguageSwitcher = () => {
 
         if (I18nManager.isRTL !== isRTL) {
             I18nManager.forceRTL(isRTL);
-            // RNRestart.Restart(); // Restart the app to apply direction changes
+            // RNRestart.Restart();
             // router.replace("/");
         } else {
             setModalVisible(false);
@@ -36,17 +37,21 @@ const LanguageSwitcher = () => {
             <Modal transparent visible={modalVisible} animationType="fade">
                 <Pressable style={styles.backdrop} onPress={() => setModalVisible(false)} />
                 <View style={styles.modal}>
-                    <Text style={styles.label}>System language</Text>
-                    <View style={styles.pickerContainer}>
-                        <Picker
-                            selectedValue={selectedLang}
-                            onValueChange={handleLanguageChange}
-                            dropdownIconColor="#666"
-                        >
-                            <Picker.Item label="English" value="en" />
-                            <Picker.Item label="العربية" value="ar" />
-                        </Picker>
-                    </View>
+                    <Text style={styles.label}>Select Language</Text>
+
+                    <TouchableOpacity
+                        style={styles.langButton}
+                        onPress={() => handleLanguageChange('en')}
+                    >
+                        <Text style={styles.langText}>English</Text>
+                    </TouchableOpacity>
+
+                    <TouchableOpacity
+                        style={styles.langButton}
+                        onPress={() => handleLanguageChange('ar')}
+                    >
+                        <Text style={styles.langText}>العربية</Text>
+                    </TouchableOpacity>
                 </View>
             </Modal>
         </>

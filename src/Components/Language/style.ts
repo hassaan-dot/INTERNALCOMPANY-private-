@@ -38,4 +38,18 @@ export const styles = StyleSheet.create({
     borderRadius: 8,
     overflow: "hidden",
   },
+  langButton: {
+    paddingVertical: 12,
+    paddingHorizontal: 24,
+    backgroundColor: "#f0f0f0",
+    borderRadius: 6,
+    marginVertical: 6,
+    alignItems: "center",
+  },
+
+  langText: {
+    fontSize: 16,
+    color: "#333",
+    fontWeight: "500",
+  },
 });

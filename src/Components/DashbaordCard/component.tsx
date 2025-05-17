@@ -5,7 +5,7 @@ import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useAuthStore } from "@/store/useAuthStore";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { useRouter } from "expo-router";
-import React from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Image,
@@ -20,6 +20,8 @@ import truncateComponentName from "../WordTruncate/component";
 import { styles } from "./styles";
 import { formatDate } from "@/src/utils";
 import { useTranslation } from "react-i18next";
+import { Modal } from "react-native-paper";
+import ConfirmModal from "../ConfirmationModal/ConfirmModal";
 
 interface CardSectionProps {
   onPress?: () => void;
@@ -64,6 +66,8 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
   const { mutate: handleDeleteNews } = useDeleteNews();
   const { data: getPo } = useGetPO();
   const router = useRouter();
+  const [selectedNewsId, setSelectedNewsId] = useState<string | null>(null);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
 
   const handleNavigateToDetails = (documentId: string) => {
     return router.push(`/(app)/po-management/po-details?id=${documentId}`);
@@ -71,6 +75,19 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
 
   const handleNavigateToAllPo = () => {
     return router.push(`/(app)/po-management`);
+  };
+
+  const confirmDelete = () => {
+    if (selectedNewsId) {
+      handleDeleteNews(selectedNewsId);
+      setShowConfirmModal(false);
+      setSelectedNewsId(null);
+    }
+  };
+
+  const cancelDelete = () => {
+    setShowConfirmModal(false);
+    setSelectedNewsId(null);
   };
 
   return (
@@ -198,7 +215,10 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
                     styles.customView3,
                     { alignItems: "flex-end", justifyContent: "flex-end" },
                   ]}
-                  onPress={() => handleDeleteNews(item?.documentId)}
+                  onPress={() => {
+                    setSelectedNewsId(item?.documentId);
+                    setShowConfirmModal(true);
+                  }}
                 >
                   <Image
                     source={icons.tableDeleteIcon}
@@ -210,6 +230,14 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
           )}
         />
       </View>
+      <ConfirmModal
+        visible={showConfirmModal}
+        onCancel={cancelDelete}
+        onConfirm={confirmDelete}
+        message={t("Are you sure you want to delete this news?")}
+        confirmText={t("Delete")}
+        cancelText={t("Cancel")}
+      />
     </View>
   );
 };
