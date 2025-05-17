@@ -68,5 +68,30 @@
         "users": "Users",
         "files": "Files",
         "add_file": "Add File"
+    },
+    "user": {
+        "clock_in": "Clock In",
+        "clock_out": "Clock Out",
+        "sign_out": "Sign Out",
+        "welcome": "Welcome"
+    },
+    "news": {
+        "title": "News",
+        "placeholder": "Write your news here...",
+        "everyone": "Everyone",
+        "send": "Send"
+    },
+    "departments": {
+        "Delivery": "Delivery",
+        "Management": "Management",
+        "Operation": "Operation",
+        "Purchasing": "Purchasing",
+        "Sales": "Sales",
+        "Warehouse": "Warehouse",
+        "Chemical": "Chemical",
+        "Marketing": "Marketing",
+        "Accounting": "Accounting",
+        "Human Resources": "Human Resources",
+        "Sales persons coordinator": "Sales persons coordinator"
     }
 }

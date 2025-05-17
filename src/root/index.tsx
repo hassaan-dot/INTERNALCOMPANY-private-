@@ -196,6 +196,8 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import LoginScreen from "../Screens/Login/screen";
 import drawerTabs from "./DrawerTabs/index";
 import FontLoader from "../../assets/fonts/font";
+import { I18nManager } from 'react-native';
+
 // Dummy Screens (Replace with your actual screens)
 const LoginScreen1 = ({ navigation }) => (
   <View style={styles.screen}>
@@ -314,12 +316,16 @@ const styles = StyleSheet.create({
   sidebar: {
     flex: 1,
     paddingTop: 40,
-    paddingHorizontal: 20,
+    paddingStart: 20, // replaces paddingHorizontal for RTL-aware layout
+    paddingEnd: 20,
     backgroundColor: "#f5f5f5",
+    alignItems: I18nManager.isRTL ? "flex-end" : "flex-start", // align text RTL
   },
   item: {
     fontSize: 18,
     paddingVertical: 10,
+    textAlign: I18nManager.isRTL ? "right" : "left", // flip text
+    writingDirection: I18nManager.isRTL ? "rtl" : "ltr", // for Android text rendering
     color: "red",
   },
 });

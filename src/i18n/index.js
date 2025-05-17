@@ -9,7 +9,7 @@ i18n
   .use(initReactI18next)
   .init({
     compatibilityJSON: "v3",
-    lng: Localization.locale.split("-")[0], // 'en' or 'ar'
+    lng: Localization.locale.split("-")[0],
     fallbackLng: "en",
     resources: {
       en: { translation: en },

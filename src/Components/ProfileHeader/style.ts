@@ -1,62 +1,94 @@
-import { StyleSheet } from 'react-native';
-import helpers from '../../utils/helpers';
-import { PoppinsRegular, PoppinsSemiBold } from '../../Resources/fonts';
+import { I18nManager, StyleSheet } from "react-native";
+import helpers from "../../utils/helpers";
+import { PoppinsRegular, PoppinsSemiBold } from "../../Resources/fonts";
 
 export const styles = StyleSheet.create({
   container: {
-
+    flexDirection: "row",
+    justifyContent: "space-between",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
   },
-  // menuicon:{width:helpers.wp(30),height:helpers.hp(20)},
-  profileTitle: {
-    fontSize: helpers.normalize(19),
-    fontFamily: PoppinsSemiBold,
-    color: '#333',
-    marginBottom: helpers.normalize(10),
-  },avatar: {
+
+  avatar: {
     width: 27,
     height: 27,
     borderRadius: 15,
-    // right: 20,
-    right: helpers.normalize(27)
+    marginStart: helpers.normalize(10),
   },
-  menuButton: {
-    position: 'absolute',
-    top: helpers.normalize(20),
-    right: helpers.normalize(20),
-  },
-  menuIcon: {
-    width: helpers.normalize(24),
-    height: helpers.normalize(24),
-    tintColor: '#F5169C',
-  },
-  profileImageContainer: {
-    width: helpers.normalize(100),
-    height: helpers.normalize(100),
-    borderRadius: helpers.normalize(50),
-    borderWidth: helpers.normalize(2),
-    borderColor: '#F5169C',
-    overflow: 'hidden',
-    marginBottom: helpers.normalize(10),
-  },
-  profileImage: {
-    width: '100%',
-    height: '100%',
-  },
-  profileName: {
-    fontSize: helpers.normalize(18),
-    fontFamily: PoppinsSemiBold,
-    color: '#333',
-  },
-  profileDesc: {
-    fontSize: helpers.normalize(12),
-    fontFamily: PoppinsRegular,
-    color: '#959595',
-    marginTop: helpers.normalize(5),
-    textAlign: 'center',
 
+  actionButtonsContainer: {
+    flexDirection: I18nManager.isRTL ? "row-reverse" : "row",
+    alignItems: "center",
+    gap: 16,
   },
-  image_menu:{
-    width: helpers.normalize(20),
-    height: helpers.normalize(20),
-  }
+
+  clockButtonIcon: {
+    paddingHorizontal: helpers.normalize(4),
+    paddingVertical: helpers.normalize(4),
+  },
+
+  signOutButton: {
+    marginStart: helpers.normalize(8),
+  },
+
+  signOutText: {
+    fontSize: helpers.normalize(13),
+    fontFamily: PoppinsSemiBold,
+    color: "#f44336",
+  },
+
+  modalOverlay: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  modalBox: {
+    backgroundColor: "#fff",
+    padding: 24,
+    borderRadius: 10,
+    alignItems: "center",
+    width: 280,
+  },
+
+  modalText: {
+    fontSize: 16,
+    marginBottom: 16,
+    textAlign: "center",
+    fontFamily: PoppinsRegular,
+    color: "#333",
+  },
+
+  modalActions: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    gap: 16,
+  },
+
+  modalButton: {
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+  },
+
+  modalCancel: {
+    color: "#999",
+    fontFamily: PoppinsRegular,
+  },
+
+  modalConfirm: {
+    color: "#4CAF50",
+    fontWeight: "bold",
+    fontFamily: PoppinsSemiBold,
+  },
+
+  timerText: {
+    fontSize: 12,
+    color: "#333",
+    marginTop: 4,
+    textAlign: "center",
+  },
 });

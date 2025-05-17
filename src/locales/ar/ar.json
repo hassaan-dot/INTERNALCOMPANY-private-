@@ -68,5 +68,30 @@
         "users": "مستخدمين",
         "files": "الملفات",
         "add_file": "إضافة ملف"
+    },
+    "user": {
+        "clock_in": "تسجيل الدخول",
+        "clock_out": "تسجيل الخروج",
+        "sign_out": "تسجيل الخروج",
+        "welcome": "مرحباً"
+    },
+    "news": {
+        "title": "الأخبار",
+        "placeholder": "اكتب الخبر هنا...",
+        "everyone": "الكل",
+        "send": "إرسال"
+    },
+    "departments": {
+        "Delivery": "التوصيل",
+        "Management": "الإدارة",
+        "Operation": "العمليات",
+        "Purchasing": "المشتريات",
+        "Sales": "المبيعات",
+        "Warehouse": "المستودع",
+        "Chemical": "الكيميائية",
+        "Marketing": "التسويق",
+        "Accounting": "المحاسبة",
+        "Human Resources": "الموارد البشرية",
+        "Sales persons coordinator": "منسق مندوبي المبيعات"
     }
 }

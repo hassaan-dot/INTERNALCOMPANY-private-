@@ -5,44 +5,33 @@ import {
   Modal,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
 } from "react-native";
 
 import { styles } from "./styles";
 import { Entypo } from "@expo/vector-icons";
 import { useGetDepartments } from "@/hooks/useDepartments";
 import { useCreateNews } from "@/hooks/useDashboard";
-// import { RichEditor } from "../..";
-
-const categories: string[] = [
-  "Everyone",
-  "Management",
-  "Sales",
-  "Warehouse",
-  "Finance",
-  "Other",
-];
+import { useTranslation } from "react-i18next";
 
 interface NewsModalProps {
   isVisible: boolean;
   onClose: () => void;
   title?: any;
   Activate?: any;
-  // OnCancel :() => void;
 }
 
 const NewsModal: React.FC<NewsModalProps> = ({
   isVisible,
   onClose,
-  title = "News",
+  title,
 }) => {
   const [formData, setFormData] = useState({
     news: "",
     department: "everyone",
   });
 
+  const { t } = useTranslation();
   const { data: departments } = useGetDepartments();
-
   const { mutate: handleAdd } = useCreateNews();
 
   const handleInputChange = (field: keyof typeof formData, value: string) => {
@@ -54,15 +43,10 @@ const NewsModal: React.FC<NewsModalProps> = ({
 
   const handleSend = () => {
     if (!formData?.news) return;
-    let data: any = {
-      news: formData?.news,
-    };
+    let data: any = { news: formData?.news };
 
-    if (formData?.department != "everyone") {
-      data = {
-        ...data,
-        department: formData?.department,
-      };
+    if (formData?.department !== "everyone") {
+      data.department = formData?.department;
     }
 
     handleAdd(data);
@@ -70,17 +54,10 @@ const NewsModal: React.FC<NewsModalProps> = ({
 
   return (
     <Modal visible={isVisible} transparent onRequestClose={onClose}>
-      <View
-        style={{
-          flex: 1,
-          backgroundColor: "rgba(0,0,0,0.5)",
-          //   alignContent: "center",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
+      <View style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.5)", justifyContent: "center", alignItems: "center" }}>
         <View style={styles.container}>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{title ?? t("news.title")}</Text>
+
           <View style={{ flexDirection: "row", justifyContent: "flex-end" }}>
             <TouchableOpacity onPress={onClose}>
               <Entypo
@@ -94,17 +71,17 @@ const NewsModal: React.FC<NewsModalProps> = ({
 
           <TextInput
             style={styles.input}
-            placeholder="Write your news here..."
+            placeholder={t("news.placeholder")}
             multiline
             value={formData?.news}
             onChangeText={(text) => handleInputChange("news", text)}
           />
-          {/* <RichEditor></RichEditor> */}
+
           <View style={styles.chipContainer}>
             <TouchableOpacity
               style={[
                 styles.chip,
-                formData?.department == "everyone"
+                formData?.department === "everyone"
                   ? styles.chipSelected
                   : styles.chipUnselected,
               ]}
@@ -112,20 +89,21 @@ const NewsModal: React.FC<NewsModalProps> = ({
             >
               <Text
                 style={[
-                  formData?.department == "everyone"
+                  formData?.department === "everyone"
                     ? styles.chipText
                     : styles.chipUnselectedText,
                 ]}
               >
-                Everyone
+                {t("news.everyone")}
               </Text>
             </TouchableOpacity>
+
             {departments?.data?.map((dep: any) => (
               <TouchableOpacity
                 key={dep.id}
                 style={[
                   styles.chip,
-                  formData?.department == dep?.documentId
+                  formData?.department === dep?.documentId
                     ? styles.chipSelected
                     : styles.chipUnselected,
                 ]}
@@ -133,18 +111,19 @@ const NewsModal: React.FC<NewsModalProps> = ({
               >
                 <Text
                   style={[
-                    formData?.department == dep?.documentId
+                    formData?.department === dep?.documentId
                       ? styles.chipText
                       : styles.chipUnselectedText,
                   ]}
                 >
-                  {dep?.name}
+                  {t(`departments.${dep?.name?.trim()}`)}
                 </Text>
               </TouchableOpacity>
             ))}
           </View>
+
           <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-            <Text style={styles.sendText}>Send</Text>
+            <Text style={styles.sendText}>{t("news.send")}</Text>
           </TouchableOpacity>
         </View>
       </View>

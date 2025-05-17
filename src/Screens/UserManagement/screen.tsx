@@ -14,6 +14,7 @@ import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
 import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { useTranslation } from "react-i18next";
+import { ScrollView } from "react-native-gesture-handler";
 
 const UserManagement = () => {
   const { t } = useTranslation();
@@ -159,7 +160,7 @@ const UserManagement = () => {
 
   return (
     <>
-      <View style={styles.container1}>
+      <ScrollView style={styles.container1}>
         <ScreenHeader
           create={true}
           title={t("user_management.title")}
@@ -167,24 +168,21 @@ const UserManagement = () => {
           filter={true}
         />
 
-        <View>
-          <CompanyTable
-            columns_schema={User_columns_schema}
-            showActions={true}
-            checkbox={true}
-            pagination={true}
-            DATA={data}
-            onPressUpdate={onPressEdit}
-            onPressDelete={onPressDelete}
-            onClickEye={onClickEye}
-            showEye={true}
-            onClickTime={onCliclTimeFunc}
-            showDel={true}
-            showEdit={true}
-            showTime={true}
-          />
-        </View>
-      </View>
+        <CompanyTable
+          columns_schema={User_columns_schema}
+          showActions={true}
+          checkbox={true}
+          DATA={data}
+          onPressUpdate={onPressEdit}
+          onPressDelete={onPressDelete}
+          onClickEye={onClickEye}
+          showEye={true}
+          onClickTime={onCliclTimeFunc}
+          showDel={true}
+          showEdit={true}
+          showTime={true}
+        />
+      </ScrollView>
 
       {isAttendenceModalOpen && (
         <AttendenceModal

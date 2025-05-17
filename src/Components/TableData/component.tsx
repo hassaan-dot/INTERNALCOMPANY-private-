@@ -333,10 +333,10 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                 disabled={
                   isPO
                     ? user?.role?.name !== ROLE.ADMIN &&
-                      (item?.po_created_by?.documentId !== user?.documentId ||
-                        item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
-                        item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
-                        item?.is_confirmed)
+                    (item?.po_created_by?.documentId !== user?.documentId ||
+                      item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                      item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                      item?.is_confirmed)
                     : false
                 }
               >
@@ -365,9 +365,9 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                 disabled={
                   isPO
                     ? user?.role?.name !== ROLE.ADMIN &&
-                      (item?.po_created_by?.documentId !== user?.documentId ||
-                        item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
-                        item?.is_confirmed)
+                    (item?.po_created_by?.documentId !== user?.documentId ||
+                      item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
+                      item?.is_confirmed)
                     : false
                 }
               >

@@ -31,4 +31,24 @@ export const styles = StyleSheet.create({
     fontSize: 14,
     color: "red",
   },
+  usernameText: {
+    fontSize: 16,
+    fontWeight: "bold",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+
+  clockButton: {
+    fontSize: 16,
+    color: "#4CAF50",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+
+  signOutText: {
+    fontSize: 16,
+    color: "#f44336",
+    textAlign: "center",
+  },
+
 });

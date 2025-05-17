@@ -4,15 +4,27 @@ import { Ionicons } from '@expo/vector-icons';
 import { Picker } from '@react-native-picker/picker';
 import i18n from '../../i18n';
 import { styles } from './style';
+import { I18nManager } from 'react-native';
+import RNRestart from 'react-native-restart';
+import { router } from 'expo-router';
 
 const LanguageSwitcher = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedLang, setSelectedLang] = useState(i18n.language);
 
-    const handleLanguageChange = (lang: string) => {
+    const handleLanguageChange = async (lang: string) => {
         setSelectedLang(lang);
-        i18n.changeLanguage(lang);
-        setModalVisible(false);
+        await i18n.changeLanguage(lang);
+
+        const isRTL = lang === 'ar';
+
+        if (I18nManager.isRTL !== isRTL) {
+            I18nManager.forceRTL(isRTL);
+            // RNRestart.Restart(); // Restart the app to apply direction changes
+            // router.replace("/");
+        } else {
+            setModalVisible(false);
+        }
     };
 
     return (
