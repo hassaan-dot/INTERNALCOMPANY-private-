@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, TouchableOpacity, Modal } from "react-native";
+import { View, Text, TouchableOpacity, Modal, I18nManager } from "react-native";
 import { styles } from "./styles";
 import LocalStorage from "@/services/local-storage";
 import { useAuthStore } from "@/store/useAuthStore";
@@ -12,17 +12,16 @@ type SignoutDropdownProps = {
   setVisible: (value: boolean) => void;
 };
 
-const SignoutDropdown: React.FC<SignoutDropdownProps> = ({
-  visible,
-  setVisible,
-}) => {
+const SignoutDropdown: React.FC<SignoutDropdownProps> = ({ visible, setVisible }) => {
   const { user, setUser, setToken } = useAuthStore();
   const router = useRouter();
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
 
   const { data: attendance } = useGetUserAttendence(user?.documentId);
   const { mutate: clockIn } = useClockIntUserAttendence(user?.documentId);
   const { mutate: clockOut } = useClockOutUserAttendence(user?.documentId);
+
+  const isRTL = i18n.language === "ar";
 
   const handleSignout = async () => {
     await LocalStorage.remove("token");
@@ -33,26 +32,23 @@ const SignoutDropdown: React.FC<SignoutDropdownProps> = ({
     router.replace("/(auth)/login");
   };
 
-  const handleClock = () => {
-    if (!attendance?.data?.clock_in_at) {
-      clockIn(); // hasn't clocked in yet
-    } else {
-      clockOut(); // already clocked in, so clock out
-    }
-  };
-
-  const isClockedIn = Boolean(attendance?.data?.clock_in_at && !attendance?.data?.clock_out_at);
-
   return (
     <Modal transparent visible={visible} animationType="fade">
       <View style={styles.overlay}>
-        <View style={styles.dropdown}>
-          <Text style={styles.usernameText}>
+        <View
+          style={[
+            styles.dropdown,
+            isRTL ? { left: 25, right: "auto" } : { right: 25, left: "auto" },
+          ]}
+        >
+          <Text style={[styles.usernameText, { textAlign: isRTL ? "right" : "left" }]}>
             {t("user.welcome")}, {user?.first_name} {user?.last_name}
           </Text>
 
           <TouchableOpacity onPress={handleSignout}>
-            <Text style={styles.signOutText}>{t("user.sign_out")}</Text>
+            <Text style={[styles.signOutText, { textAlign: isRTL ? "right" : "left" }]}>
+              {t("user.sign_out")}
+            </Text>
           </TouchableOpacity>
         </View>
       </View>

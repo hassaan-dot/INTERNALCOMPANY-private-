@@ -17,7 +17,6 @@ export const styles = StyleSheet.create({
   dropdown: {
     position: "absolute",
     top: 40,
-    right: 25,
     backgroundColor: "white",
     padding: 12,
     paddingHorizontal: 14,
@@ -26,10 +25,6 @@ export const styles = StyleSheet.create({
     shadowColor: "#000",
     shadowOpacity: 0.1,
     shadowRadius: 5,
-  },
-  signOutText: {
-    fontSize: 14,
-    color: "red",
   },
   usernameText: {
     fontSize: 16,
@@ -44,7 +39,6 @@ export const styles = StyleSheet.create({
     marginBottom: 10,
     textAlign: "center",
   },
-
   signOutText: {
     fontSize: 16,
     color: "#f44336",

@@ -10,14 +10,12 @@ export const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContainer: {
-    // width:helpers.wp(28),
-    flex: 1,
+    width: 550,
+    height: 680,
     backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
-
-    marginHorizontal: 20,
-    marginVertical: 30,
+    justifyContent: "space-between",
   },
   fontSize: { fontSize: 14 },
   icon: {

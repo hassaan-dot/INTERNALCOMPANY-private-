@@ -16,9 +16,11 @@ import { styles } from "./styles";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
 import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
+import { useSchemas } from "@/hooks/useSchemas";
 
 const UserManagement = () => {
   const { t } = useTranslation();
+  const { User_columns_schema } = useSchemas();
 
   const {
     isUserModalOpen,
@@ -35,21 +37,63 @@ const UserManagement = () => {
   const router = useRouter();
   const [currentUser, setcurrentUser] = useState<any>(null);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
-  const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
+  const [selectedUserId, setSelectedUserId] = useState<any>(null);
 
   const { mutate: handleAdd } = useCreateUser();
   const { mutate: handleUpdate, isPending: isAdding } = useUpdateUser();
   const { mutate: handleDelete, isPending: isUpdating } = useDeleteUser();
 
-  const onPressUpdatefunction = (formData: any) => {
-    if (!formData.id) return;
-    const data = { ...formData };
-    handleUpdate({ data, id: formData.id });
+  const onPressUpdatefunction = ({
+    first_name,
+    last_name,
+    username,
+    email,
+    phone_number,
+    password,
+    role,
+    department,
+    id,
+  }: any) => {
+    if (!id) return;
+
+    const data = {
+      first_name,
+      last_name,
+      username,
+      email,
+      phone_number,
+      role,
+      department,
+    };
+
+    handleUpdate({ data, id });
   };
 
-  const onPressAddfunction = (formData: any) => {
-    let data = { ...formData };
-    if (data.department === "") delete data.department;
+  const onPressAddfunction = ({
+    first_name,
+    last_name,
+    username,
+    email,
+    phone_number,
+    password,
+    role,
+    department,
+  }: any) => {
+    let data: any = {
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      phone_number,
+      role,
+    };
+    if (department) {
+      data = {
+        ...data,
+        department,
+      };
+    }
     handleAdd(data);
   };
 
@@ -58,27 +102,49 @@ const UserManagement = () => {
     else onPressAddfunction(formData);
   };
 
-  const onPressEdit = (user: any) => {
+  const onPressEdit = ({
+    first_name,
+    last_name,
+    username,
+    email,
+    password,
+    phone_number,
+    role,
+    department,
+    id,
+  }: any) => {
     const data = {
-      ...user,
-      role: user?.role?.id,
-      role_name: user?.role?.name,
-      department: user?.department?.id,
-      department_name: user?.department?.name,
+      first_name,
+      last_name,
+      username,
+      email,
+      password,
+      phone_number,
+      role: role?.id,
+      role_name: role?.name,
+      department: department?.id,
+      department_name: department?.name,
+      id,
       isEdit: true,
     };
     setRowData(data);
     setIsUserModalOpen(true);
   };
 
-  const onPressDelete = (documentId: string) => {
-    setSelectedUserId(documentId);
+  const onPressDelete = (documentId: string, id: any) => {
+    const data = {
+      data: {
+        documentId: id,
+      },
+    };
+    setSelectedUserId(data);
     setShowConfirmModal(true);
   };
 
   const confirmDelete = () => {
     if (selectedUserId) {
-      handleDelete({ data: { documentId: selectedUserId } });
+      console.log(selectedUserId.data.documentId)
+      handleDelete({ data: { documentId: selectedUserId.data.documentId } });
       setShowConfirmModal(false);
       setSelectedUserId(null);
     }
@@ -113,6 +179,16 @@ const UserManagement = () => {
     );
   };
 
+  const filterOptions = User_columns_schema.map((col) => ({
+    value: `${col.key}:asc`,
+    label: `${t("screenHeader.sortAsc")} - ${t(col.header)}`,
+  })).concat(
+    User_columns_schema.map((col) => ({
+      value: `${col.key}:desc`,
+      label: `${t("screenHeader.sortDesc")} - ${t(col.header)}`,
+    }))
+  );
+
   return (
     <>
       <ScrollView style={styles.container1}>
@@ -121,12 +197,16 @@ const UserManagement = () => {
           title={t("user_management.title")}
           onPress={onOpenModal}
           filter={true}
+          showButton={true}
+          buttonView={false}
+          buttonViewMulitiple={false}
+          filterOptions={filterOptions}
         />
 
         <CompanyTable
           columns_schema={User_columns_schema}
           showActions={true}
-          checkbox={true}
+          checkbox={false}
           DATA={data}
           onPressUpdate={onPressEdit}
           onPressDelete={onPressDelete}
@@ -136,6 +216,7 @@ const UserManagement = () => {
           showDel={true}
           showEdit={true}
           showTime={true}
+          showDocument={false}
         />
       </ScrollView>
 

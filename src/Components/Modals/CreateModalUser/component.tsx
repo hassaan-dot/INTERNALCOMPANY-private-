@@ -44,8 +44,11 @@ const CreateUserModal = ({
       password: "",
       role: "",
       department: "",
+      jobs_title: "",
     }
   );
+
+  const [step, setStep] = useState(1);
 
   const userSchema = yup.object().shape({
     first_name: yup.string().required(t("required")),
@@ -59,6 +62,8 @@ const CreateUserModal = ({
       .matches(/^[0-9]+$/, t("phone_numbers_only"))
       .min(10, t("min_phone")),
     role: yup.string().required(t("required")),
+    department: yup.string().required(t("required")),
+    jobs_title: yup.string().required(t("required")),
   });
 
   const [errors, setErrors] = useState({});
@@ -80,10 +85,24 @@ const CreateUserModal = ({
     clearError(field);
   };
 
-  const validateForm = async () => {
+  const validateStep = async () => {
     try {
-      await userSchema.validate(formData, { abortEarly: false });
-      setErrors({});
+      const partialSchema = step === 1
+        ? yup.object().shape({
+          first_name: userSchema.fields.first_name,
+          last_name: userSchema.fields.last_name,
+          email: userSchema.fields.email,
+          username: userSchema.fields.username,
+          password: userSchema.fields.password,
+          phone_number: userSchema.fields.phone_number,
+        })
+        : yup.object().shape({
+          role: userSchema.fields.role,
+          department: userSchema.fields.department,
+          jobs_title: userSchema.fields.jobs_title,
+        });
+
+      await partialSchema.validate(formData, { abortEarly: false });
       return true;
     } catch (err) {
       if (err instanceof yup.ValidationError) {
@@ -97,20 +116,20 @@ const CreateUserModal = ({
     }
   };
 
-  const handleSubmit = async () => {
-    const allFields = {
-      first_name: true,
-      last_name: true,
-      email: true,
-      username: true,
-      password: true,
-      phone_number: true,
+  const handleNext = async () => {
+    const isValid = await validateStep();
+    if (isValid) setStep(2);
+  };
+
+  const handleBack = () => setStep(1);
+
+  const handleFinalSubmit = async () => {
+    setTouched({
       role: true,
       department: true,
-    };
-
-    setTouched(allFields);
-    const isValid = await validateForm();
+      jobs_title: true,
+    });
+    const isValid = await validateStep();
     if (isValid) {
       const finalData = {
         ...formData,
@@ -121,12 +140,12 @@ const CreateUserModal = ({
   };
 
   const depsDropdownItems = (GetDepartments?.data || []).map((dep) => ({
-    value: dep.name,
+    value: t(`departments.${dep.name}`),
     key: dep.id,
   }));
 
   const rolesDropdownItems = (getRoles?.roles || []).map((role) => ({
-    value: role.name,
+    value: t(`roles.${role.name}`),
     key: role.id,
   }));
 
@@ -139,112 +158,142 @@ const CreateUserModal = ({
           {desc && <Text style={styles.subtitle}>{t(desctext)}</Text>}
 
           <ScrollView>
-            <View style={styleContainer}>
-              <InputField
-                title={t("first_name")}
-                placeholder={t("first_name")}
-                value={formData.first_name}
-                onChangeText={(text) => handleInputChange("first_name", text)}
-                style={[styles.input, { borderColor: errors.first_name ? "red" : "#ddd" }]}
-                error={touched.first_name && errors.first_name}
-                errorMessage={touched.first_name && errors.first_name}
-                titleStyle={styles.fontSize}
-              />
+            {step === 1 && (
+              <>
+                <View style={styleContainer}>
+                  <InputField
+                    title={t("first_name")}
+                    placeholder={t("first_name")}
+                    value={formData.first_name}
+                    onChangeText={(text) => handleInputChange("first_name", text)}
+                    style={[styles.input, { borderColor: errors.first_name ? "red" : "#ddd" }]}
+                    error={touched.first_name && errors.first_name}
+                    errorMessage={touched.first_name && errors.first_name}
+                    titleStyle={styles.fontSize}
+                  />
 
-              <View style={{ marginLeft: 7 }}>
+                  <View style={{ marginLeft: 7 }}>
+                    <InputField
+                      title={t("last_name")}
+                      placeholder={t("last_name")}
+                      value={formData.last_name}
+                      onChangeText={(text) => handleInputChange("last_name", text)}
+                      style={[styles.input, { borderColor: errors.last_name ? "red" : "#ddd" }]}
+                      error={touched.last_name && errors.last_name}
+                      errorMessage={touched.last_name && errors.last_name}
+                      titleStyle={styles.fontSize}
+                    />
+                  </View>
+                </View>
+
                 <InputField
-                  title={t("last_name")}
-                  placeholder={t("last_name")}
-                  value={formData.last_name}
-                  onChangeText={(text) => handleInputChange("last_name", text)}
-                  style={[styles.input, { borderColor: errors.last_name ? "red" : "#ddd" }]}
-                  error={touched.last_name && errors.last_name}
-                  errorMessage={touched.last_name && errors.last_name}
+                  title={t("email")}
+                  placeholder={t("email_placeholder")}
+                  value={formData.email}
+                  onChangeText={(text) => handleInputChange("email", text)}
+                  style={[styles.input, { borderColor: errors.email ? "red" : "#ddd" }]}
+                  error={touched.email && errors.email}
+                  errorMessage={touched.email && errors.email}
+                  keyboardType="email-address"
                   titleStyle={styles.fontSize}
                 />
-              </View>
-            </View>
 
-            <InputField
-              title={t("email")}
-              placeholder={t("email_placeholder")}
-              value={formData.email}
-              onChangeText={(text) => handleInputChange("email", text)}
-              style={[styles.input, { borderColor: errors.email ? "red" : "#ddd" }]}
-              error={touched.email && errors.email}
-              errorMessage={touched.email && errors.email}
-              keyboardType="email-address"
-              titleStyle={styles.fontSize}
-            />
+                <InputField
+                  title={t("username")}
+                  placeholder={t("username")}
+                  value={formData.username}
+                  onChangeText={(text) => handleInputChange("username", text)}
+                  style={[styles.input, { borderColor: errors.username ? "red" : "#ddd" }]}
+                  error={touched.username && errors.username}
+                  errorMessage={touched.username && errors.username}
+                  titleStyle={styles.fontSize}
+                />
 
-            <InputField
-              title={t("username")}
-              placeholder={t("username")}
-              value={formData.username}
-              onChangeText={(text) => handleInputChange("username", text)}
-              style={[styles.input, { borderColor: errors.username ? "red" : "#ddd" }]}
-              error={touched.username && errors.username}
-              errorMessage={touched.username && errors.username}
-              titleStyle={styles.fontSize}
-            />
+                {!rowData?.isEdit && (
+                  <InputField
+                    title={t("password")}
+                    placeholder={t("password")}
+                    value={formData.password}
+                    onChangeText={(text) => handleInputChange("password", text)}
+                    style={[styles.input, { borderColor: errors.password ? "red" : "#ddd" }]}
+                    error={touched.password && errors.password}
+                    errorMessage={touched.password && errors.password}
+                    titleStyle={styles.fontSize}
+                  />
+                )}
 
-            {!rowData?.isEdit && (
-              <InputField
-                title={t("password")}
-                placeholder={t("password")}
-                value={formData.password}
-                onChangeText={(text) => handleInputChange("password", text)}
-                style={[styles.input, { borderColor: errors.password ? "red" : "#ddd" }]}
-                error={touched.password && errors.password}
-                errorMessage={touched.password && errors.password}
-                titleStyle={styles.fontSize}
-              />
+                <InputField
+                  title={t("phone_number")}
+                  placeholder={t("phone_number")}
+                  value={formData.phone_number}
+                  onChangeText={(text) => handleInputChange("phone_number", text)}
+                  style={[styles.input, { borderColor: errors.phone_number ? "red" : "#ddd" }]}
+                  error={touched.phone_number && errors.phone_number}
+                  errorMessage={touched.phone_number && errors.phone_number}
+                  keyboardType="phone-pad"
+                  titleStyle={styles.fontSize}
+                />
+              </>
             )}
 
-            <InputField
-              title={t("phone_number")}
-              placeholder={t("phone_number")}
-              value={formData.phone_number}
-              onChangeText={(text) => handleInputChange("phone_number", text)}
-              style={[styles.input, { borderColor: errors.phone_number ? "red" : "#ddd" }]}
-              error={touched.phone_number && errors.phone_number}
-              errorMessage={touched.phone_number && errors.phone_number}
-              keyboardType="phone-pad"
-              titleStyle={styles.fontSize}
-            />
+            {step === 2 && (
+              <>
+                <SingleSelectDropDown
+                  items={rolesDropdownItems}
+                  title={t("select_role")}
+                  selected={rowData?.isEdit ? rowData?.role_name : ""}
+                  setSelected={(key) => handleInputChange("role", key)}
+                  error={touched.role && errors.role}
+                  errorMessage={touched.role && errors.role}
+                />
 
-            <SingleSelectDropDown
-              items={rolesDropdownItems}
-              title={t("select_role")}
-              selected={rowData?.isEdit ? rowData?.role_name : ""}
-              setSelected={(key) => handleInputChange("role", key)}
-              error={touched.role && errors.role}
-              errorMessage={touched.role && errors.role}
-            />
+                <SingleSelectDropDown
+                  items={depsDropdownItems}
+                  title={t("select_department")}
+                  selected={rowData?.isEdit ? rowData?.department_name : ""}
+                  setSelected={(key) => handleInputChange("department", key)}
+                  error={touched.department && errors.department}
+                  errorMessage={touched.department && errors.department}
+                />
 
-            <SingleSelectDropDown
-              items={depsDropdownItems}
-              title={t("select_department")}
-              selected={rowData?.isEdit ? rowData?.department_name : ""}
-              setSelected={(key) => handleInputChange("department", key)}
-              error={touched.department && errors.department}
-              errorMessage={touched.department && errors.department}
-            />
+                <InputField
+                  title={t("jobs_title")}
+                  placeholder={t("jobs_title")}
+                  value={formData.jobs_title}
+                  onChangeText={(text) => handleInputChange("jobs_title", text)}
+                  style={[styles.input, { borderColor: errors.jobs_title ? "red" : "#ddd" }]}
+                  error={touched.jobs_title && errors.jobs_title}
+                  errorMessage={touched.jobs_title && errors.jobs_title}
+                  titleStyle={styles.fontSize}
+                />
+              </>
+            )}
           </ScrollView>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
               <Text style={styles.cancelText}>{t("Cancel")}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={handleSubmit}
-              disabled={isPending}
-            >
-              <Text style={styles.addText}>
-                {isPending ? <ActivityIndicator /> : t(rowData?.isEdit ? "edit_user" : "add_user")}
-              </Text>
-            </TouchableOpacity>
+            {step === 1 ? (
+              <TouchableOpacity style={styles.addButton} onPress={handleNext}>
+                <Text style={styles.addText}>{t("Next")}</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={styles.addButton}
+                onPress={handleFinalSubmit}
+                disabled={isPending}
+              >
+                <Text style={styles.addText}>
+                  {isPending ? <ActivityIndicator /> : t(rowData?.isEdit ? "edit_user" : "add_user")}
+                </Text>
+              </TouchableOpacity>
+            )}
+            {step === 2 && (
+              <TouchableOpacity style={styles.cancelButton} onPress={handleBack}>
+                <Text style={styles.cancelText}>{t("Back")}</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       </View>

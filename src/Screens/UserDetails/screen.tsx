@@ -20,8 +20,16 @@ const UserDetails = () => {
   return (
     <>
       <ScrollView style={styles.container1}>
-        <ScreenHeader title={t("User_Detail")} />
+        <ScreenHeader
+          title={t("User_Detail")}
+          filter={false}
+          showButton={false}
+          buttonView={false}
+          buttonViewMulitiple={false}
+        />
+
         <UserDetailHeader item={data} />
+
         <View style={styles.container2}>
           <GraphCard id={documentId} />
         </View>

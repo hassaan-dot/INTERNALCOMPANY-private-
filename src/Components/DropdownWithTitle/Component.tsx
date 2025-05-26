@@ -4,6 +4,7 @@ import React from "react";
 import { Image, StyleSheet, Text, View } from "react-native";
 import Select, { components, SingleValue } from "react-select"; // Import SingleValue for typing
 // import { customStyles, styles } from "./Styles";
+import { I18nManager } from "react-native";
 
 // Define the type for items
 type Item = {
@@ -137,6 +138,7 @@ const customStyles = {
     fontWeight: "500",
     fontSize: 15,
     fontFamily: PoppinsRegular,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   }),
   singleValue: (provided: any) => ({
     ...provided,
@@ -144,6 +146,7 @@ const customStyles = {
     fontWeight: "500",
     fontSize: 15,
     fontFamily: PoppinsRegular,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   }),
   // dropdownIndicator: (provided: any) => ({
   //   ...provided,
@@ -170,6 +173,7 @@ const customStyles = {
     // backgroundColor: "red",
     // boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
     // zIndex: 9999,
+    direction: I18nManager.isRTL ? "rtl" : "ltr",
   }),
   option: (provided: any, state: any) => ({
     ...provided,
@@ -180,6 +184,7 @@ const customStyles = {
 
     fontFamily: PoppinsRegular,
     fontSize: 10,
+    textAlign: I18nManager.isRTL ? "right" : "left",
     ":active": {
       backgroundColor: "#fff",
     },

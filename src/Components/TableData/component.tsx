@@ -8,6 +8,7 @@ import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { getValueFromKey } from "@/src/utils";
 import { ROLE } from "@/constants/role";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useTranslation } from "react-i18next";
 
 interface CompanyTableProps {
   columns_schema: {
@@ -42,10 +43,9 @@ const TableHeader: React.FC<CompanyTableProps> = ({
   headerRowStyle,
   columns_schema,
   headerTextStyle,
-  // onCliclTimeFunc,
 }) => (
   <View style={[styles.headerRow, headerRowStyle]}>
-    <View style={styles.customHeader}>{checkbox && <CheckBox />}</View>
+    {/* <View style={styles.customHeader}>{checkbox && <CheckBox />}</View> */}
     {columns_schema?.map((c, index) => (
       <Text
         key={index}
@@ -89,6 +89,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
 }) => {
   const { user } = useAuthStore();
   const { filters, setFilters } = useModalStore();
+  const { t } = useTranslation();
 
   const IconHandleStatus = ({
     is_active,
@@ -275,7 +276,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
         {columns_schema?.map((c, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => setExpandedEmail(isExpanded ? null : item.id)}
+            // onPress={() => setExpandedEmail(isExpanded ? null : item.id)}
             style={{ flex: isExpanded && c.key === "email" ? 5 : 2 }}
           >
             <Text
@@ -284,14 +285,23 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
                 rowTextStyle,
                 {
                   textAlign: isRTL(getValueFromKey(item, c?.key))
-                    ? "left"
-                    : "left",
+                    ? "center"
+                    : "center",
                 },
               ]}
             >
               {isExpanded
                 ? getValueFromKey(item, c?.key)
-                : truncateComponentName(getValueFromKey(item, c?.key), 16)}
+                : truncateComponentName(
+                  // 🔽 If column is role or department, translate it
+                  c.key === "role.name"
+                    ? t(`roles.${item.role?.name}`)
+                    : c.key === "department.name"
+                      ? t(`departments.${item.department?.name}`)
+                      : getValueFromKey(item, c?.key),
+                  16
+                )
+              }
             </Text>
           </TouchableOpacity>
         ))}
@@ -302,9 +312,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
               styles.cell,
               {
                 flex: 2,
-                // backgroundColor: "red",
                 alignItems: "center",
-                // justifyContent: "center",
               },
               styles.actionIcons,
             ]}
@@ -409,7 +417,7 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     );
   };
 
-  console.log("Data", DATA);
+  // console.log("Data", DATA);
 
   return (
     <View style={styles.container}>
@@ -428,47 +436,6 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
           />
         )}
       />
-      {pagination && (
-        <View style={styles.paginationContainer}>
-          <TouchableOpacity
-            disabled={filters.page == 1}
-            onPress={() => setFilters({ ...filters, page: filters?.page - 1 })}
-          >
-            <Image
-              source={icons.tablepaginationleftarrowIcon}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-          {Array.from({ length: totalPages }, (_, i) => (
-            <TouchableOpacity
-              key={i}
-              onPress={() => setFilters({ ...filters, page: i + 1 })}
-              style={[
-                styles.pageButton,
-                filters.page == i + 1 && styles.activePageButton,
-              ]}
-            >
-              <Text
-                style={[
-                  styles.pageButton,
-                  filters.page == i + 1 && styles.activePage,
-                ]}
-              >
-                {i + 1}
-              </Text>
-            </TouchableOpacity>
-          ))}
-          <TouchableOpacity
-            disabled={filters.page == totalPages}
-            onPress={() => setFilters({ ...filters, page: filters?.page + 1 })}
-          >
-            <Image
-              source={icons.tablepaginationrightarrowIcon}
-              style={styles.image}
-            />
-          </TouchableOpacity>
-        </View>
-      )}
     </View>
   );
 };

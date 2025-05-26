@@ -4,6 +4,7 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import { usePathname, useRouter } from "expo-router";
 import { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
+import { I18nManager } from "react-native";
 // import styles from "./styles";
 
 const styles = StyleSheet.create({
@@ -85,8 +86,8 @@ const CustomDrawerItem = ({ drawer_items }: any) => {
   const router = useRouter();
   const pathname = usePathname();
 
-  const handleTabPress = useCallback((tabName: any) => {
-    return router.push(tabName);
+  const handleTabPress = useCallback((href: string) => {
+    router.push(href);
   }, []);
 
   return (
@@ -98,13 +99,17 @@ const CustomDrawerItem = ({ drawer_items }: any) => {
           ?.map((item, index) => (
             <View key={index}>
               <DrawerItem
-                focused={pathname.includes(item.name)}
+                focused={pathname === item.href}
                 label={item.label}
                 icon={item.drawerIcon}
-                onPress={() => handleTabPress(item.name)}
-                style={styles.drawerItem}
+                onPress={() => handleTabPress(item.href)}
+                style={[
+                  styles.drawerItem,
+                  { flexDirection: I18nManager.isRTL ? "row-reverse" : "row" },
+                ]}
                 labelStyle={[
                   styles.drawerItemLabel,
+                  { textAlign: I18nManager.isRTL ? "right" : "left" },
                   pathname.includes(item.name) && {
                     color: "#FFF",
                     fontWeight: "600",

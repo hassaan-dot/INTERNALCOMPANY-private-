@@ -4,9 +4,9 @@ import {
   StyleSheet,
   View,
   Text,
+  I18nManager,
   StyleProp,
   ViewStyle,
-  TextStyle,
 } from "react-native";
 import { PoppinsRegular } from "@/constants/fonts";
 
@@ -36,80 +36,86 @@ const SingleSelectDropDown: React.FC<Props> = ({
 }) => {
   return (
     <View style={[styles.container, containerStyle]}>
-      <Text style={styles.label}>{title}</Text>
+      {!!title && <Text style={styles.label}>{title}</Text>}
       <SelectList
         setSelected={setSelected}
         data={items}
         save="key"
-        defaultOption={selected} // Set the default option
-        boxStyles={[styles.boxStyles, { borderColor: error && "red" }]}
-        inputStyles={[styles.inputStyles, { color: selected && "#000000" }]}
+        defaultOption={items.find((i) => i.key === selected)}
+        boxStyles={[
+          styles.boxStyles,
+          { borderColor: error ? "red" : "#E0E0E0" },
+        ]}
+        inputStyles={styles.inputStyles}
         dropdownStyles={styles.dropdownStyles}
         dropdownItemStyles={styles.dropdownItemStyles}
         dropdownTextStyles={styles.dropdownTextStyles}
-        placeholder={`${selected}` || "Select"}
-        searchPlaceholder="Search..."
-        placeholderTextColor=""
-        notFoundText="No options found"
+        placeholder={title || "اختر"}
+        notFoundText="لا يوجد نتائج"
       />
-      {/* {selected ? (
-        <Text style={styles.selectedText}>Selected: {selected}</Text>
-      ) : null} */}
-      {error && (
-        <Text style={{ color: "red", marginTop: 5 }}>{errorMessage}</Text>
-      )}
+      {error && <Text style={styles.errorText}>{errorMessage}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    // padding: 20,
-    // width: "100%",
-    // maxWidth: 400,
+    width: "100%",
   },
   label: {
     fontSize: 14,
     fontWeight: "400",
-    marginBottom: 4,
-    color: "#000",
+    marginBottom: 8,
+    color: "#333",
     fontFamily: PoppinsRegular,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   boxStyles: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 6,
     backgroundColor: "#fff",
+    borderWidth: 1,
+    borderRadius: 12,
     paddingHorizontal: 14,
-    paddingLeft: 10,
-    paddingVertical: 9,
+    paddingVertical: 12,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.07,
+    shadowRadius: 4,
+    elevation: 2,
   },
   inputStyles: {
     fontSize: 14,
-    color: "#757575",
+    fontFamily: PoppinsRegular,
+    color: "#1D1D1D",
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
   dropdownStyles: {
-    borderWidth: 1,
-    borderColor: "#ddd",
-    borderRadius: 8,
-    // marginTop: 8,
-    backgroundColor: "white",
+    backgroundColor: "#fff",
+    borderWidth: 0,
+    borderRadius: 12,
+    marginTop: 6,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.08,
+    shadowRadius: 4,
+    elevation: 3,
   },
   dropdownItemStyles: {
-    paddingHorizontal: 15,
-    paddingVertical: 10,
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderBottomColor: "#F2F2F2",
     borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
   },
   dropdownTextStyles: {
-    fontSize: 13,
-    color: "#333",
-  },
-  selectedText: {
-    marginTop: 12,
     fontSize: 14,
-    color: "#666",
-    fontStyle: "italic",
+    color: "#333",
+    textAlign: I18nManager.isRTL ? "right" : "left",
+    fontFamily: PoppinsRegular,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 6,
+    textAlign: I18nManager.isRTL ? "right" : "left",
   },
 });
 

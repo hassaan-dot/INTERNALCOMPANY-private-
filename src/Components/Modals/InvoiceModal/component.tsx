@@ -107,7 +107,7 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
     rowData?.isEdit ? new Date(rowData?.date_of_payment) : null
   );
 
-  console.log("date", date);
+  // console.log("date", date);
 
   const handleInputChange = (
     field: keyof typeof formData,
@@ -223,9 +223,8 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
                 source={icons.invoiceModalIcon}
                 style={{ width: 40, height: 40 }}
               />
-              <Text style={styles.title}>{`${
-                rowData?.isEdit ? "Update Invoice" : "Create Invoice"
-              }`}</Text>
+              <Text style={styles.title}>{`${rowData?.isEdit ? "Update Invoice" : "Create Invoice"
+                }`}</Text>
 
               {desc && <Text style={styles.subtitle}>{desctext}</Text>}
             </View>

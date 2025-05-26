@@ -19,29 +19,7 @@ import * as yup from "yup";
 import { styles } from "./styles";
 
 import { useSendReminder } from "@/hooks/useClient";
-
-interface CreatePaymentReminderProps {
-  visible: boolean;
-  create?: boolean;
-  desc?: boolean;
-  invoice: boolean;
-  styleContainer: any;
-  title: string;
-  onClose: () => void;
-  onSubmit: (
-    companyName?: string,
-    email?: string,
-    contactPerson?: string,
-    phoneNumber?: string
-  ) => void;
-  onLogin?: (username: string, password: string) => void;
-  desctext: string;
-  user: boolean;
-  modalContainerprop: any;
-  Data: any;
-  update: boolean;
-  onPressUpdatefunction: any;
-}
+import { useTranslation } from "react-i18next";
 
 const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   visible,
@@ -49,6 +27,7 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   title,
   modalContainerprop,
 }) => {
+  const { t } = useTranslation();
   const { rowData } = useModalStore();
   const [documents, setDocuments] = useState<any[]>([]);
   const color = ["#07504B"];
@@ -62,7 +41,7 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   });
 
   const userSchema = yup.object().shape({
-    amount: yup.string().required("Amount is required"),
+    amount: yup.string().required(t("reminder.errors.amount_required")),
   });
 
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -88,10 +67,8 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   };
 
   const validateForm = async () => {
-    const schema = userSchema;
-
     try {
-      await schema.validate(formData, { abortEarly: false });
+      await userSchema.validate(formData, { abortEarly: false });
       setErrors({});
       return true;
     } catch (err) {
@@ -99,7 +76,10 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
         const newErrors: Record<string, string> = {};
         err.inner.forEach((error) => {
           if (error.path) {
-            newErrors[error.path] = error.message;
+            newErrors[error.path] = t(
+              `reminder.errors.${error.path}`,
+              { defaultValue: error.message }
+            );
           }
         });
         setErrors(newErrors);
@@ -109,13 +89,9 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   };
 
   const handleSubmit = async () => {
-    const allFields = {
-      amount: true,
-    };
+    setTouched({ amount: true });
 
-    setTouched(allFields);
     const isValid = await validateForm();
-
     if (!isValid) return;
 
     const form_data = new FormData();
@@ -132,13 +108,13 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
     try {
       const result = await DocumentPicker.getDocumentAsync({
         type: [
-          "image/*", // All image types (jpeg, png, etc.)
-          "application/pdf", // PDF files
-          "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .docx
-          "application/msword", // .doc
-          "application/vnd.ms-excel", // .xls
-          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", // .xlsx
-          "text/csv", // .csv
+          "image/*",
+          "application/pdf",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+          "application/msword",
+          "application/vnd.ms-excel",
+          "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+          "text/csv",
         ],
         multiple: true,
       });
@@ -152,7 +128,7 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
             uri: file.uri,
             name: file.name,
             type: file.mimeType || "application/octet-stream",
-            blob: blob,
+            blob,
           };
         });
 
@@ -167,19 +143,18 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   const removeDocument = (index: number) => {
     setDocuments((prev) => prev.filter((_, i) => i !== index));
   };
+
   return (
     <Modal visible={visible} transparent animationType="slide">
       <View style={styles.modalOverlay}>
         <View style={[styles.modalContainer, modalContainerprop]}>
-          <View>
-            <Text style={styles.title}>{title}</Text>{" "}
-          </View>
+          <Text style={styles.title}>{t(title)}</Text>
 
           <ScrollView>
             <View>
               <InputField
                 titleStyle={styles.fontSize}
-                title={"Amount"}
+                title={t("reminder.amount")}
                 style={[
                   styles.input,
                   { borderColor: errors.amount ? "red" : "#ddd" },
@@ -188,18 +163,13 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
                 errorMessage={touched.amount && errors.amount}
                 value={formData?.amount}
                 onChangeText={(text) => handleInputChange("amount", text)}
-                placeholder={"Enter Amount"}
+                placeholder={t("reminder.amount_placeholder")}
                 keyboardType="phone-pad"
               />
             </View>
 
             <View style={{ marginVertical: 10 }}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                }}
-              >
+              <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <View style={[styles.inputContainer, { width: "100%" }]}>
                   <Text
                     style={{
@@ -209,7 +179,7 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
                       fontFamily: PoppinsRegular,
                     }}
                   >
-                    {"upload proof of received"}
+                    {t("reminder.upload_label")}
                   </Text>
 
                   <View
@@ -221,108 +191,72 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
                       width: "100%",
                     }}
                   >
-                    <View
-                      style={{ flexDirection: "row", alignItems: "center" }}
-                    >
-                      <View>
-                        <TouchableOpacity
-                          onPress={pickDocument}
-                          style={{
-                            backgroundColor: "#f6f6f6",
-                            padding: 5,
-                            paddingVertical: 0,
-                            marginLeft: 7,
-                            borderRadius: 4,
-                            justifyContent: "center",
-                          }}
-                        >
-                          <Feather
-                            name="paperclip"
-                            color={"#07504B"}
-                            style={{}}
-                            size={12}
-                          ></Feather>
-                        </TouchableOpacity>
-                      </View>
+                    <View style={{ flexDirection: "row", alignItems: "center" }}>
+                      <TouchableOpacity
+                        onPress={pickDocument}
+                        style={{
+                          backgroundColor: "#f6f6f6",
+                          padding: 5,
+                          paddingVertical: 0,
+                          marginLeft: 7,
+                          borderRadius: 4,
+                          justifyContent: "center",
+                        }}
+                      >
+                        <Feather name="paperclip" color={"#07504B"} size={12} />
+                      </TouchableOpacity>
 
-                      <View>
-                        <TouchableOpacity
-                          onPress={pickDocument}
-                          style={{
-                            marginLeft: 7,
-                          }}
-                        >
-                          {documents?.length < 1 && (
-                            <Text style={{ paddingVertical: 4 }}>
-                              Upload your attachments/Documents
-                            </Text>
-                          )}
-                        </TouchableOpacity>
-
-                        {documents?.length > 0 && (
-                          <View style={{}}>
-                            <FlatList
-                              contentContainerStyle={{
-                                width: helpers.normalize(200),
-                                marginBottom: 2,
-                              }}
-                              showsHorizontalScrollIndicator={false}
-                              horizontal={true}
-                              data={documents}
-                              keyExtractor={(_, index) => index.toString()}
-                              renderItem={({ item }) => (
-                                <View
-                                  style={{
-                                    flexDirection: "row",
-                                    alignItems: "center",
-                                    justifyContent: "space-between",
-                                    // borderWidth: 1,
-                                    // borderColor: "gray",
-                                    borderRadius: 9,
-                                    padding: 4,
-                                    marginHorizontal: 4,
-                                    shadowColor: "#000",
-                                    shadowOffset: {
-                                      width: 0,
-                                      height: 1,
-                                    },
-                                    backgroundColor:
-                                      color[
-                                        Math.floor(Math.random() * color.length)
-                                      ],
-                                    shadowOpacity: 0.22,
-                                    shadowRadius: 2.22,
-                                  }}
-                                >
-                                  <Text
-                                    style={{
-                                      flex: 1,
-                                      marginLeft: 7,
-                                      color: "white",
-                                      fontFamily: PoppinsRegular,
-                                    }}
-                                    numberOfLines={1}
-                                  >
-                                    {item?.name}
-                                  </Text>
-                                  <TouchableOpacity
-                                    onPress={() =>
-                                      removeDocument(documents?.indexOf(item))
-                                    }
-                                  >
-                                    <AntDesign
-                                      name="close"
-                                      size={12}
-                                      color="red"
-                                      style={{ marginHorizontal: 10 }}
-                                    />
-                                  </TouchableOpacity>
-                                </View>
-                              )}
-                            />
-                          </View>
+                      <TouchableOpacity onPress={pickDocument} style={{ marginLeft: 7 }}>
+                        {documents?.length < 1 && (
+                          <Text style={{ paddingVertical: 4 }}>
+                            {t("reminder.upload_placeholder")}
+                          </Text>
                         )}
-                      </View>
+                      </TouchableOpacity>
+
+                      {documents?.length > 0 && (
+                        <FlatList
+                          contentContainerStyle={{
+                            width: helpers.normalize(200),
+                            marginBottom: 2,
+                          }}
+                          horizontal
+                          data={documents}
+                          keyExtractor={(_, index) => index.toString()}
+                          renderItem={({ item }) => (
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                alignItems: "center",
+                                justifyContent: "space-between",
+                                borderRadius: 9,
+                                padding: 4,
+                                marginHorizontal: 4,
+                                backgroundColor: color[Math.floor(Math.random() * color.length)],
+                                shadowColor: "#000",
+                                shadowOffset: { width: 0, height: 1 },
+                                shadowOpacity: 0.22,
+                                shadowRadius: 2.22,
+                              }}
+                            >
+                              <Text
+                                numberOfLines={1}
+                                style={{
+                                  flex: 1,
+                                  marginLeft: 7,
+                                  color: "white",
+                                  fontFamily: PoppinsRegular,
+                                }}
+                              >
+                                {item?.name}
+                              </Text>
+                              <TouchableOpacity onPress={() => removeDocument(documents.indexOf(item))}>
+                                <AntDesign name="close" size={12} color="red" style={{ marginHorizontal: 10 }} />
+                              </TouchableOpacity>
+                            </View>
+                          )}
+                        />
+                      )}
                     </View>
                   </View>
                 </View>
@@ -332,16 +266,11 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity style={styles.cancelButton} onPress={onClose}>
-              <Text style={styles.cancelText}>Cancel</Text>
+              <Text style={styles.cancelText}>{t("reminder.cancel")}</Text>
             </TouchableOpacity>
-            <TouchableOpacity
-              style={styles.addButton}
-              onPress={handleSubmit}
-              disabled={isSending}
-            >
+            <TouchableOpacity style={styles.addButton} onPress={handleSubmit} disabled={isSending}>
               <Text style={styles.addText}>
-                {!isSending && "Send Reminder"}
-                {isSending && <ActivityIndicator />}
+                {!isSending ? t("reminder.send") : <ActivityIndicator />}
               </Text>
             </TouchableOpacity>
           </View>

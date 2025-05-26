@@ -21,7 +21,7 @@ export const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "flex-start",
     fontFamily: PoppinsRegular,
-    // textAlign:'center'
+    textAlign: "center",
     // paddingRight: 20,
   },
   row: {

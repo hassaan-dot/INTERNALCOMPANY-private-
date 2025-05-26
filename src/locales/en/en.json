@@ -25,7 +25,11 @@
         "closed": "Closed",
         "confirmed": "Confirmed",
         "accepted": "Accepted",
-        "rejected": "Rejected"
+        "rejected": "Rejected",
+        "Completed PO": "Completed PO",
+        "Pending PO": "Pending PO",
+        "Closed PO": "Closed PO",
+        "Created PO": "Created PO"
     },
     "po_section": {
         "title": "Your Assigned PO",
@@ -57,7 +61,13 @@
         "role": "Role",
         "email": "Email",
         "username": "Username",
-        "department": "Department"
+        "department": "Department",
+        "total_hours": "Daily Total Hours Works",
+        "po_report": "PO Assignment Report",
+        "Completed PO": "Completed PO",
+        "Pending PO": "Pending PO",
+        "Closed PO": "Closed PO",
+        "Created PO": "Created PO"
     },
     "User_Detail": "User Detail",
     "request_details": {
@@ -92,8 +102,12 @@
         "Chemical": "Chemical",
         "Marketing": "Marketing",
         "Accounting": "Accounting",
-        "Human Resources": "Human Resources",
-        "Sales persons coordinator": "Sales persons coordinator"
+        "Human Resources ": "Human Resources",
+        "Sales persons coordinator ": "Sales persons coordinator"
+    },
+    "roles": {
+        "Admin": "Admin",
+        "Employee": "Employee"
     },
     "Are you sure you want to delete this news?": "Are you sure you want to delete this news?",
     "Delete": "Delete",
@@ -114,6 +128,7 @@
     "phone_number": "Phone Number",
     "select_role": "Select Role",
     "select_department": "Select Department",
+    "jobs_title": "Job Title",
     "add_user": "Add User",
     "edit_user": "Edit User",
     "cancel": "Cancel",
@@ -170,5 +185,90 @@
             "clientRequired": "Client selection is required",
             "clientMin": "Please select a valid client"
         }
-    }
+    },
+    "client": {
+        "createTitle": "Create Client",
+        "updateTitle": "Update Client",
+        "contact_person_name": "Contact Person Name",
+        "email": "Email Address",
+        "email_placeholder": "email@example.com",
+        "phone_number": "Phone Number",
+        "company_name": "Company Name",
+        "address": "Address",
+        "address_placeholder": "Enter Home Address",
+        "location": "Enter Location",
+        "cancel": "Cancel",
+        "add": "Add Client",
+        "update": "Update Client",
+        "errors": {
+            "company_name_required": "Company name is required",
+            "company_name_min": "Company name must be at least 2 characters",
+            "email_invalid": "Please enter a valid email address",
+            "email_required": "Email address is required",
+            "address_required": "Address is required",
+            "address_min": "Address must be at least 2 characters",
+            "location_required": "Location is required",
+            "contact_person_name_required": "Contact person name is required",
+            "contact_person_name_min": "Contact name must be at least 2 characters",
+            "phone_required": "Phone number is required",
+            "phone_digits": "Phone number can only contain numbers",
+            "phone_min": "Phone number must be at least 10 digits",
+            "phone_max": "Phone number can't be longer than 15 digits"
+        }
+    },
+    "reminder": {
+        "amount": "Amount",
+        "amount_placeholder": "Enter amount",
+        "upload_label": "Upload proof of received",
+        "upload_placeholder": "Upload your attachments/Documents",
+        "cancel": "Cancel",
+        "send": "Send Reminder",
+        "errors": {
+            "amount_required": "Amount is required"
+        }
+    },
+    "clientDetails": {
+        "title": "Client Details",
+        "tabs": {
+            "po_list": "Purchasing Order List",
+            "invoice_list": "Invoice List"
+        }
+    },
+    "screenHeader": {
+        "create": "Create",
+        "filter": "Filter",
+        "sortAsc": "Sort Ascending",
+        "sortDesc": "Sort Descending",
+        "completed": "Completed",
+        "accept": "Accept",
+        "reject": "Reject",
+        "confirmReceiving": "Confirm Receiving",
+        "closePO": "Close PO",
+        "closed": "Closed"
+    },
+    "columns": {
+        "documentId": "Company No.",
+        "email": "Email",
+        "phone_number": "Phone Number",
+        "contact_person_name": "Contact Person",
+        "company_name": "Company Name",
+        "first_name": "First Name",
+        "last_name": "Last Name",
+        "role": "Role",
+        "department": "Department",
+        "title": "Name",
+        "perform_on": "Date",
+        "standing": "Standing",
+        "po_name": "Name",
+        "date_of_payment": "Date of each payment",
+        "payer": "Name of each payment",
+        "amount": "Amount paid",
+        "payment_method": "Payment method",
+        "item_number": "Item Number",
+        "item_name": "Item Name",
+        "price": "Price",
+        "company": "Company"
+    },
+    "Next": "Next",
+    "Back": "Back"
 }

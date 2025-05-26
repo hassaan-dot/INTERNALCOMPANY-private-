@@ -9,14 +9,10 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 40,
     borderRadius: 10,
     width: "30%",
-    // flex:1,
-    // alignItems: "center",
-    // justifyContent:'center'
   },
   title: {
     fontSize: 16,
     fontWeight: "400",
-    // marginBottom: 10,
     textAlign: "center",
     fontFamily: PoppinsRegular,
   },
@@ -29,7 +25,7 @@ export const styles = StyleSheet.create({
     // textAlign:'center',
     borderRadius: 5,
     padding: 10,
-    // minHeight: 80,
+    minHeight: 80,
     fontFamily: PoppinsRegular,
 
     textAlignVertical: "center",

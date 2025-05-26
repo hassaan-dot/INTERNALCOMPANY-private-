@@ -1,9 +1,9 @@
+import { Avatar, HorizontalLine } from "@/src/Components";
 import React from "react";
 import { Text, View, I18nManager } from "react-native";
-import { useTranslation } from "react-i18next";
-import { styles } from "./header_style";
-import { HorizontalLine } from "@/src/Components";
 import helpers from "../../utils/helpers";
+import { styles } from "./header_style";
+import { useTranslation } from "react-i18next";
 
 interface UserProfileProps {
   contact_person_name: string;
@@ -35,9 +35,15 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
 
   return (
     <View style={[styles.card, cardContainer]}>
-      <View style={[styles.row, { flexDirection: isRTL ? "row-reverse" : "row" }]}>
+      <View style={styles.row}>
         <View style={[styles.detailsSection, detailscreenContainer]}>
-          <View style={{ flexDirection: isRTL ? "row-reverse" : "row", justifyContent: "space-between" }}>
+          <View
+            style={{
+              flexDirection: isRTL ? "row-reverse" : "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+            }}
+          >
             <View>
               <Text style={[styles.detailsTitle, titleStyle]}>
                 {t("user_detail.details")}
@@ -46,7 +52,7 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
             </View>
           </View>
 
-          <View style={{ flex: 1, marginTop: 12 }}>
+          <View style={{ justifyContent: "space-between", flex: 1, marginTop: 12 }}>
             <View style={{ flexDirection: isRTL ? "row-reverse" : "row", flexWrap: "wrap" }}>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>{t("user_detail.id")}:</Text>
@@ -67,12 +73,11 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>{t("user_detail.role")}:</Text>
                 <Text style={[styles.link, style]}>
-                  {item?.role?.name ?? "-"}
+                  {item?.role?.name ? t(`roles.${item.role.name}`) : "-"}
                 </Text>
               </View>
             </View>
-
-            <View style={{ flexDirection: isRTL ? "row-reverse" : "row", flexWrap: "wrap", marginTop: 6 }}>
+            <View style={{ flexDirection: isRTL ? "row-reverse" : "row", marginTop: 6, flexWrap: "wrap" }}>
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>{t("user_detail.email")}:</Text>
                 <Text style={[styles.link, style]}>{item?.email}</Text>
@@ -84,7 +89,7 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
               <View style={styles.detailsItem}>
                 <Text style={[styles.label, style]}>{t("user_detail.department")}:</Text>
                 <Text style={[styles.link, style]}>
-                  {item?.department?.name}
+                  {item?.department?.name ? t(`departments.${item.department.name}`) : "-"}
                 </Text>
               </View>
             </View>

@@ -1,32 +1,54 @@
-import React, { useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, Pressable } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {
+    Modal,
+    View,
+    Text,
+    TouchableOpacity,
+    Pressable,
+    I18nManager,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { Picker } from '@react-native-picker/picker';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import i18n from '../../i18n';
 import { styles } from './style';
-import { I18nManager } from 'react-native';
-import RNRestart from 'react-native-restart';
-import { router } from 'expo-router';
+
+const LANGUAGE_KEY = 'APP_LANGUAGE';
 
 const LanguageSwitcher = () => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedLang, setSelectedLang] = useState(i18n.language);
-    const isRTL = i18n.language === "ar";
+    const [rtl, setRtl] = useState(I18nManager.isRTL);
 
     const handleLanguageChange = async (lang: string) => {
-        setSelectedLang(lang);
         await i18n.changeLanguage(lang);
+        await AsyncStorage.setItem(LANGUAGE_KEY, lang);
 
-        const isRTL = lang === 'ar';
+        const shouldBeRTL = lang === 'ar';
+        if (I18nManager.isRTL !== shouldBeRTL) {
+            I18nManager.allowRTL(true);
+            I18nManager.forceRTL(shouldBeRTL);
+        }
 
-        if (I18nManager.isRTL !== isRTL) {
-            I18nManager.forceRTL(isRTL);
-            // RNRestart.Restart();
-            // router.replace("/");
-        } else {
-            setModalVisible(false);
+        setRtl(shouldBeRTL);
+        setModalVisible(false);
+    };
+
+    const loadLanguage = async () => {
+        const storedLang = await AsyncStorage.getItem(LANGUAGE_KEY);
+        if (storedLang && storedLang !== i18n.language) {
+            await i18n.changeLanguage(storedLang);
+
+            const shouldBeRTL = storedLang === 'ar';
+            if (I18nManager.isRTL !== shouldBeRTL) {
+                I18nManager.allowRTL(true);
+                I18nManager.forceRTL(shouldBeRTL);
+                setRtl(shouldBeRTL);
+            }
         }
     };
+
+    useEffect(() => {
+        loadLanguage();
+    }, []);
 
     return (
         <>
@@ -36,7 +58,12 @@ const LanguageSwitcher = () => {
 
             <Modal transparent visible={modalVisible} animationType="fade">
                 <Pressable style={styles.backdrop} onPress={() => setModalVisible(false)} />
-                <View style={styles.modal}>
+                <View
+                    style={[
+                        styles.modal,
+                        rtl ? { left: 20, right: 'auto' } : { right: 20, left: 'auto' },
+                    ]}
+                >
                     <Text style={styles.label}>Select Language</Text>
 
                     <TouchableOpacity

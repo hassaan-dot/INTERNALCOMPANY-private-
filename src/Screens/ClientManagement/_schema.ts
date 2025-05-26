@@ -1,145 +1,146 @@
+import i18n from "@/src/i18n";
+
 export const columns_schema = [
   {
     key: "documentId",
-    header: "Company No.",
+    header: i18n.t("columns.documentId"),
   },
   {
     key: "email",
-    header: "Email",
+    header: i18n.t("columns.email"),
   },
   {
     key: "phone_number",
-    header: "Phone Number",
+    header: i18n.t("columns.phone_number"),
   },
   {
     key: "contact_person_name",
-    header: "Conatact Person",
+    header: i18n.t("columns.contact_person"),
   },
   {
     key: "company_name",
-    header: "Company Name",
+    header: i18n.t("columns.company_name"),
   },
 ];
+
 export const User_columns_schema = [
   {
     key: "first_name",
-    header: "First Name",
+    header: i18n.t("columns.first_name"),
   },
   {
     key: "last_name",
-    header: "Last Name",
+    header: i18n.t("columns.last_name"),
   },
   {
     key: "email",
-    header: "Email",
+    header: i18n.t("columns.email"),
   },
   {
     key: "phone_number",
-    header: "Phone Number",
+    header: i18n.t("columns.phone_number"),
   },
   {
     key: "role.name",
-    header: "Role",
+    header: i18n.t("columns.role"),
   },
   {
     key: "department.name",
-    header: "Department",
+    header: i18n.t("columns.department"),
   },
 ];
 
 export const Requests_columns_schema = [
   {
     key: "documentId",
-    header: "Id",
+    header: i18n.t("columns.id"),
   },
   {
     key: "title",
-    header: "Name",
+    header: i18n.t("columns.name"),
   },
-
   {
     key: "perform_on",
-    header: "Date",
+    header: i18n.t("columns.date"),
   },
   {
     key: "standing",
-    header: "Standing",
+    header: i18n.t("columns.standing"),
   },
 ];
 
 export const Po_Schema = [
   {
     key: "po_name",
-    header: "Name",
+    header: i18n.t("columns.po_name"),
   },
   {
     key: "client.company_name",
-    header: "Company Name",
+    header: i18n.t("columns.company_name"),
   },
   {
     key: "client.contact_person_name",
-    header: "Contact Person",
+    header: i18n.t("columns.contact_person"),
   },
   {
     key: "client.email",
-    header: "Email",
+    header: i18n.t("columns.email"),
   },
   {
     key: "client.phone_number",
-    header: "Phone number",
+    header: i18n.t("columns.phone_number"),
   },
 ];
 
 export const Po_Schema_Client = [
   {
     key: "po_name",
-    header: "Name",
+    header: i18n.t("columns.po_name"),
   },
   {
     key: "client.email",
-    header: "Email",
+    header: i18n.t("columns.email"),
   },
   {
     key: "client.phone_number",
-    header: "Phone number",
+    header: i18n.t("columns.phone_number"),
   },
 ];
 
 export const Invoice_Schema = [
   {
     key: "date_of_payment",
-    header: "Date of each payment",
+    header: i18n.t("columns.date_of_payment"),
   },
   {
     key: "payer",
-    header: "Name of each payment",
+    header: i18n.t("columns.payer"),
   },
-
   {
     key: "amount",
-    header: "Amount paid",
+    header: i18n.t("columns.amount_paid"),
   },
   {
     key: "payment_method",
-    header: "Payment method",
+    header: i18n.t("columns.payment_method"),
   },
 ];
+
 export const Item_Schema = [
   {
     key: "item_number",
-    header: "Item Number",
+    header: i18n.t("columns.item_number"),
   },
   {
     key: "item_name",
-    header: "Item Name",
+    header: i18n.t("columns.item_name"),
   },
-
   {
     key: "price",
-    header: "Price",
+    header: i18n.t("columns.price"),
   },
   {
     key: "company",
-    header: "Company",
+    header: i18n.t("columns.company"),
   },
 ];

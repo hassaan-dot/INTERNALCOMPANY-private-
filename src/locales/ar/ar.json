@@ -25,7 +25,11 @@
         "closed": "مغلق",
         "confirmed": "مؤكد",
         "accepted": "مقبول",
-        "rejected": "مرفوض"
+        "rejected": "مرفوض",
+        "Completed PO": "طلب مكتمل",
+        "Pending PO": "طلب قيد الانتظار",
+        "Closed PO": "طلب مغلق",
+        "Created PO": "طلب جديد"
     },
     "po_section": {
         "title": "طلبات الشراء المسندة إليك",
@@ -57,7 +61,13 @@
         "role": "الدور",
         "email": "البريد الإلكتروني",
         "username": "اسم المستخدم",
-        "department": "القسم"
+        "department": "القسم",
+        "total_hours": "إجمالي عدد ساعات العمل اليومية",
+        "po_report": "تقرير أوامر الشراء",
+        "Completed PO": "تم تنفيذ أمر الشراء",
+        "Pending PO": "أمر الشراء قيد الانتظار",
+        "Closed PO": "أمر الشراء مغلق",
+        "Created PO": "أمر الشراء مُنشأ"
     },
     "User_Detail": "تفاصيل المستخدم",
     "request_details": {
@@ -92,8 +102,12 @@
         "Chemical": "الكيميائية",
         "Marketing": "التسويق",
         "Accounting": "المحاسبة",
-        "Human Resources": "الموارد البشرية",
-        "Sales persons coordinator": "منسق مندوبي المبيعات"
+        "Human Resources ": "الموارد البشرية",
+        "Sales persons coordinator ": "منسق مندوبي المبيعات"
+    },
+    "roles": {
+        "Admin": "مشرف",
+        "Employee": "موظف"
     },
     "Are you sure you want to delete this news?": "هل أنت متأكد من أنك تريد حذف هذا الإعلان؟",
     "Delete": "حذف",
@@ -114,6 +128,7 @@
     "phone_number": "رقم الهاتف",
     "select_role": "اختر الدور",
     "select_department": "اختر القسم",
+    "jobs_title": "المسمى الوظيفي",
     "add_user": "إضافة مستخدم",
     "edit_user": "تعديل المستخدم",
     "cancel": "إلغاء",
@@ -170,5 +185,90 @@
             "clientRequired": "اختيار العميل مطلوب",
             "clientMin": "يرجى اختيار عميل صالح"
         }
-    }
+    },
+    "client": {
+        "createTitle": "إنشاء عميل",
+        "updateTitle": "تحديث العميل",
+        "contact_person_name": "اسم الشخص المسؤول",
+        "email": "البريد الإلكتروني",
+        "email_placeholder": "example@email.com",
+        "phone_number": "رقم الهاتف",
+        "company_name": "اسم الشركة",
+        "address": "العنوان",
+        "address_placeholder": "أدخل عنوان المنزل",
+        "location": "الموقع",
+        "cancel": "إلغاء",
+        "add": "إضافة عميل",
+        "update": "تحديث العميل",
+        "errors": {
+            "company_name_required": "اسم الشركة مطلوب",
+            "company_name_min": "يجب أن يكون اسم الشركة مكونًا من حرفين على الأقل",
+            "email_invalid": "يرجى إدخال بريد إلكتروني صحيح",
+            "email_required": "البريد الإلكتروني مطلوب",
+            "address_required": "العنوان مطلوب",
+            "address_min": "يجب أن يكون العنوان مكونًا من حرفين على الأقل",
+            "location_required": "الموقع مطلوب",
+            "contact_person_name_required": "اسم الشخص المسؤول مطلوب",
+            "contact_person_name_min": "يجب أن يكون الاسم مكونًا من حرفين على الأقل",
+            "phone_required": "رقم الهاتف مطلوب",
+            "phone_digits": "يمكن أن يحتوي رقم الهاتف على أرقام فقط",
+            "phone_min": "يجب أن يكون رقم الهاتف 10 أرقام على الأقل",
+            "phone_max": "لا يمكن أن يكون رقم الهاتف أطول من 15 رقمًا"
+        },
+        "reminder": {
+            "amount": "المبلغ",
+            "amount_placeholder": "أدخل المبلغ",
+            "upload_label": "إرفاق إثبات الاستلام",
+            "upload_placeholder": "قم برفع المستندات أو المرفقات",
+            "cancel": "إلغاء",
+            "send": "إرسال التذكير",
+            "errors": {
+                "amount_required": "المبلغ مطلوب"
+            }
+        },
+        "clientDetails": {
+            "title": "تفاصيل العميل",
+            "tabs": {
+                "po_list": "قائمة أوامر الشراء",
+                "invoice_list": "قائمة الفواتير"
+            }
+        }
+    },
+    "screenHeader": {
+        "create": "إنشاء",
+        "filter": "تصفية",
+        "sortAsc": "ترتيب تصاعدي",
+        "sortDesc": "ترتيب تنازلي",
+        "completed": "مكتمل",
+        "accept": "قبول",
+        "reject": "رفض",
+        "confirmReceiving": "تأكيد الاستلام",
+        "closePO": "إغلاق الطلب",
+        "closed": "مغلق"
+    },
+    "columns": {
+        "documentId": "رقم الشركة",
+        "email": "البريد الإلكتروني",
+        "phone_number": "رقم الهاتف",
+        "contact_person_name": "اسم جهة الاتصال",
+        "company_name": "اسم الشركة",
+        "first_name": "الاسم الأول",
+        "last_name": "اسم العائلة",
+        "role": "الدور",
+        "department": "القسم",
+        "title": "الاسم",
+        "perform_on": "التاريخ",
+        "standing": "الحالة",
+        "po_name": "الاسم",
+        "date_of_payment": "تاريخ الدفع",
+        "payer": "اسم الدافع",
+        "amount": "المبلغ المدفوع",
+        "payment_method": "طريقة الدفع",
+        "item_number": "رقم العنصر",
+        "item_name": "اسم العنصر",
+        "price": "السعر",
+        "company": "الشركة"
+    },
+    "Next": "التالي",
+    "Back": "رجوع"
 }

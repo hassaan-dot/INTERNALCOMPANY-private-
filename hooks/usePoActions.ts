@@ -29,7 +29,7 @@ const handleSendConfirmCode = async (id: string) => {
 };
 
 const handleAssignPO = async (users: any, id: string) => {
-  console.log("users", users);
+  // console.log("users", users);
   const res = await api.post(`/purchase-orders/${id}/assign`, users);
   return res.data;
 };

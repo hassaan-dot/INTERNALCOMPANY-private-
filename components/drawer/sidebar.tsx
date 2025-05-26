@@ -1,41 +1,21 @@
 import { PoppinsRegular } from "@/constants/fonts";
-import { ProfileHeader } from "@/src/Components";
-import helpers from "@/src/utils/helpers";
-import { Drawer } from "expo-router/drawer";
-import React, { useMemo } from "react";
-import { Platform, useWindowDimensions } from "react-native";
-import DrawerItem from "./drawer_item";
-import { Image } from "react-native";
 import { icons } from "@/assets/icons/icons";
-import { useAuthStore } from "@/store/useAuthStore";
 import { ROLE } from "@/constants/role";
 import { drawerIconProps } from "@/constants/types";
+import { useAuthStore } from "@/store/useAuthStore";
 import { useTranslation } from "react-i18next";
+import { usePathname, useRouter } from "expo-router";
+import { View, Text, TouchableOpacity, Image, StyleSheet, I18nManager } from "react-native";
+import React, { useMemo } from "react";
+// import logo from "@/assets/images/logo.png";
+import logo from "../../src/assets/images/logo.png";
+
 
 const Sidebar = () => {
   const { user } = useAuthStore();
-  const { width } = useWindowDimensions();
   const { t } = useTranslation();
-
-  const getDrawerWidth = () => {
-    if (Platform.OS === "web") {
-      return Math.min(width * 0.18, 300);
-    }
-
-    return width >= 768 ? 60 : width * 0.7;
-  };
-
-  const getDrawerType = () => {
-    if (Platform.OS === "web") {
-      return "permanent";
-    }
-
-    if (Platform.OS === "ios") {
-      return "slide";
-    }
-
-    return width >= 768 ? "permanent" : "slide";
-  };
+  const router = useRouter();
+  const pathname = usePathname();
 
   const drawer_items = useMemo(
     () => [
@@ -43,134 +23,162 @@ const Sidebar = () => {
         name: "dashboard",
         label: t("drawer.dashboard"),
         href: "/(app)/dashboard",
-        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
-          <Image
-            source={icons.drawertabdashboardIcon}
-            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-          />
-        ),
+        icon: icons.drawertabdashboardIcon,
         show: true,
       },
       {
         name: "user-management",
         label: t("drawer.userManagement"),
         href: "/(app)/user-management",
-        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
-          <Image
-            source={icons.drawertabUsersIcon}
-            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-          />
-        ),
+        icon: icons.drawertabUsersIcon,
         show: user?.role?.name === ROLE.ADMIN,
       },
       {
         name: "client-management",
         label: t("drawer.clientManagement"),
         href: "/(app)/client-management",
-        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
-          <Image
-            source={icons.drawertabUsersIcon}
-            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-          />
-        ),
+        icon: icons.drawertabUsersIcon,
         show: user?.role?.name === ROLE.ADMIN,
       },
       {
         name: "payment",
         label: t("drawer.payment"),
         href: "/(app)/payment",
-        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
-          <Image
-            source={icons.drawertabLawIcon}
-            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-          />
-        ),
+        icon: icons.drawertabLawIcon,
         show: true,
       },
       {
         name: "po-management",
         label: t("drawer.poManagement"),
         href: "/(app)/po-management",
-        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
-          <Image
-            source={icons.drawertabstarsupIcon}
-            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-          />
-        ),
+        icon: icons.drawertabstarsupIcon,
         show: true,
       },
       {
         name: "request",
         label: t("drawer.request"),
         href: "/(app)/request",
-        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
-          <Image
-            source={icons.drawertabnoteIcon}
-            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-          />
-        ),
+        icon: icons.drawertabnoteIcon,
         show: true,
       },
       {
         name: "report",
         label: t("drawer.report"),
         href: "/(app)/report",
-        drawerIcon: ({ color, size, focused }: drawerIconProps) => (
-          <Image
-            source={icons.drawertabstarsupIcon}
-            style={{ width: 20, height: 20, tintColor: focused ? "#fff" : "" }}
-          />
-        ),
+        icon: icons.drawertabstarsupIcon,
         show: user?.role?.name === ROLE.ADMIN,
       },
     ],
-    [t, user?.role?.name] // ensure translations and role updates trigger update
+    [t, user?.role?.name]
   );
-
 
   return (
-    <Drawer
-      initialRouteName="dashboard"
-      drawerContent={() => <DrawerItem drawer_items={drawer_items} />}
-      screenOptions={{
-        header: (props) => <ProfileHeader {...props} />,
-        headerShown: true,
-        drawerStyle: {
-          backgroundColor: "#fff",
-          width: getDrawerWidth(),
-          borderWidth: 0,
-          borderColor: "#fff",
+    <View
+      style={[
+        styles.sidebarContainer,
+        {
+          direction: I18nManager.isRTL ? "rtl" : "ltr",
+          alignItems: I18nManager.isRTL ? "flex-end" : "flex-start",
         },
-        drawerLabelStyle: {
-          fontSize: 16,
-          fontWeight: "600",
-          color: "#333",
-          fontFamily: PoppinsRegular,
-        },
-        drawerType: getDrawerType(),
-        drawerPosition: "left",
-        swipeEdgeWidth: Platform.select({
-          web: 0,
-          default: 50,
-        }),
-        overlayColor: "transparent",
-      }}
+      ]}
     >
+      <Image
+        source={logo}
+        style={styles.logo}
+        resizeMode="contain"
+      />
       {drawer_items
-        ?.filter((item) => item.show)
-        ?.map((item, index) => (
-          <Drawer.Screen
-            key={index}
-            name={item.name}
-            options={{
-              drawerLabel: item.label,
-              title: item.label,
-              drawerIcon: item.drawerIcon,
-            }}
-          />
-        ))}
-    </Drawer>
+        .filter((item) => item.show)
+        .map((item, index) => {
+          const isActive = pathname.includes(item.name);
+          return (
+            <TouchableOpacity
+              onPress={() => router.push(item.href)}
+              style={[
+                styles.menuItem,
+                isActive && styles.activeMenuItem,
+                {
+                  flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
+                  justifyContent: I18nManager.isRTL ? 'flex-end' : 'flex-start',
+                  alignItems: 'center',
+                  width: '100%',
+                },
+              ]}
+            >
+              <Image
+                source={item.icon}
+                style={[styles.icon, isActive && { tintColor: "#fff" }]}
+              />
+              <Text
+                style={[
+                  styles.label,
+                  isActive && styles.activeLabel,
+                  {
+                    textAlign: I18nManager.isRTL ? "right" : "left",
+                    writingDirection: I18nManager.isRTL ? "rtl" : "ltr",
+                    flex: 1,
+                  },
+                ]}
+              >
+                {item.label}
+              </Text>
+            </TouchableOpacity>
+          );
+        })}
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  sidebarContainer: {
+    width: 260,
+    backgroundColor: "#fff",
+    paddingTop: 20,
+    paddingHorizontal: 10,
+    borderColor: "#eee",
+    height: "100%",
+    borderRightWidth: I18nManager.isRTL ? 0 : 1,
+    borderLeftWidth: I18nManager.isRTL ? 1 : 0,
+  },
+  menuItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 8,
+    marginBottom: 8,
+    backgroundColor: "transparent",
+    width: "100%",
+  },
+  activeMenuItem: {
+    backgroundColor: "#07504B",
+  },
+  icon: {
+    width: 20,
+    height: 20,
+    resizeMode: "contain",
+    marginRight: I18nManager.isRTL ? 0 : 12,
+    marginLeft: I18nManager.isRTL ? 12 : 0,
+  },
+  label: {
+    fontFamily: PoppinsRegular,
+    fontSize: 14,
+    color: "#A47C60",
+    flex: 1,
+    textAlign: I18nManager.isRTL ? "right" : "left",
+    alignSelf: I18nManager.isRTL ? "flex-end" : "flex-start",
+    direction: I18nManager.isRTL ? "rtl" : "ltr",
+  },
+  activeLabel: {
+    color: "#fff",
+    fontWeight: "600",
+  },
+  logo: {
+    width: 160,
+    height: 60,
+    marginBottom: 20,
+    alignSelf: I18nManager.isRTL ? "center" : "center",
+  },
+});
 
 export default Sidebar;

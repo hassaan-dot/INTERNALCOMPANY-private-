@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { LogBox, StyleSheet, View } from "react-native";
 import App from "./root/index"; // Your main App component
 import './src/i18n';
+import { ActivityIndicator } from "react-native-paper";
 // Define all your custom fonts
 
 // FontLoader component
@@ -21,12 +22,12 @@ const FontLoader = ({ children }: any) => {
   if (!fontsLoaded) {
     return (
       <View style={styles.loadingContainer}>
-        {/* <ActivityIndicator size="large" color="#0000ff" /> */}
+        <ActivityIndicator size="large" color="#0000ff" />
       </View>
     );
   }
 
-  return children; // Render the children (your app) once fonts are loaded
+  return children;
 };
 
 // Main Page component
