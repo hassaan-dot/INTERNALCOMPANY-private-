@@ -16,4 +16,5 @@ export const string = {
   Submit: "Submit",
   ResendCode: "Resend Code",
   DidntrecieveCode: "Did'nt recieve the code?",
+  Confirm: "Confirm",
 };

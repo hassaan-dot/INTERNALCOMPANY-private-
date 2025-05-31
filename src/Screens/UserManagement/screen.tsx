@@ -53,6 +53,9 @@ const UserManagement = () => {
     role,
     department,
     id,
+    job_title,
+    national_id,
+    is_absher_verified,
   }: any) => {
     if (!id) return;
 
@@ -64,10 +67,14 @@ const UserManagement = () => {
       phone_number,
       role,
       department,
+      job_title,
+      national_id,
+      is_absher_verified,
     };
 
     handleUpdate({ data, id });
   };
+
 
   const onPressAddfunction = ({
     first_name,
@@ -78,6 +85,9 @@ const UserManagement = () => {
     password,
     role,
     department,
+    job_title,
+    national_id,
+    is_absher_verified,
   }: any) => {
     let data: any = {
       first_name,
@@ -87,7 +97,11 @@ const UserManagement = () => {
       password,
       phone_number,
       role,
+      job_title,
+      national_id,
+      is_absher_verified,
     };
+
     if (department) {
       data = {
         ...data,
@@ -96,6 +110,7 @@ const UserManagement = () => {
     }
     handleAdd(data);
   };
+
 
   const handleSubmit = (formData: any) => {
     if (rowData?.isEdit) onPressUpdatefunction(formData);
@@ -112,6 +127,9 @@ const UserManagement = () => {
     role,
     department,
     id,
+    job_title,
+    national_id,
+    is_absher_verified,
   }: any) => {
     const data = {
       first_name,
@@ -126,10 +144,14 @@ const UserManagement = () => {
       department_name: department?.name,
       id,
       isEdit: true,
+      job_title,
+      national_id,
+      is_absher_verified,
     };
     setRowData(data);
     setIsUserModalOpen(true);
   };
+
 
   const onPressDelete = (documentId: string, id: any) => {
     const data = {

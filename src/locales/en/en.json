@@ -67,8 +67,12 @@
         "Completed PO": "Completed PO",
         "Pending PO": "Pending PO",
         "Closed PO": "Closed PO",
-        "Created PO": "Created PO"
+        "Created PO": "Created PO",
+        "job_title": "Job Title",
+        "national_id": "National ID"
     },
+    "job_title": "Job Title",
+    "national_id": "National ID",
     "User_Detail": "User Detail",
     "request_details": {
         "title": "Request Details",
@@ -270,5 +274,6 @@
         "company": "Company"
     },
     "Next": "Next",
-    "Back": "Back"
+    "Back": "Back",
+    "national_id_must_be_10_digits": "National ID must be exactly 10 digits"
 }

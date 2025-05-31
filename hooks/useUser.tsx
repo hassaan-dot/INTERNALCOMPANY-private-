@@ -18,9 +18,26 @@ const handleGetOneUser = async (documentId: string) => {
   return res.data;
 };
 
+// const handleCreateUser = async (data: any) => {
+//   const res = await api.post("/users", data);
+//   return res.data;
+// };
+
 const handleCreateUser = async (data: any) => {
-  const res = await api.post("/users", data);
-  return res.data;
+  try {
+    // Step 1: Create user
+    const res = await api.post("/users", data);
+    const createdUser = res.data;
+    const documentId = createdUser.id;
+
+    // Step 2: Send email invitation
+    await api.post("/send-invitation", { documentId });
+
+    return createdUser;
+  } catch (error) {
+    console.error("User creation or invitation failed:", error);
+    throw error;
+  }
 };
 
 const handleDeleteUser = async (data: any) => {

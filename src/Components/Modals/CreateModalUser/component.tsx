@@ -11,6 +11,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Switch,
 } from "react-native";
 import * as yup from "yup";
 import { SingleSelectDropDown } from "../..";
@@ -44,7 +45,9 @@ const CreateUserModal = ({
       password: "",
       role: "",
       department: "",
-      jobs_title: "",
+      job_title: "",
+      national_id: "",
+      is_absher_verified: false,
     }
   );
 
@@ -63,7 +66,11 @@ const CreateUserModal = ({
       .min(10, t("min_phone")),
     role: yup.string().required(t("required")),
     department: yup.string().required(t("required")),
-    jobs_title: yup.string().required(t("required")),
+    job_title: yup.string().required(t("required")),
+    national_id: yup
+      .string()
+      .required(t("required"))
+      .matches(/^[0-9]{10}$/, t("national_id_must_be_10_digits")),
   });
 
   const [errors, setErrors] = useState({});
@@ -87,20 +94,22 @@ const CreateUserModal = ({
 
   const validateStep = async () => {
     try {
-      const partialSchema = step === 1
-        ? yup.object().shape({
-          first_name: userSchema.fields.first_name,
-          last_name: userSchema.fields.last_name,
-          email: userSchema.fields.email,
-          username: userSchema.fields.username,
-          password: userSchema.fields.password,
-          phone_number: userSchema.fields.phone_number,
-        })
-        : yup.object().shape({
-          role: userSchema.fields.role,
-          department: userSchema.fields.department,
-          jobs_title: userSchema.fields.jobs_title,
-        });
+      const partialSchema =
+        step === 1
+          ? yup.object().shape({
+            first_name: userSchema.fields.first_name,
+            last_name: userSchema.fields.last_name,
+            email: userSchema.fields.email,
+            username: userSchema.fields.username,
+            password: userSchema.fields.password,
+            phone_number: userSchema.fields.phone_number,
+          })
+          : yup.object().shape({
+            role: userSchema.fields.role,
+            department: userSchema.fields.department,
+            job_title: userSchema.fields.job_title,
+            national_id: userSchema.fields.national_id,
+          });
 
       await partialSchema.validate(formData, { abortEarly: false });
       return true;
@@ -127,7 +136,8 @@ const CreateUserModal = ({
     setTouched({
       role: true,
       department: true,
-      jobs_title: true,
+      job_title: true,
+      national_id: true,
     });
     const isValid = await validateStep();
     if (isValid) {
@@ -257,13 +267,24 @@ const CreateUserModal = ({
                 />
 
                 <InputField
-                  title={t("jobs_title")}
-                  placeholder={t("jobs_title")}
-                  value={formData.jobs_title}
-                  onChangeText={(text) => handleInputChange("jobs_title", text)}
-                  style={[styles.input, { borderColor: errors.jobs_title ? "red" : "#ddd" }]}
-                  error={touched.jobs_title && errors.jobs_title}
-                  errorMessage={touched.jobs_title && errors.jobs_title}
+                  title={t("job_title")}
+                  placeholder={t("job_title")}
+                  value={formData.job_title}
+                  onChangeText={(text) => handleInputChange("job_title", text)}
+                  style={[styles.input, { borderColor: errors.job_title ? "red" : "#ddd" }]}
+                  error={touched.job_title && errors.job_title}
+                  errorMessage={touched.job_title && errors.job_title}
+                  titleStyle={styles.fontSize}
+                />
+
+                <InputField
+                  title={t("national_id")}
+                  placeholder={t("national_id")}
+                  value={formData.national_id}
+                  onChangeText={(text) => handleInputChange("national_id", text)}
+                  style={[styles.input, { borderColor: errors.national_id ? "red" : "#ddd" }]}
+                  error={touched.national_id && errors.national_id}
+                  errorMessage={touched.national_id && errors.national_id}
                   titleStyle={styles.fontSize}
                 />
               </>

@@ -108,7 +108,7 @@ const ProfileHeader: React.FC = () => {
         <TouchableOpacity onPress={onMenuPress}>
           <SignoutDropdown visible={visible} setVisible={setVisible} />
           <Image
-            source={{ uri: "https://hcapi.abdullahkimrigh.sa/uploads/profile_icon_design_free_vector_29decaa99c.jpg" }}
+            source={{ uri: "https://api.tryitout.info/uploads/profile_icon_design_free_vector_29decaa99c.jpg" }}
             style={styles.avatar}
           />
         </TouchableOpacity>

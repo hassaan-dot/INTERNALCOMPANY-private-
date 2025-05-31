@@ -92,6 +92,14 @@ const UserDetailHeader: React.FC<UserProfileProps> = ({
                   {item?.department?.name ? t(`departments.${item.department.name}`) : "-"}
                 </Text>
               </View>
+              <View style={styles.detailsItem}>
+                <Text style={[styles.label, style]}>{t("user_detail.job_title")}:</Text>
+                <Text style={[styles.link, style]}>{item?.job_title ?? "-"}</Text>
+              </View>
+              <View style={styles.detailsItem}>
+                <Text style={[styles.label, style]}>{t("user_detail.national_id")}:</Text>
+                <Text style={[styles.link, style]}>{item?.national_id ?? "-"}</Text>
+              </View>
             </View>
           </View>
         </View>
