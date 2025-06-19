@@ -9,16 +9,14 @@ import {
   TabSelector,
 } from "../../Components";
 import { styles } from "./styles";
-import {
-  Invoice_Schema,
-  Po_Schema_Client,
-} from "../ClientManagement/_schema";
 import { useGetPO } from "@/hooks/usePO";
 import { useGetInvoice } from "@/hooks/usePOpayments";
 import { useTranslation } from "react-i18next";
+import { useSchemas } from "@/hooks/useSchemas";
 
 const ClientDetails = () => {
   const { t } = useTranslation();
+  const { Po_Schema_Client, Invoice_Schema } = useSchemas();
   const { id } = useLocalSearchParams();
   const router = useRouter();
   const { data, isPending } = useGetOneClient(id as string);
@@ -34,7 +32,22 @@ const ClientDetails = () => {
       </View>
 
       <View>
-        <ClientDetailsHeader item={data} profile={true} />
+        <ClientDetailsHeader
+          item={data}
+          profile={true}
+          contact_person_name={data?.data?.contact_person_name}
+          email={data?.data?.email}
+          phone_number={data?.data?.phone_number}
+          company_name={data?.data?.company_name}
+          rows={1}
+          style={{}}
+          title={t("clientDetails.title")}
+          titleIcon={false}
+          titleStyle={{}}
+          cardContainer={{}}
+          detailscreenContainer={{}}
+          horizontalwidth="50%"
+        />
       </View>
 
       <View style={styles.container3}>
@@ -45,6 +58,11 @@ const ClientDetails = () => {
           ]}
           selectedTab={selectedTab}
           setSelectedTab={setSelectedTab}
+          style={{}}
+          textStyle={{}}
+          barColor="#07504B"
+          dropDownButton={false}
+          containerStyle={{}}
         />
       </View>
 
@@ -69,6 +87,9 @@ const ClientDetails = () => {
                 : "/(app)/payment/payment-details";
             router.push(`${basePath}?id=${documentId}`);
           }}
+          onPressUpdate={() => { }}
+          onPressDelete={() => { }}
+          showDocument={false}
         />
       </View>
     </ScrollView>

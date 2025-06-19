@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
     // right: 18,
     // width: "43%",
     // flex: 1,
-
     borderRadius: 20,
   },
   dot: {
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     height: 8,
     alignSelf: "center",
     borderRadius: 4,
-    marginRight: 6,
+    marginHorizontal: 6,
   },
   text: {
     fontSize: 12,

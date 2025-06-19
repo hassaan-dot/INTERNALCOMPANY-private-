@@ -3,31 +3,21 @@ import { View, Text, Image } from "react-native";
 import helpers from "../../utils/helpers";
 import { icons } from "@/assets/icons/icons";
 import { styles } from "./styles";
-interface UserProfileProps {
-  name: string;
-  email: string;
-  contact: string;
-  country: string;
-  rows: number;
-  profile: boolean;
-  style: any;
-  title: string;
-  titleIcon: boolean;
-  titleStyle: any;
-  cardContainer: any;
-  detailscreenContainer: any;
-  horizontalwidth: any;
-  colorProp: any;
+
+interface InformationContainerProps {
+  style?: any;
+  titleStyle?: any;
+  rows?: number;
   Data: any;
+  title: string;
+  horizontalwidth?: number;
+  detailscreenContainer?: any;
+  cardContainer?: any;
+  titleIcon?: boolean;
 }
 
-const InformationContainer: React.FC<UserProfileProps> = ({
+const InformationContainer: React.FC<InformationContainerProps> = ({
   rows,
-  name = "Ahmed",
-  email = "Ahmed@gmail.com",
-  contact = "923174431419",
-  country = "Saudia  Arabia",
-  profile = false,
   style,
   Data,
   title = "Details",
@@ -36,19 +26,10 @@ const InformationContainer: React.FC<UserProfileProps> = ({
   cardContainer,
   detailscreenContainer,
   horizontalwidth = "50%",
-  colorProp = "#D0D5DD",
 }) => {
   return (
     <View style={[styles.card, cardContainer]}>
       <View style={styles.row}>
-        {profile && (
-          <View style={styles.profileSection}>
-            <View style={styles.profileImage} />
-            <View style={{ marginLeft: 10 }}>
-              <Text style={styles.name}>{name}</Text>
-            </View>
-          </View>
-        )}
         <View style={[styles.detailsSection, detailscreenContainer]}>
           <View
             style={{
@@ -72,7 +53,7 @@ const InformationContainer: React.FC<UserProfileProps> = ({
           <View
             style={{
               borderBottomWidth: 1,
-              flexirection: "row",
+              flexDirection: "row",
               borderColor: "#E8E8E8",
               flex: 1,
             }}

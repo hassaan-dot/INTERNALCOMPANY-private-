@@ -7,7 +7,7 @@ import { Stack } from "expo-router/stack";
 import React, { useEffect } from "react";
 import { ThemeProvider } from "../src/utils/theme/theme";
 import { View } from "react-native";
-import Toast from "react-native-toast-message";
+// import Toast from "react-native-toast-message";
 import { toastConfig } from "@/services/toastConfig";
 import { I18nManager } from "react-native";
 SplashScreen.preventAutoHideAsync();
@@ -42,7 +42,7 @@ const RootLayout = () => {
           </Stack>
         </ThemeProvider>
       </QueryProvider>
-      <Toast config={toastConfig} />
+      {/* <Toast config={toastConfig} /> */}
     </View>
   );
 

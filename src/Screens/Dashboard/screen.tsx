@@ -32,7 +32,13 @@ const Dashboard = () => {
         <View style={styles.container4}>
           {isMobileView && (
             <View>
-              <Admineader />
+              <Admineader
+                profileImage="https://randomuser.me/api/portraits/men/1.jpg"
+                name="Admin User"
+                userType="Administrator"
+                desc="System Administrator"
+                onMenuPress={() => { }}
+              />
             </View>
           )}
           <View>

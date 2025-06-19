@@ -5,40 +5,27 @@ import helpers from "../../utils/helpers";
 import FilledButton from "../Buttons/FilledButton/FilledButton";
 import CompanyTable from "../TableData/component";
 import { PoppinsRegular } from "../../Resources/fonts";
-import { Invoice_Schema } from "@/src/Screens/ClientManagement/_schema";
-interface UserProfileProps {
-  name: string;
-  email: string;
-  contact: string;
-  country: string;
-  rows: number;
-  profile: boolean;
-  style: any;
+
+interface TableTitleProps {
   title: string;
-  titleIcon: boolean;
-  titleStyle: any;
-  cardContainer: any;
-  detailscreenContainer: any;
-  horizontalwidth: any;
-  colorProp: any;
-  TextEnable: boolean;
-  Document: boolean;
-  TextTitle: string;
-  height: any;
-  ButtonTitle: string;
-  titleIcon2: boolean;
-  ButtonTitle2: string;
-  onPress: () => void;
+  titleIcon?: boolean;
+  titleStyle?: any;
+  cardContainer?: any;
+  detailscreenContainer?: any;
+  ButtonTitle?: string;
+  titleIcon2?: boolean;
+  ButtonTitle2?: string;
+  onPress?: () => void;
   DATA: any;
   schema: any;
-  rowTextStyle: any;
-  onPressEdit?: any;
-  onPressDel?: any;
-  onClickEye?: any;
+  rowTextStyle?: any;
+  onPressEdit?: (item: any) => void;
+  onPressDel?: (item: any) => void;
+  onClickEye?: (item: any) => void;
   showEye?: boolean;
 }
 
-const TableTitle: React.FC<UserProfileProps> = ({
+const TableTitle: React.FC<TableTitleProps> = ({
   rowTextStyle,
   DATA,
   title,
@@ -46,10 +33,10 @@ const TableTitle: React.FC<UserProfileProps> = ({
   titleStyle,
   cardContainer,
   detailscreenContainer,
-  ButtonTitle,
+  ButtonTitle = "",
   titleIcon2,
-  ButtonTitle2,
-  onPress,
+  ButtonTitle2 = "",
+  onPress = () => { },
   onPressEdit,
   onPressDel,
   schema,
@@ -82,37 +69,37 @@ const TableTitle: React.FC<UserProfileProps> = ({
                     }}
                     title={ButtonTitle}
                     onPress={onPress}
+                    buttonBackground="#F3f6FF"
                     containerStyle={{
-                      backgroundColor: "#F3f6FF",
                       height: 0,
                       paddingVertical: 15,
                       paddingHorizontal: 20,
                       borderRadius: 5.333,
                     }}
-                  ></FilledButton>
+                  />
                 )}
               </View>
               {titleIcon2 && (
                 <FilledButton
                   titleStyle={{ fontSize: 10, fontWeight: 600, color: "black" }}
                   title={ButtonTitle2}
+                  onPress={onPress}
+                  buttonBackground="#F3f6FF"
                   containerStyle={{
-                    backgroundColor: "#F3f6FF",
                     height: 0,
                     paddingVertical: 15,
                     paddingHorizontal: 20,
                     borderRadius: 5.333,
                   }}
-                ></FilledButton>
+                />
               )}
             </View>
           </View>
           <View
             style={{
               borderBottomWidth: 1,
-              flexirection: "row",
+              flexDirection: "row",
               borderColor: "#E8E8E8",
-              // width: horizontalwidth,
               flex: 1,
             }}
           ></View>
@@ -142,6 +129,7 @@ const TableTitle: React.FC<UserProfileProps> = ({
                 padding: 12,
                 paddingHorizontal: 15,
               }}
+              showDocument={false}
             ></CompanyTable>
           </View>
         </View>

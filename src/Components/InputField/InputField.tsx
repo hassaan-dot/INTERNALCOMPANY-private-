@@ -54,26 +54,23 @@ const InputField: React.FC<InputFieldProps> = ({
     <View style={styles.container}>
       {title && <Text style={[styles.title, titleStyle]}>{title}</Text>}
       <TextInput
-        returnKeyType="done" // Adds a "Done" button
+        returnKeyType="done"
         onSubmitEditing={Keyboard.dismiss}
         style={[
           styles.input,
           inputStyle,
           {
             borderColor: error && "red",
-            textAlign: isRTL(value) ? "right" : "left",
-            writingDirection: isRTL(value) ? "rtl" : "ltr",
           },
         ]}
         value={value}
         onChangeText={onChangeText}
         multiline={multiline}
-        keyboardType="datetime"
+        keyboardType="default"
         placeholder={placeholder}
         editable={editable}
         placeholderTextColor={placeholderTextColor}
         secureTextEntry={secureTextEntry}
-        error={error}
         {...props}
       />
       {errorMessage && (

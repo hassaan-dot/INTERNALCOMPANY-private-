@@ -4,7 +4,12 @@ import { LogBox, StyleSheet, View } from "react-native";
 import App from "./root/index"; // Your main App component
 import './src/i18n';
 import { ActivityIndicator } from "react-native-paper";
-// Define all your custom fonts
+
+const customFonts = {
+  'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+  'Poppins-Medium': require('./assets/fonts/Poppins-Medium.ttf'),
+  'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+};
 
 // FontLoader component
 const FontLoader = ({ children }: any) => {

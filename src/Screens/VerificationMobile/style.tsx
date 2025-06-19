@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
   },
   section2: { justifyContent: "flex-end" },
-  checkbox: { 
+  checkbox: {
     borderColor: "black",
     width: 15,
     height: 15,
@@ -50,14 +50,14 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 15,
     backgroundColor: "#07504B",
-    alignItem: "center",
+    alignItems: "center",
     justifyContent: "center",
   },
   loginButton2: { backgroundColor: "#1E3A8A" },
 
   section: {
     flexDirection: "row",
-    alignItem: "center",
+    alignItems: "center",
     justifyContent: "space-between",
     marginVertical: 10,
     marginTop: 20,

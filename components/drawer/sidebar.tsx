@@ -7,7 +7,6 @@ import { useTranslation } from "react-i18next";
 import { usePathname, useRouter } from "expo-router";
 import { View, Text, TouchableOpacity, Image, StyleSheet, I18nManager } from "react-native";
 import React, { useMemo } from "react";
-// import logo from "@/assets/images/logo.png";
 import logo from "../../src/assets/images/logo.png";
 
 
@@ -93,31 +92,23 @@ const Sidebar = () => {
           const isActive = pathname.includes(item.name);
           return (
             <TouchableOpacity
-              onPress={() => router.push(item.href)}
+              onPress={() => router.push(item.href as any)}
               style={[
                 styles.menuItem,
                 isActive && styles.activeMenuItem,
-                {
-                  flexDirection: I18nManager.isRTL ? 'row-reverse' : 'row',
-                  justifyContent: I18nManager.isRTL ? 'flex-end' : 'flex-start',
-                  alignItems: 'center',
-                  width: '100%',
-                },
               ]}
             >
               <Image
                 source={item.icon}
-                style={[styles.icon, isActive && { tintColor: "#fff" }]}
+                style={[
+                  styles.icon,
+                  isActive && { tintColor: "#fff" },
+                ]}
               />
               <Text
                 style={[
                   styles.label,
                   isActive && styles.activeLabel,
-                  {
-                    textAlign: I18nManager.isRTL ? "right" : "left",
-                    writingDirection: I18nManager.isRTL ? "rtl" : "ltr",
-                    flex: 1,
-                  },
                 ]}
               >
                 {item.label}
@@ -137,12 +128,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     borderColor: "#eee",
     height: "100%",
-    borderRightWidth: I18nManager.isRTL ? 0 : 1,
-    borderLeftWidth: I18nManager.isRTL ? 1 : 0,
   },
   menuItem: {
     flexDirection: "row",
-    alignItems: "center",
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 8,
@@ -157,17 +145,13 @@ const styles = StyleSheet.create({
     width: 20,
     height: 20,
     resizeMode: "contain",
-    marginRight: I18nManager.isRTL ? 0 : 12,
-    marginLeft: I18nManager.isRTL ? 12 : 0,
   },
   label: {
     fontFamily: PoppinsRegular,
     fontSize: 14,
     color: "#A47C60",
     flex: 1,
-    textAlign: I18nManager.isRTL ? "right" : "left",
-    alignSelf: I18nManager.isRTL ? "flex-end" : "flex-start",
-    direction: I18nManager.isRTL ? "rtl" : "ltr",
+    marginHorizontal: 10,
   },
   activeLabel: {
     color: "#fff",
@@ -177,8 +161,9 @@ const styles = StyleSheet.create({
     width: 160,
     height: 60,
     marginBottom: 20,
-    alignSelf: I18nManager.isRTL ? "center" : "center",
+    alignSelf: "center",
   },
 });
 
 export default Sidebar;
+

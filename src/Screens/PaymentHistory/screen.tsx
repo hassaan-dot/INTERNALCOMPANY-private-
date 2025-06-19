@@ -7,22 +7,25 @@ import {
 } from "@/hooks/usePOpayments";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useRouter } from "expo-router";
-import React, { useState } from "react";
+import React from "react";
 import { View } from "react-native";
+import { useTranslation } from "react-i18next";
 import { CompanyTable, InvoiceModal, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
-import { Invoice_Schema } from "../ClientManagement/_schema";
 import styles from "./styles";
 import { useModalStore } from "@/store/useModalStore";
-const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
+import { useSchemas } from "@/hooks/useSchemas";
+
+const PaymentHistoryScreen: React.FC<{ route?: any }> = ({ route }) => {
   const router = useRouter();
+  const { t } = useTranslation();
+  const { Invoice_Schema } = useSchemas();
 
   const onClickEye = ({ documentId }: any) => {
     router.push(`/(app)/payment/payment-details?id=${documentId}`);
   };
 
   const { mutate: handleDelete } = useDeleteInvoice();
-
   const { data: InvoiceData, refetch } = useGetInvoice();
   useRefreshOnFocus(refetch);
 
@@ -59,7 +62,7 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
   return (
     <>
       <View style={styles.container}>
-        <ScreenHeader title={"Payment History"} filter={true}></ScreenHeader>
+        <ScreenHeader title={t("payment_history")} filter={true} />
 
         <View style={styles.container1}>
           <CompanyTable
@@ -80,6 +83,7 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
           />
         </View>
       </View>
+
       {isInvoicePoModalOpen && (
         <InvoiceModal
           onClose={() => {
@@ -87,6 +91,26 @@ const PaymentHistoryScreen: React.FC<{ route: any }> = ({ route }) => {
             setisInvoicePoModalOpen(false);
           }}
           visible={isInvoicePoModalOpen}
+          invoice={true}
+          styleContainer={{}}
+          title="Invoice"
+          onSubmit={() => { }}
+          First=""
+          Firstchild=""
+          Second=""
+          Third=""
+          Fourth=""
+          Fifth=""
+          Sixth=""
+          seventh=""
+          eigth=""
+          ninth=""
+          desctext=""
+          user={false}
+          modalContainerprop={{}}
+          Data={null}
+          deleteD={false}
+          update={false}
         />
       )}
     </>

@@ -16,9 +16,11 @@ export const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 15,
     borderRadius: 10,
-
-    marginHorizontal: 20,
-    marginVertical: 30,
+    marginHorizontal: helpers.normalize(20),
+    marginVertical: helpers.normalize(20),
+  },
+  inputContainer: {
+    marginBottom: 10,
   },
   fontSize: { fontSize: 14 },
   icon: {

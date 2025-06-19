@@ -87,7 +87,7 @@ const CustomDrawerItem = ({ drawer_items }: any) => {
   const pathname = usePathname();
 
   const handleTabPress = useCallback((href: string) => {
-    router.push(href);
+    router.push(href as any);
   }, []);
 
   return (
@@ -95,8 +95,8 @@ const CustomDrawerItem = ({ drawer_items }: any) => {
       <View style={styles.logoContainer}></View>
       <View style={styles.drawerItems}>
         {drawer_items
-          ?.filter((item) => item.show)
-          ?.map((item, index) => (
+          ?.filter((item: any) => item.show)
+          ?.map((item: any, index: number) => (
             <View key={index}>
               <DrawerItem
                 focused={pathname === item.href}

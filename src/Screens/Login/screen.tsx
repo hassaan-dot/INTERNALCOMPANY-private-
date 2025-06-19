@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   View,
   useWindowDimensions,
+  Dimensions,
 } from "react-native";
 import * as yup from "yup";
 import {
@@ -34,10 +35,8 @@ const loginSchema = yup.object().shape({
 const LoginScreen: React.FC = () => {
   const { width } = useWindowDimensions();
 
-  // Define a breakpoint (e.g., 640 like Tailwind's "sm")
-  const isSmallScreen = width < 850;
+  const isSmallScreen = Dimensions.get("window").width < 768;
   // Use the breakpoint to conditionally apply styles
-  console.log("isSmallScreen", isSmallScreen);
 
   const { mutate, isPending } = useLogin();
 
@@ -195,9 +194,11 @@ const LoginScreen: React.FC = () => {
                     ? errors.email
                     : values.email.length > 0 &&
                       !/^\S+@\S+\.\S+$/.test(values.email)
-                    ? "Please enter a valid email"
-                    : undefined
+                      ? "Please enter a valid email"
+                      : undefined
                 }
+                multiline={false}
+                ispassword={false}
               />
             </View>
             <View style={styles.logincontainer}>
@@ -205,20 +206,19 @@ const LoginScreen: React.FC = () => {
                 placeholder={
                   isMobileView ? string.EnterPassword : string.EnteryourPassword
                 }
-                container2={{}}
                 title="Password"
                 password={password}
                 setPassword={(text) => handleInputChange("password", text)}
                 inputStyle={
                   submitAttempted && errors.password && styles.inputError
                 }
-                error={submitAttempted ? errors.password : undefined}
+                error={!!(submitAttempted && errors.password)}
                 errorMessage={
                   submitAttempted && errors.password
                     ? errors.password
                     : password.length > 0 && password.length < 6
-                    ? "Password must be at least 6 characters"
-                    : undefined
+                      ? "Password must be at least 6 characters"
+                      : undefined
                 }
               />
             </View>
@@ -228,6 +228,7 @@ const LoginScreen: React.FC = () => {
                   style={styles.checkbox}
                   textstyle={{ marginLeft: 0 }}
                   text={string.RememberMe}
+                  value={false}
                 />
               )}
               <TouchableOpacity>

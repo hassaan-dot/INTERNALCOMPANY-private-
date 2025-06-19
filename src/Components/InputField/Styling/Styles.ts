@@ -1,16 +1,27 @@
-import {StyleSheet} from 'react-native';
-import helpers from '../../../utils/helpers';
-import { PoppinsRegular } from '../../../Resources/fonts';
+import { StyleSheet } from "react-native";
+import helpers from "../../../utils/helpers";
+import { PoppinsRegular } from "../../../Resources/fonts";
+
+interface Theme {
+  colors: {
+    secondary: string;
+    secondaryText: string;
+    primaryText: string;
+    errorDialig: string;
+  };
+  fontSizeX: number;
+  secondaryRadius: number;
+}
 
 class style {
-  static getSheet(theme) {
+  static getSheet(theme: Theme) {
     return StyleSheet.create({
       containerStyle: {
-        overflow: 'visible',
+        overflow: "visible",
       },
       innerContainerStyle: {
         backgroundColor: theme.colors.secondary,
-        flexDirection: 'row',
+        flexDirection: "row",
       },
       textStyle: {
         paddingBottom: helpers.normalize(8),
@@ -26,21 +37,21 @@ class style {
       iconStyle: {
         width: helpers.normalize(21),
         height: helpers.normalize(21),
-        alignSelf: 'center',
+        alignSelf: "center",
         marginHorizontal: helpers.normalize(12),
       },
       iconImageStyle: {
         width: helpers.normalize(25),
         height: helpers.normalize(25),
-        alignSelf: 'center',
+        alignSelf: "center",
       },
       inputStyle: {
         fontSize: helpers.normalize(14) * theme.fontSizeX,
         flex: 1,
         paddingHorizontal: helpers.normalize(10),
-        backgroundColor: 'transparent',
+        backgroundColor: "transparent",
         height: helpers.normalize(50),
-        textAlignVertical: 'center',
+        textAlignVertical: "center",
       },
       placeholderStyle: {
         fontSize: helpers.normalize(14) * theme.fontSizeX,
@@ -48,28 +59,28 @@ class style {
         color: theme.colors.primaryText,
       },
       errorTitleStyle: {
-        textAlign: 'left',
+        textAlign: "left",
         fontSize: helpers.normalize(17) * theme.fontSizeX,
         fontFamily: PoppinsRegular,
-        color: 'white',
+        color: "white",
         paddingHorizontal: helpers.normalize(5),
       },
       errorDescpStyle: {
-        textAlign: 'left',
+        textAlign: "left",
         fontSize: helpers.normalize(12) * theme.fontSizeX,
         fontFamily: PoppinsRegular,
-        color: 'white',
+        color: "white",
         paddingHorizontal: helpers.normalize(5),
       },
       errorBoxStyle: {
-        flexDirection: 'row',
+        flexDirection: "row",
         marginVertical: helpers.normalize(4),
         borderColor: theme.colors.errorDialig,
         borderRadius: helpers.normalize(theme.secondaryRadius),
         backgroundColor: theme.colors.errorDialig,
         padding: helpers.normalize(10),
-        overflow: 'hidden',
-        justifyContent: 'flex-start',
+        overflow: "hidden",
+        justifyContent: "flex-start",
       },
     });
   }

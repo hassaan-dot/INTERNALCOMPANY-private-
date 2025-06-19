@@ -28,10 +28,25 @@ const UserDetails = () => {
           buttonViewMulitiple={false}
         />
 
-        <UserDetailHeader item={data} />
+        <UserDetailHeader
+          item={data}
+          contact_person_name=""
+          email=""
+          phone_number=""
+          company_name=""
+          rows={1}
+          profile={false}
+          style={{}}
+          title=""
+          titleIcon={false}
+          titleStyle={{}}
+          cardContainer={{}}
+          detailscreenContainer={{}}
+          horizontalwidth="50%"
+        />
 
         <View style={styles.container2}>
-          <GraphCard id={documentId} />
+          <GraphCard id={documentId as string} />
         </View>
       </ScrollView>
     </>

@@ -11,7 +11,10 @@ import CreateModal from "../../Components/Modals/createModal/component";
 import { generateData } from "../../utils/Props/TableDataUserManagemenr/props";
 import { styles } from "./styles";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useTranslation } from "react-i18next"; // ✅ i18n hook
+
 const Report: React.FC<{ route: any }> = ({ route }) => {
+  const { t } = useTranslation(); // ✅ initialize translator
   const DATA = generateData();
   const { user } = useAuthStore();
 
@@ -20,43 +23,46 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
     setModalOpen(true);
   }
   const [selectedTab, setSelectedTab] = useState<string>(
-    "Purchasing Order List"
+    t("report.po_list") // 🟡 Make sure this key exists in your translations
   );
   let showActions = useState<boolean>(
-    selectedTab == "Purchasing Order List" ? true : false
+    selectedTab === t("report.po_list") ? true : false
   );
   let showStatus = useState<boolean>(
-    selectedTab !== "Purchasing Order List" ? true : false
+    selectedTab !== t("report.po_list") ? true : false
   );
 
   return (
     <>
       <ScrollView style={styles.container1}>
-        <ScreenHeader title={"Reports"} onPress={CreatClient}></ScreenHeader>
-
+        <ScreenHeader title={t("report.title")} onPress={CreatClient} />
         <View style={{ marginTop: 15 }}>
           <View style={styles.container2}>
             {/* <Ballindicator></Ballindicator> */}
             <PredictorCard
-              title="Total Applications"
+              style={{}}
+              title={t("report.total_applications")}
               color="#38CB89"
               value={3}
               inc={"+100"}
             />
             <PredictorCard
-              title="Assigned"
+              style={{}}
+              title={t("report.assigned")}
               color="#FFA600"
               value={100}
               inc={"+100"}
             />
             <PredictorCard
-              title="Total Payments"
+              style={{}}
+              title={t("report.total_payments")}
               color="#FF5630"
               value={20}
               inc={"+100"}
             />
             <PredictorCard
-              title="Total User Active"
+              style={{}}
+              title={t("report.total_user_active")}
               color="#38CB89"
               value={1}
               inc={"+100"}
@@ -64,7 +70,7 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
           </View>
         </View>
         <View style={{ marginVertical: 15 }}>
-          <GraphCard id={user?.documentId}></GraphCard>
+          <GraphCard id={user?.documentId} />
         </View>
         <View style={{ marginTop: 10 }}>
           {/* <TabSelector
@@ -73,7 +79,11 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
             barColor={"#07504B"}
             style={{ backgroundColor: "" }}
             textStyle={styles.textStyle1}
-            tabs={["PO reports", "payment reports", "User active reports"]}
+            tabs={[
+              t("report.po_reports"),
+              t("report.payment_reports"),
+              t("report.user_active_reports"),
+            ]}
             onSelect={(tab) => setSelectedTab(tab)}
             selectedTab={selectedTab}
           /> */}
@@ -88,7 +98,14 @@ const Report: React.FC<{ route: any }> = ({ route }) => {
           ></CompanyTable> */}
         </View>
       </ScrollView>
-      <CreateModal create={true} visible={ModalOpen}></CreateModal>
+      <CreateModal
+        create={true}
+        visible={ModalOpen}
+        title="Create"
+        onClose={() => setModalOpen(false)}
+        onSubmit={() => { }}
+        desctext=""
+      />
     </>
   );
 };

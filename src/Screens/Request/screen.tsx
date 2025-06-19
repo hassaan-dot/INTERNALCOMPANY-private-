@@ -14,13 +14,14 @@ import { formatDateForAPI } from "@/services/dateFormatter";
 import CreateRequestModal from "@/src/Components/Modals/createRequestModal/component";
 import { useModalStore } from "@/store/useModalStore";
 import { useRouter } from "expo-router";
-import { Requests_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { formatDate } from "@/src/utils";
 import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
+import { useSchemas } from "@/hooks/useSchemas";
 
 const Request = () => {
   const { t } = useTranslation();
+  const { Requests_columns_schema } = useSchemas();
   const router = useRouter();
   const { data, refetch } = useGetRequest();
   useRefreshOnFocus(refetch);
@@ -60,10 +61,15 @@ const Request = () => {
         perform_on: new Date(perform_on),
         standing,
         users,
-        request_status,
+        request_status: request_status || "To do",
       },
     };
-    handleUpdate({ data, id: documentId });
+    handleUpdate({ data, id: documentId }, {
+      onSuccess: () => {
+        refetch();
+        onCloseModal();
+      }
+    });
   };
 
   const onPressAddfunction = ({
@@ -75,14 +81,12 @@ const Request = () => {
     request_status,
   }: any) => {
     const data = {
-      data: {
-        title,
-        description,
-        perform_on: formatDateForAPI(perform_on),
-        standing,
-        users,
-        request_status,
-      },
+      title,
+      description,
+      perform_on: formatDateForAPI(perform_on),
+      standing,
+      users,
+      request_status,
     };
     handleAdd(data);
   };
@@ -189,9 +193,8 @@ const Request = () => {
           onClose={onCloseModal}
           desc={true}
           styleContainer={{ flexDirection: "row" }}
-          create={true}
+          create={!rowData?.isEdit}
           visible={isRequestModalOpen}
-          user={true}
         />
       )}
 

@@ -21,11 +21,26 @@ import { styles } from "./styles";
 import { useSendReminder } from "@/hooks/useClient";
 import { useTranslation } from "react-i18next";
 
+interface CreatePaymentReminderProps {
+  visible: boolean;
+  onClose: () => void;
+  title: string;
+  modalContainerprop?: any;
+  onSubmit: (formData: any) => void;
+  desc?: boolean;
+  desctext: string;
+  create?: boolean;
+}
+
 const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
   visible,
   onClose,
   title,
   modalContainerprop,
+  onSubmit,
+  desc,
+  desctext,
+  create,
 }) => {
   const { t } = useTranslation();
   const { rowData } = useModalStore();
@@ -136,7 +151,7 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
         setDocuments((prev) => [...prev, ...newDocs]);
       }
     } catch (err) {
-      console.log("Document picker error:", err);
+      // Document picker error handled silently
     }
   };
 
@@ -165,6 +180,8 @@ const CreatePaymentReminder: React.FC<CreatePaymentReminderProps> = ({
                 onChangeText={(text) => handleInputChange("amount", text)}
                 placeholder={t("reminder.amount_placeholder")}
                 keyboardType="phone-pad"
+                multiline={false}
+                ispassword={false}
               />
             </View>
 

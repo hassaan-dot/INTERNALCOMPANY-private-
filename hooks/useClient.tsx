@@ -23,8 +23,13 @@ const handleSendReminder = async (data: any, id: string) => {
 };
 
 const handleCreateClient = async (data: any) => {
-  const res = await api.post("/clients/?populate=*", data);
-  return res.data;
+  try {
+    const res = await api.post("/clients", data);
+    return res.data;
+  } catch (error: any) {
+    console.error('Client creation error:', error.response?.data);
+    throw error;
+  }
 };
 
 const handleDeleteClient = async (data: any) => {

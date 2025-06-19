@@ -66,7 +66,7 @@ const customFonts = {
 };
 
 // FontLoader component
-const FontLoader = ({ children }) => {
+const FontLoader = ({ children }: { children: React.ReactNode }) => {
   const [fontsLoaded, setFontsLoaded] = useState(false);
 
   useEffect(() => {

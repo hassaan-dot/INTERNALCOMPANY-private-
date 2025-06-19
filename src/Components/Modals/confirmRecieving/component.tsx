@@ -123,7 +123,7 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
         setDocuments((prev) => [...prev, ...newDocs]);
       }
     } catch (err) {
-      console.log("Document picker error:", err);
+      // Document picker error handled silently
     }
   };
 
@@ -241,7 +241,7 @@ const ConfirmRecieving: React.FC<ClientModalProps> = ({
                                     },
                                     backgroundColor:
                                       color[
-                                        Math.floor(Math.random() * color.length)
+                                      Math.floor(Math.random() * color.length)
                                       ],
                                     shadowOpacity: 0.22,
                                     shadowRadius: 2.22,

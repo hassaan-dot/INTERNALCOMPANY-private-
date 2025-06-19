@@ -24,8 +24,16 @@ const PaymentDetails: React.FC<{ route: any }> = ({ route }) => {
               rows={1}
               Data={data}
               title={"Payment Information"}
-              // horizontalwidth={helpers.wp(75.9)}
               detailscreenContainer={styles.detailScreenContainer}
+              name=""
+              email=""
+              contact=""
+              country=""
+              profile={false}
+              titleIcon={false}
+              cardContainer={{}}
+              horizontalwidth="50%"
+              colorProp="#D0D5DD"
             />
           </View>
         </View>

@@ -9,7 +9,7 @@ import FontLoader from "../../assets/fonts/font";
 import { I18nManager } from 'react-native';
 
 // Dummy Screens (Replace with your actual screens)
-const LoginScreen1 = ({ navigation }) => (
+const LoginScreen1 = ({ navigation }: { navigation: any }) => (
   <View style={styles.screen}>
     <Text>Login Screen</Text>
     <Button title="Login" onPress={() => navigation.navigate("Home")} />
@@ -57,39 +57,6 @@ const PaymentHistoryScreen = () => (
     <Text>Payment History Screen</Text>
   </View>
 );
-
-// Custom Sidebar Component
-const Sidebar = () => {
-  const navigation = useNavigation();
-
-  return (
-    <View style={styles.sidebar}>
-      <TouchableOpacity onPress={() => navigation.navigate("Dashboard")}>
-        <Text style={styles.item}>Dashboard</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("User Management")}>
-        <Text style={styles.item}>User Management</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Client Management")}
-      >
-        <Text style={styles.item}>Client Management</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("PO Management")}>
-        <Text style={styles.item}>PO Management</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Request")}>
-        <Text style={styles.item}>Request</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Reports")}>
-        <Text style={styles.item}>Reports</Text>
-      </TouchableOpacity>
-      <TouchableOpacity onPress={() => navigation.navigate("Payment History")}>
-        <Text style={styles.item}>Payment History</Text>
-      </TouchableOpacity>
-    </View>
-  );
-};
 
 // Drawer Navigator
 const Drawer = createDrawerNavigator();

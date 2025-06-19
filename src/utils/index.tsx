@@ -44,10 +44,7 @@ export function getValueFromKey(data: any, key: string) {
       );
   }
 
-  // If it's a simple key, return the value directly
-  console.log("render", data);
   return data[key];
-  // return "haseeb";
 }
 
 export const groupHoursByLocalDay = (records: any[]) => {

@@ -73,7 +73,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
         handleUpload({ data: formData, id: request_data?.data?.documentId });
       }
     } catch (err) {
-      console.log("Document picker error:", err);
+      // Document picker error handled silently
     }
   };
 
@@ -91,6 +91,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
         <ScreenHeader
           title={t("request_details.title")}
           request_status={request_data?.data?.request_status}
+          standing={request_data?.data?.standing}
         />
       </View>
 
@@ -98,11 +99,15 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
         <View style={styles.custom2}>
           <View style={styles.container}>
             <InputField
+              title=""
               style={styles.inputContainer}
               placeholder={t("request_details.enter_title")}
               value={request_data?.data?.title}
               editable={false}
               onChangeText={setTitle}
+              multiline={false}
+              ispassword={false}
+              errorMessage=""
             />
             <View style={styles.rowContainer}>
               <Text style={styles.date}>{t("request_details.perform_on")}</Text>
@@ -111,28 +116,20 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                   {formatDate(request_data?.data?.perform_on)}
                 </Text>
               </View>
-              <TouchableOpacity
-                style={{
-                  padding: 12,
-                  borderRadius: 4,
-                  paddingHorizontal: 20,
-                  backgroundColor: "#f9f9f9",
-                }}
-                disabled
-              >
-                <Text style={styles.date}>{request_data?.data?.standing}</Text>
-              </TouchableOpacity>
             </View>
 
             <View style={styles.descriptionContainer}>
               <InputField
+                title=""
                 editable={false}
                 style={styles.inputField}
-                multiline
+                multiline={true}
                 placeholderTextColor={"#000000"}
                 value={request_data?.data?.description}
                 placeholder={t("request_details.description")}
                 onChangeText={setDescription}
+                ispassword={false}
+                errorMessage=""
               />
             </View>
           </View>
@@ -148,7 +145,6 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
                 contentContainerStyle={styles.custom6}
                 renderItem={({ item }) => (
                   <View style={styles.userRow}>
-                    <Avatar.Text size={40} style={styles.avatar} />
                     <Text style={styles.customText}>
                       {`${item?.first_name} ${item?.last_name}`}
                     </Text>
@@ -194,7 +190,7 @@ const RequestDetails: React.FC<{ route: any }> = ({ route }) => {
           <View style={{ marginTop: 10 }}>
             <TouchableOpacity style={styles.buttonfile} onPress={pickDocument}>
               <View>
-                <Feather name="plus" size={20} style={{ marginRight: 10 }} />
+                <Feather name="plus" size={20} style={{ marginHorizontal: 10, color: "#fff" }} />
               </View>
               <View>
                 <Text style={styles.desc1}>{t("request_details.add_file")}</Text>

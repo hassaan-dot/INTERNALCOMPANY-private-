@@ -22,7 +22,6 @@ export default function AuthLayout() {
           styles.content,
           {
             direction: isRTL ? "rtl" : "ltr",
-            textAlign: isRTL ? "right" : "left",
           },
         ]}
       >

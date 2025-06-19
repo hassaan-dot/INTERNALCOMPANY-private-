@@ -12,16 +12,18 @@ import {
   CreatePaymentReminderClient,
   ScreenHeader,
 } from "../../Components";
-import { columns_schema } from "./_schema";
 import { styles } from "./styles";
 import { useRefreshOnFocus } from "@/hooks/useRefetchOnFocus";
 import { useModalStore } from "@/store/useModalStore";
 import CreateClientModal from "../../Components/Modals/createModal/component";
 import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
 import { useTranslation } from "react-i18next";
+import { useSchemas } from "@/hooks/useSchemas";
 
 const ClientManagement: React.FC = () => {
   const { t } = useTranslation();
+  const { columns_schema } = useSchemas();
+
   const {
     isClientModalOpen,
     setIsClientModalOpen,
@@ -45,28 +47,28 @@ const ClientManagement: React.FC = () => {
   const onPressUpdatefunction = (formData: any) => {
     if (!formData?.documentId) return;
     const data = {
-      data: {
-        company_name: formData.company_name,
-        email: formData.email,
-        contact_person_name: formData.contact_person_name,
-        phone_number: formData.phone_number,
-        address: formData.address,
-        location: formData.location,
-      },
+      company_name: formData.company_name,
+      email: formData.email,
+      contact_person_name: formData.contact_person_name,
+      phone_number: formData.phone_number,
+      address: formData.address,
+      location: {
+        connect: [formData.location]
+      }
     };
     handleUpdate({ data, id: formData.documentId });
   };
 
   const onPressAddfunction = (formData: any) => {
     const data = {
-      data: {
-        company_name: formData.company_name,
-        email: formData.email,
-        contact_person_name: formData.contact_person_name,
-        phone_number: formData.phone_number,
-        address: formData.address,
-        location: formData.location,
-      },
+      company_name: formData.company_name,
+      email: formData.email,
+      contact_person_name: formData.contact_person_name,
+      phone_number: formData.phone_number,
+      address: formData.address,
+      location: {
+        connect: [formData.location]
+      }
     };
     handleAdd(data);
   };
@@ -125,10 +127,10 @@ const ClientManagement: React.FC = () => {
     <>
       <ScrollView style={styles.container}>
         <ScreenHeader
-          create
+          create={true}
           title={t("client_management.title")}
           onPress={onOpenModal}
-          filter
+          filter={true}
         />
         <CompanyTable
           onPressDelete={onPressDelete}

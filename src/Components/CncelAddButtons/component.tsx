@@ -1,8 +1,9 @@
 import React from "react";
-import { TouchableOpacity, Text, View, StyleSheet } from "react-native";
+import { TouchableOpacity, Text, View, ActivityIndicator } from "react-native";
 import { styles } from "./styles";
 import { useModalStore } from "@/store/useModalStore";
-import { ActivityIndicator } from "react-native";
+import { useTranslation } from "react-i18next";
+
 interface ButtonProps {
   label: string;
   onPress: () => void;
@@ -19,7 +20,7 @@ const CustomButton: React.FC<ButtonProps> = ({
   return (
     <TouchableOpacity
       style={[
-        styles.button,
+        // styles.button,
         type === "secondary" ? styles.cancelButton : styles.addButton,
       ]}
       onPress={onPress}
@@ -43,11 +44,13 @@ const ButtonRow: React.FC<{
   isLoading?: boolean;
 }> = ({ onCancel, onAdd, isLoading = false }) => {
   const { rowData } = useModalStore();
+  const { t } = useTranslation();
+
   return (
     <View style={styles.buttonRow}>
-      <CustomButton label="Cancel" onPress={onCancel} type="secondary" />
+      <CustomButton label={t("Cancel")} onPress={onCancel} type="secondary" />
       <CustomButton
-        label={rowData?.isEdit ? "Update" : "Add"}
+        label={rowData?.isEdit ? t("Update") : t("Add")}
         onPress={onAdd}
         disabled={isLoading}
       />

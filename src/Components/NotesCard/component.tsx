@@ -6,32 +6,24 @@ import FilledButton from "../Buttons/FilledButton/FilledButton";
 import CustomButton from "../CustomButton/Button";
 import { styles } from "./styles";
 
-interface UserProfileProps {
-  name: string;
-  email: string;
-  contact: string;
-  country: string;
-  rows: number;
-  profile: boolean;
-  style: any;
-  title: string;
-  titleIcon: boolean;
-  titleStyle: any;
-  cardContainer: any;
-  detailscreenContainer: any;
-  horizontalwidth: any;
-  colorProp: any;
-  TextEnable: boolean;
-  Document: boolean;
-  TextTitle: string;
-  height: any;
-  ButtonTitle: string;
-  onPress: () => void;
-  onClose: () => void;
+interface NotesCardProps {
   Data: any;
+  ButtonTitle: string;
+  title?: string;
+  titleIcon?: boolean;
+  titleStyle?: any;
+  cardContainer?: any;
+  detailscreenContainer?: any;
+  TextEnable?: boolean;
+  Document?: boolean;
+  onPress: () => void;
+  onClose?: () => void;
+  height?: number;
+  horizontalwidth?: number;
+  TextTitle?: string;
 }
 
-const NotesCard: React.FC<UserProfileProps> = ({
+const NotesCard: React.FC<NotesCardProps> = ({
   Data,
   ButtonTitle,
   title = "Details",
@@ -77,6 +69,7 @@ const NotesCard: React.FC<UserProfileProps> = ({
                 onPress={onPress}
                 titleStyle={{ fontSize: 10, fontWeight: 600, color: "black" }}
                 title={ButtonTitle}
+                buttonBackground="#F3f6FF"
                 containerStyle={{
                   backgroundColor: "#F3f6FF",
                   height: 0,
@@ -84,13 +77,13 @@ const NotesCard: React.FC<UserProfileProps> = ({
                   paddingHorizontal: 20,
                   borderRadius: 5.333,
                 }}
-              ></FilledButton>
+              />
             )}
           </View>
           <View
             style={{
               borderBottomWidth: 1,
-              flexirection: "row",
+              flexDirection: "row",
               borderColor: "#E8E8E8",
               flex: 1,
             }}
@@ -110,7 +103,7 @@ const NotesCard: React.FC<UserProfileProps> = ({
                 scrollIndicatorInsets={{ right: 1 }} // iOS
                 ref={verticalScrollRef}
               >
-                {notes?.map((note, index) => (
+                {notes?.map((note: any, index: number) => (
                   <View key={index}>
                     <View style={styles.profileView}>
                       <Image
@@ -178,6 +171,8 @@ const NotesCard: React.FC<UserProfileProps> = ({
                         title={doc?.name}
                         url={doc?.url}
                         doc_id={doc?.id}
+                        onPress={() => { }}
+                        descTextprop=""
                       />
                     </View>
                   ))}

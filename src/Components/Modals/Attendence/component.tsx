@@ -44,8 +44,6 @@ const AttendenceModal: React.FC<NewsModalProps> = ({
     else return false;
   }, [attendance?.data]);
 
-  console.log("isClokedOut", isClockedOut);
-
   const handleAttendence = () => {
     if (isClockedOut) handleClockIn();
     else handleClockOut();

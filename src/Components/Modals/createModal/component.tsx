@@ -1,7 +1,7 @@
 import { icons } from "@/assets/icons/icons";
 import { useLocations } from "@/hooks/useLocation";
 import { useModalStore } from "@/store/useModalStore";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ActivityIndicator,
   Image,
@@ -16,6 +16,39 @@ import InputField from "../../InputField/InputField";
 import SingleSelectDropDown from "../../SingleSelectDropDown/component";
 import { styles } from "./styles";
 import { useTranslation } from "react-i18next";
+
+interface ClientModalProps {
+  visible: boolean;
+  create?: boolean;
+  desc?: boolean;
+  invoice?: boolean;
+  styleContainer?: any;
+  title: string;
+  onClose: () => void;
+  onSubmit: (
+    companyName?: string,
+    email?: string,
+    contactPerson?: string,
+    phoneNumber?: string
+  ) => void;
+  First?: string;
+  Firstchild?: string;
+  Second?: string;
+  Third?: string;
+  Fourth?: string;
+  Fifth?: string;
+  Sixth?: string;
+  seventh?: string;
+  eigth?: string;
+  ninth?: string;
+  desctext: string;
+  user?: boolean;
+  modalContainerprop?: any;
+  Data?: any;
+  deleteD?: boolean;
+  update?: boolean;
+  isPending?: boolean;
+}
 
 const CreateClientModal: React.FC<ClientModalProps> = ({
   visible,
@@ -38,6 +71,7 @@ const CreateClientModal: React.FC<ClientModalProps> = ({
       phone_number: "",
       address: "",
       location: "",
+      documentId: "",
     }
   );
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -49,35 +83,50 @@ const CreateClientModal: React.FC<ClientModalProps> = ({
     value: location?.location_name,
   }));
 
+  // Update form data when rowData changes (for editing)
+  useEffect(() => {
+    if (rowData) {
+      setFormData({
+        email: rowData.email || "",
+        contact_person_name: rowData.contact_person_name || "",
+        company_name: rowData.company_name || "",
+        phone_number: rowData.phone_number || "",
+        address: rowData.address || "",
+        location: rowData.location || "",
+        documentId: rowData.documentId || "",
+      });
+    }
+  }, [rowData]);
+
   const handleInputChange = (field: keyof typeof formData, value: string) => {
-    setFormData((prev) => ({ ...prev, [field]: value }));
-    setTouched((prev) => ({ ...prev, [field]: true }));
-    if (errors[field]) {
-      setErrors((prev) => {
+    setFormData((prev: typeof formData) => ({ ...prev, [field]: value }));
+    setTouched((prev: Record<string, boolean>) => ({ ...prev, [field as string]: true }));
+    if (errors[field as string]) {
+      setErrors((prev: Record<string, string>) => {
         const newErrors = { ...prev };
-        delete newErrors[field];
+        delete newErrors[field as string];
         return newErrors;
       });
     }
   };
 
   const handleBlur = (field: keyof typeof formData) => {
-    setTouched((prev) => ({ ...prev, [field]: true }));
+    setTouched((prev: Record<string, boolean>) => ({ ...prev, [field as string]: true }));
     clientSchema
-      .validateAt(field, formData)
+      .validateAt(field as string, formData)
       .then(() => {
-        if (errors[field]) {
-          setErrors((prev) => {
+        if (errors[field as string]) {
+          setErrors((prev: Record<string, string>) => {
             const newErrors = { ...prev };
-            delete newErrors[field];
+            delete newErrors[field as string];
             return newErrors;
           });
         }
       })
       .catch((err) => {
-        setErrors((prev) => ({
+        setErrors((prev: Record<string, string>) => ({
           ...prev,
-          [field]: err.message,
+          [field as string]: err.message,
         }));
       });
   };
@@ -111,7 +160,12 @@ const CreateClientModal: React.FC<ClientModalProps> = ({
 
     const isValid = await validateForm();
     if (isValid) {
-      onSubmit(formData);
+      // Include documentId for editing
+      const submitData = {
+        ...formData,
+        documentId: rowData?.documentId || formData.documentId,
+      };
+      onSubmit(submitData);
     }
   };
 
@@ -238,7 +292,7 @@ const CreateClientModal: React.FC<ClientModalProps> = ({
                 items={locationItems}
                 containerStyle={{}}
                 setSelected={(location) => handleInputChange("location", location)}
-                selected={rowData?.location_name}
+                selected={formData.location}
                 title={t("client.location")}
                 error={!!errors.location}
                 errorMessage={errors.location}
@@ -251,7 +305,10 @@ const CreateClientModal: React.FC<ClientModalProps> = ({
               <Text style={styles.cancelText}>{t("client.cancel")}</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              style={[styles.addButton, Object.keys(errors).length > 0 && styles.disabledButton]}
+              style={[
+                styles.addButton,
+                Object.keys(errors).length > 0 && { opacity: 0.5 }
+              ]}
               onPress={handleSubmit}
               disabled={Object.keys(errors).length > 0 || isPending}
             >

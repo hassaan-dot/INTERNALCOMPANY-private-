@@ -100,7 +100,7 @@ const CardSection: React.FC<CardSectionProps> = ({ onPress, OnCancel }) => {
           {getPo?.data?.length > 8 && (
             <View>
               <TouchableOpacity
-                style={styles.addButton && styles.addButton1}
+                style={styles.addButton}
                 onPress={() => handleNavigateToAllPo()}
               >
                 <Text style={styles.addButtonText}>{t("po_section.see_all")}</Text>

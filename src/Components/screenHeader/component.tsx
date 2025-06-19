@@ -19,8 +19,8 @@ type ScreenHeaderProps = {
   title?: string;
   completed?: boolean;
   onPress?: () => void;
-  buttonView: boolean;
-  buttonViewMulitiple: boolean;
+  buttonView?: boolean;
+  buttonViewMulitiple?: boolean;
   showButton?: boolean;
   data?: any;
   handleAccept?: any;
@@ -32,6 +32,7 @@ type ScreenHeaderProps = {
   isConfirming?: boolean;
   isClosing?: boolean;
   request_status?: string;
+  standing?: string;
 };
 
 const RequestStatusBadge = ({ request_status }: { request_status: string }) => {
@@ -74,6 +75,7 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
   isRejecting,
   isConfirming,
   isClosing,
+  standing,
 }) => {
   const { user } = useAuthStore();
   const { setFilters, filters, setRowData } = useModalStore();
@@ -90,6 +92,11 @@ const ScreenHeader: FC<ScreenHeaderProps> = ({
 
         <View style={styles.buttonContainer}>
           {request_status && <RequestStatusBadge request_status={request_status} />}
+          {standing && (
+            <View style={{ padding: 6, backgroundColor: "#F3F3F3", borderRadius: 4 }}>
+              <Text style={{ color: "#555" }}>{standing}</Text>
+            </View>
+          )}
 
           {filter && filterOptions?.length > 0 && (
             <DropDownTitleView

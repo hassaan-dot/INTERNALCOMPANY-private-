@@ -28,42 +28,42 @@ interface CompanyTableProps {
   onPressDelete: any;
   showDel: boolean;
   showEdit: boolean;
-  showTime: boolean;
+  showTime?: boolean;
   showDocument: boolean;
-  onClickTime: any;
+  onClickTime?: any;
   onClickEye?: (item: any) => void;
   isPO?: boolean;
   onClickDoc?: any;
 }
 
-const TableHeader: React.FC<CompanyTableProps> = ({
+const TableHeader: React.FC<any> = ({
   showActions = false,
   showStatus = false,
   checkbox = false,
   headerRowStyle,
   columns_schema,
   headerTextStyle,
-}) => (
-  <View style={[styles.headerRow, headerRowStyle]}>
-    {/* <View style={styles.customHeader}>{checkbox && <CheckBox />}</View> */}
-    {columns_schema?.map((c, index) => (
-      <Text
-        key={index}
-        style={[styles.headerText, headerTextStyle, { flex: 2 }]}
-      >
-        {truncateComponentName(c.header, 20)}
-      </Text>
-    ))}
-    {showStatus && (
-      <Text style={[styles.headerText, , headerTextStyle, { flex: 2 }]}>
-        Status
-      </Text>
-    )}
-    {showActions && (
-      <Text style={[styles.headerText, { flex: 2 }]}>Actions</Text>
-    )}
-  </View>
-);
+}) => {
+  const { t } = useTranslation();
+
+  return (
+    <View style={[styles.headerRow, headerRowStyle]}>
+      {columns_schema?.map((c: { key: string; header: string }, index: number) => (
+        <Text key={index} style={[styles.headerText, headerTextStyle, { flex: 2 }]}>
+          {truncateComponentName(c.header, 20)}
+        </Text>
+      ))}
+      {showStatus && (
+        <Text style={[styles.headerText, headerTextStyle, { flex: 2 }]}>
+          {t("Status")}
+        </Text>
+      )}
+      {showActions && (
+        <Text style={[styles.headerText, { flex: 2 }]}>{t("Actions")}</Text>
+      )}
+    </View>
+  );
+};
 
 const CompanyTable: React.FC<CompanyTableProps> = ({
   onPressUpdate,
@@ -88,7 +88,6 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
   isPO = false,
 }) => {
   const { user } = useAuthStore();
-  const { filters, setFilters } = useModalStore();
   const { t } = useTranslation();
 
   const IconHandleStatus = ({
@@ -102,14 +101,14 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     if (is_active === true) {
       return (
         <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge text="Active" />
+          <StatusBadge text={t("po_status.active")} />
         </View>
       );
     }
     if (is_active === false) {
       return (
         <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge />
+          <StatusBadge text={t("po_status.inactive")} />
         </View>
       );
     }
@@ -117,307 +116,251 @@ const CompanyTable: React.FC<CompanyTableProps> = ({
     if (request_status === "Rejected") {
       return (
         <StatusBadge
-          text="Rejected"
-          textColor={"#EC4746"}
-          dot={"#EC4746"}
+          text={t("po_status.rejected")}
+          textColor="#EC4746"
+          dot="#EC4746"
           color="#FECACA"
         />
       );
     }
-
     if (request_status === "To do") {
       return (
         <StatusBadge
-          text="To do"
-          dot={"#ECFDF3"}
-          textColor={"#ECFDF3"}
+          text={t("po_status.todo")}
+          dot="#ECFDF3"
+          textColor="#ECFDF3"
           color="#5A6470"
         />
       );
     }
-
     if (request_status === "In Progress") {
       return (
         <StatusBadge
-          text="In progress"
-          textColor={"white"}
-          dot={"#ECFDF3"}
+          text={t("po_status.in_progress")}
+          textColor="white"
+          dot="#ECFDF3"
           color="#A47C60"
         />
       );
     }
-
     if (request_status === "Done") {
-      return <StatusBadge text="Done" dot={"#12B76A"} color="#ECFDF3" />;
+      return <StatusBadge text={t("po_status.done")} dot="#12B76A" color="#ECFDF3" />;
     }
 
     if (payment_status === "Pending") {
       return (
         <StatusBadge
-          text="Pending "
-          textColor={"white"}
-          dot={"#ECFDF3"}
+          text={t("po_status.pending")}
+          textColor="white"
+          dot="#ECFDF3"
           color="#A47C60"
         />
       );
     }
     if (payment_status === "Completed") {
-      return <StatusBadge text="Completed" dot={"#12B76A"} color="#ECFDF3" />;
+      return <StatusBadge text={t("po_status.completed")} dot="#12B76A" color="#ECFDF3" />;
     }
-
     if (payment_status === "Failed") {
       return (
         <StatusBadge
-          text="Failed"
-          textColor={"#EC4746"}
-          dot={"#EC4746"}
+          text={t("po_status.failed")}
+          textColor="#EC4746"
+          dot="#EC4746"
           color="#FECACA"
         />
       );
     }
     if (item_status === "Delivered") {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge text="Delieverd" dot={"#12B76A"} color="#ECFDF3" />
-        </View>
+        <StatusBadge text={t("po_status.delivered")} dot="#12B76A" color="#ECFDF3" />
       );
     }
     if (item_status === "Processing") {
       return (
-        <View style={{ alignItems: "center" }}>
-          <StatusBadge
-            text="Processing"
-            dot={"#ECFDF3"}
-            textColor={"#fff"}
-            color="#A47C60"
-          />
-        </View>
+        <StatusBadge
+          text={t("po_status.processing")}
+          dot="#ECFDF3"
+          textColor="#fff"
+          color="#A47C60"
+        />
       );
     }
     if (active_status === PO_ACTIVE_STATUS.DRAFT) {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge
-            text="Draft"
-            dot={"#ECFDF3"}
-            textColor={"#ECFDF3"}
-            color="#5A6470"
-          />
-        </View>
+        <StatusBadge
+          text={t("po_status.draft")}
+          dot="#ECFDF3"
+          textColor="#ECFDF3"
+          color="#5A6470"
+        />
       );
     }
-
     if (active_status === PO_ACTIVE_STATUS.CLOSED) {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge
-            text="Closed"
-            textColor={"#EC4746"}
-            dot={"#EC4746"}
-            color="#FECACA"
-          />
-        </View>
+        <StatusBadge
+          text={t("po_status.closed")}
+          textColor="#EC4746"
+          dot="#EC4746"
+          color="#FECACA"
+        />
       );
     }
-
     if (is_confirmed) {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge text="Confirmed" dot={"#12B76A"} color="#ECFDF3" />
-        </View>
-      );
-    } else if (active_status === PO_ACTIVE_STATUS.ACCEPTED) {
-      return (
-        <View
-          style={{ alignItems: "center", flex: 0.2, backgroundColor: "red" }}
-        >
-          <StatusBadge text="Accepted" dot={"#12B76A"} color="#ECFDF3" />
-        </View>
+        <StatusBadge text={t("po_status.confirmed")} dot="#12B76A" color="#ECFDF3" />
       );
     }
-
+    if (active_status === PO_ACTIVE_STATUS.ACCEPTED) {
+      return (
+        <StatusBadge text={t("po_status.accepted")} dot="#12B76A" color="#ECFDF3" />
+      );
+    }
     if (active_status === PO_ACTIVE_STATUS.REJECTED) {
       return (
-        <View style={{ alignItems: "center", flex: 0.2 }}>
-          <StatusBadge
-            text="Rejected"
-            textColor={"#EC4746"}
-            dot={"#EC4746"}
-            color="#FECACA"
-          />
-        </View>
+        <StatusBadge
+          text={t("po_status.rejected")}
+          textColor="#EC4746"
+          dot="#EC4746"
+          color="#FECACA"
+        />
       );
     }
-
-    // or some default casem
   };
-  // Determine if we have pagination meta data or just an array
-  const hasPaginationMeta = DATA?.meta?.pagination;
-  const dataArray = hasPaginationMeta ? DATA?.data : DATA;
 
-  const ITEMS_PER_PAGE = hasPaginationMeta
-    ? DATA?.meta?.pagination?.pageSize
-    : 25;
+  const dataArray = DATA?.meta?.pagination ? DATA.data : DATA;
 
-  const totalPages = hasPaginationMeta
-    ? DATA?.meta?.pagination?.pageCount
-    : Math.ceil((dataArray?.length || 0) / ITEMS_PER_PAGE);
+  const renderItem = ({ item }: { item: any }) => (
+    <View style={styles.row}>
+      {columns_schema?.map((c, index) => (
+        <TouchableOpacity key={index} style={{ flex: 2 }}>
+          <Text style={[
+            styles.cell,
+            rowTextStyle,
+            {
+              textAlign: "center",
+              backgroundColor: c.key === "standing" && item[c.key]?.toLowerCase() === "priority" ? "#FECACA" : "transparent",
+              color: c.key === "standing" && item[c.key]?.toLowerCase() === "priority" ? "#EC4746" : undefined,
+              paddingHorizontal: c.key === "standing" ? 12 : 0,
+              width: c.key === "standing" ? 90 : undefined,
+              alignSelf: c.key === "standing" ? "center" : undefined,
+              borderRadius: c.key === "standing" ? 16 : 0,
+            }
+          ]}>
+            {truncateComponentName(
+              c.key === "role.name"
+                ? t(`roles.${item.role?.name}`)
+                : c.key === "department.name"
+                  ? t(`departments.${item.department?.name}`)
+                  : c.key === "standing"
+                    ? t(`request.${item[c.key]?.toLowerCase()}`)
+                    : getValueFromKey(item, c?.key),
+              16
+            )}
+          </Text>
+        </TouchableOpacity>
+      ))}
 
-  const [expandedEmail, setExpandedEmail] = useState<number | null>(null);
+      {showStatus && (
+        <View style={[styles.cell, { flex: 2, alignItems: "center" }, styles.actionIcons]}>
+          {IconHandleStatus(item)}
+        </View>
+      )}
 
-  const renderItem = ({ item }: { item: any }) => {
-    const isExpanded = expandedEmail === item.id;
-    const isRTL = (text: any) => {
-      const rtlRegex = /^[\u0600-\u06FF]/;
-      return rtlRegex.test(text);
-    };
-    return (
-      <View style={styles.row}>
-        {columns_schema?.map((c, index) => (
-          <TouchableOpacity
-            key={index}
-            // onPress={() => setExpandedEmail(isExpanded ? null : item.id)}
-            style={{ flex: isExpanded && c.key === "email" ? 5 : 2 }}
-          >
-            <Text
-              style={[
-                styles.cell,
-                rowTextStyle,
-                {
-                  textAlign: isRTL(getValueFromKey(item, c?.key))
-                    ? "center"
-                    : "center",
-                },
-              ]}
-            >
-              {isExpanded
-                ? getValueFromKey(item, c?.key)
-                : truncateComponentName(
-                  // 🔽 If column is role or department, translate it
-                  c.key === "role.name"
-                    ? t(`roles.${item.role?.name}`)
-                    : c.key === "department.name"
-                      ? t(`departments.${item.department?.name}`)
-                      : getValueFromKey(item, c?.key),
-                  16
-                )
+      {showActions && (
+        <View
+          style={[styles.cell, rowTextStyle, { flex: 2 }, styles.actionIcons]}
+        >
+          {showEye && (
+            <TouchableOpacity onPress={() => onClickEye && onClickEye(item)}>
+              <Image
+                source={icons.tableEyeIcon}
+                style={{ width: 20, height: 20, marginRight: 6 }}
+              />
+            </TouchableOpacity>
+          )}
+          {showEdit && (
+            <TouchableOpacity
+              onPress={() => onPressUpdate(item)}
+              disabled={
+                isPO
+                  ? user?.role?.name !== ROLE.ADMIN &&
+                  (item?.po_created_by?.documentId !== user?.documentId ||
+                    item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                    item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                    item?.is_confirmed)
+                  : false
               }
-            </Text>
-          </TouchableOpacity>
-        ))}
-
-        {showStatus && (
-          <View
-            style={[
-              styles.cell,
-              {
-                flex: 2,
-                alignItems: "center",
-              },
-              styles.actionIcons,
-            ]}
-          >
-            {IconHandleStatus(item)}
-          </View>
-        )}
-        {showActions && (
-          <View
-            style={[styles.cell, rowTextStyle, { flex: 2 }, styles.actionIcons]}
-          >
-            {showEye && (
-              <TouchableOpacity onPress={() => onClickEye && onClickEye(item)}>
-                <Image
-                  source={icons.tableEyeIcon}
-                  style={{ width: 20, height: 20, marginRight: 6 }}
-                />
-              </TouchableOpacity>
-            )}
-            {showEdit && (
-              <TouchableOpacity
-                onPress={() => onPressUpdate(item)}
-                disabled={
-                  isPO
+            >
+              <Image
+                source={icons.tableEditIcon}
+                style={{
+                  width: 20,
+                  height: 20,
+                  marginRight: 6,
+                  tintColor: isPO
                     ? user?.role?.name !== ROLE.ADMIN &&
-                    (item?.po_created_by?.documentId !== user?.documentId ||
-                      item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
-                      item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
-                      item?.is_confirmed)
-                    : false
-                }
-              >
-                <Image
-                  source={icons.tableEditIcon}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    marginRight: 6,
-                    tintColor: isPO
-                      ? user?.role?.name !== ROLE.ADMIN &&
-                        (item?.po_created_by?.documentId !== user?.documentId ||
-                          item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
-                          item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
-                          item?.is_confirmed)
-                        ? "#292D32"
-                        : ""
-                      : "",
-                  }}
-                />
-              </TouchableOpacity>
-            )}
-            {showDel && (
-              <TouchableOpacity
-                onPress={() => onPressDelete(item.documentId, item.id)}
-                disabled={
-                  isPO
+                      (item?.po_created_by?.documentId !== user?.documentId ||
+                        item?.active_status === PO_ACTIVE_STATUS.CLOSED ||
+                        item?.active_status === PO_ACTIVE_STATUS.REJECTED ||
+                        item?.is_confirmed)
+                      ? "#292D32"
+                      : ""
+                    : "",
+                }}
+              />
+            </TouchableOpacity>
+          )}
+          {showDel && (
+            <TouchableOpacity
+              onPress={() => onPressDelete(item.documentId, item.id)}
+              disabled={
+                isPO
+                  ? user?.role?.name !== ROLE.ADMIN &&
+                  (item?.po_created_by?.documentId !== user?.documentId ||
+                    item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
+                    item?.is_confirmed)
+                  : false
+              }
+            >
+              <Image
+                source={icons.tableDeleteIcon}
+                style={{
+                  width: 20,
+                  height: 20,
+                  marginRight: 6,
+                  tintColor: isPO
                     ? user?.role?.name !== ROLE.ADMIN &&
-                    (item?.po_created_by?.documentId !== user?.documentId ||
-                      item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
-                      item?.is_confirmed)
-                    : false
-                }
-              >
-                <Image
-                  source={icons.tableDeleteIcon}
-                  style={{
-                    width: 20,
-                    height: 20,
-                    marginRight: 6,
-                    tintColor: isPO
-                      ? user?.role?.name !== ROLE.ADMIN &&
-                        (item?.po_created_by?.documentId !== user?.documentId ||
-                          item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
-                          item?.is_confirmed)
-                        ? "#292D32"
-                        : ""
-                      : "",
-                  }}
-                />
-              </TouchableOpacity>
-            )}
+                      (item?.po_created_by?.documentId !== user?.documentId ||
+                        item?.active_status === PO_ACTIVE_STATUS.ACCEPTED ||
+                        item?.is_confirmed)
+                      ? "#292D32"
+                      : ""
+                    : "",
+                }}
+              />
+            </TouchableOpacity>
+          )}
 
-            {showDocument && (
-              <TouchableOpacity onPress={() => onClickDoc(item)}>
-                <Image
-                  source={icons.tableDocumentIcon}
-                  style={{ width: 20, height: 20, tintColor: "#292D32" }}
-                />
-              </TouchableOpacity>
-            )}
-            {showTime && (
-              <TouchableOpacity onPress={() => onClickTime(item)}>
-                <Image
-                  source={icons.tableTimeIcon}
-                  style={{ width: 20, height: 20, tintColor: "#292D32" }}
-                />
-              </TouchableOpacity>
-            )}
-          </View>
-        )}
-      </View>
-    );
-  };
-
-  // console.log("Data", DATA);
+          {showDocument && (
+            <TouchableOpacity onPress={() => onClickDoc(item)}>
+              <Image
+                source={icons.tableDocumentIcon}
+                style={{ width: 20, height: 20, tintColor: "#292D32" }}
+              />
+            </TouchableOpacity>
+          )}
+          {showTime && (
+            <TouchableOpacity onPress={() => onClickTime(item)}>
+              <Image
+                source={icons.tableTimeIcon}
+                style={{ width: 20, height: 20, tintColor: "#292D32" }}
+              />
+            </TouchableOpacity>
+          )}
+        </View>
+      )}
+    </View>
+  );
 
   return (
     <View style={styles.container}>

@@ -11,7 +11,6 @@ import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import { View } from "react-native";
 import { AttendenceModal, CompanyTable, ScreenHeader } from "../../Components";
-import { User_columns_schema } from "../ClientManagement/_schema";
 import { styles } from "./styles";
 import { useTranslation } from "react-i18next";
 import { ScrollView } from "react-native-gesture-handler";
@@ -165,7 +164,6 @@ const UserManagement = () => {
 
   const confirmDelete = () => {
     if (selectedUserId) {
-      console.log(selectedUserId.data.documentId)
       handleDelete({ data: { documentId: selectedUserId.data.documentId } });
       setShowConfirmModal(false);
       setSelectedUserId(null);
@@ -259,11 +257,10 @@ const UserManagement = () => {
           desc={true}
           desctext={t("user_management.add_user_desc")}
           styleContainer={{ flexDirection: "row" }}
-          create={true}
           visible={isUserModalOpen}
           title={t("user_management.create_user")}
-          user={true}
           isPending={isAdding || isUpdating}
+          modalContainerprop={{}}
         />
       )}
 

@@ -26,7 +26,7 @@ type Props = {
 };
 
 const SingleSelectDropDown: React.FC<Props> = ({
-  items,
+  items = [],
   error = false,
   selected = "",
   setSelected,
@@ -41,11 +41,8 @@ const SingleSelectDropDown: React.FC<Props> = ({
         setSelected={setSelected}
         data={items}
         save="key"
-        defaultOption={items.find((i) => i.key === selected)}
-        boxStyles={[
-          styles.boxStyles,
-          { borderColor: error ? "red" : "#E0E0E0" },
-        ]}
+        defaultOption={items?.find((i) => i.key === selected) || undefined}
+        boxStyles={styles.boxStyles}
         inputStyles={styles.inputStyles}
         dropdownStyles={styles.dropdownStyles}
         dropdownItemStyles={styles.dropdownItemStyles}
@@ -68,7 +65,7 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     color: "#333",
     fontFamily: PoppinsRegular,
-    textAlign: I18nManager.isRTL ? "right" : "left",
+    // textAlign: I18nManager.isRTL ? "right" : "left",
   },
   boxStyles: {
     backgroundColor: "#fff",
@@ -86,7 +83,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: PoppinsRegular,
     color: "#1D1D1D",
-    textAlign: I18nManager.isRTL ? "right" : "left",
+    // textAlign: I18nManager.isRTL ? "right" : "left",
   },
   dropdownStyles: {
     backgroundColor: "#fff",
@@ -108,14 +105,14 @@ const styles = StyleSheet.create({
   dropdownTextStyles: {
     fontSize: 14,
     color: "#333",
-    textAlign: I18nManager.isRTL ? "right" : "left",
+    // textAlign: I18nManager.isRTL ? "right" : "left",
     fontFamily: PoppinsRegular,
   },
   errorText: {
     color: "red",
     fontSize: 12,
     marginTop: 6,
-    textAlign: I18nManager.isRTL ? "right" : "left",
+    // textAlign: I18nManager.isRTL ? "right" : "left",
   },
 });
 

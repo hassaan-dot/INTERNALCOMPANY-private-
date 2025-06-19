@@ -1,5 +1,5 @@
 import { icons } from "@/assets/icons/icons";
-import { Text } from "react-native";
+import { Text, StyleSheet } from "react-native";
 import { View, Image } from "react-native";
 
 export const toastConfig = {
@@ -24,12 +24,12 @@ export const toastConfig = {
   ),
 };
 
-const styles = {
+const styles = StyleSheet.create({
   success: {
     padding: 15,
     backgroundColor: "#4BB543",
     borderRadius: 10,
-    alignSelf: "flex-end",
+    alignSelf: "flex-end" as const,
     marginHorizontal: 20,
     marginBottom: 20,
   },
@@ -38,8 +38,7 @@ const styles = {
     backgroundColor: "#FF3333",
     borderRadius: 10,
     marginHorizontal: 20,
-    alignSelf: "flex-end",
-
+    alignSelf: "flex-end" as const,
     marginBottom: 20,
   },
   info: {
@@ -51,7 +50,7 @@ const styles = {
   },
   text1: {
     color: "white",
-    fontWeight: "bold",
+    fontWeight: "bold" as const,
     fontSize: 16,
   },
   text2: {
@@ -59,4 +58,4 @@ const styles = {
     fontSize: 14,
     marginTop: 4,
   },
-};
+});

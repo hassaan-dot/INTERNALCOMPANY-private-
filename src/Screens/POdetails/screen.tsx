@@ -9,7 +9,7 @@ import PoDetailProfile from "@/src/Components/poDetailsProfileHeader/component";
 import { useModalStore } from "@/store/useModalStore";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
-import { ScrollView, View } from "react-native";
+import { ScrollView, View, ActivityIndicator } from "react-native";
 import {
   AddDocumentModal,
   AssignEmployee,
@@ -25,14 +25,16 @@ import {
 } from "../../Components";
 import ConfirmRecieving from "../../Components/Modals/confirmRecieving/component";
 import helpers from "../../utils/helpers";
-import { Invoice_Schema, Item_Schema } from "../ClientManagement/_schema";
 import styles from "./styles";
 import { PO_ACTIVE_STATUS } from "@/constants/po_status";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useDeleteItem } from "@/hooks/usePOitems";
-import { ActivityIndicator } from "react-native";
+import { useSchemas } from "@/hooks/useSchemas";
+import { useTranslation } from "react-i18next";
 
 const PODetailScreen = () => {
+  const { t } = useTranslation();
+  const { Invoice_Schema, Item_Schema } = useSchemas();
   const {
     isInvoicePoModalOpen,
     setisInvoicePoModalOpen,
@@ -53,9 +55,7 @@ const PODetailScreen = () => {
   const { user } = useAuthStore();
   const { id } = useLocalSearchParams();
   const { mutate: handleAddNote } = useCreateNote();
-
   const { data, isPending } = useGetOnePO(id as string);
-
   const {
     handleAccept,
     handleReject,
@@ -74,7 +74,6 @@ const PODetailScreen = () => {
         user: user?.documentId,
       },
     };
-
     handleAddNote(data);
   };
 
@@ -179,7 +178,7 @@ const PODetailScreen = () => {
     delItem(documentId);
   };
 
-  const onClickPaymentEye = ({ documentId }) => {
+  const onClickPaymentEye = ({ documentId }: { documentId: string }) => {
     router.push(`/(app)/payment/payment-details?id=${documentId}`);
   };
 
@@ -191,7 +190,7 @@ const PODetailScreen = () => {
         <View style={{ marginLeft: 25 }}>
           <ScreenHeader
             buttonViewMulitiple={true}
-            title={"PO Details"}
+            title={t("po_detail.title")}
             data={data?.data}
             handleAccept={handleAccept}
             handleReject={handleReject}
@@ -210,7 +209,7 @@ const PODetailScreen = () => {
                 data={data}
                 style={{ color: "#2E2E2E" }}
                 titleStyle={{ fontWeight: "400" }}
-                title={"PO Details"}
+                title={t("po_detail.title")}
                 cardContainer={styles.card}
                 detailscreenContainer={styles.container3}
               />
@@ -222,8 +221,7 @@ const PODetailScreen = () => {
                 onPress2={onOpenAssignModal}
                 btn1Disable={
                   (user?.role?.name !== "Admin" &&
-                    data?.data?.po_created_by?.documentId !==
-                      user?.documentId &&
+                    data?.data?.po_created_by?.documentId !== user?.documentId &&
                     user?.department?.name != "Sales") ||
                   data?.data?.active_status !== PO_ACTIVE_STATUS.ACCEPTED
                 }
@@ -239,7 +237,7 @@ const PODetailScreen = () => {
               titleStyle={styles.Text}
               rows={1}
               Data={data}
-              title={"Client Information"}
+              title={t("po_detail.client_info")}
               horizontalwidth={helpers.wp(75.9)}
               detailscreenContainer={styles.container4}
             />
@@ -250,12 +248,12 @@ const PODetailScreen = () => {
                 Data={data?.data}
                 detailscreenContainer={styles.container6}
                 titleStyle={styles.Text}
-                title="Notes"
-                TextTitle={"Hassaan,khawaja"}
+                title={t("po_detail.notes")}
+                TextTitle="Hassaan,khawaja"
                 TextEnable={true}
                 titleIcon={true}
                 Document={false}
-                ButtonTitle="Add notes"
+                ButtonTitle={t("po_detail.add_note")}
                 onPress={NoteModalOpenfunc}
                 horizontalwidth={helpers.wp(39.9)}
               />
@@ -268,42 +266,42 @@ const PODetailScreen = () => {
                 Document={true}
                 Data={data?.data}
                 titleIcon={true}
-                title="Documents"
+                title={t("po_detail.documents")}
                 onPress={handleDocumentModalOpenfunc}
-                ButtonTitle="Upload file"
+                ButtonTitle={t("po_detail.upload_file")}
                 TextEnable={false}
                 horizontalwidth={helpers.wp(35)}
               />
             </View>
           </View>
+
           <View style={{ margin: 20 }}>
             <TableTitle
               DATA={data?.data?.invoices}
               schema={Invoice_Schema}
               rowTextStyle={{ marginLeft: 8, fontFamily: PoppinsRegular }}
               onPress={AddInvoiceModalOpenfunc}
-              ButtonTitle="Add Invoice"
+              ButtonTitle={t("po_detail.add_invoice")}
               titleIcon={true}
-              title="Payment History"
+              title={t("po_detail.payment_history")}
               onPressEdit={onPressEdit}
               onPressDel={handleInvoiceDelete}
               onClickEye={onClickPaymentEye}
             />
           </View>
+
           <View style={{ margin: 20 }}>
             <TableTitle
               DATA={data?.data?.po_items}
-              title="Items"
+              title={t("po_detail.items")}
               rowTextStyle={{ marginLeft: 10, fontFamily: PoppinsRegular }}
               schema={Item_Schema}
               titleIcon={true}
-              // titleIcon2={true}
               onPressEdit={onPressEditItems}
               onPressDel={handleItemsDelete}
               onPress={AddItemModalOpenfunc}
-              ButtonTitle="Add New item"
+              ButtonTitle={t("po_detail.add_item")}
               showEye={false}
-              // ButtonTitle2="Filter"
             />
           </View>
         </View>
@@ -312,7 +310,7 @@ const PODetailScreen = () => {
       {isStatusModalOpen && (
         <StatusModal
           onClose={handleCloseStatusModal}
-          title={"Change status"}
+          title={t("po_detail.change_status")}
           isVisible={isStatusModalOpen}
           current_status={data?.data?.po_status}
         />
@@ -322,42 +320,81 @@ const PODetailScreen = () => {
         <InvoiceModal
           onClose={AddInvoiceModalClosefunc}
           visible={isInvoicePoModalOpen}
-        ></InvoiceModal>
-      )}
-      {confirmRecievingModalOpen && (
-        <ConfirmRecieving
-          title={"Confirm Client Recieving"}
-          styleContainer={{ flexDirection: "row" }}
-          Second="upload proof of received "
-          onClose={() => setConfirmRecievingModalOpen(false)}
-          visible={confirmRecievingModalOpen}
+          invoice={false}
+          styleContainer={{}}
+          title={t("po_detail.add_invoice")}
+          onSubmit={() => { }}
+          First=""
+          Firstchild=""
+          Second=""
+          Third=""
+          Fourth=""
+          Fifth=""
+          Sixth=""
+          seventh=""
+          eigth=""
+          ninth=""
+          desctext=""
+          user={false}
+          modalContainerprop={{}}
+          Data={null}
+          deleteD={false}
+          update={false}
         />
       )}
+
+      {confirmRecievingModalOpen && (
+        <ConfirmRecieving
+          title={t("po_detail.confirm_client_receiving")}
+          styleContainer={{ flexDirection: "row" }}
+          Second={t("po_detail.upload_proof")}
+          onClose={() => {
+            setConfirmRecievingModalOpen(false);
+          }}
+          visible={confirmRecievingModalOpen}
+          invoice={false}
+          onSubmit={() => { }}
+          First=""
+          Firstchild=""
+        />
+      )}
+
       {isNoteModalOpen && (
         <Note
           onClose={handleNoteModalClose}
           onPress={onPressAddNotefunction}
-          title={"Note"}
+          title={t("po_detail.note")}
           isVisible={isNoteModalOpen}
-        ></Note>
+          Activate={true}
+        />
       )}
+
       {isAssignEmployeeModalOpen && (
         <AssignEmployee
           onClose={onCloseAssignModal}
           onSubmit={handleSubmit}
           desc={true}
           visible={isAssignEmployeeModalOpen}
-          title={"Assign Employee"}
+          title={t("po_detail.assign_employee")}
         />
       )}
+
       {documentModalOpen && (
         <AddDocumentModal
           onClose={() => {
             setDocumentModalOpen(false);
           }}
           visible={documentModalOpen}
+          invoice={false}
+          styleContainer={{}}
+          title={t("po_detail.add_document")}
+          onSubmit={() => { }}
+          First=""
+          Firstchild=""
+          Second=""
         />
       )}
+
       {isPoItemsModalOpen && (
         <PoItemModal
           visible={isPoItemsModalOpen}
@@ -365,6 +402,26 @@ const PODetailScreen = () => {
             setIsPoItemsModalOpen(false);
             setRowData(null);
           }}
+          invoice={false}
+          styleContainer={{}}
+          title={t("po_detail.add_item")}
+          onSubmit={() => { }}
+          First=""
+          Firstchild=""
+          Second=""
+          Third=""
+          Fourth=""
+          Fifth=""
+          Sixth=""
+          seventh=""
+          eigth=""
+          ninth=""
+          desctext=""
+          user={false}
+          modalContainerprop={{}}
+          Data={null}
+          deleteD={false}
+          update={false}
         />
       )}
     </>

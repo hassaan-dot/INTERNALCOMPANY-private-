@@ -2,7 +2,7 @@ import axios from "axios";
 import LocalStorage from "./local-storage";
 
 const api = axios.create({
-  baseURL: "https://api.tryitout.info/api",
+  baseURL: "http://localhost:1337/api",
 });
 
 api.interceptors.request.use(

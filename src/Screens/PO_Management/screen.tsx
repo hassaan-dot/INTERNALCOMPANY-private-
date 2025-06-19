@@ -9,15 +9,16 @@ import { ROLE } from "@/constants/role";
 import { DEPARTMENT } from "@/constants/department";
 import { CompanyTable, ScreenHeader } from "../../Components";
 import CreateModal from "../../Components/Modals/createModal/component";
-import { Po_Schema } from "../ClientManagement/_schema";
 import Styles from "./styles";
 import ConfirmModal from "@/src/Components/ConfirmationModal/ConfirmModal";
 import { useTranslation } from "react-i18next";
+import { useSchemas } from "@/hooks/useSchemas";
 
 const PO_Management = () => {
   const router = useRouter();
   const { user } = useAuthStore();
   const { t } = useTranslation();
+  const { Po_Schema } = useSchemas();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [selectedPOId, setSelectedPOId] = useState<string | null>(null);
@@ -96,12 +97,16 @@ const PO_Management = () => {
         onClickEye={({ documentId }) =>
           documentId && handleNavigateToDetails(documentId)
         }
+        showDocument={false}
       />
 
       <CreateModal
         create={true}
         visible={isModalOpen}
         onClose={() => setIsModalOpen(false)}
+        title={t("po.create")}
+        onSubmit={() => { }}
+        desctext={t("po.create_desc")}
       />
 
       <ConfirmModal

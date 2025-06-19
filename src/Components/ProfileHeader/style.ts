@@ -13,10 +13,12 @@ export const styles = StyleSheet.create({
   },
 
   avatar: {
-    width: 27,
-    height: 27,
-    borderRadius: 15,
-    marginStart: helpers.normalize(10),
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    marginStart: helpers.normalize(8),
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   actionButtonsContainer: {
@@ -27,7 +29,7 @@ export const styles = StyleSheet.create({
 
   clockButtonIcon: {
     paddingHorizontal: helpers.normalize(4),
-    paddingVertical: helpers.normalize(4),
+    // paddingVertical: helpers.normalize(4),
   },
 
   signOutButton: {
@@ -88,7 +90,6 @@ export const styles = StyleSheet.create({
   timerText: {
     fontSize: 12,
     color: "#333",
-    marginTop: 4,
     textAlign: "center",
   },
 });

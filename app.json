@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "InternalCompanyApp",
-    "slug": "InternalCompanyApp",
+    "name": "hocpitalit_chain_app",
+    "slug": "hocpitalit_chain_app",
     "version": "1.0.0",
     "sdkVersion": "53.0.0",
     "orientation": "portrait",

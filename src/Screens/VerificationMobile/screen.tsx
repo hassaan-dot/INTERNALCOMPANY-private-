@@ -50,7 +50,7 @@ const VerficationScreen: React.FC = () => {
               textStyle={[styles.textStyle]}
               subtitleContainer={[isMobileView && styles.subtitle2]}
               title={isMobileView ? string.otpTitle : string.login}
-              desc={isMobileView && string.otpdesc}
+              desc={isMobileView ? string.otpdesc : undefined}
             ></TitleAndDescription>
           </View>
 
@@ -64,6 +64,9 @@ const VerficationScreen: React.FC = () => {
                 setEmail(text);
               }}
               titleStyle={{ marginBottom: 10 }}
+              multiline={false}
+              ispassword={false}
+              errorMessage=""
             ></InputField>
           </View>
 
@@ -88,7 +91,11 @@ const VerficationScreen: React.FC = () => {
             </TouchableOpacity>
           </View>
         </View>
-        <OTPmodal visible={modalVisible} onSubmit={onSubmitFunction}></OTPmodal>
+        <OTPmodal
+          visible={modalVisible}
+          onSubmit={onSubmitFunction}
+          onClose={() => setModalVisible(false)}
+        ></OTPmodal>
       </View>
     </View>
   );

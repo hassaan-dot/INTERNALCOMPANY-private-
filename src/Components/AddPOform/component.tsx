@@ -117,7 +117,6 @@ const POForm: React.FC<Props> = ({ onPress }) => {
         });
         setErrors(newErrors);
       }
-      console.log("invalid", err);
       return false;
     }
   };
@@ -154,7 +153,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
         setDocuments((prev) => [...prev, ...newDocs]);
       }
     } catch (err) {
-      console.log("Document picker error:", err);
+      // Document picker error handled silently
     }
   };
 
@@ -213,8 +212,8 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                 rowData?.isEdit &&
                 `${rowData?.client?.contact_person_name} (${rowData?.client?.company_name})`
               }
-              error={touched.client && errors.client}
-              errorMessage={touched.client && errors.client}
+              error={!!(touched.client && errors.client)}
+              errorMessage={touched.client && errors.client ? errors.client : undefined}
             />
           </View>
         </View>
@@ -224,7 +223,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
             style={{
               flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: "start",
+              alignItems: "flex-start",
             }}
           >
             <View style={[styles.inputContainer]}>
@@ -245,7 +244,6 @@ const POForm: React.FC<Props> = ({ onPress }) => {
                   borderColor: "#ddd",
                   borderWidth: 1,
                   paddingVertical: 7,
-                  marginRight: 22,
                 }}
               >
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -345,6 +343,7 @@ const POForm: React.FC<Props> = ({ onPress }) => {
               value={formData?.notes}
               onChangeText={(text) => handleInputChange("notes", text)}
               ispassword={false}
+              errorMessage={touched.notes && errors.notes ? errors.notes : undefined}
             />
           </View>
         )}

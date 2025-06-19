@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState } from 'react';
 import { useColorScheme } from 'react-native';
 
@@ -24,10 +23,10 @@ const darkTheme = {
   card: '#1C1C1E',
 };
 
-const ThemeContext = createContext();
+const ThemeContext = createContext<any>(null);
 
-export const ThemeProvider = ({ children }) => {
-  const systemTheme = useColorScheme(); 
+export const ThemeProvider = ({ children }: { children: React.ReactNode }) => {
+  const systemTheme = useColorScheme();
   const [theme, setTheme] = useState(systemTheme === 'dark' ? darkTheme : lightTheme);
 
   const toggleTheme = () => {

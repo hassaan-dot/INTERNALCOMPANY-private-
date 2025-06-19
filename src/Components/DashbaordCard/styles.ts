@@ -63,7 +63,7 @@ export const styles = StyleSheet.create({
   name: {
     fontWeight: "400",
     fontFamily: RobotoRegular,
-    marginLeft: 3,
+    marginHorizontal: 15,
     // textOverflow: "no-wrap",
 
     // textWrap: "no-wrap",

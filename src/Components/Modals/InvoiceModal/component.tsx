@@ -113,12 +113,12 @@ const InvoiceModal: React.FC<ClientModalProps> = ({
     field: keyof typeof formData,
     value: string | undefined
   ) => {
-    setFormData((prev) => ({
+    setFormData((prev: typeof formData) => ({
       ...prev,
       [field]: value,
     }));
     setTouched((prev) => ({ ...prev, [field]: true }));
-    clearError(field);
+    clearError(field.toString());
   };
 
   const clearError = (field: string) => {

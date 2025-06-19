@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   FlatList,
+  ImageSourcePropType,
 } from "react-native";
 import { styles } from "./styles";
 import { Avatar, Header } from "@/src/Components";
@@ -30,7 +31,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ name, phone, email }) => (
 );
 
 type SettingsItemProps = {
-  icon: string;
+  icon: ImageSourcePropType;
   label: string;
   onPress: () => void;
 };
@@ -44,21 +45,21 @@ const SettingsItem: React.FC<SettingsItemProps> = ({
     <View style={styles.container4}>
       <View style={styles.container3}>
         <View>
-            <Image source={icon} style={styles.image}></Image>
+          <Image source={icon} style={styles.image}></Image>
         </View>
         {/* <Text style={styles.icon}>{icon}</Text> */}
         <Text style={styles.label}>{label}</Text>
       </View>
     </View>
     <View>
-        <Feather name='chevron-right' color={'#015158'} size={18} ></Feather>
+      <Feather name='chevron-right' color={'#015158'} size={18} ></Feather>
       {/* <Text style={styles.arrow}>{">"}</Text> */}
     </View>
   </TouchableOpacity>
 );
 
 type SettingsOption = {
-  icon: string;
+  icon: ImageSourcePropType;
   label: string;
 };
 
@@ -91,7 +92,7 @@ const ProfileScreen: React.FC = () => {
           <SettingsItem
             icon={item.icon}
             label={item.label}
-            onPress={() => {}}
+            onPress={() => { }}
           />
         )}
       />

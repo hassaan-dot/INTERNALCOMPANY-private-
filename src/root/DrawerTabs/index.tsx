@@ -32,7 +32,7 @@ import {
   View,
 } from "react-native";
 import { icons } from "../../assets/icons/icons";
-import { drawer_items } from "@/constants/sidebar";
+
 const Stack = createStackNavigator();
 
 const UserManagementfunction = () => {
@@ -123,6 +123,34 @@ const PaymentHistoryFunc = () => {
   );
 };
 
+// Define drawer items after function declarations
+const drawer_items = [
+  {
+    name: "Dashboard",
+    component: Dashboard,
+  },
+  {
+    name: "User Management",
+    component: UserManagementfunction,
+  },
+  {
+    name: "Client Management",
+    component: ClientManagementfunction,
+  },
+  {
+    name: "Payment History",
+    component: PaymentHistoryFunc,
+  },
+  {
+    name: "Purchasing Order",
+    component: POManagementfunction,
+  },
+  {
+    name: "Request List",
+    component: Requestfunction,
+  },
+];
+
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -209,11 +237,11 @@ const studentData = [
 ];
 
 // Custom Drawer Content Component
-const CustomDrawerContent = (props) => {
+const CustomDrawerContent = (props: any) => {
   const [isCoursesOpen, setIsCoursesOpen] = useState(false);
   const activeRoute = props.state.routeNames[props.state.index];
 
-  const handleTabPress = (tabName) => {
+  const handleTabPress = (tabName: string) => {
     if (tabName === "Courses") {
       setIsCoursesOpen(!isCoursesOpen);
     } else {
@@ -228,13 +256,13 @@ const CustomDrawerContent = (props) => {
         {/* <Image source={Images.Logo} style={styles.logo} /> */}
       </View>
       <View style={styles.drawerItems}>
-        {drawerTabs.map((item, index) => (
+        {drawer_items.map((item: any, index: number) => (
           <View key={index}>
             <DrawerItem
               focused={activeRoute === item.name}
-              label={item.options.drawerLabel}
+              label={item.name}
               icon={({ color, size, focused = activeRoute == item.name }) =>
-                item.options.drawerIcon(color, size, focused)
+                item.icon ? item.icon(color, size, focused) : null
               }
               onPress={() => handleTabPress(item.name)}
               style={styles.drawerItem}
@@ -300,7 +328,7 @@ const Drawer_Tabs = () => {
       initialRouteName="Dashboard"
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       screenOptions={{
-        header: (props) => <ProfileHeader {...props} />,
+        header: () => <ProfileHeader />,
         headerShown: true,
         drawerStyle: {
           backgroundColor: "#fff",
@@ -322,8 +350,13 @@ const Drawer_Tabs = () => {
         drawerPosition: "left",
       }}
     >
-      {drawer_items.map((item, index) => (
-        <Drawer.Screen key={index} name={item.name} options={{}} />
+      {drawer_items.map((item: any, index: number) => (
+        <Drawer.Screen
+          key={index}
+          name={item.name}
+          component={item.component}
+          options={{}}
+        />
       ))}
     </Drawer.Navigator>
   );

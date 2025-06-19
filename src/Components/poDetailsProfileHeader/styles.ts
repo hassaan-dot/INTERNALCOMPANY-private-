@@ -65,7 +65,7 @@ export const styles = StyleSheet.create({
     // paddingLeft: 16,
     borderColor: "#E8E8E8",
     borderWidth: 1,
-    marginLeft: 15,
+    // marginLeft: 15,
     padding: 20,
     // paddingHorizontal: 20,
     paddingVertical: 20,
